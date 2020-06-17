@@ -1,8 +1,0 @@
-path:
-  - permissions
-plugin: add
-actions:
-  'edit terms in tags':
-    value: 'edit terms in tags'
-  'view the administration theme':
-    value: 'view the administration theme'

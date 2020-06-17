@@ -19,13 +19,7 @@ class OptionsFieldUITest extends FieldTestBase {
    *
    * @var array
    */
-  public static $modules = [
-    'node',
-    'options',
-    'field_test',
-    'taxonomy',
-    'field_ui',
-  ];
+  public static $modules = ['node', 'options', 'field_test', 'taxonomy', 'field_ui'];
 
   /**
    * {@inheritdoc}
@@ -363,7 +357,7 @@ class OptionsFieldUITest extends FieldTestBase {
       }
 
       $elements = $this->xpath('//div[text()="' . $output . '"]');
-      $this->assertCount(1, $elements, 'Correct options found.');
+      $this->assertEqual(count($elements), 1, 'Correct options found.');
     }
   }
 

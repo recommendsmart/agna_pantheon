@@ -1,3 +1,0 @@
-bundle: drutopia
-required:
-  - core.entity_view_display.node.campaign.search_index

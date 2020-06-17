@@ -8,9 +8,9 @@ $baseDir = dirname($vendorDir);
 return array(
     'Twig_' => array($vendorDir . '/twig/twig/lib'),
     'Stack' => array($vendorDir . '/stack/builder/src'),
-    'Sabberworm\\CSS' => array($vendorDir . '/sabberworm/php-css-parser/lib'),
+    'PEAR' => array($vendorDir . '/pear/pear_exception'),
     'EasyRdf_' => array($vendorDir . '/easyrdf/easyrdf/lib'),
-    'Dflydev\\DotAccessData' => array($vendorDir . '/dflydev/dot-access-data/src'),
+    'Doctrine\\Common\\Collections\\' => array($vendorDir . '/doctrine/collections/lib'),
     'Console' => array($vendorDir . '/pear/console_getopt'),
     'Archive_Tar' => array($vendorDir . '/pear/archive_tar'),
     '' => array($vendorDir . '/pear/pear-core-minimal/src'),

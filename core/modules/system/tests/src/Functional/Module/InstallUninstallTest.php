@@ -22,12 +22,7 @@ class InstallUninstallTest extends ModuleTestBase {
   /**
    * {@inheritdoc}
    */
-  public static $modules = [
-    'system_test',
-    'dblog',
-    'taxonomy',
-    'update_test_postupdate',
-  ];
+  public static $modules = ['system_test', 'dblog', 'taxonomy', 'update_test_postupdate'];
 
   /**
    * Tests that a fixed set of modules can be installed and uninstalled.
@@ -356,7 +351,7 @@ class InstallUninstallTest extends ModuleTestBase {
    */
   protected function assertHelp($module, $name) {
     $this->drupalGet('admin/help/' . $module);
-    $this->assertSession()->statusCodeEquals(200);
+    $this->assertResponse(200, "Help for $module displayed successfully");
     $this->assertText($name . ' module', "'$name module' is on the help page for $module");
     $this->assertLink('online documentation for the ' . $name . ' module', 0, "Correct online documentation link is in the help page for $module");
   }

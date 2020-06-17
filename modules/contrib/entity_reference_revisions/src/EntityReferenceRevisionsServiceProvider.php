@@ -23,7 +23,6 @@ class EntityReferenceRevisionsServiceProvider extends ServiceProviderBase {
       $service_definition = new Definition('Drupal\entity_reference_revisions\Normalizer\EntityReferenceRevisionItemNormalizer', array(
         new Reference('hal.link_manager'),
         new Reference('serializer.entity_resolver'),
-        new Reference('entity_type.manager'),
       ));
       // The priority must be higher than that of
       // serializer.normalizer.entity_reference_item.hal in

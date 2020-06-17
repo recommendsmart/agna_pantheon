@@ -1,7 +1,0 @@
-alter_entity_autocomplete.admin_settings:
-  path: '/admin/config/alter_entity_autocomplete'
-  defaults:
-    _form: '\Drupal\alter_entity_autocomplete\Form\EntityAutocompleteFieldConfigurationForm'
-    _title: 'Alter entity autocomplete configuration screen'
-  requirements:
-    _permission: 'administer site configuration'

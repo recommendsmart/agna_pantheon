@@ -9,7 +9,6 @@ CONTENTS OF THIS FILE
  * Developing for Drupal
  * More information
 
-
 ABOUT DRUPAL
 ------------
 
@@ -23,7 +22,6 @@ Legal information about Drupal:
    See LICENSE.txt in the "core" directory.
  * Learn about the Drupal trademark and logo policy:
    https://www.drupal.com/trademark
-
 
 CONFIGURATION AND FEATURES
 --------------------------
@@ -91,7 +89,6 @@ More about themes:
  * Develop your own theme:
    https://www.drupal.org/docs/8/theming
 
-
 DEVELOPING FOR DRUPAL
 ---------------------
 
@@ -122,7 +119,6 @@ More about developing:
    https://api.drupal.org/api/drupal/8
  * Learn from documented Drupal API examples:
    https://www.drupal.org/project/examples
-
 
 MORE INFORMATION
 ----------------

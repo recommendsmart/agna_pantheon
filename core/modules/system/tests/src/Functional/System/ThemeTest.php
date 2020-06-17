@@ -53,16 +53,14 @@ class ThemeTest extends BrowserTestBase {
    * Test the theme settings form.
    */
   public function testThemeSettings() {
-    // Ensure a disabled theme settings form URL returns 404.
+    // Ensure invalid theme settings form URLs return a proper 404.
     $this->drupalGet('admin/appearance/settings/bartik');
-    $this->assertSession()->statusCodeEquals(404);
-    // Ensure a non existent theme settings form URL returns 404.
+    $this->assertResponse(404, 'The theme settings form URL for a uninstalled theme could not be found.');
     $this->drupalGet('admin/appearance/settings/' . $this->randomMachineName());
-    $this->assertSession()->statusCodeEquals(404);
-    // Ensure a hidden theme settings form URL returns 404.
+    $this->assertResponse(404, 'The theme settings form URL for a non-existent theme could not be found.');
     $this->assertTrue(\Drupal::service('theme_installer')->install(['stable']));
     $this->drupalGet('admin/appearance/settings/stable');
-    $this->assertSession()->statusCodeEquals(404);
+    $this->assertResponse(404, 'The theme settings form URL for a hidden theme is unavailable.');
 
     // Specify a filesystem path to be used for the logo.
     $file = current($this->drupalGetTestFiles('image'));
@@ -213,7 +211,7 @@ class ThemeTest extends BrowserTestBase {
     $this->drupalGet('admin/appearance/settings');
     $this->assertLink($theme_handler->getName('stable'));
     $this->drupalGet('admin/appearance/settings/stable');
-    $this->assertSession()->statusCodeEquals(200);
+    $this->assertResponse(200, 'The theme settings form URL for a hidden theme that is the admin theme is available.');
 
     // Ensure default logo and favicons are not triggering custom path
     // validation errors if their custom paths are set on the form.
@@ -311,7 +309,7 @@ class ThemeTest extends BrowserTestBase {
     $normal_user = $this->drupalCreateUser(['view the administration theme']);
     $this->drupalLogin($normal_user);
     $this->drupalGet('admin/config');
-    $this->assertSession()->statusCodeEquals(403);
+    $this->assertResponse(403);
     $this->assertRaw('core/themes/seven', 'Administration theme used on an administration page.');
     $this->drupalLogin($this->adminUser);
 

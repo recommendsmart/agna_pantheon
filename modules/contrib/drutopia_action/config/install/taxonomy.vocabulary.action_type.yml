@@ -1,7 +1,0 @@
-langcode: en
-status: true
-dependencies: {  }
-name: 'Action type'
-vid: action_type
-description: 'For categorizing actions.'
-weight: 0

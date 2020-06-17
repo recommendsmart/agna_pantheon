@@ -27,13 +27,7 @@ abstract class AggregatorTestBase extends BrowserTestBase {
    *
    * @var array
    */
-  public static $modules = [
-    'block',
-    'node',
-    'aggregator',
-    'aggregator_test',
-    'views',
-  ];
+  public static $modules = ['block', 'node', 'aggregator', 'aggregator_test', 'views'];
 
   /**
    * {@inheritdoc}
@@ -181,11 +175,11 @@ abstract class AggregatorTestBase extends BrowserTestBase {
   public function updateFeedItems(FeedInterface $feed, $expected_count = NULL) {
     // First, let's ensure we can get to the rss xml.
     $this->drupalGet($feed->getUrl());
-    $this->assertSession()->statusCodeEquals(200);
+    $this->assertResponse(200, new FormattableMarkup(':url is reachable.', [':url' => $feed->getUrl()]));
 
     // Attempt to access the update link directly without an access token.
     $this->drupalGet('admin/config/services/aggregator/update/' . $feed->id());
-    $this->assertSession()->statusCodeEquals(403);
+    $this->assertResponse(403);
 
     // Refresh the feed (simulated link click).
     $this->drupalGet('admin/config/services/aggregator');

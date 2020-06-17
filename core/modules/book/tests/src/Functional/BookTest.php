@@ -209,11 +209,11 @@ class BookTest extends BrowserTestBase {
 
     // Make sure we can't export an unsupported format.
     $this->drupalGet('book/export/foobar/' . $this->book->id());
-    $this->assertSession()->statusCodeEquals(404);
+    $this->assertResponse('404', 'Unsupported export format returned "not found".');
 
     // Make sure we get a 404 on a not existing book node.
     $this->drupalGet('book/export/html/123');
-    $this->assertSession()->statusCodeEquals(404);
+    $this->assertResponse('404', 'Not existing book node returned "not found".');
 
     // Make sure an anonymous user cannot view printer-friendly version.
     $this->drupalLogout();
@@ -224,14 +224,14 @@ class BookTest extends BrowserTestBase {
 
     // Try getting the URL directly, and verify it fails.
     $this->drupalGet('book/export/html/' . $this->book->id());
-    $this->assertSession()->statusCodeEquals(403);
+    $this->assertResponse('403', 'Anonymous user properly forbidden.');
 
     // Now grant anonymous users permission to view the printer-friendly
     // version and verify that node access restrictions still prevent them from
     // seeing it.
     user_role_grant_permissions(RoleInterface::ANONYMOUS_ID, ['access printer-friendly version']);
     $this->drupalGet('book/export/html/' . $this->book->id());
-    $this->assertSession()->statusCodeEquals(403);
+    $this->assertResponse('403', 'Anonymous user properly forbidden from seeing the printer-friendly version when denied by node access.');
   }
 
   /**
@@ -351,11 +351,9 @@ class BookTest extends BrowserTestBase {
     $this->drupalLogin($this->adminUser);
     $edit = [];
 
-    // Ensure that the top-level book node cannot be deleted.
+    // Test access to delete top-level and child book nodes.
     $this->drupalGet('node/' . $this->book->id() . '/outline/remove');
-    $this->assertSession()->statusCodeEquals(403);
-
-    // Ensure that a child book node can be deleted.
+    $this->assertResponse('403', 'Deleting top-level book node properly forbidden.');
     $this->drupalPostForm('node/' . $nodes[4]->id() . '/outline/remove', $edit, t('Remove'));
     $node_storage->resetCache([$nodes[4]->id()]);
     $node4 = $node_storage->load($nodes[4]->id());
@@ -381,7 +379,7 @@ class BookTest extends BrowserTestBase {
     // Delete parent, and visit a child page.
     $this->drupalPostForm($this->book->toUrl('delete-form'), [], t('Delete'));
     $this->drupalGet($nodes[0]->toUrl());
-    $this->assertSession()->statusCodeEquals(200);
+    $this->assertResponse(200);
     $this->assertText($nodes[0]->label());
     // The book parents should be updated.
     $node_storage = \Drupal::entityTypeManager()->getStorage('node');

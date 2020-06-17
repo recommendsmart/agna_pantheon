@@ -337,9 +337,9 @@ class ModerationStateFieldItemListTest extends KernelTestBase {
   }
 
   /**
-   * Test customizing the default moderation state.
+   * Test customising the default moderation state.
    */
-  public function testWorkflowCustomizedInitialState() {
+  public function testWorkflowCustomisedInitialState() {
     $workflow = Workflow::load('editorial');
     $configuration = $workflow->getTypePlugin()->getConfiguration();
 

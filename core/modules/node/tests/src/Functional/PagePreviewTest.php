@@ -32,16 +32,7 @@ class PagePreviewTest extends NodeTestBase {
    *
    * @var array
    */
-  public static $modules = [
-    'node',
-    'taxonomy',
-    'comment',
-    'image',
-    'file',
-    'text',
-    'node_test',
-    'menu_ui',
-  ];
+  public static $modules = ['node', 'taxonomy', 'comment', 'image', 'file', 'text', 'node_test', 'menu_ui'];
 
   /**
    * {@inheritdoc}
@@ -340,7 +331,7 @@ class PagePreviewTest extends NodeTestBase {
     $this->clickLink(t('Back to content editing'));
     $this->drupalPostForm(NULL, [], t('Save'));
     $this->assertUrl($node->toUrl());
-    $this->assertSession()->statusCodeEquals(200);
+    $this->assertResponse(200);
 
     /** @var \Drupal\Core\File\FileSystemInterface $file_system */
     $file_system = \Drupal::service('file_system');
@@ -440,7 +431,7 @@ class PagePreviewTest extends NodeTestBase {
     $this->drupalPostForm('node/add/page', $edit, t('Preview'));
 
     // Check that the preview is displaying the title, body and term.
-    $this->assertTitle($edit[$title_key] . ' | Drupal');
+    $this->assertTitle(t('@title | Drupal', ['@title' => $edit[$title_key]]), 'Basic page title is preview.');
     $this->assertText($edit[$title_key], 'Title displayed.');
     $this->assertText($edit[$body_key], 'Body displayed.');
     $this->assertText($edit[$term_key], 'Term displayed.');

@@ -1,5 +1,0 @@
-{% extends "field.html.twig" %}
-{% for item in items %}
-  {# Wrap the item in a <strong> tag. #}
-  {% set item = item|merge({ 'content' :  '<strong>' ~ 'test' ~ '</strong>'}) %}
-{% endfor %}

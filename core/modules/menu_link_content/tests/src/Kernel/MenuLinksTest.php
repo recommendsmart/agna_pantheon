@@ -21,13 +21,7 @@ class MenuLinksTest extends KernelTestBase {
    *
    * @var array
    */
-  public static $modules = [
-    'link',
-    'menu_link_content',
-    'router_test',
-    'system',
-    'user',
-  ];
+  public static $modules = ['link', 'menu_link_content', 'router_test', 'system', 'user'];
 
   /**
    * The menu link plugin manager.
@@ -305,7 +299,7 @@ class MenuLinksTest extends KernelTestBase {
     \Drupal::service('router.builder')->rebuild();
     \Drupal::service('plugin.manager.menu.link')->rebuild();
     $menu_links = $this->menuLinkManager->loadLinksByRoute('menu_test.menu_test');
-    $this->assertCount(1, $menu_links);
+    $this->assertEqual(count($menu_links), 1);
     $menu_link = reset($menu_links);
     $this->assertEqual($menu_link->getPluginId(), 'menu_test');
 
@@ -313,7 +307,7 @@ class MenuLinksTest extends KernelTestBase {
     \Drupal::service('module_installer')->uninstall(['menu_test']);
     \Drupal::service('plugin.manager.menu.link')->rebuild();
     $menu_links = $this->menuLinkManager->loadLinksByRoute('menu_test.menu_test');
-    $this->assertCount(0, $menu_links);
+    $this->assertEqual(count($menu_links), 0);
   }
 
   /**

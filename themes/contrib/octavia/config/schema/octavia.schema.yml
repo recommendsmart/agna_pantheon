@@ -1,5 +1,0 @@
-# Schema for the configuration files of the Bulma theme.
-
-octavia.settings:
-  type: theme_settings
-  label: 'Bulma settings'

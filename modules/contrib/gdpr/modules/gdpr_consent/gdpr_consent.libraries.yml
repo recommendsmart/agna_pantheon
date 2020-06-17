@@ -1,9 +1,0 @@
-gdpr_consent_display:
-  css:
-    theme:
-      css/gdpr_consent.css: { }
-  js:
-    js/gdpr_consent.js: { }
-  dependencies:
-    - core/jquery
-    - core/drupal

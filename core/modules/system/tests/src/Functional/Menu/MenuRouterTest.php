@@ -165,11 +165,11 @@ class MenuRouterTest extends BrowserTestBase {
    */
   protected function doTestMenuOptionalPlaceholders() {
     $this->drupalGet('menu-test/optional');
-    $this->assertSession()->statusCodeEquals(200);
+    $this->assertResponse(200);
     $this->assertText('Sometimes there is no placeholder.');
 
     $this->drupalGet('menu-test/optional/foobar');
-    $this->assertSession()->statusCodeEquals(200);
+    $this->assertResponse(200);
     $this->assertText("Sometimes there is a placeholder: 'foobar'.");
   }
 

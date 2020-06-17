@@ -210,7 +210,7 @@
         // Clone the table header so it inherits original jQuery properties.
         const $stickyHeader = this.$originalHeader.clone(true);
         // Hide the table to avoid a flash of the header clone upon page load.
-        this.$stickyTable = $('<table class="sticky-header"></table>')
+        this.$stickyTable = $('<table class="sticky-header"/>')
           .css({
             visibility: 'hidden',
             position: 'fixed',

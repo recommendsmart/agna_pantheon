@@ -68,7 +68,7 @@ class ArgumentDefaultTest extends ViewTestBase {
     $id = $view->addHandler('default', 'argument', 'views_test_data', 'name', $options);
     $view->initHandlers();
     $plugin = $view->argument[$id]->getPlugin('argument_default');
-    $this->assertInstanceOf(ArgumentDefaultTestPlugin::class, $plugin);
+    $this->assertTrue($plugin instanceof ArgumentDefaultTestPlugin, 'The correct argument default plugin is used.');
 
     // Check that the value of the default argument is as expected.
     $this->assertEqual($view->argument[$id]->getDefaultArgument(), 'John', 'The correct argument default value is returned.');
@@ -166,9 +166,9 @@ class ArgumentDefaultTest extends ViewTestBase {
     $this->drupalPlaceBlock("views_block:test_argument_default_node-block_1", ['id' => $id]);
     $xpath = '//*[@id="block-' . $id . '"]';
     $this->drupalGet('node/' . $node1->id());
-    $this->assertStringContainsString($node1->getTitle(), $this->xpath($xpath)[0]->getText());
+    $this->assertContains($node1->getTitle(), $this->xpath($xpath)[0]->getText());
     $this->drupalGet('node/' . $node2->id());
-    $this->assertStringContainsString($node2->getTitle(), $this->xpath($xpath)[0]->getText());
+    $this->assertContains($node2->getTitle(), $this->xpath($xpath)[0]->getText());
   }
 
   /**

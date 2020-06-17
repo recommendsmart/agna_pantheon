@@ -1,6 +1,0 @@
-path:
-- permissions
-plugin: add
-actions:
-  'administer redirects':
-    value: 'administer redirects'

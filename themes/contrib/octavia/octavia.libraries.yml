@@ -1,7 +1,0 @@
-global:
-  css:
-    theme:
-      dist/css/global.css: {}
-  dependencies:
-    - bulma/global
-

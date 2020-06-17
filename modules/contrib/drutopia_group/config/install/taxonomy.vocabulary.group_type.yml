@@ -1,7 +1,0 @@
-langcode: en
-status: true
-dependencies: {  }
-name: 'Group type'
-vid: group_type
-description: 'For categorizing groups.'
-weight: 0

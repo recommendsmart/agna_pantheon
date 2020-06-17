@@ -308,7 +308,6 @@ class Views {
         $filter = ucfirst($filter);
         $views = call_user_func("static::get{$filter}Views");
         break;
-
       default:
         return [];
     }

@@ -1,5 +1,0 @@
-{% extends '@bulma/block/block.html.twig' %}
-{% set view_mode = configuration['view_mode'] ?? null %}
-{% if view_mode is same as ('columnar') %}
-  {% set attributes = attributes.addClass(['column', 'is-one-third-desktop', 'is-half-tablet']) %}
-{% endif %}

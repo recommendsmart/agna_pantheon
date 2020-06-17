@@ -279,7 +279,7 @@ class SessionTest extends BrowserTestBase {
     $user = $this->drupalCreateUser([]);
     $this->drupalLogin($user);
     $this->drupalGet('session-test/is-logged-in');
-    $this->assertSession()->statusCodeEquals(200);
+    $this->assertResponse(200, 'User is logged in.');
 
     // Reset the sid in {sessions} to a blank string. This may exist in the
     // wild in some cases, although we normally prevent it from happening.
@@ -292,42 +292,7 @@ class SessionTest extends BrowserTestBase {
     $this->assertRaw("session_id:\n", 'Session ID is blank as sent from cookie header.');
     // Assert that we have an anonymous session now.
     $this->drupalGet('session-test/is-logged-in');
-    $this->assertSession()->statusCodeEquals(403);
-  }
-
-  /**
-   * Test session bag.
-   */
-  public function testSessionBag() {
-    // Ensure the flag is absent to start with.
-    $this->drupalGet('/session-test/has-bag-flag');
-    $this->assertSessionCookie(FALSE);
-    $this->assertSessionEmpty(TRUE);
-    $this->assertSession()->statusCodeEquals(200);
-
-    // Set the flag.
-    $this->drupalGet('/session-test/set-bag-flag');
-    $this->assertSessionCookie(TRUE);
-    $this->assertSessionEmpty(TRUE);
-    $this->assertSession()->statusCodeEquals(200);
-
-    // Ensure the flag is set.
-    $this->drupalGet('/session-test/has-bag-flag');
-    $this->assertSessionCookie(TRUE);
-    $this->assertSessionEmpty(FALSE);
-    $this->assertSession()->statusCodeEquals(200);
-
-    // Clear the flag.
-    $this->drupalGet('/session-test/clear-bag-flag');
-    $this->assertSessionCookie(FALSE);
-    $this->assertSessionEmpty(FALSE);
-    $this->assertSession()->statusCodeEquals(200);
-
-    // Ensure the flag is absent again.
-    $this->drupalGet('/session-test/has-bag-flag');
-    $this->assertSessionCookie(FALSE);
-    $this->assertSessionEmpty(TRUE);
-    $this->assertSession()->statusCodeEquals(200);
+    $this->assertResponse(403, 'An empty session ID is not allowed.');
   }
 
   /**
@@ -340,7 +305,7 @@ class SessionTest extends BrowserTestBase {
 
     // Change cookie file for user.
     $this->drupalGet('session-test/get');
-    $this->assertSession()->statusCodeEquals(200);
+    $this->assertResponse(200, 'Session test module is correctly enabled.', 'Session');
   }
 
   /**

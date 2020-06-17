@@ -67,7 +67,7 @@ class DisabledDisplayTest extends ViewTestBase {
 
     // Disabled page view should 404.
     $this->drupalGet('test-disabled-display-2');
-    $this->assertSession()->statusCodeEquals(404);
+    $this->assertResponse(404);
 
     // Enable each disabled display and save the view.
     foreach ($display_ids as $display_id) {
@@ -96,11 +96,11 @@ class DisabledDisplayTest extends ViewTestBase {
 
     // Check that the page_1 display still works.
     $this->drupalGet('test-disabled-display');
-    $this->assertSession()->statusCodeEquals(200);
+    $this->assertResponse(200);
 
     // Check that the page_2 display is now disabled again.
     $this->drupalGet('test-disabled-display-2');
-    $this->assertSession()->statusCodeEquals(404);
+    $this->assertResponse(404);
   }
 
 }

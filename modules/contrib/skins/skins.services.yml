@@ -1,4 +1,0 @@
-services:
-  skins_handler:
-    class: Drupal\skins\SkinHandler
-    arguments: ['@theme_handler', '@string_translation']

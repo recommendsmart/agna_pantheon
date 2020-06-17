@@ -1,3 +1,0 @@
-bundle: drutopia
-excluded:
-  - group.content_type.group-group_node-article

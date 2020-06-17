@@ -1,5 +1,0 @@
-langcode: en
-status: true
-dependencies: {  }
-id: gdpr_remove
-label: 'Removal Request'

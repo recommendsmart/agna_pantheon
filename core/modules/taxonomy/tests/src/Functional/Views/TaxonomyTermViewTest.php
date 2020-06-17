@@ -148,7 +148,7 @@ class TaxonomyTermViewTest extends TaxonomyTestBase {
     $condition = $query->conditions();
     // We only want to check the no. of conditions in the query.
     unset($condition['#conjunction']);
-    $this->assertCount(1, $condition);
+    $this->assertEqual(1, count($condition));
 
     // Clear permissions for anonymous users to check access for default views.
     Role::load(RoleInterface::ANONYMOUS_ID)->revokePermission('access content')->save();
@@ -156,9 +156,9 @@ class TaxonomyTermViewTest extends TaxonomyTestBase {
     // Test the default views disclose no data by default.
     $this->drupalLogout();
     $this->drupalGet('taxonomy/term/' . $term->id());
-    $this->assertSession()->statusCodeEquals(403);
+    $this->assertResponse(403);
     $this->drupalGet('taxonomy/term/' . $term->id() . '/feed');
-    $this->assertSession()->statusCodeEquals(403);
+    $this->assertResponse(403);
   }
 
 }

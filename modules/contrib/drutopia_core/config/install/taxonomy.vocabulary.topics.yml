@@ -1,7 +1,0 @@
-langcode: en
-status: true
-dependencies: {  }
-name: Topics
-vid: topics
-description: 'Use topics to group content into categories.'
-weight: 0

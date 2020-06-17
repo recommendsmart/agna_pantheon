@@ -1,0 +1,13 @@
+name: d_content init
+description: 'Create demo content for Droopler.'
+type: module
+core: 8.x
+# version: 8.x-2.0
+dependencies:
+  - paragraphs
+package: Droopler
+
+# Information added by Drupal.org packaging script on 2020-05-05
+version: '8.x-2.0'
+project: 'droopler'
+datestamp: 1588686639

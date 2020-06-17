@@ -1,8 +1,0 @@
-path:
-  - permissions
-plugin: add
-actions:
-  'access comments':
-    value: 'access comments'
-  'post comments':
-    value: 'post comments'

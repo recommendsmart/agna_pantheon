@@ -12,7 +12,7 @@ use Drupal\Tests\Traits\Core\CronRunTrait;
  *
  * @group field
  */
-class ReEnableModuleFieldTest extends BrowserTestBase {
+class reEnableModuleFieldTest extends BrowserTestBase {
 
   use CronRunTrait;
 

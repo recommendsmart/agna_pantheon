@@ -1,7 +1,0 @@
-langcode: en
-status: true
-dependencies: {  }
-name: 'Resource type'
-vid: resource_type
-description: 'For categorizing resources.'
-weight: 0

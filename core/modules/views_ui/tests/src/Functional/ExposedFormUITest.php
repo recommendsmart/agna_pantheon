@@ -21,14 +21,7 @@ class ExposedFormUITest extends UITestBase {
   /**
    * {@inheritdoc}
    */
-  public static $modules = [
-    'node',
-    'views_ui',
-    'block',
-    'taxonomy',
-    'field_ui',
-    'datetime',
-  ];
+  public static $modules = ['node', 'views_ui', 'block', 'taxonomy', 'field_ui', 'datetime'];
 
   /**
    * {@inheritdoc}
@@ -299,7 +292,7 @@ class ExposedFormUITest extends UITestBase {
     $this->drupalPostForm(NULL, $edit, t('Apply'));
     // Check that the view is saved without errors.
     $this->drupalPostForm(NULL, [], t('Save'));
-    $this->assertSession()->statusCodeEquals(200);
+    $this->assertResponse(200);
 
     // Click the Expose filter button.
     $this->drupalPostForm('admin/structure/views/nojs/add-handler/test_exposed_admin_ui/default/filter', ['name[node_field_data.status]' => 1], t('Add and configure filter criteria'));
@@ -320,7 +313,7 @@ class ExposedFormUITest extends UITestBase {
     $this->drupalPostForm(NULL, $edit, t('Apply'));
     // Check that the view is saved without errors.
     $this->drupalPostForm(NULL, [], t('Save'));
-    $this->assertSession()->statusCodeEquals(200);
+    $this->assertResponse(200);
 
     $this->drupalGet('admin/structure/views/nojs/handler/test_exposed_admin_ui/default/filter/status');
     // Assert the same settings defined before still are there.
