@@ -21,14 +21,14 @@ class DefaultContentTest extends BrowserTestBase {
    *
    * @var array
    */
-  public static $modules = array('rest', 'taxonomy', 'hal', 'default_content');
+  public static $modules = ['rest', 'taxonomy', 'hal', 'default_content'];
 
   /**
    * {@inheritdoc}
    */
   protected function setUp() {
     parent::setUp();
-    $this->createContentType(array('type' => 'page'));
+    $this->createContentType(['type' => 'page']);
   }
 
   /**
@@ -38,7 +38,7 @@ class DefaultContentTest extends BrowserTestBase {
     // Login as admin.
     $this->drupalLogin($this->drupalCreateUser(array_keys(\Drupal::moduleHandler()->invokeAll(('permission')))));
     // Enable the module and import the content.
-    \Drupal::service('module_installer')->install(array('default_content_test'), TRUE);
+    \Drupal::service('module_installer')->install(['default_content_test'], TRUE);
     $this->rebuildContainer();
     $node = $this->getNodeByTitle('Imported node');
     $this->assertEquals($node->body->value, 'Crikey it works!');

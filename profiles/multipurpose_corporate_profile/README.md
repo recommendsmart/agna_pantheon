@@ -12,7 +12,6 @@ Thank you for choosing Multipurpose Corporate profile!
 Notes:
 
 - Installation of profile may take some time. If you get the “Maximum execution time...” error, need to increase the max_execution_time parameter in php.ini file.
-- There is the “Photos” block that’s included in the multipurpose corporate profile (take a look at the website footer and sidebar). You can change Instagram ID on “admin/config/services/instagram_block” page.
 - We use Disqus for comments on website. Need to change disqus website shortname on “ admin/config/services/disqus” page.
 
 To install the profile:

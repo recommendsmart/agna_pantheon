@@ -625,8 +625,7 @@
   body.front .view-content,
   body.front .block-title,
   .block-our-amazing-team-block-1 .block-title,
-  .view-header,
-  .copyright-container,
+  .view-header
   .view-main-slider .views-field-nothing,
   #secondary-menu-bar,
   .block-our-mission p {
@@ -679,7 +678,6 @@
   body.front .block-title,
   .block-our-amazing-team-block-1 .block-title,
   .view-header,
-  .copyright-container,
   .view-main-slider .views-field-nothing,
   #secondary-menu-bar,
   .block-our-mission p {

@@ -27,7 +27,7 @@ class DefaultContentScanner {
     $directory_iterator = new \RecursiveDirectoryIterator($directory, $flags);
     $iterator = new \RecursiveIteratorIterator($directory_iterator);
 
-    $files = array();
+    $files = [];
     foreach ($iterator as $fileinfo) {
       /* @var \SplFileInfo $fileinfo */
 

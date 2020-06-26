@@ -21,6 +21,7 @@ use Symfony\Component\Serializer\Serializer;
 
 /**
  * A service for handling import of default content.
+ *
  * @todo throw useful exceptions
  */
 class DefaultContentManager implements DefaultContentManagerInterface {
@@ -88,7 +89,7 @@ class DefaultContentManager implements DefaultContentManagerInterface {
    *
    * @var array
    */
-  protected $vertexes = array();
+  protected $vertexes = [];
 
   /**
    * The graph entries.
@@ -148,11 +149,11 @@ class DefaultContentManager implements DefaultContentManagerInterface {
    * {@inheritdoc}
    */
   public function importContent($module) {
-    $created = array();
+    $created = [];
     $folder = drupal_get_path('module', $module) . "/content";
 
     if (file_exists($folder)) {
-      $file_map = array();
+      $file_map = [];
       foreach ($this->entityManager->getDefinitions() as $entity_type_id => $entity_type) {
         $reflection = new \ReflectionClass($entity_type->getClass());
         // We are only interested in importing content entities.
@@ -176,11 +177,11 @@ class DefaultContentManager implements DefaultContentManagerInterface {
 
           // Throw an exception when this UUID already exists.
           if (isset($file_map[$item_uuid])) {
-            $args = array(
+            $args = [
               '@uuid' => $item_uuid,
               '@first' => $file_map[$item_uuid]->uri,
               '@second' => $file->uri,
-            );
+            ];
             // Reset link domain.
             $this->linkManager->setLinkDomain(FALSE);
             throw new \Exception(SafeMarkup::format('Default content with uuid @uuid exists twice: @first @second', $args));
@@ -214,11 +215,11 @@ class DefaultContentManager implements DefaultContentManagerInterface {
         if (!empty($file_map[$link])) {
           $file = $file_map[$link];
           $entity_type_id = $file->entity_type_id;
-          $resource = $this->resourcePluginManager->getInstance(array('id' => 'entity:' . $entity_type_id));
+          $resource = $this->resourcePluginManager->getInstance(['id' => 'entity:' . $entity_type_id]);
           $definition = $resource->getPluginDefinition();
           $contents = $this->parseFile($file);
           $class = $definition['serialization_class'];
-          $entity = $this->serializer->deserialize($contents, $class, 'hal_json', array('request_method' => 'POST'));
+          $entity = $this->serializer->deserialize($contents, $class, 'hal_json', ['request_method' => 'POST']);
           $entity->enforceIsNew(TRUE);
           $entity->save();
           $created[$entity->uuid()] = $entity;
@@ -321,6 +322,7 @@ class DefaultContentManager implements DefaultContentManagerInterface {
    *   Guard against infinite recursion.
    *
    * @return \Drupal\Core\Entity\EntityInterface[]
+   *   EntityInterface.
    */
   protected function getEntityReferencesRecursive(ContentEntityInterface $entity, $depth = 0) {
     $entity_dependencies = $entity->referencedEntities();
@@ -346,7 +348,7 @@ class DefaultContentManager implements DefaultContentManagerInterface {
   }
 
   /**
-   * Utility to get a default content scanner
+   * Utility to get a default content scanner.
    *
    * @return \Drupal\default_content\DefaultContentScanner
    *   A system listing implementation.
@@ -366,17 +368,29 @@ class DefaultContentManager implements DefaultContentManagerInterface {
   }
 
   /**
-   * Parses content files
+   * Parses content files.
    */
   protected function parseFile($file) {
     return file_get_contents($file->uri);
   }
 
+  /**
+   * Resetting tree.
+   */
   protected function resetTree() {
     $this->graph = [];
-    $this->vertexes = array();
+    $this->vertexes = [];
   }
 
+  /**
+   * Sorting tree.
+   *
+   * @param array $graph
+   *   The graph.
+   *
+   * @return array
+   *   Sorted tree.
+   */
   protected function sortTree(array $graph) {
     $graph_object = new Graph($graph);
     $sorted = $graph_object->searchAndSort();
@@ -397,7 +411,7 @@ class DefaultContentManager implements DefaultContentManagerInterface {
    */
   protected function getVertex($item_link) {
     if (!isset($this->vertexes[$item_link])) {
-      $this->vertexes[$item_link] = (object) array('id' => $item_link);
+      $this->vertexes[$item_link] = (object) ['id' => $item_link];
     }
     return $this->vertexes[$item_link];
   }

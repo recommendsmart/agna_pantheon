@@ -47,6 +47,13 @@ content:
       display_label: true
     weight: 5
     third_party_settings: {  }
+  title:
+    type: string_textfield
+    weight: 0
+    settings:
+      size: 60
+      placeholder: ''
+    third_party_settings: {  }
   uid:
     type: entity_reference_autocomplete
     weight: 2
@@ -55,5 +62,4 @@ content:
       size: 60
       placeholder: ''
     third_party_settings: {  }
-hidden:
-  title: true
+hidden: {  }

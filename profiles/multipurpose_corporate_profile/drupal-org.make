@@ -3,15 +3,15 @@ core = 8.x
 api = 2
 
 ; Modules
-projects[addtoany][version] = "1.11"
+projects[addtoany][version] = "1.12"
 
 projects[config_update][version] = "1.6"
 
 projects[ctools][version] = "3.2"
 
-projects[default_content][version] = "1.0-alpha7"
+projects[default_content][version] = "1.0-alpha8"
 
-projects[disqus][version] = "1.0-rc3"
+projects[disqus][version] = "1.0-rc4"
 
 projects[eform][version] = "1.x-dev"
 
@@ -19,11 +19,9 @@ projects[entityform_block][version] = "1.0-alpha2"
 
 projects[features][version] = "3.8"
 
-projects[file_entity][version] = "2.0-beta6"
+projects[file_entity][version] = "2.0-beta7"
 
-projects[instagram_block][version] = "2.0-beta2"
-
-projects[pathauto][version] = "1.3"
+projects[pathauto][version] = "1.5"
 
 projects[simple_gmap][version] = "1.4"
 
@@ -35,6 +33,8 @@ projects[views_slideshow][version] = "4.6"
 
 ; Themes
 projects[adaptivetheme][version] = "1.0"
+
+projects[multipurpose_corporate_theme][version] = "1.0-beta2"
 
 ; Libraries
 libraries[superfish][directory_name] = "superfish"

@@ -1,12 +1,15 @@
 <?php
+
 /**
  * @file
- * Install, update and uninstall functions for the multipurpose_corporate_profile.
+ * Installing file.
+ *
+ * Install, update and uninstall functions
+ * for the multipurpose_corporate_profile.
  */
 
 use Drupal\user\Entity\User;
 use Drupal\user\RoleInterface;
-use Drupal\shortcut\Entity\Shortcut;
 
 /**
  * Implements hook_install().
@@ -23,41 +26,44 @@ function multipurpose_corporate_profile_install() {
   // Set front page to "node".
   \Drupal::configFactory()->getEditable('system.site')->set('page.front', '/home')->save(TRUE);
 
-
   // Allow visitor account creation with administrative approval.
   $user_settings = \Drupal::configFactory()->getEditable('user.settings');
   $user_settings->set('register', USER_REGISTER_VISITORS_ADMINISTRATIVE_APPROVAL)->save(TRUE);
 
   // Enable default permissions for system roles.
-  user_role_grant_permissions(RoleInterface::ANONYMOUS_ID, array('search content'));
-  user_role_grant_permissions(RoleInterface::AUTHENTICATED_ID, array('search content'));
+  user_role_grant_permissions(RoleInterface::ANONYMOUS_ID, ['search content']);
+  user_role_grant_permissions(RoleInterface::AUTHENTICATED_ID, ['search content']);
 
   // Assign user 1 the "administrator" role.
   $user = User::load(1);
   $user->roles[] = 'administrator';
   $user->save();
 
-  user_role_grant_permissions(RoleInterface::ANONYMOUS_ID, array('access site-wide contact form'));
-  user_role_grant_permissions(RoleInterface::AUTHENTICATED_ID, array('access site-wide contact form'));
+  user_role_grant_permissions(RoleInterface::ANONYMOUS_ID, ['access site-wide contact form']);
+  user_role_grant_permissions(RoleInterface::AUTHENTICATED_ID, ['access site-wide contact form']);
 
   // Allow authenticated users to use shortcuts.
-  user_role_grant_permissions(RoleInterface::AUTHENTICATED_ID, array('access shortcuts'));
+  user_role_grant_permissions(RoleInterface::AUTHENTICATED_ID, ['access shortcuts']);
 
   // Enable the admin theme.
   \Drupal::configFactory()->getEditable('node.settings')->set('use_admin_theme', TRUE)->save(TRUE);
 
-  // Set front page of the site
+  // Set front page of the site.
   \Drupal::configFactory()->getEditable('system.site')->set('page.front', '/home')->save(TRUE);
   multipurpose_corporate_profile_public_files_copy();
   multipurpose_corporate_profile_libraries_files_copy();
+  multipurpose_corporate_profile_theme_templates_files_copy();
   // Enable features and default content modules.
   multipurpose_corporate_profile_install_custom_modules();
   // Setting aliases for nodes.
   multipurpose_corporate_profile_set_aliases();
 }
 
-function multipurpose_corporate_profile_install_custom_modules(){
-  $modules = array();
+/**
+ * Installing custom modules.
+ */
+function multipurpose_corporate_profile_install_custom_modules() {
+  $modules = [];
   if (!Drupal::moduleHandler()->moduleExists('feature_config')) {
     $modules[] = 'feature_config';
   }
@@ -90,6 +96,9 @@ function multipurpose_corporate_profile_install_custom_modules(){
   }
 }
 
+/**
+ * Setting alias.
+ */
 function multipurpose_corporate_profile_set_aliases() {
   $path = \Drupal::service('path.alias_storage')->save('/node/2', '/typography', 'en');
   $path = \Drupal::service('path.alias_storage')->save('/node/3', '/about-us', 'en');
@@ -99,9 +108,7 @@ function multipurpose_corporate_profile_set_aliases() {
 }
 
 /**
- * Our custom task.
- * Copy public files for default theme
- *
+ * Copy public files for default theme.
  */
 function multipurpose_corporate_profile_public_files_copy() {
   $source = 'profiles/multipurpose_corporate_profile/files/';
@@ -109,6 +116,9 @@ function multipurpose_corporate_profile_public_files_copy() {
   multipurpose_corporate_profile_recurse_copy($source, $res);
 }
 
+/**
+ * Copy libraries files for our profile.
+ */
 function multipurpose_corporate_profile_libraries_files_copy() {
   $source = 'profiles/multipurpose_corporate_profile/libraries/';
   $res = 'profiles/multipurpose_corporate_profile/sites/all/libraries/';
@@ -116,12 +126,21 @@ function multipurpose_corporate_profile_libraries_files_copy() {
 }
 
 /**
+ * Copy custom templates into theme.
+ */
+function multipurpose_corporate_profile_theme_templates_files_copy() {
+  $source = 'profiles/multipurpose_corporate_profile/templates/';
+  $res = 'profiles/multipurpose_corporate_profile/themes/multipurpose_corporate_theme/templates/';
+  multipurpose_corporate_profile_recurse_copy($source, $res);
+}
+
+/**
  * Recursive copy.
  *
  * @param string $src
- * - Source folder with files.
+ *   - Source folder with files.
  * @param string $dst
- * - Destination folder.
+ *   - Destination folder.
  */
 function multipurpose_corporate_profile_recurse_copy($src, $dst) {
   $dir = opendir($src);

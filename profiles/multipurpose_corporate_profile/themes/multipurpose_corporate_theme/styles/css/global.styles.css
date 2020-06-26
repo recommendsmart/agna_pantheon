@@ -270,7 +270,6 @@ body.path-frontpage .block__title,
 div.region.header,
 .block-our-amazing-team-block-1 .block__title,
 .view-header,
-.copyright-container,
 .view-main-slider .views-field-nothing,
 #columns,
 #menu-bar nav,
@@ -921,7 +920,6 @@ body.path-frontpage #columns {
 /* =Header END */
 
 /* =Footer BEGIN */
-.copyright,
 .region-tertiary-content {
   background-color: #2b2d2f;
   color: #62676d;
@@ -931,9 +929,6 @@ body.path-frontpage #columns {
 }
 .region-tertiary-content .region-inner {
   padding: 0;
-}
-.copyright {
-  padding: 30px 0;
 }
 .region-tertiary-content .block {
   width: 25%;
@@ -1038,15 +1033,13 @@ h2.block-title{
 #superfish-main-menu li:last-child {
   border-bottom: none;
 }
-#superfish-main-menu a,
-.copyright a {
+#superfish-main-menu a {
   color: #3f9ae8;
   text-decoration: none;
   padding: 0;
   height: auto;
 }
-#superfish-main-menu a:hover,
-.copyright a:hover {
+#superfish-main-menu a:hover {
   color: #fff;
 }
 #superfish-main-menu a {
@@ -1158,15 +1151,20 @@ h2.block-title{
   text-align: center;
   margin-bottom: 40px;
 }
+.view-our-amazing-team .view-content {
+  display: flex;
+  justify-content: space-around;
+}
 .view-our-amazing-team .views-row {
   width: 28.3333%;
   margin: 0 2% 50px;
-  display: inline-block;
+  display: flex;
+  flex-direction: column;
   vertical-align: top;
   text-align: center;
 }
 .view-our-amazing-team .views-field-field-photo {
-  margin-bottom: 30px;
+  margin-bottom: 15px;
 }
 .view-our-amazing-team .views-field-field-photo img {
   display: block;
@@ -1179,6 +1177,9 @@ h2.block-title{
 }
 .view-our-amazing-team .views-field-body {
   margin-bottom: 30px;
+}
+.view-our-amazing-team .views-field-nothing {
+  margin-top: auto;
 }
 .view-our-amazing-team .views-field-nothing a {
   width: 140px;

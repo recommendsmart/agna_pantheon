@@ -79,7 +79,11 @@ class DefaultContentManagerIntegrationTest extends KernelTestBase {
 
     $node_type = NodeType::create(['type' => 'test']);
     $node_type->save();
-    $node = Node::create(['type' => $node_type->id(), 'title' => 'test node', 'uid' => $user->id()]);
+    $node = Node::create([
+      'type' => $node_type->id(),
+      'title' => 'test node',
+      'uid' => $user->id(),
+    ]);
     $node->save();
     // Reload the node to get the proper casted values from the DB.
     $node = Node::load($node->id());
@@ -108,7 +112,8 @@ class DefaultContentManagerIntegrationTest extends KernelTestBase {
    * Tests exportModuleContent().
    */
   public function testModuleExport() {
-    \Drupal::service('module_installer')->install(['node', 'default_content', 'default_content_export_test']);
+    \Drupal::service('module_installer')
+      ->install(['node', 'default_content', 'default_content_export_test']);
     \Drupal::service('router.builder')->rebuild();
     $this->defaultContentManager = \Drupal::service('default_content.manager');
 

@@ -84,8 +84,9 @@ function multipurpose_corporate_theme_library_info_build() {
 }
 
 function multipurpose_corporate_theme_preprocess_page(&$variables) {
-  $variables['logo'] = str_replace('.svg', '.png', $variables['logo']);
-
+  if (isset($variables['logo'])) {
+    $variables['logo'] = str_replace('.svg', '.png', $variables['logo']);
+  }
 }
 function multipurpose_corporate_theme_preprocess_views_view_field(&$variables) {
   $variables['current_path'] = \Drupal::service('path.current')->getPath();

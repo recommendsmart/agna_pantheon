@@ -1,7 +1,0 @@
-langcode: en
-status: true
-dependencies: {  }
-id: comment_node_team_member
-label: 'Team member comment'
-target_entity_type_id: node
-description: null

@@ -9,12 +9,11 @@ dependencies:
 
 # Information added by Drupal.org packaging script on 2018-06-07
 # version: '8.x-1.0-beta6+2-dev'
-# core: '8.x'
+core: '8.x'
 # project: 'multipurpose_corporate_profile'
 # datestamp: 1528358589
 
-# Information added by Drupal.org packaging script on 2019-03-26
-version: '8.x-1.2'
-core: '8.x'
+# Information added by Drupal.org packaging script on 2019-10-28
+version: '8.x-1.2+9-dev'
 project: 'multipurpose_corporate_profile'
-datestamp: 1553590327
+datestamp: 1572253989

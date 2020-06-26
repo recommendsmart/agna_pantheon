@@ -31,19 +31,14 @@ stylesheets-remove:
 libraries-extend:
   quickedit/quickedit:
     - multipurpose_corporate_theme/quickedit
-# version: 8.0.x
+# version: 8.x
 # core: 8.x
 favicon:
   use_default: false
   path: '/themes/multipurpose_corporate_theme/favicon.ico'
-# Information added by Drupal.org packaging script on 2018-06-07
-# version: '8.x-1.0-beta6+2-dev'
-# core: '8.x'
-# project: 'multipurpose_corporate_profile'
-# datestamp: 1528358589
 
-# Information added by Drupal.org packaging script on 2019-03-26
-version: '8.x-1.2'
+# Information added by Drupal.org packaging script on 2019-08-05
+version: '8.x-1.0-beta2'
 core: '8.x'
-project: 'multipurpose_corporate_profile'
-datestamp: 1553590327
+project: 'multipurpose_corporate_theme'
+datestamp: 1564989787
