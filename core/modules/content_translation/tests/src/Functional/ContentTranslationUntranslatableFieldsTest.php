@@ -22,11 +22,6 @@ class ContentTranslationUntranslatableFieldsTest extends ContentTranslationPendi
   /**
    * {@inheritdoc}
    */
-  protected $defaultTheme = 'stark';
-
-  /**
-   * {@inheritdoc}
-   */
   protected function setUp() {
     parent::setUp();
 
@@ -63,7 +58,7 @@ class ContentTranslationUntranslatableFieldsTest extends ContentTranslationPendi
       'label' => 'Untranslatable-but-visible test field',
       'translatable' => FALSE,
     ])->save();
-    \Drupal::service('entity_display.repository')->getFormDisplay($this->entityTypeId, $this->bundle, 'default')
+    entity_get_form_display($this->entityTypeId, $this->bundle, 'default')
       ->setComponent('field_multilingual', [
         'type' => 'test_field_widget_multilingual',
       ])

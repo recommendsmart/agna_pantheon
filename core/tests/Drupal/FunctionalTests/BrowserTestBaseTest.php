@@ -8,7 +8,6 @@ use Drupal\Component\Utility\Html;
 use Drupal\Core\Url;
 use Drupal\Tests\BrowserTestBase;
 use Drupal\Tests\Traits\Core\CronRunTrait;
-use PHPUnit\Framework\ExpectationFailedException;
 
 /**
  * Tests BrowserTestBase functionality.
@@ -25,11 +24,6 @@ class BrowserTestBaseTest extends BrowserTestBase {
    * @var array
    */
   public static $modules = ['test_page_test', 'form_test', 'system_test', 'node'];
-
-  /**
-   * {@inheritdoc}
-   */
-  protected $defaultTheme = 'classy';
 
   /**
    * Tests basic page test.
@@ -146,7 +140,7 @@ class BrowserTestBaseTest extends BrowserTestBase {
 
     // Test drupalPostForm() with no-html response.
     $values = Json::decode($this->drupalPostForm('form_test/form-state-values-clean', [], t('Submit')));
-    $this->assertSame(1000, $values['beer']);
+    $this->assertTrue(1000, $values['beer']);
 
     // Test drupalPostForm() with form by HTML id.
     $this->drupalCreateContentType(['type' => 'page']);
@@ -174,8 +168,7 @@ class BrowserTestBaseTest extends BrowserTestBase {
   }
 
   public function testError() {
-    $this->expectException('\Exception');
-    $this->expectExceptionMessage('User notice: foo');
+    $this->setExpectedException('\Exception', 'User notice: foo');
     $this->drupalGet('test-error');
   }
 
@@ -206,8 +199,7 @@ class BrowserTestBaseTest extends BrowserTestBase {
    */
   public function testInvalidLinkExistsExact() {
     $this->drupalGet('test-pipe-char');
-    $this->expectException(ExpectationException::class);
-    $this->expectExceptionMessage('Link with label foo|bar found');
+    $this->setExpectedException(ExpectationException::class, 'Link with label foo|bar found');
     $this->assertSession()->linkExistsExact('foo|bar');
   }
 
@@ -228,8 +220,7 @@ class BrowserTestBaseTest extends BrowserTestBase {
    */
   public function testInvalidLinkNotExistsExact() {
     $this->drupalGet('test-pipe-char');
-    $this->expectException(ExpectationException::class);
-    $this->expectExceptionMessage('Link with label foo|bar|baz not found');
+    $this->setExpectedException(ExpectationException::class, 'Link with label foo|bar|baz not found');
     $this->assertSession()->linkNotExistsExact('foo|bar|baz');
   }
 
@@ -242,17 +233,9 @@ class BrowserTestBaseTest extends BrowserTestBase {
     $sanitized = Html::escape($dangerous);
     $this->assertNoText($dangerous);
     $this->assertText($sanitized);
-  }
 
-  /**
-   * Tests legacy getRawContent().
-   *
-   * @group legacy
-   * @expectedDeprecation AssertLegacyTrait::getRawContent() is deprecated in drupal:8.2.0 and is removed from drupal:10.0.0. Use $this->getSession()->getPage()->getContent() instead. See http://drupal.org/node/2735045
-   */
-  public function testGetRawContent() {
-    $this->drupalGet('test-encoded');
-    $this->assertSame($this->getSession()->getPage()->getContent(), $this->getRawContent());
+    // Test getRawContent().
+    $this->assertSame($this->getSession()->getPage()->getContent(), $this->getSession()->getPage()->getContent());
   }
 
   /**
@@ -277,7 +260,7 @@ class BrowserTestBaseTest extends BrowserTestBase {
       $this->assertFieldByXPath("//input[@id = 'notexisting']");
       $this->fail('The "notexisting" field was found.');
     }
-    catch (ExpectationFailedException $e) {
+    catch (\PHPUnit_Framework_ExpectationFailedException $e) {
       $this->pass('assertFieldByXPath correctly failed. The "notexisting" field was not found.');
     }
 
@@ -293,7 +276,7 @@ class BrowserTestBaseTest extends BrowserTestBase {
       $this->assertFieldsByValue($this->xpath("//input[@id = 'edit-name']"), 'not the value');
       $this->fail('The "edit-name" field is found with the value "not the value".');
     }
-    catch (ExpectationFailedException $e) {
+    catch (\PHPUnit_Framework_ExpectationFailedException $e) {
       $this->pass('The "edit-name" field is not found with the value "not the value".');
     }
   }
@@ -334,7 +317,7 @@ class BrowserTestBaseTest extends BrowserTestBase {
       $this->assertField('invalid_name_and_id');
       $this->fail('The "invalid_name_and_id" field was found.');
     }
-    catch (ExpectationFailedException $e) {
+    catch (\PHPUnit_Framework_ExpectationFailedException $e) {
       $this->pass('assertField correctly failed. The "invalid_name_and_id" field was not found.');
     }
 
@@ -373,7 +356,7 @@ class BrowserTestBaseTest extends BrowserTestBase {
       $this->assertFieldById('edit-name');
       $this->fail('The "edit-name" field with no value was found.');
     }
-    catch (ExpectationFailedException $e) {
+    catch (\PHPUnit_Framework_ExpectationFailedException $e) {
       $this->pass('The "edit-name" field with no value was not found.');
     }
 
@@ -382,7 +365,7 @@ class BrowserTestBaseTest extends BrowserTestBase {
       $this->assertFieldById('edit-name', 'not the value');
       $this->fail('The "name" field was found, using the wrong value.');
     }
-    catch (ExpectationFailedException $e) {
+    catch (\PHPUnit_Framework_ExpectationFailedException $e) {
       $this->pass('The "name" field was not found, using the wrong value.');
     }
 
@@ -423,7 +406,7 @@ class BrowserTestBaseTest extends BrowserTestBase {
       $this->assertFieldByName('non-existing-name');
       $this->fail('The "non-existing-name" field was found.');
     }
-    catch (ExpectationFailedException $e) {
+    catch (\PHPUnit_Framework_ExpectationFailedException $e) {
       $this->pass('The "non-existing-name" field was not found');
     }
 
@@ -432,7 +415,7 @@ class BrowserTestBaseTest extends BrowserTestBase {
       $this->assertFieldByName('name', 'not the value');
       $this->fail('The "name" field with incorrect value was found.');
     }
-    catch (ExpectationFailedException $e) {
+    catch (\PHPUnit_Framework_ExpectationFailedException $e) {
       $this->pass('assertFieldByName correctly failed. The "name" field with incorrect value was not found.');
     }
 
@@ -487,10 +470,13 @@ class BrowserTestBaseTest extends BrowserTestBase {
       $this->assertOptionSelected('options', 1);
       $this->fail('The select option "1" was selected.');
     }
-    catch (ExpectationFailedException $e) {
+    catch (\PHPUnit_Framework_ExpectationFailedException $e) {
       $this->pass($e->getMessage());
     }
 
+    // Test \Drupal\FunctionalTests\AssertLegacyTrait::getAllOptions.
+    $this->drupalGet('/form-test/select');
+    $this->assertCount(6, $this->getAllOptions($this->cssSelect('select[name="opt_groups"]')[0]));
   }
 
   /**
@@ -506,7 +492,7 @@ class BrowserTestBaseTest extends BrowserTestBase {
       $this->assertFieldById('Save', NULL);
       $this->fail('The field with id of "Save" was found.');
     }
-    catch (ExpectationFailedException $e) {
+    catch (\PHPUnit_Framework_ExpectationFailedException $e) {
       $this->pass($e->getMessage());
     }
 
@@ -658,20 +644,14 @@ class BrowserTestBaseTest extends BrowserTestBase {
    * Tests the assumption that local time is in 'Australia/Sydney'.
    */
   public function testLocalTimeZone() {
-    $expected = 'Australia/Sydney';
     // The 'Australia/Sydney' time zone is set in core/tests/bootstrap.php
-    $this->assertEquals($expected, date_default_timezone_get());
+    $this->assertEquals('Australia/Sydney', date_default_timezone_get());
 
     // The 'Australia/Sydney' time zone is also set in
     // FunctionalTestSetupTrait::initConfig().
     $config_factory = $this->container->get('config.factory');
     $value = $config_factory->get('system.date')->get('timezone.default');
-    $this->assertEquals($expected, $value);
-
-    // Test that users have the correct time zone set.
-    $this->assertEquals($expected, $this->rootUser->getTimeZone());
-    $admin_user = $this->drupalCreateUser(['administer site configuration']);
-    $this->assertEquals($expected, $admin_user->getTimeZone());
+    $this->assertEquals('Australia/Sydney', $value);
   }
 
   /**
@@ -702,86 +682,9 @@ class BrowserTestBaseTest extends BrowserTestBase {
    * Ensures we can't access modules we shouldn't be able to after install.
    */
   public function testProfileModules() {
-    $this->expectException(\InvalidArgumentException::class);
-    $this->expectExceptionMessage('The module demo_umami_content does not exist.');
+    $this->setExpectedException(\InvalidArgumentException::class, 'The module demo_umami_content does not exist.');
     $this->assertFileExists('core/profiles/demo_umami/modules/demo_umami_content/demo_umami_content.info.yml');
     \Drupal::service('extension.list.module')->getPathname('demo_umami_content');
-  }
-
-  /**
-   * Test the protections provided by .htkey.
-   */
-  public function testHtkey() {
-    // Remove the Simpletest private key file so we can test the protection
-    // against requests that forge a valid testing user agent to gain access
-    // to the installer.
-    // @see drupal_valid_test_ua()
-    // Not using File API; a potential error must trigger a PHP warning.
-    $install_url = Url::fromUri('base:core/install.php', ['external' => TRUE, 'absolute' => TRUE])->toString();
-    $this->drupalGet($install_url);
-    $this->assertSession()->statusCodeEquals(200);
-    unlink($this->siteDirectory . '/.htkey');
-    $this->drupalGet($install_url);
-    $this->assertSession()->statusCodeEquals(403);
-  }
-
-  /**
-   * Tests assertEscaped() and assertUnescaped().
-   *
-   * @see \Drupal\Tests\WebAssert::assertNoEscaped()
-   * @see \Drupal\Tests\WebAssert::assertEscaped()
-   */
-  public function testEscapingAssertions() {
-    $assert = $this->assertSession();
-
-    $this->drupalGet('test-escaped-characters');
-    $assert->assertNoEscaped('<div class="escaped">');
-    $assert->responseContains('<div class="escaped">');
-    $assert->assertEscaped('Escaped: <"\'&>');
-
-    $this->drupalGet('test-escaped-script');
-    $assert->assertNoEscaped('<div class="escaped">');
-    $assert->responseContains('<div class="escaped">');
-    $assert->assertEscaped("<script>alert('XSS');alert(\"XSS\");</script>");
-
-    $this->drupalGet('test-unescaped-script');
-    $assert->assertNoEscaped('<div class="unescaped">');
-    $assert->responseContains('<div class="unescaped">');
-    $assert->responseContains("<script>alert('Marked safe');alert(\"Marked safe\");</script>");
-    $assert->assertNoEscaped("<script>alert('Marked safe');alert(\"Marked safe\");</script>");
-  }
-
-  /**
-   * Tests that deprecation headers do not get duplicated.
-   *
-   * @group legacy
-   *
-   * @see \Drupal\Core\Test\HttpClientMiddleware\TestHttpClientMiddleware::__invoke()
-   */
-  public function testDeprecationHeaders() {
-    $this->drupalGet('/test-deprecations');
-
-    $deprecation_messages = [];
-    foreach ($this->getSession()->getResponseHeaders() as $name => $values) {
-      if (preg_match('/^X-Drupal-Assertion-[0-9]+$/', $name, $matches)) {
-        foreach ($values as $value) {
-          // Call \Drupal\simpletest\WebTestBase::error() with the parameters from
-          // the header.
-          $parameters = unserialize(urldecode($value));
-          if (count($parameters) === 3) {
-            if ($parameters[1] === 'User deprecated function') {
-              $deprecation_messages[] = (string) $parameters[0];
-            }
-          }
-        }
-      }
-    }
-
-    $this->assertContains('Test deprecation message', $deprecation_messages);
-    $test_deprecation_messages = array_filter($deprecation_messages, function ($message) {
-      return $message === 'Test deprecation message';
-    });
-    $this->assertCount(1, $test_deprecation_messages);
   }
 
 }

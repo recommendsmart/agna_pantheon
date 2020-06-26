@@ -3,7 +3,6 @@
 namespace Drupal\Tests\node\Traits;
 
 use Drupal\node\Entity\Node;
-use Drupal\user\Entity\User;
 
 /**
  * Provides methods to create node based on default settings.
@@ -40,11 +39,10 @@ trait NodeCreationTrait {
   /**
    * Creates a node based on default settings.
    *
-   * @param array $values
-   *   (optional) An associative array of values for the node, as used in
-   *   creation of entity. Override the defaults by specifying the key and value
+   * @param array $settings
+   *   (optional) An associative array of settings for the node, as used in
+   *   entity_create(). Override the defaults by specifying the key and value
    *   in the array, for example:
-   *
    *   @code
    *     $this->drupalCreateNode(array(
    *       'title' => t('Hello, world!'),
@@ -54,7 +52,7 @@ trait NodeCreationTrait {
    *   The following defaults are provided:
    *   - body: Random string using the default filter format:
    *     @code
-   *       $values['body'][0] = array(
+   *       $settings['body'][0] = array(
    *         'value' => $this->randomMachineName(32),
    *         'format' => filter_default_format(),
    *       );
@@ -66,9 +64,9 @@ trait NodeCreationTrait {
    * @return \Drupal\node\NodeInterface
    *   The created node entity.
    */
-  protected function createNode(array $values = []) {
+  protected function createNode(array $settings = []) {
     // Populate defaults array.
-    $values += [
+    $settings += [
       'body'      => [
         [
           'value' => $this->randomMachineName(32),
@@ -77,24 +75,9 @@ trait NodeCreationTrait {
       ],
       'title'     => $this->randomMachineName(8),
       'type'      => 'page',
+      'uid'       => \Drupal::currentUser()->id(),
     ];
-
-    if (!array_key_exists('uid', $values)) {
-      $user = User::load(\Drupal::currentUser()->id());
-      if ($user) {
-        $values['uid'] = $user->id();
-      }
-      elseif (method_exists($this, 'setUpCurrentUser')) {
-        /** @var \Drupal\user\UserInterface $user */
-        $user = $this->setUpCurrentUser();
-        $values['uid'] = $user->id();
-      }
-      else {
-        $values['uid'] = 0;
-      }
-    }
-
-    $node = Node::create($values);
+    $node = Node::create($settings);
     $node->save();
 
     return $node;

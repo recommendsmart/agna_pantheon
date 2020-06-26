@@ -1,0 +1,89 @@
+{
+    "_links": {
+        "self": {
+            "href": "http:\/\/default\/file\/3?_format=hal_json"
+        },
+        "type": {
+            "href": "http:\/\/drupal.org\/rest\/type\/file\/image"
+        },
+        "http:\/\/drupal.org\/rest\/relation\/file\/image\/uid": [
+            {
+                "href": "http:\/\/default\/users\/admin?_format=hal_json"
+            }
+        ]
+    },
+    "fid": [
+        {
+            "value": "3"
+        }
+    ],
+    "uuid": [
+        {
+            "value": "5e91190c-b950-48bb-b40e-778c008193ff"
+        }
+    ],
+    "langcode": [
+        {
+            "value": "en"
+        }
+    ],
+    "_embedded": {
+        "http:\/\/drupal.org\/rest\/relation\/file\/image\/uid": [
+            {
+                "_links": {
+                    "self": {
+                        "href": "http:\/\/default\/users\/admin?_format=hal_json"
+                    },
+                    "type": {
+                        "href": "http:\/\/drupal.org\/rest\/type\/user\/user"
+                    }
+                },
+                "uuid": [
+                    {
+                        "value": "7edac145-49a7-4eb3-86da-758606161db9"
+                    }
+                ]
+            }
+        ]
+    },
+    "filename": [
+        {
+            "value": "logo.png"
+        }
+    ],
+    "uri": [
+        {
+            "value": "temporary:\/\/logo.png"
+        }
+    ],
+    "filemime": [
+        {
+            "value": "image\/png"
+        }
+    ],
+    "status": [
+        {
+            "value": "0"
+        }
+    ],
+    "created": [
+        {
+            "value": "1464063070"
+        }
+    ],
+    "changed": [
+        {
+            "value": "1464593406"
+        }
+    ],
+    "type": [
+        {
+            "target_id": "image"
+        }
+    ],
+    "data": [
+        {
+            "value": ""
+        }
+    ]
+}

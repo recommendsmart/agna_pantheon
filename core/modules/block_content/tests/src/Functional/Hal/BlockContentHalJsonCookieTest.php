@@ -16,9 +16,4 @@ class BlockContentHalJsonCookieTest extends BlockContentHalJsonAnonTest {
    */
   protected static $auth = 'cookie';
 
-  /**
-   * {@inheritdoc}
-   */
-  protected $defaultTheme = 'stark';
-
 }

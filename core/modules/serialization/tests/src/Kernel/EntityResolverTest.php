@@ -70,7 +70,7 @@ class EntityResolverTest extends NormalizerTestBase {
         ],
         $field_uri => [
           [
-            'href' => $entity->toUrl()->toString(),
+            'href' => $entity->url(),
           ],
         ],
       ],
@@ -78,7 +78,7 @@ class EntityResolverTest extends NormalizerTestBase {
         $field_uri => [
           [
             '_links' => [
-              'self' => $entity->toUrl()->toString(),
+              'self' => $entity->url(),
             ],
             'uuid' => [
               [

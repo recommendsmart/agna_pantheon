@@ -21,9 +21,4 @@ class ItemJsonAnonTest extends ItemResourceTestBase {
    */
   protected static $mimeType = 'application/json';
 
-  /**
-   * {@inheritdoc}
-   */
-  protected $defaultTheme = 'stark';
-
 }

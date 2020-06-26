@@ -28,9 +28,4 @@ class BaseFieldOverrideXmlCookieTest extends BaseFieldOverrideResourceTestBase {
    */
   protected static $auth = 'cookie';
 
-  /**
-   * {@inheritdoc}
-   */
-  protected $defaultTheme = 'stark';
-
 }

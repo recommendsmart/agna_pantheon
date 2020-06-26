@@ -241,6 +241,7 @@ EOD;
   }
 }
 
+
 namespace {
 
   if (!function_exists('drupal_valid_test_ua')) {

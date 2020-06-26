@@ -26,9 +26,4 @@ class TourJsonCookieTest extends TourResourceTestBase {
    */
   protected static $auth = 'cookie';
 
-  /**
-   * {@inheritdoc}
-   */
-  protected $defaultTheme = 'stark';
-
 }

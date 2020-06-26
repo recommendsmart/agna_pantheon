@@ -19,11 +19,6 @@ class MigrateAccessTest extends BrowserTestBase {
   public static $modules = ['migrate_drupal_ui'];
 
   /**
-   * {@inheritdoc}
-   */
-  protected $defaultTheme = 'stark';
-
-  /**
    * Tests that only user 1 can access the migrate UI.
    */
   public function testAccess() {

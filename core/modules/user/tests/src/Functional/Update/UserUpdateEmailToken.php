@@ -27,10 +27,10 @@ class UserUpdateEmailToken extends UpdatePathTestBase {
    */
   public function testEmailToken() {
     $mail = \Drupal::config('user.mail')->get('status_blocked');
-    $this->assertContains('[site:account-name]', $mail['body']);
+    $this->assertTrue(strpos($mail['body'], '[site:account-name]'));
     $this->runUpdates();
     $mail = \Drupal::config('user.mail')->get('status_blocked');
-    $this->assertNotContains('[site:account-name]', $mail['body']);
+    $this->assertFalse(strpos($mail['body'], '[site:account-name]'));
   }
 
 }

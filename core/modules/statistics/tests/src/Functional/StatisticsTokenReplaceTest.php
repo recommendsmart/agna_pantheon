@@ -2,8 +2,6 @@
 
 namespace Drupal\Tests\statistics\Functional;
 
-use Drupal\Component\Render\FormattableMarkup;
-
 /**
  * Generates text using placeholders for dummy content to check statistics token
  * replacement.
@@ -11,11 +9,6 @@ use Drupal\Component\Render\FormattableMarkup;
  * @group statistics
  */
 class StatisticsTokenReplaceTest extends StatisticsTestBase {
-
-  /**
-   * {@inheritdoc}
-   */
-  protected $defaultTheme = 'stark';
 
   /**
    * Creates a node, then tests the statistics tokens generated from it.
@@ -38,24 +31,21 @@ class StatisticsTokenReplaceTest extends StatisticsTestBase {
     $stats_path = $base_url . '/' . drupal_get_path('module', 'statistics') . '/statistics.php';
     $client = \Drupal::httpClient();
     $client->post($stats_path, ['headers' => $headers, 'body' => $post]);
-    /** @var \Drupal\statistics\StatisticsViewsResult $statistics */
-    $statistics = \Drupal::service('statistics.storage.node')->fetchView($node->id());
+    $statistics = statistics_get($node->id());
 
     // Generate and test tokens.
     $tests = [];
     $tests['[node:total-count]'] = 1;
     $tests['[node:day-count]'] = 1;
-    /** @var \Drupal\Core\Datetime\DateFormatterInterface $date_formatter */
-    $date_formatter = $this->container->get('date.formatter');
-    $tests['[node:last-view]'] = $date_formatter->format($statistics->getTimestamp());
-    $tests['[node:last-view:short]'] = $date_formatter->format($statistics->getTimestamp(), 'short');
+    $tests['[node:last-view]'] = format_date($statistics['timestamp']);
+    $tests['[node:last-view:short]'] = format_date($statistics['timestamp'], 'short');
 
     // Test to make sure that we generated something for each token.
     $this->assertFalse(in_array(0, array_map('strlen', $tests)), 'No empty tokens generated.');
 
     foreach ($tests as $input => $expected) {
       $output = \Drupal::token()->replace($input, ['node' => $node], ['langcode' => $language_interface->getId()]);
-      $this->assertEqual($output, $expected, new FormattableMarkup('Statistics token %token replaced.', ['%token' => $input]));
+      $this->assertEqual($output, $expected, format_string('Statistics token %token replaced.', ['%token' => $input]));
     }
   }
 

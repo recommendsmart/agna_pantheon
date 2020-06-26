@@ -21,11 +21,6 @@ class LocaleFileSystemFormTest extends BrowserTestBase {
   /**
    * {@inheritdoc}
    */
-  protected $defaultTheme = 'stark';
-
-  /**
-   * {@inheritdoc}
-   */
   protected function setUp() {
     parent::setUp();
     $account = $this->drupalCreateUser(['administer site configuration']);

@@ -1,0 +1,33 @@
+@import "../site-builder-base";
+//
+// Three Regions 8-2-2
+//
+// First region  : 8 grid columns.
+// Second region : 2 grid columns.
+// Third region  : 2 grid columns.
+// ---------------------------------------------------------------------------
+
+.threecol-8-2-2 {
+
+  // Two active regions.
+  .arc--2 .l-r:last-child {
+    @include span(4 of 12 last);
+  }
+
+  // Three active regions.
+  .arc--3 {
+    .l-r {
+      @include span(2 of 12);
+
+      &:last-child {
+        @include last;
+      }
+    }
+  }
+
+  // Two and tree active regions.
+  .arc--2 .l-r,
+  .arc--3 .l-r:first-child {
+    @include span(8 of 12);
+  }
+}

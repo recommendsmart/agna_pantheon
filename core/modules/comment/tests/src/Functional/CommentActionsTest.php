@@ -20,11 +20,6 @@ class CommentActionsTest extends CommentTestBase {
   public static $modules = ['dblog', 'action'];
 
   /**
-   * {@inheritdoc}
-   */
-  protected $defaultTheme = 'stark';
-
-  /**
    * Tests comment publish and unpublish actions.
    */
   public function testCommentPublishUnpublishActions() {

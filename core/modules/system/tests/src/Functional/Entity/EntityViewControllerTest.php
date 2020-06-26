@@ -20,11 +20,6 @@ class EntityViewControllerTest extends BrowserTestBase {
   public static $modules = ['entity_test'];
 
   /**
-   * {@inheritdoc}
-   */
-  protected $defaultTheme = 'classy';
-
-  /**
    * Array of test entities.
    *
    * @var array
@@ -90,8 +85,7 @@ class EntityViewControllerTest extends BrowserTestBase {
    */
   public function testFieldItemAttributes() {
     // Make sure the test field will be rendered.
-    \Drupal::service('entity_display.repository')
-      ->getViewDisplay('entity_test', 'entity_test')
+    entity_get_display('entity_test', 'entity_test', 'default')
       ->setComponent('field_test_text', ['type' => 'text_default'])
       ->save();
 
@@ -105,7 +99,7 @@ class EntityViewControllerTest extends BrowserTestBase {
     // field item HTML markup.
     $this->drupalGet('entity_test/' . $entity->id());
     $xpath = $this->xpath('//div[@data-field-item-attr="foobar"]/p[text()=:value]', [':value' => $test_value]);
-    $this->assertNotEmpty($xpath, 'The field item attribute has been found in the rendered output of the field.');
+    $this->assertTrue($xpath, 'The field item attribute has been found in the rendered output of the field.');
 
     // Enable the RDF module to ensure that two modules can add attributes to
     // the same field item.
@@ -122,7 +116,7 @@ class EntityViewControllerTest extends BrowserTestBase {
     // are rendered in the field item HTML markup.
     $this->drupalGet('entity_test/' . $entity->id());
     $xpath = $this->xpath('//div[@data-field-item-attr="foobar" and @property="schema:text"]/p[text()=:value]', [':value' => $test_value]);
-    $this->assertNotEmpty($xpath, 'The field item attributes from both modules have been found in the rendered output of the field.');
+    $this->assertTrue($xpath, 'The field item attributes from both modules have been found in the rendered output of the field.');
   }
 
   /**
@@ -149,7 +143,7 @@ class EntityViewControllerTest extends BrowserTestBase {
       'bundle' => $entity_type,
       'name' => $this->randomMachineName(),
     ];
-    return $this->container->get('entity_type.manager')->getStorage($entity_type)->create($data);
+    return $this->container->get('entity.manager')->getStorage($entity_type)->create($data);
   }
 
 }

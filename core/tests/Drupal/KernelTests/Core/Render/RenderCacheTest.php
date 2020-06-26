@@ -3,7 +3,7 @@
 namespace Drupal\KernelTests\Core\Render;
 
 use Drupal\KernelTests\KernelTestBase;
-use Drupal\Tests\user\Traits\UserCreationTrait;
+use Drupal\simpletest\UserCreationTrait;
 
 /**
  * Tests the caching of render items via functional tests.

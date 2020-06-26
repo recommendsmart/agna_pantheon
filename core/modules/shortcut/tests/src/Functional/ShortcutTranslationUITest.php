@@ -2,7 +2,6 @@
 
 namespace Drupal\Tests\shortcut\Functional;
 
-use Drupal\Component\Render\FormattableMarkup;
 use Drupal\Tests\content_translation\Functional\ContentTranslationUITestBase;
 use Drupal\Core\Entity\EntityChangedInterface;
 use Drupal\Core\Language\Language;
@@ -31,11 +30,6 @@ class ShortcutTranslationUITest extends ContentTranslationUITestBase {
     'shortcut',
     'toolbar',
   ];
-
-  /**
-   * {@inheritdoc}
-   */
-  protected $defaultTheme = 'classy';
 
   /**
    * {@inheritdoc}
@@ -84,7 +78,7 @@ class ShortcutTranslationUITest extends ContentTranslationUITestBase {
         $expected_path = \Drupal::urlGenerator()->generateFromRoute('user.page', [], ['language' => $language]);
         $label = $entity->getTranslation($langcode)->label();
         $elements = $this->xpath('//nav[contains(@class, "toolbar-lining")]/ul[@class="toolbar-menu"]/li/a[contains(@href, :href) and normalize-space(text())=:label]', [':href' => $expected_path, ':label' => $label]);
-        $this->assertTrue(!empty($elements), new FormattableMarkup('Translated @language shortcut link @label found.', ['@label' => $label, '@language' => $language->getName()]));
+        $this->assertTrue(!empty($elements), format_string('Translated @language shortcut link @label found.', ['@label' => $label, '@language' => $language->getName()]));
       }
     }
   }
@@ -103,7 +97,7 @@ class ShortcutTranslationUITest extends ContentTranslationUITestBase {
       // We only want to test the title for non-english translations.
       if ($langcode != 'en') {
         $options = ['language' => $languages[$langcode]];
-        $url = $entity->toUrl('edit-form', $options);
+        $url = $entity->urlInfo('edit-form', $options);
         $this->drupalGet($url);
 
         $title = t('@title [%language translation]', [
@@ -126,7 +120,7 @@ class ShortcutTranslationUITest extends ContentTranslationUITestBase {
 
     $this->assertFalse(
       $entity instanceof EntityChangedInterface,
-      new FormattableMarkup('%entity is not implementing EntityChangedInterface.', ['%entity' => $this->entityTypeId])
+      format_string('%entity is not implementing EntityChangedInterface.', ['%entity' => $this->entityTypeId])
     );
   }
 

@@ -70,14 +70,14 @@ services:
     arguments: ['@module_handler']
   views.route_subscriber:
     class: Drupal\views\EventSubscriber\RouteSubscriber
-    arguments: ['@entity_type.manager', '@state']
+    arguments: ['@entity.manager', '@state']
     tags:
       - { name: 'event_subscriber' }
   views.exposed_form_cache:
     class: Drupal\views\ExposedFormCache
   views.entity_schema_subscriber:
     class: Drupal\views\EventSubscriber\ViewsEntitySchemaSubscriber
-    arguments: ['@entity_type.manager', '@logger.channel.default']
+    arguments: ['@entity.manager']
     tags:
       - { name: 'event_subscriber' }
   views.date_sql:

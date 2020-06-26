@@ -16,8 +16,8 @@ interface AccessCheckInterface extends RoutingAccessInterface {
    * @param \Symfony\Component\Routing\Route $route
    *   The route to consider attaching to.
    *
-   * @return bool
-   *   TRUE if this access checker applies to this route.
+   * @return array
+   *   An array of route requirement keys this access checker applies to.
    */
   public function applies(Route $route);
 

@@ -54,6 +54,7 @@ trait AssertViewsCacheTagsTrait {
     $this->pass('Checking render array cache tags.');
     sort($expected_render_array_cache_tags);
     $this->assertEqual($build['#cache']['tags'], $expected_render_array_cache_tags);
+    $this->debugCacheTags($build['#cache']['tags'], $expected_render_array_cache_tags);
 
     if ($views_caching_is_enabled) {
       $this->pass('Checking Views results cache item cache tags.');
@@ -66,14 +67,15 @@ trait AssertViewsCacheTagsTrait {
       $view->build();
       $results_cache_item = \Drupal::cache('data')->get($cache_plugin->generateResultsKey());
       if (is_array($expected_results_cache)) {
-        $this->assertNotEmpty($results_cache_item, 'Results cache item found.');
+        $this->assertTrue($results_cache_item, 'Results cache item found.');
         if ($results_cache_item) {
           sort($expected_results_cache);
           $this->assertEqual($results_cache_item->tags, $expected_results_cache);
+          $this->debugCacheTags($results_cache_item->tags, $expected_results_cache);
         }
       }
       else {
-        $this->assertNull($results_cache_item, 'Results cache item not found.');
+        $this->assertFalse($results_cache_item, 'Results cache item not found.');
       }
 
       $this->pass('Checking Views render cache item cache tags.');
@@ -83,13 +85,14 @@ trait AssertViewsCacheTagsTrait {
 
       $render_cache_item = $render_cache->get($original);
       if ($views_caching_is_enabled === TRUE) {
-        $this->assertNotEmpty($render_cache_item, 'Render cache item found.');
+        $this->assertTrue(!empty($render_cache_item), 'Render cache item found.');
         if ($render_cache_item) {
           $this->assertEqual($render_cache_item['#cache']['tags'], $expected_render_array_cache_tags);
+          $this->debugCacheTags($render_cache_item['#cache']['tags'], $expected_render_array_cache_tags);
         }
       }
       else {
-        $this->assertNull($render_cache_item, 'Render cache item not found.');
+        $this->assertFalse($render_cache_item, 'Render cache item not found.');
       }
     }
 
@@ -136,6 +139,7 @@ trait AssertViewsCacheTagsTrait {
     $this->pass('Checking render array cache tags.');
     sort($expected_render_array_cache_tags);
     $this->assertEqual($build['#cache']['tags'], $expected_render_array_cache_tags);
+    $this->debugCacheTags($build['#cache']['tags'], $expected_render_array_cache_tags);
 
     $this->pass('Checking Views render cache item cache tags.');
     $original['#cache'] += ['contexts' => []];
@@ -146,6 +150,7 @@ trait AssertViewsCacheTagsTrait {
       $this->assertTrue(!empty($render_cache_item), 'Render cache item found.');
       if ($render_cache_item) {
         $this->assertEqual($render_cache_item['#cache']['tags'], $expected_render_array_cache_tags);
+        $this->debugCacheTags($render_cache_item['#cache']['tags'], $expected_render_array_cache_tags);
       }
     }
     else {

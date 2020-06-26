@@ -1,0 +1,45 @@
+langcode: en
+status: true
+dependencies:
+  module:
+    - ctools
+    - entityform_block
+    - system
+    - user
+  theme:
+    - multipurpose_corporate_theme
+id: contact_us_form
+theme: multipurpose_corporate_theme
+region: content
+weight: -15
+provider: null
+plugin: entityform_block
+settings:
+  id: entityform_block
+  label: 'Contact us form'
+  provider: entityform_block
+  label_display: '0'
+  entity_type: eform_submission
+  bundle: contact_us
+visibility:
+  request_path:
+    id: request_path
+    pages: "/contact-us\r\n/node/6"
+    negate: false
+    context_mapping: {  }
+  user_role:
+    id: user_role
+    roles:
+      anonymous: anonymous
+      authenticated: authenticated
+      administrator: administrator
+      administrator1: administrator1
+    negate: false
+    context_mapping:
+      user: '@user.current_user_context:current_user'
+  'entity_bundle:block_content':
+    id: 'entity_bundle:block_content'
+    bundles:
+      basic: basic
+    negate: false
+    context_mapping: {  }

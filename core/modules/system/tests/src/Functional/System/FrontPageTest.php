@@ -20,11 +20,6 @@ class FrontPageTest extends BrowserTestBase {
   public static $modules = ['node', 'system_test', 'views'];
 
   /**
-   * {@inheritdoc}
-   */
-  protected $defaultTheme = 'stark';
-
-  /**
    * The path to a node that is created for testing.
    *
    * @var string

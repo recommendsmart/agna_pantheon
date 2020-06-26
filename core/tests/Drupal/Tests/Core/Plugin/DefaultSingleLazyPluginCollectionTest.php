@@ -2,10 +2,9 @@
 
 namespace Drupal\Tests\Core\Plugin;
 
-use Drupal\Component\Plugin\ConfigurableInterface;
+use Drupal\Component\Plugin\ConfigurablePluginInterface;
 use Drupal\Component\Plugin\PluginBase;
 use Drupal\Core\Plugin\DefaultSingleLazyPluginCollection;
-use PHPUnit\Framework\MockObject\Matcher\InvokedRecorder;
 
 /**
  * @coversDefaultClass \Drupal\Core\Plugin\DefaultSingleLazyPluginCollection
@@ -16,7 +15,7 @@ class DefaultSingleLazyPluginCollectionTest extends LazyPluginCollectionTestBase
   /**
    * {@inheritdoc}
    */
-  protected function setupPluginCollection(InvokedRecorder $create_count = NULL) {
+  protected function setupPluginCollection(\PHPUnit_Framework_MockObject_Matcher_InvokedRecorder $create_count = NULL) {
     $definitions = $this->getPluginDefinitions();
     $this->pluginInstances['apple'] = new ConfigurablePlugin(['id' => 'apple', 'key' => 'value'], 'apple', $definitions['apple']);
     $this->pluginInstances['banana'] = new ConfigurablePlugin(['id' => 'banana', 'key' => 'other_value'], 'banana', $definitions['banana']);
@@ -72,7 +71,7 @@ class DefaultSingleLazyPluginCollectionTest extends LazyPluginCollectionTestBase
 
 }
 
-class ConfigurablePlugin extends PluginBase implements ConfigurableInterface {
+class ConfigurablePlugin extends PluginBase implements ConfigurablePluginInterface {
 
   public function __construct(array $configuration, $plugin_id, $plugin_definition) {
     parent::__construct($configuration, $plugin_id, $plugin_definition);
@@ -90,6 +89,10 @@ class ConfigurablePlugin extends PluginBase implements ConfigurableInterface {
 
   public function setConfiguration(array $configuration) {
     $this->configuration = $configuration;
+  }
+
+  public function calculateDependencies() {
+    return [];
   }
 
 }

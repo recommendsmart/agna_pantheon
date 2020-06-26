@@ -22,15 +22,10 @@ class ConfigEntityListMultilingualTest extends BrowserTestBase {
   /**
    * {@inheritdoc}
    */
-  protected $defaultTheme = 'stark';
-
-  /**
-   * {@inheritdoc}
-   */
   protected function setUp() {
     parent::setUp();
     // Delete the override config_test entity. It is not required by this test.
-    \Drupal::entityTypeManager()->getStorage('config_test')->load('override')->delete();
+    \Drupal::entityManager()->getStorage('config_test')->load('override')->delete();
     ConfigurableLanguage::createFromLangcode('hu')->save();
 
     $this->drupalPlaceBlock('local_actions_block');

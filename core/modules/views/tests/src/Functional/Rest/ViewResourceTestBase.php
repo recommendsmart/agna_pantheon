@@ -10,7 +10,7 @@ abstract class ViewResourceTestBase extends EntityResourceTestBase {
   /**
    * {@inheritdoc}
    */
-  public static $modules = ['views', 'views_ui'];
+  public static $modules = ['views'];
 
   /**
    * {@inheritdoc}
@@ -48,6 +48,7 @@ abstract class ViewResourceTestBase extends EntityResourceTestBase {
     return [
       'base_field' => 'nid',
       'base_table' => 'node',
+      'core' => '8.x',
       'dependencies' => [],
       'description' => '',
       'display' => [
@@ -91,7 +92,6 @@ abstract class ViewResourceTestBase extends EntityResourceTestBase {
    */
   protected function getExpectedCacheContexts() {
     return [
-      'url.site',
       'user.permissions',
     ];
   }

@@ -1,0 +1,62 @@
+name: multipurpose_corporate_profile
+type: profile
+# core: 8.x
+description: Multipurpose Corporate Profile by ADCI Solutions
+distribution:
+   name: Multipurpose Corporate Profile by ADCI Solutions
+dependencies:
+- help
+- block
+- block_content
+- contact
+- comment
+- eform
+- field
+- file
+- file_entity
+- image
+- node
+- path
+- rdf
+- toolbar
+- search
+- shortcut
+- simple_gmap
+- superfish
+- system
+- taxonomy
+- text
+- user
+- views
+- views_ui
+- views_slideshow
+- views_slideshow_cycle
+- config_update
+- ckeditor
+- pathauto
+- ctools
+- token
+- disqus
+- eform
+- entityform_block
+- features
+- features_ui
+- default_content
+- instagram_block
+- owl
+- rest
+themes:
+ - multipurpose_corporate_theme
+ - seven
+
+# Information added by Drupal.org packaging script on 2018-06-07
+# version: '8.x-1.0-beta6+2-dev'
+# core: '8.x'
+# project: 'multipurpose_corporate_profile'
+# datestamp: 1528358589
+
+# Information added by Drupal.org packaging script on 2019-03-26
+version: '8.x-1.2'
+core: '8.x'
+project: 'multipurpose_corporate_profile'
+datestamp: 1553590327

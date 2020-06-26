@@ -2,7 +2,6 @@
 
 namespace Drupal\database_test\Form;
 
-use Drupal\Core\Database\Database;
 use Drupal\Core\Form\FormBase;
 use Drupal\Core\Form\FormStateInterface;
 use Drupal\user\Entity\User;
@@ -30,7 +29,7 @@ class DatabaseTestForm extends FormBase {
       'status' => ['data' => t('Status'), 'field' => 'u.status'],
     ];
 
-    $query = Database::getConnection()->select('users_field_data', 'u');
+    $query = db_select('users_field_data', 'u');
     $query->condition('u.uid', 0, '<>');
     $query->condition('u.default_langcode', 1);
 
@@ -53,8 +52,8 @@ class DatabaseTestForm extends FormBase {
 
     foreach (User::loadMultiple($uids) as $account) {
       $options[$account->id()] = [
-        'title' => ['data' => ['#title' => $account->getAccountName()]],
-        'username' => $account->getAccountName(),
+        'title' => ['data' => ['#title' => $account->getUsername()]],
+        'username' => $account->getUsername(),
         'status' => $account->isActive() ? t('active') : t('blocked'),
       ];
     }

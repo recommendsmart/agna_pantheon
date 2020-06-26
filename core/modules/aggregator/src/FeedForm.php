@@ -4,7 +4,6 @@ namespace Drupal\aggregator;
 
 use Drupal\Core\Entity\ContentEntityForm;
 use Drupal\Core\Form\FormStateInterface;
-use Drupal\Core\Link;
 use Drupal\Core\Url;
 
 /**
@@ -21,13 +20,13 @@ class FeedForm extends ContentEntityForm {
     $feed = $this->entity;
     $status = $feed->save();
     $label = $feed->label();
-    $view_link = $feed->toLink($label, 'canonical')->toString();
+    $view_link = $feed->link($label, 'canonical');
     if ($status == SAVED_UPDATED) {
       $this->messenger()->addStatus($this->t('The feed %feed has been updated.', ['%feed' => $view_link]));
-      $form_state->setRedirectUrl($feed->toUrl('canonical'));
+      $form_state->setRedirectUrl($feed->urlInfo('canonical'));
     }
     else {
-      $this->logger('aggregator')->notice('Feed %feed added.', ['%feed' => $feed->label(), 'link' => Link::fromTextAndUrl($this->t('View'), new Url('aggregator.admin_overview'))->toString()]);
+      $this->logger('aggregator')->notice('Feed %feed added.', ['%feed' => $feed->label(), 'link' => $this->l($this->t('View'), new Url('aggregator.admin_overview'))]);
       $this->messenger()->addStatus($this->t('The feed %feed has been added.', ['%feed' => $view_link]));
     }
   }

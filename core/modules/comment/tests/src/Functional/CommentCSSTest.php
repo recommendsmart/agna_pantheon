@@ -17,11 +17,6 @@ class CommentCSSTest extends CommentTestBase {
 
   use GeneratePermutationsTrait;
 
-  /**
-   * {@inheritdoc}
-   */
-  protected $defaultTheme = 'classy';
-
   protected function setUp() {
     parent::setUp();
 
@@ -95,19 +90,19 @@ class CommentCSSTest extends CommentTestBase {
         // Verify the by-anonymous class.
         $comments = $this->xpath('//*[contains(@class, "comment") and contains(@class, "by-anonymous")]');
         if ($case['comment_uid'] == 0) {
-          $this->assertCount(1, $comments, 'by-anonymous class found.');
+          $this->assertTrue(count($comments) == 1, 'by-anonymous class found.');
         }
         else {
-          $this->assertCount(0, $comments, 'by-anonymous class not found.');
+          $this->assertFalse(count($comments), 'by-anonymous class not found.');
         }
 
         // Verify the by-node-author class.
         $comments = $this->xpath('//*[contains(@class, "comment") and contains(@class, "by-node-author")]');
         if ($case['comment_uid'] > 0 && $case['comment_uid'] == $case['node_uid']) {
-          $this->assertCount(1, $comments, 'by-node-author class found.');
+          $this->assertTrue(count($comments) == 1, 'by-node-author class found.');
         }
         else {
-          $this->assertCount(0, $comments, 'by-node-author class not found.');
+          $this->assertFalse(count($comments), 'by-node-author class not found.');
         }
 
         // Verify the data-comment-user-id attribute, which is used by the
@@ -121,10 +116,10 @@ class CommentCSSTest extends CommentTestBase {
       // Verify the unpublished class.
       $comments = $this->xpath('//*[contains(@class, "comment") and contains(@class, "unpublished")]');
       if ($case['comment_status'] == CommentInterface::NOT_PUBLISHED && $case['user'] == 'admin') {
-        $this->assertCount(1, $comments, 'unpublished class found.');
+        $this->assertTrue(count($comments) == 1, 'unpublished class found.');
       }
       else {
-        $this->assertCount(0, $comments, 'unpublished class not found.');
+        $this->assertFalse(count($comments), 'unpublished class not found.');
       }
 
       // Verify the data-comment-timestamp attribute, which is used by the

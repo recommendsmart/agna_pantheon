@@ -10,11 +10,6 @@ namespace Drupal\Tests\content_moderation\Functional;
 class ModerationStateNodeTypeTest extends ModerationStateTestBase {
 
   /**
-   * {@inheritdoc}
-   */
-  protected $defaultTheme = 'stark';
-
-  /**
    * A node type without moderation state disabled.
    *
    * @covers \Drupal\content_moderation\EntityTypeInfo::formAlter

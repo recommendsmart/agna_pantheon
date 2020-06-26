@@ -23,9 +23,4 @@ class FieldStorageConfigXmlAnonTest extends FieldStorageConfigResourceTestBase {
    */
   protected static $mimeType = 'text/xml; charset=UTF-8';
 
-  /**
-   * {@inheritdoc}
-   */
-  protected $defaultTheme = 'stark';
-
 }

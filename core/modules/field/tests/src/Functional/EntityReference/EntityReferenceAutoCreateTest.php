@@ -22,11 +22,6 @@ class EntityReferenceAutoCreateTest extends BrowserTestBase {
   public static $modules = ['node', 'taxonomy'];
 
   /**
-   * {@inheritdoc}
-   */
-  protected $defaultTheme = 'stark';
-
-  /**
    * The name of a content type that will reference $referencedType.
    *
    * @var string
@@ -80,13 +75,10 @@ class EntityReferenceAutoCreateTest extends BrowserTestBase {
       ],
     ])->save();
 
-    /** @var \Drupal\Core\Entity\EntityDisplayRepositoryInterface $display_repository */
-    $display_repository = \Drupal::service('entity_display.repository');
-
-    $display_repository->getViewDisplay('node', $referencing->id())
+    entity_get_display('node', $referencing->id(), 'default')
       ->setComponent('test_field')
       ->save();
-    $display_repository->getFormDisplay('node', $referencing->id(), 'default')
+    entity_get_form_display('node', $referencing->id(), 'default')
       ->setComponent('test_field', [
         'type' => 'entity_reference_autocomplete',
       ])
@@ -114,7 +106,7 @@ class EntityReferenceAutoCreateTest extends BrowserTestBase {
 
     $query = clone $base_query;
     $result = $query->execute();
-    $this->assertEmpty($result, 'Referenced node does not exist yet.');
+    $this->assertFalse($result, 'Referenced node does not exist yet.');
 
     $edit = [
       'title[0][value]' => $this->randomMachineName(),
@@ -125,7 +117,7 @@ class EntityReferenceAutoCreateTest extends BrowserTestBase {
     // Assert referenced node was created.
     $query = clone $base_query;
     $result = $query->execute();
-    $this->assertNotEmpty($result, 'Referenced node was created.');
+    $this->assertTrue($result, 'Referenced node was created.');
     $referenced_nid = key($result);
     $referenced_node = Node::load($referenced_nid);
 
@@ -174,8 +166,7 @@ class EntityReferenceAutoCreateTest extends BrowserTestBase {
     ];
     $this->createEntityReferenceField('node', $this->referencingType, $field_name, $this->randomString(), 'taxonomy_term', 'default', $handler_settings);
     /** @var \Drupal\Core\Entity\Display\EntityFormDisplayInterface $fd */
-    \Drupal::service('entity_display.repository')
-      ->getFormDisplay('node', $this->referencingType)
+    entity_get_form_display('node', $this->referencingType, 'default')
       ->setComponent($field_name, ['type' => 'entity_reference_autocomplete'])
       ->save();
 

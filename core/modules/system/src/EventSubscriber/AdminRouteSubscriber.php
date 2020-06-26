@@ -17,8 +17,7 @@ class AdminRouteSubscriber extends RouteSubscriberBase {
    */
   protected function alterRoutes(RouteCollection $collection) {
     foreach ($collection->all() as $route) {
-      $path = $route->getPath();
-      if (($path == '/admin' || strpos($path, '/admin/') === 0) && !$route->hasOption('_admin_route') && static::isHtmlRoute($route)) {
+      if (strpos($route->getPath(), '/admin') === 0 && !$route->hasOption('_admin_route') && static::isHtmlRoute($route)) {
         $route->setOption('_admin_route', TRUE);
       }
     }

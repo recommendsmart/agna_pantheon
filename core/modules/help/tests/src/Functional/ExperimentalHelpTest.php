@@ -22,11 +22,6 @@ class ExperimentalHelpTest extends BrowserTestBase {
   public static $modules = ['help', 'experimental_module_test', 'help_page_test'];
 
   /**
-   * {@inheritdoc}
-   */
-  protected $defaultTheme = 'stark';
-
-  /**
    * The admin user.
    *
    * @var \Drupal\user\UserInterface

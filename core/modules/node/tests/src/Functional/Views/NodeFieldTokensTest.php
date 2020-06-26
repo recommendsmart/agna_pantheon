@@ -21,11 +21,6 @@ class NodeFieldTokensTest extends NodeTestBase {
   public static $testViews = ['test_node_tokens'];
 
   /**
-   * {@inheritdoc}
-   */
-  protected $defaultTheme = 'stark';
-
-  /**
    * Tests token replacement for Views tokens supplied by the Node module.
    */
   public function testViewsTokenReplacement() {

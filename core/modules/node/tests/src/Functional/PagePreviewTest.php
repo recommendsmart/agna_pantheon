@@ -35,11 +35,6 @@ class PagePreviewTest extends NodeTestBase {
   public static $modules = ['node', 'taxonomy', 'comment', 'image', 'file', 'text', 'node_test', 'menu_ui'];
 
   /**
-   * {@inheritdoc}
-   */
-  protected $defaultTheme = 'classy';
-
-  /**
    * The name of the created field.
    *
    * @var string
@@ -105,35 +100,32 @@ class PagePreviewTest extends NodeTestBase {
     ];
     $this->createEntityReferenceField('node', 'page', $this->fieldName, 'Tags', 'taxonomy_term', 'default', $handler_settings, FieldStorageDefinitionInterface::CARDINALITY_UNLIMITED);
 
-    /** @var \Drupal\Core\Entity\EntityDisplayRepositoryInterface $display_repository */
-    $display_repository = \Drupal::service('entity_display.repository');
-
-    $display_repository->getFormDisplay('node', 'page')
+    entity_get_form_display('node', 'page', 'default')
       ->setComponent($this->fieldName, [
         'type' => 'entity_reference_autocomplete_tags',
       ])
       ->save();
 
     // Show on default display and teaser.
-    $display_repository->getViewDisplay('node', 'page')
+    entity_get_display('node', 'page', 'default')
       ->setComponent($this->fieldName, [
         'type' => 'entity_reference_label',
       ])
       ->save();
-    $display_repository->getViewDisplay('node', 'page', 'teaser')
+    entity_get_display('node', 'page', 'teaser')
       ->setComponent($this->fieldName, [
         'type' => 'entity_reference_label',
       ])
       ->save();
 
-    $display_repository->getFormDisplay('node', 'page')
+    entity_get_form_display('node', 'page', 'default')
       ->setComponent('field_image', [
         'type' => 'image_image',
         'settings' => [],
       ])
       ->save();
 
-    $display_repository->getViewDisplay('node', 'page')
+    entity_get_display('node', 'page', 'default')
       ->setComponent('field_image')
       ->save();
 
@@ -153,13 +145,13 @@ class PagePreviewTest extends NodeTestBase {
       'bundle' => 'page',
     ])->save();
 
-    $display_repository->getFormDisplay('node', 'page')
+    entity_get_form_display('node', 'page', 'default')
       ->setComponent('field_test_multi', [
         'type' => 'text_textfield',
       ])
       ->save();
 
-    $display_repository->getViewDisplay('node', 'page')
+    entity_get_display('node', 'page', 'default')
       ->setComponent('field_test_multi', [
         'type' => 'string',
       ])
@@ -207,8 +199,7 @@ class PagePreviewTest extends NodeTestBase {
     $uuid = array_pop($paths);
 
     // Switch view mode. We'll remove the body from the teaser view mode.
-    \Drupal::service('entity_display.repository')
-      ->getViewDisplay('node', 'page', 'teaser')
+    entity_get_display('node', 'page', 'teaser')
       ->removeComponent('body')
       ->save();
 
@@ -482,7 +473,7 @@ class PagePreviewTest extends NodeTestBase {
 
     $edit2 = [$title_key => 'Another page title'];
     $this->drupalPostForm('node/' . $node->id() . '/edit', $edit2, t('Preview'));
-    $this->assertUrl(Url::fromRoute('entity.node.preview', ['node_preview' => $node->uuid(), 'view_mode_id' => 'full'], ['absolute' => TRUE])->toString());
+    $this->assertUrl(\Drupal::url('entity.node.preview', ['node_preview' => $node->uuid(), 'view_mode_id' => 'full'], ['absolute' => TRUE]));
     $this->assertText($edit2[$title_key]);
   }
 

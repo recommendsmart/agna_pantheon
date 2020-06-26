@@ -21,11 +21,6 @@ class EntityTestBundleXmlBasicAuthTest extends EntityTestBundleResourceTestBase 
   /**
    * {@inheritdoc}
    */
-  protected $defaultTheme = 'stark';
-
-  /**
-   * {@inheritdoc}
-   */
   protected static $format = 'xml';
 
   /**

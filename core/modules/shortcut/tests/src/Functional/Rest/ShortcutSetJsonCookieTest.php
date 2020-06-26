@@ -26,9 +26,4 @@ class ShortcutSetJsonCookieTest extends ShortcutSetResourceTestBase {
    */
   protected static $auth = 'cookie';
 
-  /**
-   * {@inheritdoc}
-   */
-  protected $defaultTheme = 'stark';
-
 }

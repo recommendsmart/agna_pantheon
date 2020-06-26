@@ -18,11 +18,6 @@ class CommentFieldFilterTest extends CommentTestBase {
   public static $modules = ['language'];
 
   /**
-   * {@inheritdoc}
-   */
-  protected $defaultTheme = 'stark';
-
-  /**
    * Views used by this test.
    *
    * @var array

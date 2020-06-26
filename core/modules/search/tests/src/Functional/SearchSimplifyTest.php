@@ -17,11 +17,6 @@ class SearchSimplifyTest extends BrowserTestBase {
   protected static $modules = ['search'];
 
   /**
-   * {@inheritdoc}
-   */
-  protected $defaultTheme = 'stark';
-
-  /**
    * Tests that all Unicode characters simplify correctly.
    */
   public function testSearchSimplifyUnicode() {

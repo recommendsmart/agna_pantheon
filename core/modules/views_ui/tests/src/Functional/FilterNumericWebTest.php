@@ -21,11 +21,6 @@ class FilterNumericWebTest extends UITestBase {
   public static $testViews = ['test_view'];
 
   /**
-   * {@inheritdoc}
-   */
-  protected $defaultTheme = 'stark';
-
-  /**
    * Tests the filter numeric UI.
    */
   public function testFilterNumericUI() {

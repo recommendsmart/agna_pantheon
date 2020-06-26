@@ -5,9 +5,7 @@ namespace Drupal\image\Controller;
 use Drupal\Core\Cache\CacheableJsonResponse;
 use Drupal\Core\Controller\ControllerBase;
 use Drupal\Core\Entity\ContentEntityInterface;
-use Drupal\Core\Entity\EntityDisplayRepositoryInterface;
 use Drupal\Core\Entity\EntityInterface;
-use Drupal\Core\File\FileSystemInterface;
 use Drupal\Core\Image\ImageFactory;
 use Drupal\Core\Render\Element\StatusMessages;
 use Drupal\Core\Render\RendererInterface;
@@ -44,20 +42,6 @@ class QuickEditImageController extends ControllerBase {
   protected $imageFactory;
 
   /**
-   * The entity display repository service.
-   *
-   * @var \Drupal\Core\Entity\EntityDisplayRepositoryInterface
-   */
-  protected $entityDisplayRepository;
-
-  /**
-   * The file system.
-   *
-   * @var \Drupal\Core\File\FileSystemInterface
-   */
-  protected $fileSystem;
-
-  /**
    * Constructs a new QuickEditImageController.
    *
    * @param \Drupal\Core\Render\RendererInterface $renderer
@@ -66,25 +50,11 @@ class QuickEditImageController extends ControllerBase {
    *   The image factory.
    * @param \Drupal\Core\TempStore\PrivateTempStoreFactory $temp_store_factory
    *   The tempstore factory.
-   * @param \Drupal\Core\Entity\EntityDisplayRepositoryInterface $entity_display_repository
-   *   The entity display repository service.
-   * @param \Drupal\Core\File\FileSystemInterface $file_system
-   *   The file system.
    */
-  public function __construct(RendererInterface $renderer, ImageFactory $image_factory, PrivateTempStoreFactory $temp_store_factory, EntityDisplayRepositoryInterface $entity_display_repository = NULL, FileSystemInterface $file_system = NULL) {
+  public function __construct(RendererInterface $renderer, ImageFactory $image_factory, PrivateTempStoreFactory $temp_store_factory) {
     $this->renderer = $renderer;
     $this->imageFactory = $image_factory;
     $this->tempStore = $temp_store_factory->get('quickedit');
-    if (!$entity_display_repository) {
-      @trigger_error('The entity_display.repository service must be passed to QuickEditImageController::__construct(), it is required before Drupal 9.0.0. See https://www.drupal.org/node/2549139.', E_USER_DEPRECATED);
-      $entity_display_repository = \Drupal::service('entity_display.repository');
-    }
-    $this->entityDisplayRepository = $entity_display_repository;
-    if (!$file_system) {
-      @trigger_error('The file_system service must be passed to QuickEditImageController::__construct(), it is required before Drupal 9.0.0. See https://www.drupal.org/node/3006851.', E_USER_DEPRECATED);
-      $file_system = \Drupal::service('file_system');
-    }
-    $this->fileSystem = $file_system;
   }
 
   /**
@@ -94,9 +64,7 @@ class QuickEditImageController extends ControllerBase {
     return new static(
       $container->get('renderer'),
       $container->get('image.factory'),
-      $container->get('tempstore.private'),
-      $container->get('entity_display.repository'),
-      $container->get('file_system')
+      $container->get('tempstore.private')
     );
   }
 
@@ -127,7 +95,7 @@ class QuickEditImageController extends ControllerBase {
     }
 
     // Create the destination directory if it does not already exist.
-    if (isset($destination) && !$this->fileSystem->prepareDirectory($destination, FileSystemInterface::CREATE_DIRECTORY)) {
+    if (isset($destination) && !file_prepare_directory($destination, FILE_CREATE_DIRECTORY)) {
       return new JsonResponse(['main_error' => $this->t('The destination directory could not be created.'), 'errors' => '']);
     }
 
@@ -147,7 +115,7 @@ class QuickEditImageController extends ControllerBase {
       $entity->$field_name->setValue($value);
 
       // Render the new image using the correct formatter settings.
-      $entity_view_mode_ids = array_keys($this->entityDisplayRepository->getViewModes($entity->getEntityTypeId()));
+      $entity_view_mode_ids = array_keys($this->entityManager()->getViewModes($entity->getEntityTypeId()));
       if (in_array($view_mode_id, $entity_view_mode_ids, TRUE)) {
         $output = $entity->$field_name->view($view_mode_id);
       }

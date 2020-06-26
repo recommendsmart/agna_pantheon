@@ -20,11 +20,6 @@ class StyleSummaryTest extends ViewTestBase {
   /**
    * {@inheritdoc}
    */
-  protected $defaultTheme = 'classy';
-
-  /**
-   * {@inheritdoc}
-   */
   public static $testViews = ['test_summary'];
 
   /**

@@ -7,7 +7,6 @@ use Drupal\node\Entity\Node;
 use Drupal\file\Entity\File;
 use Drupal\responsive_image\Plugin\Field\FieldFormatter\ResponsiveImageFormatter;
 use Drupal\responsive_image\Entity\ResponsiveImageStyle;
-use Drupal\responsive_image\ResponsiveImageStyleInterface;
 use Drupal\Tests\image\Functional\ImageFieldTestBase;
 use Drupal\Tests\TestFileCreationTrait;
 use Drupal\user\RoleInterface;
@@ -20,11 +19,6 @@ use Drupal\user\RoleInterface;
 class ResponsiveImageFieldDisplayTest extends ImageFieldTestBase {
 
   use TestFileCreationTrait;
-
-  /**
-   * {@inheritdoc}
-   */
-  protected $defaultTheme = 'stark';
 
   protected $dumpHeaders = TRUE;
 
@@ -129,7 +123,7 @@ class ResponsiveImageFieldDisplayTest extends ImageFieldTestBase {
         // Test the output of an empty image.
         ->addImageStyleMapping('responsive_image_test_module.mobile', '1x', [
           'image_mapping_type' => 'image_style',
-          'image_mapping' => ResponsiveImageStyleInterface::EMPTY_IMAGE,
+          'image_mapping' => RESPONSIVE_IMAGE_EMPTY_IMAGE,
         ])
         // Test the output with a 1.5x multiplier.
         ->addImageStyleMapping('responsive_image_test_module.mobile', '1.5x', [
@@ -155,7 +149,7 @@ class ResponsiveImageFieldDisplayTest extends ImageFieldTestBase {
         // Test the output of the original image.
         ->addImageStyleMapping('responsive_image_test_module.wide', '3x', [
           'image_mapping_type' => 'image_style',
-          'image_mapping' => ResponsiveImageStyleInterface::ORIGINAL_IMAGE,
+          'image_mapping' => RESPONSIVE_IMAGE_ORIGINAL_IMAGE,
         ])
         ->save();
     }
@@ -176,7 +170,7 @@ class ResponsiveImageFieldDisplayTest extends ImageFieldTestBase {
   protected function doTestResponsiveImageFieldFormatters($scheme, $empty_styles = FALSE) {
     /** @var \Drupal\Core\Render\RendererInterface $renderer */
     $renderer = $this->container->get('renderer');
-    $node_storage = $this->container->get('entity_type.manager')->getStorage('node');
+    $node_storage = $this->container->get('entity.manager')->getStorage('node');
     $field_name = mb_strtolower($this->randomMachineName());
     $this->createImageField($field_name, 'article', ['uri_scheme' => $scheme]);
     // Create a new node with an image attached. Make sure we use a large image
@@ -207,7 +201,7 @@ class ResponsiveImageFieldDisplayTest extends ImageFieldTestBase {
       'type' => 'responsive_image_test',
       'settings' => ResponsiveImageFormatter::defaultSettings(),
     ];
-    $display = $this->container->get('entity_type.manager')
+    $display = $this->container->get('entity.manager')
       ->getStorage('entity_view_display')
       ->load('node.article.default');
     if (!$display) {
@@ -217,7 +211,7 @@ class ResponsiveImageFieldDisplayTest extends ImageFieldTestBase {
         'mode' => 'default',
         'status' => TRUE,
       ];
-      $display = $this->container->get('entity_type.manager')->getStorage('entity_view_display')->create($values);
+      $display = $this->container->get('entity.manager')->getStorage('entity_view_display')->create($values);
     }
     $display->setComponent($field_name, $display_options)->save();
 
@@ -231,9 +225,7 @@ class ResponsiveImageFieldDisplayTest extends ImageFieldTestBase {
         'responsive_image_style' => 'style_one',
       ],
     ];
-    /** @var \Drupal\Core\Entity\EntityDisplayRepositoryInterface $display_repository */
-    $display_repository = \Drupal::service('entity_display.repository');
-    $display = $display_repository->getViewDisplay('node', 'article');
+    $display = entity_get_display('node', 'article', 'default');
     $display->setComponent($field_name, $display_options)
       ->save();
 
@@ -247,7 +239,7 @@ class ResponsiveImageFieldDisplayTest extends ImageFieldTestBase {
         'responsive_image_style' => 'style_one',
       ],
     ];
-    $display = $display_repository->getViewDisplay('node', 'article');
+    $display = entity_get_display('node', 'article', 'default');
     $display->setComponent($field_name, $display_options)
       ->save();
 
@@ -366,7 +358,7 @@ class ResponsiveImageFieldDisplayTest extends ImageFieldTestBase {
       // Test the output of an empty media query.
       ->addImageStyleMapping('responsive_image_test_module.empty', '1x', [
         'image_mapping_type' => 'image_style',
-        'image_mapping' => ResponsiveImageStyleInterface::EMPTY_IMAGE,
+        'image_mapping' => RESPONSIVE_IMAGE_EMPTY_IMAGE,
       ])
       // Test the output with a 1.5x multiplier.
       ->addImageStyleMapping('responsive_image_test_module.mobile', '1x', [
@@ -374,7 +366,7 @@ class ResponsiveImageFieldDisplayTest extends ImageFieldTestBase {
         'image_mapping' => 'thumbnail',
       ])
       ->save();
-    $node_storage = $this->container->get('entity_type.manager')->getStorage('node');
+    $node_storage = $this->container->get('entity.manager')->getStorage('node');
     $field_name = mb_strtolower($this->randomMachineName());
     $this->createImageField($field_name, 'article', ['uri_scheme' => 'public']);
     // Create a new node with an image attached.
@@ -390,8 +382,7 @@ class ResponsiveImageFieldDisplayTest extends ImageFieldTestBase {
         'responsive_image_style' => 'style_one',
       ],
     ];
-    $display = \Drupal::service('entity_display.repository')
-      ->getViewDisplay('node', 'article');
+    $display = entity_get_display('node', 'article', 'default');
     $display->setComponent($field_name, $display_options)
       ->save();
 
@@ -423,7 +414,7 @@ class ResponsiveImageFieldDisplayTest extends ImageFieldTestBase {
           'image_mapping' => 'large',
         ])
       ->save();
-    $node_storage = $this->container->get('entity_type.manager')->getStorage('node');
+    $node_storage = $this->container->get('entity.manager')->getStorage('node');
     $field_name = mb_strtolower($this->randomMachineName());
     $this->createImageField($field_name, 'article', ['uri_scheme' => 'public']);
     // Create a new node with an image attached.
@@ -439,8 +430,7 @@ class ResponsiveImageFieldDisplayTest extends ImageFieldTestBase {
         'responsive_image_style' => 'style_one',
       ],
     ];
-    $display = \Drupal::service('entity_display.repository')
-      ->getViewDisplay('node', 'article');
+    $display = entity_get_display('node', 'article', 'default');
     $display->setComponent($field_name, $display_options)
       ->save();
 
@@ -468,9 +458,6 @@ class ResponsiveImageFieldDisplayTest extends ImageFieldTestBase {
     // Create a new node with an image attached.
     $test_image = current($this->getTestFiles('image'));
 
-    /** @var \Drupal\Core\Entity\EntityDisplayRepositoryInterface $display_repository */
-    $display_repository = \Drupal::service('entity_display.repository');
-
     // Test the image linked to file formatter.
     $display_options = [
       'type' => 'responsive_image',
@@ -479,7 +466,7 @@ class ResponsiveImageFieldDisplayTest extends ImageFieldTestBase {
         'responsive_image_style' => 'style_one',
       ],
     ];
-    $display_repository->getViewDisplay('node', 'article')
+    entity_get_display('node', 'article', 'default')
       ->setComponent($field_name, $display_options)
       ->save();
     // Ensure that preview works.
@@ -489,7 +476,7 @@ class ResponsiveImageFieldDisplayTest extends ImageFieldTestBase {
     $this->assertPattern('/picture/');
 
     $nid = $this->uploadNodeImage($test_image, $field_name, 'article');
-    $this->container->get('entity_type.manager')->getStorage('node')->resetCache([$nid]);
+    $this->container->get('entity.manager')->getStorage('node')->resetCache([$nid]);
     $node = Node::load($nid);
 
     // Use the responsive image formatter linked to file formatter.
@@ -500,7 +487,7 @@ class ResponsiveImageFieldDisplayTest extends ImageFieldTestBase {
         'responsive_image_style' => 'style_one',
       ],
     ];
-    $display_repository->getViewDisplay('node', 'article')
+    entity_get_display('node', 'article', 'default')
       ->setComponent($field_name, $display_options)
       ->save();
 
@@ -519,7 +506,7 @@ class ResponsiveImageFieldDisplayTest extends ImageFieldTestBase {
 
       case 'content':
         // Make sure the link to the node is present.
-        $this->assertPattern('/<a(.*?)href="' . preg_quote($node->toUrl()->toString(), '/') . '"(.*?)>\s*<picture/');
+        $this->assertPattern('/<a(.*?)href="' . preg_quote($node->url(), '/') . '"(.*?)>\s*<picture/');
         break;
     }
   }

@@ -1,0 +1,182 @@
+{
+    "_links": {
+        "self": {
+            "href": "http:\/\/default\/content\/donatella-versace?_format=hal_json"
+        },
+        "type": {
+            "href": "http:\/\/drupal.org\/rest\/type\/node\/team_member"
+        },
+        "http:\/\/drupal.org\/rest\/relation\/node\/team_member\/uid": [
+            {
+                "href": "http:\/\/default\/user\/0?_format=hal_json",
+                "lang": "und"
+            }
+        ],
+        "http:\/\/drupal.org\/rest\/relation\/node\/team_member\/revision_uid": [
+            {
+                "href": "http:\/\/default\/user\/0?_format=hal_json"
+            }
+        ],
+        "http:\/\/drupal.org\/rest\/relation\/node\/team_member\/field_photo": [
+            {
+                "href": "http:\/\/default\/sites\/default\/files\/Layer 3.png"
+            }
+        ]
+    },
+    "nid": [
+        {
+            "value": "46"
+        }
+    ],
+    "uuid": [
+        {
+            "value": "1b2be4df-424a-42f7-b1ba-805e1a15a5a8"
+        }
+    ],
+    "vid": [
+        {
+            "value": "46"
+        }
+    ],
+    "langcode": [
+        {
+            "value": "und",
+            "lang": "und"
+        }
+    ],
+    "type": [
+        {
+            "target_id": "team_member"
+        }
+    ],
+    "title": [
+        {
+            "value": "Donatella Versace",
+            "lang": "und"
+        }
+    ],
+    "_embedded": {
+        "http:\/\/drupal.org\/rest\/relation\/node\/team_member\/uid": [
+            {
+                "_links": {
+                    "self": {
+                        "href": "http:\/\/default\/user\/0?_format=hal_json"
+                    },
+                    "type": {
+                        "href": "http:\/\/drupal.org\/rest\/type\/user\/user"
+                    }
+                },
+                "uuid": [
+                    {
+                        "value": "cdddbba5-497d-4ff1-92f9-e0fb2de3e96e"
+                    }
+                ],
+                "lang": "und"
+            }
+        ],
+        "http:\/\/drupal.org\/rest\/relation\/node\/team_member\/revision_uid": [
+            {
+                "_links": {
+                    "self": {
+                        "href": "http:\/\/default\/user\/0?_format=hal_json"
+                    },
+                    "type": {
+                        "href": "http:\/\/drupal.org\/rest\/type\/user\/user"
+                    }
+                },
+                "uuid": [
+                    {
+                        "value": "cdddbba5-497d-4ff1-92f9-e0fb2de3e96e"
+                    }
+                ]
+            }
+        ],
+        "http:\/\/drupal.org\/rest\/relation\/node\/team_member\/field_photo": [
+            {
+                "_links": {
+                    "self": {
+                        "href": "http:\/\/default\/sites\/default\/files\/Layer 3.png"
+                    },
+                    "type": {
+                        "href": "http:\/\/drupal.org\/rest\/type\/file\/image"
+                    }
+                },
+                "uuid": [
+                    {
+                        "value": "70598933-371a-41ec-9243-ed992eba00ce"
+                    }
+                ],
+                "uri": [
+                    {
+                        "value": "http:\/\/default\/sites\/default\/files\/Layer 3.png"
+                    }
+                ]
+            }
+        ]
+    },
+    "status": [
+        {
+            "value": "1",
+            "lang": "und"
+        }
+    ],
+    "created": [
+        {
+            "value": "1463461002",
+            "lang": "und"
+        }
+    ],
+    "changed": [
+        {
+            "value": "1464754798",
+            "lang": "und"
+        }
+    ],
+    "promote": [
+        {
+            "value": "0",
+            "lang": "und"
+        }
+    ],
+    "sticky": [
+        {
+            "value": "0",
+            "lang": "und"
+        }
+    ],
+    "revision_timestamp": [
+        {
+            "value": "1463461002"
+        }
+    ],
+    "revision_translation_affected": [
+        {
+            "value": "1",
+            "lang": "und"
+        }
+    ],
+    "default_langcode": [
+        {
+            "value": "1",
+            "lang": "und"
+        }
+    ],
+    "body": [
+        {
+            "value": "<p>The woman responsible for the high tech equipment of the agency; the inventor and fashion designer of the world famous tin foil hats.<\/p>\r\n",
+            "format": "filtered_html",
+            "summary": ""
+        }
+    ],
+    "comment_node_team_member": [
+        {
+            "status": "1",
+            "cid": "0",
+            "last_comment_timestamp": "1463461002",
+            "last_comment_name": null,
+            "last_comment_uid": "0",
+            "comment_count": "0",
+            "lang": "und"
+        }
+    ]
+}

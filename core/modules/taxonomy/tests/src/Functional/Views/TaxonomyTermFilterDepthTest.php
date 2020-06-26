@@ -19,11 +19,6 @@ class TaxonomyTermFilterDepthTest extends TaxonomyTestBase {
   /**
    * {@inheritdoc}
    */
-  protected $defaultTheme = 'stark';
-
-  /**
-   * {@inheritdoc}
-   */
   public static $testViews = ['test_filter_taxonomy_index_tid_depth'];
 
   /**

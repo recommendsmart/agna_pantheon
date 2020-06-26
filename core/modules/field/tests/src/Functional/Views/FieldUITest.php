@@ -29,11 +29,6 @@ class FieldUITest extends FieldTestBase {
   public static $modules = ['views_ui'];
 
   /**
-   * {@inheritdoc}
-   */
-  protected $defaultTheme = 'stark';
-
-  /**
    * A user with the 'administer views' permission.
    *
    * @var \Drupal\user\UserInterface

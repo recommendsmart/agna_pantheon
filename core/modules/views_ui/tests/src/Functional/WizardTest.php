@@ -15,11 +15,6 @@ use Drupal\Tests\views\Functional\Wizard\WizardTestBase;
 class WizardTest extends WizardTestBase {
 
   /**
-   * {@inheritdoc}
-   */
-  protected $defaultTheme = 'stark';
-
-  /**
    * Tests filling in the wizard with really long strings.
    */
   public function testWizardFieldLength() {

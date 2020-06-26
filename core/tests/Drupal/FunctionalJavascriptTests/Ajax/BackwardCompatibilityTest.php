@@ -19,11 +19,6 @@ class BackwardCompatibilityTest extends WebDriverTestBase {
   ];
 
   /**
-   * {@inheritdoc}
-   */
-  protected $defaultTheme = 'stark';
-
-  /**
    * Ensures Drupal.Ajax.element_settings BC layer.
    */
   public function testAjaxBackwardCompatibility() {

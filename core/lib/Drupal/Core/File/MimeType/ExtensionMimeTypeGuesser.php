@@ -26,7 +26,6 @@ class ExtensionMimeTypeGuesser implements MimeTypeGuesserInterface {
       5 => 'application/cu-seeme',
       6 => 'application/dsptype',
       350 => 'application/epub+zip',
-      359 => 'application/gzip',
       7 => 'application/hta',
       8 => 'application/java-archive',
       9 => 'application/java-serialized-object',
@@ -857,7 +856,6 @@ class ExtensionMimeTypeGuesser implements MimeTypeGuesserInterface {
       'weba' => 356,
       'webm' => 357,
       'vtt' => 358,
-      'gz' => 359,
     ],
   ];
 
@@ -897,7 +895,7 @@ class ExtensionMimeTypeGuesser implements MimeTypeGuesserInterface {
     }
 
     $extension = '';
-    $file_parts = explode('.', \Drupal::service('file_system')->basename($path));
+    $file_parts = explode('.', drupal_basename($path));
 
     // Remove the first part: a full filename should not match an extension.
     array_shift($file_parts);

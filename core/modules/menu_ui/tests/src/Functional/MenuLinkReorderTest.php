@@ -26,11 +26,6 @@ class MenuLinkReorderTest extends BrowserTestBase {
   public static $modules = ['menu_ui', 'test_page_test', 'node', 'block'];
 
   /**
-   * {@inheritdoc}
-   */
-  protected $defaultTheme = 'stark';
-
-  /**
    * Test creating, editing, deleting menu links via node form widget.
    */
   public function testDefaultMenuLinkReorder() {

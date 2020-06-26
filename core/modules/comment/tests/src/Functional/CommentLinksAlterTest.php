@@ -11,11 +11,6 @@ class CommentLinksAlterTest extends CommentTestBase {
 
   public static $modules = ['comment_test'];
 
-  /**
-   * {@inheritdoc}
-   */
-  protected $defaultTheme = 'stark';
-
   protected function setUp() {
     parent::setUp();
 

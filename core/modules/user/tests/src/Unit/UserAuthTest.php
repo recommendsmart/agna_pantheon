@@ -2,7 +2,6 @@
 
 namespace Drupal\Tests\user\Unit;
 
-use Drupal\Core\Entity\EntityTypeManagerInterface;
 use Drupal\Tests\UnitTestCase;
 use Drupal\user\UserAuth;
 
@@ -15,21 +14,21 @@ class UserAuthTest extends UnitTestCase {
   /**
    * The mock user storage.
    *
-   * @var \Drupal\Core\Entity\EntityStorageInterface|\PHPUnit\Framework\MockObject\MockObject
+   * @var \Drupal\Core\Entity\EntityStorageInterface|\PHPUnit_Framework_MockObject_MockObject
    */
   protected $userStorage;
 
   /**
    * The mocked password service.
    *
-   * @var \Drupal\Core\Password\PasswordInterface|\PHPUnit\Framework\MockObject\MockObject
+   * @var \Drupal\Core\Password\PasswordInterface|\PHPUnit_Framework_MockObject_MockObject
    */
   protected $passwordService;
 
   /**
    * The mock user.
    *
-   * @var \Drupal\user\Entity\User|\PHPUnit\Framework\MockObject\MockObject
+   * @var \Drupal\user\Entity\User|\PHPUnit_Framework_MockObject_MockObject
    */
   protected $testUser;
 
@@ -58,23 +57,22 @@ class UserAuthTest extends UnitTestCase {
    * {@inheritdoc}
    */
   protected function setUp() {
-    $this->userStorage = $this->createMock('Drupal\Core\Entity\EntityStorageInterface');
+    $this->userStorage = $this->getMock('Drupal\Core\Entity\EntityStorageInterface');
 
-    /** @var \Drupal\Core\Entity\EntityTypeManagerInterface|\PHPUnit\Framework\MockObject\MockObject $entity_type_manager */
-    $entity_type_manager = $this->createMock(EntityTypeManagerInterface::class);
-    $entity_type_manager->expects($this->any())
+    $entity_manager = $this->getMock('Drupal\Core\Entity\EntityManagerInterface');
+    $entity_manager->expects($this->any())
       ->method('getStorage')
       ->with('user')
       ->will($this->returnValue($this->userStorage));
 
-    $this->passwordService = $this->createMock('Drupal\Core\Password\PasswordInterface');
+    $this->passwordService = $this->getMock('Drupal\Core\Password\PasswordInterface');
 
     $this->testUser = $this->getMockBuilder('Drupal\user\Entity\User')
       ->disableOriginalConstructor()
       ->setMethods(['id', 'setPassword', 'save', 'getPassword'])
       ->getMock();
 
-    $this->userAuth = new UserAuth($entity_type_manager, $this->passwordService);
+    $this->userAuth = new UserAuth($entity_manager, $this->passwordService);
   }
 
   /**

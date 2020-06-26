@@ -1,0 +1,18 @@
+langcode: en
+status: true
+dependencies:
+  config:
+    - eform.type.contact_us
+    - field.storage.eform_submission.field_your_name
+id: eform_submission.contact_us.field_your_name
+field_name: field_your_name
+entity_type: eform_submission
+bundle: contact_us
+label: 'Your name'
+description: ''
+required: true
+translatable: false
+default_value: {  }
+default_value_callback: ''
+settings: {  }
+field_type: string

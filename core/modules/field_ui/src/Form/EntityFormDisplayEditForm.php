@@ -27,9 +27,7 @@ class EntityFormDisplayEditForm extends EntityDisplayFormBase {
   public static function create(ContainerInterface $container) {
     return new static(
       $container->get('plugin.manager.field.field_type'),
-      $container->get('plugin.manager.field.widget'),
-      $container->get('entity_display.repository'),
-      $container->get('entity_field.manager')
+      $container->get('plugin.manager.field.widget')
     );
   }
 
@@ -55,7 +53,7 @@ class EntityFormDisplayEditForm extends EntityDisplayFormBase {
    * {@inheritdoc}
    */
   protected function getEntityDisplay($entity_type_id, $bundle, $mode) {
-    return $this->entityDisplayRepository->getFormDisplay($entity_type_id, $bundle, $mode);
+    return entity_get_form_display($entity_type_id, $bundle, $mode);
   }
 
   /**
@@ -69,14 +67,14 @@ class EntityFormDisplayEditForm extends EntityDisplayFormBase {
    * {@inheritdoc}
    */
   protected function getDisplayModes() {
-    return $this->entityDisplayRepository->getFormModes($this->entity->getTargetEntityTypeId());
+    return $this->entityManager->getFormModes($this->entity->getTargetEntityTypeId());
   }
 
   /**
    * {@inheritdoc}
    */
   protected function getDisplayModeOptions() {
-    return $this->entityDisplayRepository->getFormModeOptions($this->entity->getTargetEntityTypeId());
+    return $this->entityManager->getFormModeOptions($this->entity->getTargetEntityTypeId());
   }
 
   /**
@@ -107,7 +105,7 @@ class EntityFormDisplayEditForm extends EntityDisplayFormBase {
    * {@inheritdoc}
    */
   protected function getOverviewUrl($mode) {
-    $entity_type = $this->entityTypeManager->getDefinition($this->entity->getTargetEntityTypeId());
+    $entity_type = $this->entityManager->getDefinition($this->entity->getTargetEntityTypeId());
     return Url::fromRoute('entity.entity_form_display.' . $this->entity->getTargetEntityTypeId() . '.form_mode', [
       'form_mode_name' => $mode,
     ] + FieldUI::getRouteBundleParameter($entity_type, $this->entity->getTargetBundle()));

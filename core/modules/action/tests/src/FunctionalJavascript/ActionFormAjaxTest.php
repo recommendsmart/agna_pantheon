@@ -21,11 +21,6 @@ class ActionFormAjaxTest extends WebDriverTestBase {
   /**
    * {@inheritdoc}
    */
-  protected $defaultTheme = 'stark';
-
-  /**
-   * {@inheritdoc}
-   */
   protected function setUp() {
     parent::setUp();
     $user = $this->drupalCreateUser(['administer actions']);

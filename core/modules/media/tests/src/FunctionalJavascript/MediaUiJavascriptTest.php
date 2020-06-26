@@ -25,11 +25,6 @@ class MediaUiJavascriptTest extends MediaJavascriptTestBase {
   ];
 
   /**
-   * {@inheritdoc}
-   */
-  protected $defaultTheme = 'stark';
-
-  /**
    * The test media type.
    *
    * @var \Drupal\media\MediaTypeInterface

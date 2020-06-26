@@ -8,22 +8,19 @@
          convertWarningsToExceptions="true"
          processIsolation="false"
          stopOnFailure="false"
-         bootstrap="vendor/autoload.php"
+         syntaxCheck="false"
+         bootstrap="tests/bootstrap.php"
 >
 <testsuites>
   <testsuite name="EmailValidator Test Suite">
-    <directory>./Tests/EmailValidator</directory>
+    <directory>./tests/egulias/Tests/</directory>
     <exclude>./vendor/</exclude>
   </testsuite>
 </testsuites>
 
 <filter>
-  <whitelist>
-    <directory>./EmailValidator/</directory>
-  </whitelist>
+  <blacklist>
+    <directory>./vendor</directory>
+  </blacklist>
 </filter>
-
-<listeners>
-  <listener class="Symfony\Bridge\PhpUnit\SymfonyTestsListener" />
-</listeners>
 </phpunit>

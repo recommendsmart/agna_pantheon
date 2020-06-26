@@ -1,0 +1,42 @@
+langcode: en
+status: true
+dependencies:
+  config:
+    - field.field.node.clients.body
+    - field.field.node.clients.comment_node_clients
+    - field.field.node.clients.field_clients_image
+    - node.type.clients
+  module:
+    - comment
+    - image
+    - text
+    - user
+id: node.clients.default
+targetEntityType: node
+bundle: clients
+mode: default
+content:
+  body:
+    label: hidden
+    weight: 1
+    type: text_default
+    settings: {  }
+    third_party_settings: {  }
+  comment_node_clients:
+    label: hidden
+    type: comment_default
+    weight: 20
+    settings:
+      pager_id: 0
+    third_party_settings: {  }
+  field_clients_image:
+    label: above
+    weight: 0
+    type: image
+    settings:
+      image_style: ''
+      image_link: ''
+    third_party_settings: {  }
+  links:
+    weight: 100
+hidden: {  }

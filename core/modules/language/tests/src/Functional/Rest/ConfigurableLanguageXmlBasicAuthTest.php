@@ -21,11 +21,6 @@ class ConfigurableLanguageXmlBasicAuthTest extends ConfigurableLanguageResourceT
   /**
    * {@inheritdoc}
    */
-  protected $defaultTheme = 'stark';
-
-  /**
-   * {@inheritdoc}
-   */
   protected static $format = 'xml';
 
   /**

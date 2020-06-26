@@ -19,11 +19,6 @@ class ContentTranslationUISkipTest extends BrowserTestBase {
   public static $modules = ['content_translation_test', 'user', 'node'];
 
   /**
-   * {@inheritdoc}
-   */
-  protected $defaultTheme = 'stark';
-
-  /**
    * Tests the content_translation_ui_skip key functionality.
    */
   public function testUICheckSkip() {

@@ -68,7 +68,7 @@ class StatusReport extends RenderElement {
   public static function getSeverities() {
     return [
       REQUIREMENT_INFO => [
-        'title' => t('Checked', [], ['context' => 'Examined']),
+        'title' => t('Checked'),
         'status' => 'checked',
       ],
       REQUIREMENT_OK => [

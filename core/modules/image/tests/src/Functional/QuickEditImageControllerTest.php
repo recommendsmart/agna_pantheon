@@ -25,11 +25,6 @@ class QuickEditImageControllerTest extends BrowserTestBase {
   public static $modules = ['node', 'image', 'quickedit'];
 
   /**
-   * {@inheritdoc}
-   */
-  protected $defaultTheme = 'stark';
-
-  /**
    * The machine name of our image field.
    *
    * @var string
@@ -131,7 +126,7 @@ class QuickEditImageControllerTest extends BrowserTestBase {
         break;
       }
     }
-    $this->assertNotFalse($valid_image);
+    $this->assertTrue($valid_image);
 
     $this->drupalLogin($this->contentAuthorUser);
     $this->uploadImage($valid_image, $node->id(), $this->fieldName, $node->language()->getId());
@@ -160,7 +155,7 @@ class QuickEditImageControllerTest extends BrowserTestBase {
         break;
       }
     }
-    $this->assertNotFalse($invalid_image);
+    $this->assertTrue($invalid_image);
 
     $this->drupalLogin($this->contentAuthorUser);
     $this->uploadImage($invalid_image, $node->id(), $this->fieldName, $node->language()->getId());

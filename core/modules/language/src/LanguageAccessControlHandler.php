@@ -10,7 +10,7 @@ use Drupal\Core\Session\AccountInterface;
 /**
  * Defines the access control handler for the language entity type.
  *
- * @see \Drupal\language\Entity\ConfigurableLanguage
+ * @see \Drupal\language\Entity\Language
  */
 class LanguageAccessControlHandler extends EntityAccessControlHandler {
 

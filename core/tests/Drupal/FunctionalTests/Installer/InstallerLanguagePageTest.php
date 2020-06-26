@@ -12,11 +12,6 @@ use Drupal\Core\Language\LanguageManager;
 class InstallerLanguagePageTest extends InstallerTestBase {
 
   /**
-   * {@inheritdoc}
-   */
-  protected $defaultTheme = 'stark';
-
-  /**
    * Installer step: Select language.
    */
   protected function setUpLanguage() {

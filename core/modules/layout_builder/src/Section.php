@@ -2,8 +2,6 @@
 
 namespace Drupal\layout_builder;
 
-use Drupal\Core\Config\Entity\ThirdPartySettingsInterface;
-
 /**
  * Provides a domain object for layout sections.
  *
@@ -13,10 +11,18 @@ use Drupal\Core\Config\Entity\ThirdPartySettingsInterface;
  * - An array of settings for the layout plugin.
  * - An array of components that can be rendered in the section.
  *
+ * @internal
+ *   Layout Builder is currently experimental and should only be leveraged by
+ *   experimental modules and development releases of contributed modules.
+ *   See https://www.drupal.org/core/experimental for more information.
+ *
  * @see \Drupal\Core\Layout\LayoutDefinition
  * @see \Drupal\layout_builder\SectionComponent
+ *
+ * @todo Determine whether an interface will be provided for this in
+ *   https://www.drupal.org/project/drupal/issues/2930334.
  */
-class Section implements ThirdPartySettingsInterface {
+class Section {
 
   /**
    * The layout plugin ID.
@@ -40,15 +46,6 @@ class Section implements ThirdPartySettingsInterface {
   protected $components = [];
 
   /**
-   * Third party settings.
-   *
-   * An array of key/value pairs keyed by provider.
-   *
-   * @var array[]
-   */
-  protected $thirdPartySettings = [];
-
-  /**
    * Constructs a new Section.
    *
    * @param string $layout_id
@@ -57,16 +54,13 @@ class Section implements ThirdPartySettingsInterface {
    *   (optional) The layout plugin settings.
    * @param \Drupal\layout_builder\SectionComponent[] $components
    *   (optional) The components.
-   * @param array[] $third_party_settings
-   *   (optional) Any third party settings.
    */
-  public function __construct($layout_id, array $layout_settings = [], array $components = [], array $third_party_settings = []) {
+  public function __construct($layout_id, array $layout_settings = [], array $components = []) {
     $this->layoutId = $layout_id;
     $this->layoutSettings = $layout_settings;
     foreach ($components as $component) {
       $this->setComponent($component);
     }
-    $this->thirdPartySettings = $third_party_settings;
   }
 
   /**
@@ -98,7 +92,7 @@ class Section implements ThirdPartySettingsInterface {
    *   The layout plugin.
    */
   public function getLayout() {
-    return $this->layoutPluginManager()->createInstance($this->getLayoutId(), $this->layoutSettings);
+    return $this->layoutPluginManager()->createInstance($this->getLayoutId(), $this->getLayoutSettings());
   }
 
   /**
@@ -124,7 +118,7 @@ class Section implements ThirdPartySettingsInterface {
    *   This method should only be used by code responsible for storing the data.
    */
   public function getLayoutSettings() {
-    return $this->getLayout()->getConfiguration();
+    return $this->layoutSettings;
   }
 
   /**
@@ -246,7 +240,7 @@ class Section implements ThirdPartySettingsInterface {
    * @return \Drupal\layout_builder\SectionComponent[]
    *   An array of components in the specified region, sorted by weight.
    */
-  public function getComponentsByRegion($region) {
+  protected function getComponentsByRegion($region) {
     $components = array_filter($this->getComponents(), function (SectionComponent $component) use ($region) {
       return $component->getRegion() === $region;
     });
@@ -340,7 +334,6 @@ class Section implements ThirdPartySettingsInterface {
       'components' => array_map(function (SectionComponent $component) {
         return $component->toArray();
       }, $this->getComponents()),
-      'third_party_settings' => $this->thirdPartySettings,
     ];
   }
 
@@ -356,18 +349,10 @@ class Section implements ThirdPartySettingsInterface {
    *   The section object.
    */
   public static function fromArray(array $section) {
-    // Ensure expected array keys are present.
-    $section += [
-      'layout_id' => '',
-      'layout_settings' => [],
-      'components' => [],
-      'third_party_settings' => [],
-    ];
     return new static(
       $section['layout_id'],
       $section['layout_settings'],
-      array_map([SectionComponent::class, 'fromArray'], $section['components']),
-      $section['third_party_settings']
+      array_map([SectionComponent::class, 'fromArray'], $section['components'])
     );
   }
 
@@ -378,48 +363,6 @@ class Section implements ThirdPartySettingsInterface {
     foreach ($this->components as $uuid => $component) {
       $this->components[$uuid] = clone $component;
     }
-  }
-
-  /**
-   * {@inheritdoc}
-   */
-  public function getThirdPartySetting($provider, $key, $default = NULL) {
-    return isset($this->thirdPartySettings[$provider][$key]) ? $this->thirdPartySettings[$provider][$key] : $default;
-  }
-
-  /**
-   * {@inheritdoc}
-   */
-  public function getThirdPartySettings($provider) {
-    return isset($this->thirdPartySettings[$provider]) ? $this->thirdPartySettings[$provider] : [];
-  }
-
-  /**
-   * {@inheritdoc}
-   */
-  public function setThirdPartySetting($provider, $key, $value) {
-    $this->thirdPartySettings[$provider][$key] = $value;
-    return $this;
-  }
-
-  /**
-   * {@inheritdoc}
-   */
-  public function unsetThirdPartySetting($provider, $key) {
-    unset($this->thirdPartySettings[$provider][$key]);
-    // If the third party is no longer storing any information, completely
-    // remove the array holding the settings for this provider.
-    if (empty($this->thirdPartySettings[$provider])) {
-      unset($this->thirdPartySettings[$provider]);
-    }
-    return $this;
-  }
-
-  /**
-   * {@inheritdoc}
-   */
-  public function getThirdPartyProviders() {
-    return array_keys($this->thirdPartySettings);
   }
 
 }

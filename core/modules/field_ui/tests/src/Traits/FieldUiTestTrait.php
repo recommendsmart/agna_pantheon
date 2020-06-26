@@ -27,10 +27,7 @@ trait FieldUiTestTrait {
    *   settings' form).
    */
   public function fieldUIAddNewField($bundle_path, $field_name, $label = NULL, $field_type = 'test_field', array $storage_edit = [], array $field_edit = []) {
-    // Generate a label containing only letters and numbers to prevent random
-    // test failure.
-    // See https://www.drupal.org/project/drupal/issues/3030902
-    $label = $label ?: $this->randomMachineName();
+    $label = $label ?: $this->randomString();
     $initial_edit = [
       'new_storage_type' => $field_type,
       'label' => $label,

@@ -3,14 +3,13 @@
 namespace Drupal\Tests\Core\Entity;
 
 use Drupal\Core\DependencyInjection\ContainerBuilder;
-use Drupal\Core\Entity\EntityBase;
+use Drupal\Core\Entity\Entity;
 use Drupal\Core\Entity\EntityMalformedException;
 use Drupal\Core\Entity\EntityTypeBundleInfoInterface;
 use Drupal\Core\Entity\EntityTypeInterface;
 use Drupal\Core\Entity\Exception\UndefinedLinkTemplateException;
 use Drupal\Core\Entity\RevisionableInterface;
 use Drupal\Core\GeneratedUrl;
-use Drupal\Core\Link;
 use Drupal\Core\Routing\UrlGeneratorInterface;
 use Drupal\Core\Url;
 use Drupal\Tests\UnitTestCase;
@@ -101,10 +100,9 @@ class EntityUrlTest extends UnitTestCase {
    * @covers ::toUrl
    */
   public function testToUrlNoId() {
-    $entity = $this->getEntity(EntityBase::class, []);
+    $entity = $this->getEntity(Entity::class, []);
 
-    $this->expectException(EntityMalformedException::class);
-    $this->expectExceptionMessage('The "' . $this->entityTypeId . '" entity cannot have a URI as it does not have an ID');
+    $this->setExpectedException(EntityMalformedException::class, 'The "' . $this->entityTypeId . '" entity cannot have a URI as it does not have an ID');
     $entity->toUrl();
   }
 
@@ -124,7 +122,7 @@ class EntityUrlTest extends UnitTestCase {
    */
   public function testToUrlLinkTemplates($link_template, $expected_route_name) {
     $values = ['id' => $this->entityId, 'langcode' => $this->langcode];
-    $entity = $this->getEntity(EntityBase::class, $values);
+    $entity = $this->getEntity(Entity::class, $values);
     $this->registerLinkTemplate($link_template);
 
     /** @var \Drupal\Core\Url $url */
@@ -219,7 +217,7 @@ class EntityUrlTest extends UnitTestCase {
    * @covers ::urlRouteParameters
    */
   public function testToUrlLinkTemplateNoId($link_template, $expected_route_name) {
-    $entity = $this->getEntity(EntityBase::class, ['id' => $this->entityId]);
+    $entity = $this->getEntity(Entity::class, ['id' => $this->entityId]);
     $this->registerLinkTemplate($link_template);
 
     /** @var \Drupal\Core\Url $url */
@@ -264,7 +262,7 @@ class EntityUrlTest extends UnitTestCase {
    */
   public function testToUrlLinkTemplateAddForm($has_bundle_key, $bundle_entity_type, $bundle_key, $expected_route_parameters) {
     $values = ['id' => $this->entityId, 'langcode' => $this->langcode];
-    $entity = $this->getEntity(EntityBase::class, $values);
+    $entity = $this->getEntity(Entity::class, $values);
     $this->entityType->hasKey('bundle')->willReturn($has_bundle_key);
     $this->entityType->getBundleEntityType()->willReturn($bundle_entity_type);
     $this->entityType->getKey('bundle')->willReturn($bundle_key);
@@ -309,14 +307,13 @@ class EntityUrlTest extends UnitTestCase {
    * @covers ::linkTemplates
    */
   public function testToUrlUriCallbackUndefined(array $bundle_info, $uri_callback) {
-    $entity = $this->getEntity(EntityBase::class, ['id' => $this->entityId]);
+    $entity = $this->getEntity(Entity::class, ['id' => $this->entityId]);
 
     $this->registerBundleInfo($bundle_info);
     $this->entityType->getUriCallback()->willReturn($uri_callback);
 
     $link_template = 'canonical';
-    $this->expectException(UndefinedLinkTemplateException::class);
-    $this->expectExceptionMessage("No link template '$link_template' found for the '$this->entityTypeId' entity type");
+    $this->setExpectedException(UndefinedLinkTemplateException::class, "No link template '$link_template' found for the '$this->entityTypeId' entity type");
     $entity->toUrl($link_template);
   }
 
@@ -350,7 +347,7 @@ class EntityUrlTest extends UnitTestCase {
    * @dataProvider providerTestToUrlUriCallback
    */
   public function testToUrlUriCallback(array $bundle_info, $uri_callback) {
-    $entity = $this->getEntity(EntityBase::class, ['id' => $this->entityId, 'langcode' => $this->langcode]);
+    $entity = $this->getEntity(Entity::class, ['id' => $this->entityId, 'langcode' => $this->langcode]);
 
     $this->registerBundleInfo($bundle_info);
     $this->entityType->getUriCallback()->willReturn($uri_callback);
@@ -389,41 +386,14 @@ class EntityUrlTest extends UnitTestCase {
    * @covers ::urlInfo
    *
    * @dataProvider providerTestUrlInfo
-   *
-   * @group legacy
-   * @expectedDeprecation EntityInterface::urlInfo() is deprecated in Drupal 8.0.0 and will be removed in Drupal 9.0.0. EntityInterface::toUrl() instead. See https://www.drupal.org/node/2614344
    */
   public function testUrlInfo($rel, $options) {
-    $entity = $this->getEntity(EntityBase::class, [], ['toUrl']);
+    $entity = $this->getEntity(Entity::class, [], ['toUrl']);
     $entity->expects($this->once())
       ->method('toUrl')
       ->with($rel, $options);
 
     $entity->urlInfo($rel, $options);
-  }
-
-  /**
-   * Tests the link() method.
-   *
-   * @covers ::urlInfo
-   *
-   * @group legacy
-   * @expectedDeprecation EntityInterface::link() is deprecated in Drupal 8.0.0 and will be removed in Drupal 9.0.0. Use EntityInterface::toLink()->toString() instead. Note, the default relationship for configuration entities changes from 'edit-form' to 'canonical'. See https://www.drupal.org/node/2614344
-   */
-  public function testLink() {
-
-    $link = $this->createMock(Link::class);
-    $link->expects($this->once())
-      ->method('toString')
-      ->willReturn('<a href="/foo">The link</a>');
-
-    $entity = $this->getEntity(EntityBase::class, [], ['toLink']);
-    $entity->expects($this->once())
-      ->method('toLink')
-      ->with(NULL, 'canonical')
-      ->willReturn($link);
-
-    $this->assertEquals('<a href="/foo">The link</a>', $entity->link());
   }
 
   /**
@@ -453,12 +423,9 @@ class EntityUrlTest extends UnitTestCase {
    * @covers ::linkTemplates
    *
    * @dataProvider providerTestUrl
-   *
-   * @group legacy
-   * @expectedDeprecation EntityInterface::url() is deprecated in Drupal 8.0.0 and will be removed in Drupal 9.0.0. EntityInterface::toUrl() instead. Note, a \Drupal\Core\Url object is returned. See https://www.drupal.org/node/2614344
    */
   public function testUrlEmpty($rel) {
-    $entity = $this->getEntity(EntityBase::class, []);
+    $entity = $this->getEntity(Entity::class, []);
     $this->assertEquals('', $entity->url($rel));
   }
 
@@ -494,12 +461,9 @@ class EntityUrlTest extends UnitTestCase {
    * @covers ::linkTemplates
    *
    * @dataProvider providerTestUrl
-   *
-   * @group legacy
-   * @expectedDeprecation EntityInterface::url() is deprecated in Drupal 8.0.0 and will be removed in Drupal 9.0.0. EntityInterface::toUrl() instead. Note, a \Drupal\Core\Url object is returned. See https://www.drupal.org/node/2614344
    */
   public function testUrl($rel, $options, $default_options, $expected_options) {
-    $entity = $this->getEntity(EntityBase::class, ['id' => $this->entityId], ['toUrl']);
+    $entity = $this->getEntity(Entity::class, ['id' => $this->entityId], ['toUrl']);
     $this->registerLinkTemplate($rel);
 
     $uri = $this->prophesize(Url::class);
@@ -542,7 +506,7 @@ class EntityUrlTest extends UnitTestCase {
    * @covers ::uriRelationships
    */
   public function testUriRelationships() {
-    $entity = $this->getEntity(EntityBase::class, ['id' => $this->entityId]);
+    $entity = $this->getEntity(Entity::class, ['id' => $this->entityId]);
 
     $container_builder = new ContainerBuilder();
     $url_generator = $this->createMock(UrlGeneratorInterface::class);
@@ -578,12 +542,12 @@ class EntityUrlTest extends UnitTestCase {
    *   An array of entity values to construct the mock entity with.
    * @param array $methods
    *   (optional) An array of additional methods to mock on the entity object.
-   *   The getEntityType() and entityTypeBundleInfo() methods are always mocked.
+   *   The getEntityType() and entityManager() methods are always mocked.
    *
-   * @return \Drupal\Core\Entity\Entity|\PHPUnit\Framework\MockObject\MockObject
+   * @return \Drupal\Core\Entity\Entity|\PHPUnit_Framework_MockObject_MockObject
    */
   protected function getEntity($class, array $values, array $methods = []) {
-    $methods = array_merge($methods, ['getEntityType', 'entityTypeBundleInfo']);
+    $methods = array_merge($methods, ['getEntityType', 'entityManager', 'entityTypeBundleInfo']);
 
     // Prophecy does not allow prophesizing abstract classes while actually
     // calling their code. We use Prophecy below because that allows us to
@@ -611,7 +575,7 @@ class EntityUrlTest extends UnitTestCase {
    *   The expected route name of the generated URL.
    * @param array $expected_route_parameters
    *   The expected route parameters of the generated URL.
-   * @param \Drupal\Core\Entity\Entity|\PHPUnit\Framework\MockObject\MockObject $entity
+   * @param \Drupal\Core\Entity\Entity|\PHPUnit_Framework_MockObject_MockObject $entity
    *   The entity that is expected to be set as a URL option.
    * @param bool $has_language
    *   Whether or not the URL is expected to have a language option.
@@ -660,4 +624,4 @@ class EntityUrlTest extends UnitTestCase {
 
 }
 
-abstract class RevisionableEntity extends EntityBase implements RevisionableInterface {}
+abstract class RevisionableEntity extends Entity implements RevisionableInterface {}

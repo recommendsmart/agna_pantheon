@@ -18,11 +18,6 @@ class ViewsThemeIntegrationTest extends ViewTestBase {
    */
   public static $testViews = ['test_page_display'];
 
-  /**
-   * {@inheritdoc}
-   */
-  protected $defaultTheme = 'stark';
-
 
   /**
    * Used by WebTestBase::setup()
@@ -50,7 +45,7 @@ class ViewsThemeIntegrationTest extends ViewTestBase {
    */
   public function testThemedViewPage() {
 
-    \Drupal::service('theme_installer')->install(['test_basetheme', 'test_subtheme']);
+    \Drupal::service('theme_handler')->install(['test_basetheme', 'test_subtheme']);
 
     // Make base theme default then test for hook invocations.
     $this->config('system.theme')

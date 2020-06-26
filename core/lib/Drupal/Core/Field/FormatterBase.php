@@ -4,16 +4,14 @@ namespace Drupal\Core\Field;
 
 use Drupal\Core\Form\FormStateInterface;
 use Drupal\Core\Language\LanguageInterface;
-use Drupal\Core\Plugin\ContainerFactoryPluginInterface;
 use Drupal\Core\Render\Element;
-use Symfony\Component\DependencyInjection\ContainerInterface;
 
 /**
  * Base class for 'Field formatter' plugin implementations.
  *
  * @ingroup field_formatter
  */
-abstract class FormatterBase extends PluginSettingsBase implements FormatterInterface, ContainerFactoryPluginInterface {
+abstract class FormatterBase extends PluginSettingsBase implements FormatterInterface {
 
   /**
    * The field definition.
@@ -74,13 +72,6 @@ abstract class FormatterBase extends PluginSettingsBase implements FormatterInte
   /**
    * {@inheritdoc}
    */
-  public static function create(ContainerInterface $container, array $configuration, $plugin_id, $plugin_definition) {
-    return new static($plugin_id, $plugin_definition, $configuration['field_definition'], $configuration['settings'], $configuration['label'], $configuration['view_mode'], $configuration['third_party_settings']);
-  }
-
-  /**
-   * {@inheritdoc}
-   */
   public function view(FieldItemListInterface $items, $langcode = NULL) {
     // Default the language to the current content language.
     if (empty($langcode)) {
@@ -109,7 +100,6 @@ abstract class FormatterBase extends PluginSettingsBase implements FormatterInte
         '#items' => $items,
         '#formatter' => $this->getPluginId(),
         '#is_multiple' => $this->fieldDefinition->getFieldStorageDefinition()->isMultiple(),
-        '#third_party_settings' => $this->getThirdPartySettings(),
       ];
 
       $elements = array_merge($info, $elements);

@@ -16,7 +16,7 @@ use Drupal\Tests\BrowserTestBase;
 class DateTimeTimeAgoFormatterTest extends BrowserTestBase {
 
   /**
-   * An array of field formatter display options.
+   * An array of display options to pass to entity_get_display().
    *
    * @var array
    */
@@ -40,11 +40,6 @@ class DateTimeTimeAgoFormatterTest extends BrowserTestBase {
    * {@inheritdoc}
    */
   public static $modules = ['datetime', 'entity_test', 'field_ui'];
-
-  /**
-   * {@inheritdoc}
-   */
-  protected $defaultTheme = 'stark';
 
   /**
    * {@inheritdoc}

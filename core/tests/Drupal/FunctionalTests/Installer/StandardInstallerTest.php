@@ -50,10 +50,8 @@ class StandardInstallerTest extends ConfigAfterInstallerTestBase {
    */
   public function testStandardConfig() {
     $skipped_config = [];
-    // FunctionalTestSetupTrait::installParameters() uses Drupal as site name
-    // and simpletest@example.com as mail address.
-    $skipped_config['system.site'][] = 'name: Drupal';
-    $skipped_config['system.site'][] = 'mail: simpletest@example.com';
+    // FunctionalTestSetupTrait::installParameters() uses
+    // simpletest@example.com as mail address.
     $skipped_config['contact.form.feedback'][] = '- simpletest@example.com';
     // \Drupal\filter\Entity\FilterFormat::toArray() drops the roles of filter
     // formats.
@@ -63,8 +61,6 @@ class StandardInstallerTest extends ConfigAfterInstallerTestBase {
     $skipped_config['filter.format.full_html'][] = '- administrator';
     $skipped_config['filter.format.restricted_html'][] = 'roles:';
     $skipped_config['filter.format.restricted_html'][] = '- anonymous';
-    // The site UUID is set dynamically for each installation.
-    $skipped_config['system.site'][] = 'uuid: ' . $this->config('system.site')->get('uuid');
 
     $this->assertInstalledConfig($skipped_config);
   }

@@ -21,9 +21,4 @@ class ModeratedNodeJsonAnonTest extends ModeratedNodeResourceTestBase {
    */
   protected static $mimeType = 'application/json';
 
-  /**
-   * {@inheritdoc}
-   */
-  protected $defaultTheme = 'stark';
-
 }

@@ -20,11 +20,6 @@ class MediaTypeHalJsonBasicAuthTest extends MediaTypeResourceTestBase {
   /**
    * {@inheritdoc}
    */
-  protected $defaultTheme = 'stark';
-
-  /**
-   * {@inheritdoc}
-   */
   protected static $format = 'hal_json';
 
   /**

@@ -16,7 +16,7 @@ class SelectTest extends DatabaseTestBase {
    * Tests rudimentary SELECT statements.
    */
   public function testSimpleSelect() {
-    $query = $this->connection->select('test');
+    $query = db_select('test');
     $query->addField('test', 'name');
     $query->addField('test', 'age', 'age');
     $num_records = $query->countQuery()->execute()->fetchField();
@@ -28,7 +28,7 @@ class SelectTest extends DatabaseTestBase {
    * Tests rudimentary SELECT statement with a COMMENT.
    */
   public function testSimpleComment() {
-    $query = $this->connection->select('test')->comment('Testing query comments');
+    $query = db_select('test')->comment('Testing query comments');
     $query->addField('test', 'name');
     $query->addField('test', 'age', 'age');
     $result = $query->execute();
@@ -46,7 +46,7 @@ class SelectTest extends DatabaseTestBase {
    * Tests query COMMENT system against vulnerabilities.
    */
   public function testVulnerableComment() {
-    $query = $this->connection->select('test')->comment('Testing query comments */ SELECT nid FROM {node}; --');
+    $query = db_select('test')->comment('Testing query comments */ SELECT nid FROM {node}; --');
     $query->addField('test', 'name');
     $query->addField('test', 'age', 'age');
     $result = $query->execute();
@@ -54,17 +54,15 @@ class SelectTest extends DatabaseTestBase {
     $records = $result->fetchAll();
 
     $query = (string) $query;
-    $expected = "/* Testing query comments  * / SELECT nid FROM {node}. -- */";
+    $expected = "/* Testing query comments  * / SELECT nid FROM {node}. -- */ SELECT test.name AS name, test.age AS age\nFROM\n{test} test";
 
-    // Check the returned number of rows.
-    $this->assertCount(4, $records);
-    // Check that the flattened query contains the sanitised comment string.
-    $this->assertContains($expected, $query);
+    $this->assertEqual(count($records), 4, 'Returned the correct number of rows.');
+    $this->assertNotIdentical(FALSE, strpos($query, $expected), 'The flattened query contains the sanitised comment string.');
 
     $connection = Database::getConnection();
     foreach ($this->makeCommentsProvider() as $test_set) {
       list($expected, $comments) = $test_set;
-      $this->assertEquals($expected, $connection->makeComment($comments));
+      $this->assertEqual($expected, $connection->makeComment($comments));
     }
   }
 
@@ -103,7 +101,7 @@ class SelectTest extends DatabaseTestBase {
    * Tests basic conditionals on SELECT statements.
    */
   public function testSimpleSelectConditional() {
-    $query = $this->connection->select('test');
+    $query = db_select('test');
     $name_field = $query->addField('test', 'name');
     $age_field = $query->addField('test', 'age', 'age');
     $query->condition('age', 27);
@@ -123,7 +121,7 @@ class SelectTest extends DatabaseTestBase {
    * Tests SELECT statements with expressions.
    */
   public function testSimpleSelectExpression() {
-    $query = $this->connection->select('test');
+    $query = db_select('test');
     $name_field = $query->addField('test', 'name');
     $age_field = $query->addExpression("age*2", 'double_age');
     $query->condition('age', 27);
@@ -143,7 +141,7 @@ class SelectTest extends DatabaseTestBase {
    * Tests SELECT statements with multiple expressions.
    */
   public function testSimpleSelectExpressionMultiple() {
-    $query = $this->connection->select('test');
+    $query = db_select('test');
     $name_field = $query->addField('test', 'name');
     $age_double_field = $query->addExpression("age*2");
     $age_triple_field = $query->addExpression("age*3");
@@ -165,7 +163,7 @@ class SelectTest extends DatabaseTestBase {
    * Tests adding multiple fields to a SELECT statement at the same time.
    */
   public function testSimpleSelectMultipleFields() {
-    $record = $this->connection->select('test')
+    $record = db_select('test')
       ->fields('test', ['id', 'name', 'age', 'job'])
       ->condition('age', 27)
       ->execute()->fetchObject();
@@ -188,7 +186,7 @@ class SelectTest extends DatabaseTestBase {
    * Tests adding all fields from a given table to a SELECT statement.
    */
   public function testSimpleSelectAllFields() {
-    $record = $this->connection->select('test')
+    $record = db_select('test')
       ->fields('test')
       ->condition('age', 27)
       ->execute()->fetchObject();
@@ -213,7 +211,7 @@ class SelectTest extends DatabaseTestBase {
   public function testNullCondition() {
     $this->ensureSampleDataNull();
 
-    $names = $this->connection->select('test_null', 'tn')
+    $names = db_select('test_null', 'tn')
       ->fields('tn', ['name'])
       ->condition('age', NULL)
       ->execute()->fetchCol();
@@ -227,7 +225,7 @@ class SelectTest extends DatabaseTestBase {
   public function testIsNullCondition() {
     $this->ensureSampleDataNull();
 
-    $names = $this->connection->select('test_null', 'tn')
+    $names = db_select('test_null', 'tn')
       ->fields('tn', ['name'])
       ->isNull('age')
       ->execute()->fetchCol();
@@ -242,7 +240,7 @@ class SelectTest extends DatabaseTestBase {
   public function testIsNotNullCondition() {
     $this->ensureSampleDataNull();
 
-    $names = $this->connection->select('test_null', 'tn')
+    $names = db_select('test_null', 'tn')
       ->fields('tn', ['name'])
       ->isNotNull('tn.age')
       ->orderBy('name')
@@ -254,61 +252,17 @@ class SelectTest extends DatabaseTestBase {
   }
 
   /**
-   * Tests that we can force a query to return an empty result.
-   */
-  public function testAlwaysFalseCondition() {
-    $names = $this->connection->select('test', 'test')
-      ->fields('test', ['name'])
-      ->condition('age', 27)
-      ->execute()->fetchCol();
-
-    $this->assertCount(1, $names);
-    $this->assertSame($names[0], 'George');
-
-    $names = $this->connection->select('test', 'test')
-      ->fields('test', ['name'])
-      ->condition('age', 27)
-      ->alwaysFalse()
-      ->execute()->fetchCol();
-
-    $this->assertCount(0, $names);
-  }
-
-  /**
-   * Tests that we can force an extended query to return an empty result.
-   */
-  public function testExtenderAlwaysFalseCondition() {
-    $names = $this->connection->select('test', 'test')
-      ->extend('Drupal\Core\Database\Query\SelectExtender')
-      ->fields('test', ['name'])
-      ->condition('age', 27)
-      ->execute()->fetchCol();
-
-    $this->assertCount(1, $names);
-    $this->assertSame($names[0], 'George');
-
-    $names = $this->connection->select('test', 'test')
-      ->extend('Drupal\Core\Database\Query\SelectExtender')
-      ->fields('test', ['name'])
-      ->condition('age', 27)
-      ->alwaysFalse()
-      ->execute()->fetchCol();
-
-    $this->assertCount(0, $names);
-  }
-
-  /**
    * Tests that we can UNION multiple Select queries together.
    *
    * This is semantically equal to UNION DISTINCT, so we don't explicitly test
    * that.
    */
   public function testUnion() {
-    $query_1 = $this->connection->select('test', 't')
+    $query_1 = db_select('test', 't')
       ->fields('t', ['name'])
       ->condition('age', [27, 28], 'IN');
 
-    $query_2 = $this->connection->select('test', 't')
+    $query_2 = db_select('test', 't')
       ->fields('t', ['name'])
       ->condition('age', 28);
 
@@ -318,19 +272,20 @@ class SelectTest extends DatabaseTestBase {
 
     // Ensure we only get 2 records.
     $this->assertEqual(count($names), 2, 'UNION correctly discarded duplicates.');
-    sort($names);
-    $this->assertEquals(['George', 'Ringo'], $names);
+
+    $this->assertEqual($names[0], 'George', 'First query returned correct name.');
+    $this->assertEqual($names[1], 'Ringo', 'Second query returned correct name.');
   }
 
   /**
    * Tests that we can UNION ALL multiple SELECT queries together.
    */
   public function testUnionAll() {
-    $query_1 = $this->connection->select('test', 't')
+    $query_1 = db_select('test', 't')
       ->fields('t', ['name'])
       ->condition('age', [27, 28], 'IN');
 
-    $query_2 = $this->connection->select('test', 't')
+    $query_2 = db_select('test', 't')
       ->fields('t', ['name'])
       ->condition('age', 28);
 
@@ -350,11 +305,11 @@ class SelectTest extends DatabaseTestBase {
    * Tests that we can get a count query for a UNION Select query.
    */
   public function testUnionCount() {
-    $query_1 = $this->connection->select('test', 't')
+    $query_1 = db_select('test', 't')
       ->fields('t', ['name', 'age'])
       ->condition('age', [27, 28], 'IN');
 
-    $query_2 = $this->connection->select('test', 't')
+    $query_2 = db_select('test', 't')
       ->fields('t', ['name', 'age'])
       ->condition('age', 28);
 
@@ -373,12 +328,12 @@ class SelectTest extends DatabaseTestBase {
    */
   public function testUnionOrder() {
     // This gives George and Ringo.
-    $query_1 = $this->connection->select('test', 't')
+    $query_1 = db_select('test', 't')
       ->fields('t', ['name'])
       ->condition('age', [27, 28], 'IN');
 
     // This gives Paul.
-    $query_2 = $this->connection->select('test', 't')
+    $query_2 = db_select('test', 't')
       ->fields('t', ['name'])
       ->condition('age', 26);
 
@@ -402,12 +357,12 @@ class SelectTest extends DatabaseTestBase {
    */
   public function testUnionOrderLimit() {
     // This gives George and Ringo.
-    $query_1 = $this->connection->select('test', 't')
+    $query_1 = db_select('test', 't')
       ->fields('t', ['name'])
       ->condition('age', [27, 28], 'IN');
 
     // This gives Paul.
-    $query_2 = $this->connection->select('test', 't')
+    $query_2 = db_select('test', 't')
       ->fields('t', ['name'])
       ->condition('age', 26);
 
@@ -446,13 +401,13 @@ class SelectTest extends DatabaseTestBase {
     // same as the chance that a deck of cards will come out in the same order
     // after shuffling it (in other words, nearly impossible).
     $number_of_items = 52;
-    while ($this->connection->query("SELECT MAX(id) FROM {test}")->fetchField() < $number_of_items) {
-      $this->connection->insert('test')->fields(['name' => $this->randomMachineName()])->execute();
+    while (db_query("SELECT MAX(id) FROM {test}")->fetchField() < $number_of_items) {
+      db_insert('test')->fields(['name' => $this->randomMachineName()])->execute();
     }
 
     // First select the items in order and make sure we get an ordered list.
     $expected_ids = range(1, $number_of_items);
-    $ordered_ids = $this->connection->select('test', 't')
+    $ordered_ids = db_select('test', 't')
       ->fields('t', ['id'])
       ->range(0, $number_of_items)
       ->orderBy('id')
@@ -463,7 +418,7 @@ class SelectTest extends DatabaseTestBase {
     // Now perform the same query, but instead choose a random ordering. We
     // expect this to contain a differently ordered version of the original
     // result.
-    $randomized_ids = $this->connection->select('test', 't')
+    $randomized_ids = db_select('test', 't')
       ->fields('t', ['id'])
       ->range(0, $number_of_items)
       ->orderRandom()
@@ -476,7 +431,7 @@ class SelectTest extends DatabaseTestBase {
 
     // Now perform the exact same query again, and make sure the order is
     // different.
-    $randomized_ids_second_set = $this->connection->select('test', 't')
+    $randomized_ids_second_set = db_select('test', 't')
       ->fields('t', ['id'])
       ->range(0, $number_of_items)
       ->orderRandom()
@@ -489,40 +444,41 @@ class SelectTest extends DatabaseTestBase {
   }
 
   /**
-   * Data provider for testRegularExpressionCondition().
-   *
-   * @return array[]
-   *   Returns data-set elements with:
-   *     - the expected result of the query
-   *     - the table column to do the search on.
-   *     - the regular expression pattern to search for.
-   *     - the regular expression operator 'REGEXP' or 'NOT REGEXP'.
+   * Tests that filter by a regular expression works as expected.
    */
-  public function providerRegularExpressionCondition() {
-    return [
-      [['John'], 'name', 'hn$', 'REGEXP'],
-      [['Paul'], 'name', '^Pau', 'REGEXP'],
-      [['George', 'Ringo'], 'name', 'Ringo|George', 'REGEXP'],
-      [['Pete'], 'job', '#Drummer', 'REGEXP'],
-      [[], 'job', '#Singer', 'REGEXP'],
-      [['Paul', 'Pete'], 'age', '2[6]', 'REGEXP'],
+  public function testRegexCondition() {
 
-      [['George', 'Paul', 'Pete', 'Ringo'], 'name', 'hn$', 'NOT REGEXP'],
-      [['George', 'John', 'Pete', 'Ringo'], 'name', '^Pau', 'NOT REGEXP'],
-      [['John', 'Paul', 'Pete'], 'name', 'Ringo|George', 'NOT REGEXP'],
-      [['George', 'John', 'Paul', 'Ringo'], 'job', '#Drummer', 'NOT REGEXP'],
-      [['George', 'John', 'Paul', 'Pete', 'Ringo'], 'job', '#Singer', 'NOT REGEXP'],
-      [['George', 'John', 'Ringo'], 'age', '2[6]', 'NOT REGEXP'],
+    $test_groups[] = [
+      'regex' => 'hn$',
+      'expected' => [
+        'John',
+      ],
     ];
-  }
+    $test_groups[] = [
+      'regex' => '^Pau',
+      'expected' => [
+        'Paul',
+      ],
+    ];
+    $test_groups[] = [
+      'regex' => 'Ringo|George',
+      'expected' => [
+        'Ringo', 'George',
+      ],
+    ];
 
-  /**
-   * Tests that filter by 'REGEXP' and 'NOT REGEXP' works as expected.
-   *
-   * @dataProvider providerRegularExpressionCondition
-   */
-  public function testRegularExpressionCondition($expected, $column, $pattern, $operator) {
     $database = $this->container->get('database');
+    foreach ($test_groups as $test_group) {
+      $query = $database->select('test', 't');
+      $query->addField('t', 'name');
+      $query->condition('t.name', $test_group['regex'], 'REGEXP');
+      $result = $query->execute()->fetchCol();
+
+      $this->assertEqual(count($result), count($test_group['expected']), 'Returns the expected number of rows.');
+      $this->assertEqual(sort($result), sort($test_group['expected']), 'Returns the expected rows.');
+    }
+
+    // Ensure that filter by "#" still works due to the quoting.
     $database->insert('test')
       ->fields([
         'name' => 'Pete',
@@ -531,20 +487,41 @@ class SelectTest extends DatabaseTestBase {
       ])
       ->execute();
 
-    $query = $database->select('test', 't');
-    $query->addField('t', 'name');
-    $query->condition("t.$column", $pattern, $operator);
-    $result = $query->execute()->fetchCol();
-    sort($result);
+    $test_groups = [];
+    $test_groups[] = [
+      'regex' => '#Drummer',
+      'expected' => [
+        'Pete',
+      ],
+    ];
+    $test_groups[] = [
+      'regex' => '#Singer',
+      'expected' => [],
+    ];
 
-    $this->assertEquals($expected, $result);
+    foreach ($test_groups as $test_group) {
+      $query = $database->select('test', 't');
+      $query->addField('t', 'name');
+      $query->condition('t.job', $test_group['regex'], 'REGEXP');
+      $result = $query->execute()->fetchCol();
+
+      $this->assertEqual(count($result), count($test_group['expected']), 'Returns the expected number of rows.');
+      $this->assertEqual(sort($result), sort($test_group['expected']), 'Returns the expected rows.');
+    }
+
+    // Ensure that REGEXP filter still works with no-string type field.
+    $query = $database->select('test', 't');
+    $query->addField('t', 'age');
+    $query->condition('t.age', '2[6]', 'REGEXP');
+    $result = $query->execute()->fetchField();
+    $this->assertEquals($result, '26', 'Regexp with number type.');
   }
 
   /**
    * Tests that aliases are renamed when they are duplicates.
    */
   public function testSelectDuplicateAlias() {
-    $query = $this->connection->select('test', 't');
+    $query = db_select('test', 't');
     $alias1 = $query->addField('t', 'name', 'the_alias');
     $alias2 = $query->addField('t', 'age', 'the_alias');
     $this->assertNotIdentical($alias1, $alias2, 'Duplicate aliases are renamed.');
@@ -559,7 +536,7 @@ class SelectTest extends DatabaseTestBase {
       // Normally it would throw an exception but we are suppressing
       // it with the throw_exception option.
       $options['throw_exception'] = FALSE;
-      $this->connection->select('some_table_that_doesnt_exist', 't', $options)
+      db_select('some_table_that_doesnt_exist', 't', $options)
         ->fields('t')
         ->countQuery()
         ->execute();
@@ -573,7 +550,7 @@ class SelectTest extends DatabaseTestBase {
 
     try {
       // This query will fail because the table does not exist.
-      $this->connection->select('some_table_that_doesnt_exist', 't')
+      db_select('some_table_that_doesnt_exist', 't')
         ->fields('t')
         ->countQuery()
         ->execute();
@@ -590,7 +567,7 @@ class SelectTest extends DatabaseTestBase {
    */
   public function testEmptyInCondition() {
     try {
-      $this->connection->select('test', 't')
+      db_select('test', 't')
         ->fields('t')
         ->condition('age', [], 'IN')
         ->execute();
@@ -602,7 +579,7 @@ class SelectTest extends DatabaseTestBase {
     }
 
     try {
-      $this->connection->select('test', 't')
+      db_select('test', 't')
         ->fields('t')
         ->condition('age', [], 'NOT IN')
         ->execute();

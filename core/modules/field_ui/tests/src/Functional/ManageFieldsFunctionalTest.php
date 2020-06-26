@@ -30,11 +30,6 @@ class ManageFieldsFunctionalTest extends BrowserTestBase {
   public static $modules = ['node', 'field_ui', 'field_test', 'taxonomy', 'image', 'block'];
 
   /**
-   * {@inheritdoc}
-   */
-  protected $defaultTheme = 'stark';
-
-  /**
    * The ID of the custom content type created for testing.
    *
    * @var string
@@ -106,8 +101,7 @@ class ManageFieldsFunctionalTest extends BrowserTestBase {
     ];
     $this->createEntityReferenceField('node', 'article', 'field_' . $vocabulary->id(), 'Tags', 'taxonomy_term', 'default', $handler_settings);
 
-    \Drupal::service('entity_display.repository')
-      ->getFormDisplay('node', 'article')
+    entity_get_form_display('node', 'article', 'default')
       ->setComponent('field_' . $vocabulary->id())
       ->save();
   }
@@ -147,7 +141,7 @@ class ManageFieldsFunctionalTest extends BrowserTestBase {
     ];
     foreach ($table_headers as $table_header) {
       // We check that the label appear in the table headings.
-      $this->assertRaw($table_header . '</th>', new FormattableMarkup('%table_header table header was found.', ['%table_header' => $table_header]));
+      $this->assertRaw($table_header . '</th>', format_string('%table_header table header was found.', ['%table_header' => $table_header]));
     }
 
     // Test the "Add field" action link.
@@ -231,9 +225,9 @@ class ManageFieldsFunctionalTest extends BrowserTestBase {
 
     // Check that fields of other entity types (here, the 'comment_body' field)
     // do not show up in the "Re-use existing field" list.
-    $this->assertEmpty($this->xpath('//select[@id="edit-existing-storage-name"]//option[@value="comment"]'), 'The list of options respects entity type restrictions.');
+    $this->assertFalse($this->xpath('//select[@id="edit-existing-storage-name"]//option[@value="comment"]'), 'The list of options respects entity type restrictions.');
     // Validate the FALSE assertion above by also testing a valid one.
-    $this->assertNotEmpty($this->xpath('//select[@id="edit-existing-storage-name"]//option[@value=:field_name]', [':field_name' => $this->fieldName]), 'The list of options shows a valid option.');
+    $this->assertTrue($this->xpath('//select[@id="edit-existing-storage-name"]//option[@value=:field_name]', [':field_name' => $this->fieldName]), 'The list of options shows a valid option.');
 
     // Add a new field based on an existing field.
     $this->fieldUIAddExistingField("admin/structure/types/manage/page", $this->fieldName, $this->fieldLabel . '_2');
@@ -404,7 +398,7 @@ class ManageFieldsFunctionalTest extends BrowserTestBase {
     // Create a valid field.
     $this->fieldUIAddNewField('admin/structure/types/manage/' . $this->contentType, $this->fieldNameInput, $this->fieldLabel);
     $this->drupalGet('admin/structure/types/manage/' . $this->contentType . '/fields/node.' . $this->contentType . '.' . $field_prefix . $this->fieldNameInput);
-    $this->assertText(new FormattableMarkup('@label settings for @type', ['@label' => $this->fieldLabel, '@type' => $this->contentType]));
+    $this->assertText(format_string('@label settings for @type', ['@label' => $this->fieldLabel, '@type' => $this->contentType]));
   }
 
   /**
@@ -425,10 +419,7 @@ class ManageFieldsFunctionalTest extends BrowserTestBase {
     ]);
     $field->save();
 
-    /** @var \Drupal\Core\Entity\EntityDisplayRepositoryInterface $display_repository */
-    $display_repository = \Drupal::service('entity_display.repository');
-
-    $display_repository->getFormDisplay('node', $this->contentType)
+    entity_get_form_display('node', $this->contentType, 'default')
       ->setComponent($field_name)
       ->save();
 
@@ -480,9 +471,8 @@ class ManageFieldsFunctionalTest extends BrowserTestBase {
     $this->assertEqual($field->getDefaultValueLiteral(), [], 'The default value was correctly saved.');
 
     // Check that the default widget is used when the field is hidden.
-    $display_repository->getFormDisplay($field->getTargetEntityTypeId(), $field->getTargetBundle())
-      ->removeComponent($field_name)
-      ->save();
+    entity_get_form_display($field->getTargetEntityTypeId(), $field->getTargetBundle(), 'default')
+      ->removeComponent($field_name)->save();
     $this->drupalGet($admin_path);
     $this->assertFieldById($element_id, '', 'The default value widget was displayed when field is hidden.');
   }
@@ -566,8 +556,7 @@ class ManageFieldsFunctionalTest extends BrowserTestBase {
       'field_storage' => $field_storage,
       'bundle' => $this->contentType,
     ])->save();
-    \Drupal::service('entity_display.repository')
-      ->getFormDisplay('node', $this->contentType)
+    entity_get_form_display('node', $this->contentType, 'default')
       ->setComponent($field_name, [
         'type' => 'test_field_widget',
       ])
@@ -587,8 +576,8 @@ class ManageFieldsFunctionalTest extends BrowserTestBase {
   public function testHiddenFields() {
     // Check that the field type is not available in the 'add new field' row.
     $this->drupalGet('admin/structure/types/manage/' . $this->contentType . '/fields/add-field');
-    $this->assertEmpty($this->xpath('//select[@id="edit-new-storage-type"]//option[@value="hidden_test_field"]'), "The 'add new field' select respects field types 'no_ui' property.");
-    $this->assertNotEmpty($this->xpath('//select[@id="edit-new-storage-type"]//option[@value="shape"]'), "The 'add new field' select shows a valid option.");
+    $this->assertFalse($this->xpath('//select[@id="edit-new-storage-type"]//option[@value="hidden_test_field"]'), "The 'add new field' select respects field types 'no_ui' property.");
+    $this->assertTrue($this->xpath('//select[@id="edit-new-storage-type"]//option[@value="shape"]'), "The 'add new field' select shows a valid option.");
 
     // Create a field storage and a field programmatically.
     $field_name = 'hidden_test_field';
@@ -604,11 +593,10 @@ class ManageFieldsFunctionalTest extends BrowserTestBase {
       'label' => t('Hidden field'),
     ];
     FieldConfig::create($field)->save();
-    \Drupal::service('entity_display.repository')
-      ->getFormDisplay('node', $this->contentType)
+    entity_get_form_display('node', $this->contentType, 'default')
       ->setComponent($field_name)
       ->save();
-    $this->assertInstanceOf(FieldConfig::class, FieldConfig::load('node.' . $this->contentType . '.' . $field_name), new FormattableMarkup('A field of the field storage %field was created programmatically.', ['%field' => $field_name]));
+    $this->assertTrue(FieldConfig::load('node.' . $this->contentType . '.' . $field_name), format_string('A field of the field storage %field was created programmatically.', ['%field' => $field_name]));
 
     // Check that the newly added field appears on the 'Manage Fields'
     // screen.
@@ -618,17 +606,17 @@ class ManageFieldsFunctionalTest extends BrowserTestBase {
     // Check that the field does not appear in the 're-use existing field' row
     // on other bundles.
     $this->drupalGet('admin/structure/types/manage/page/fields/add-field');
-    $this->assertEmpty($this->xpath('//select[@id="edit-existing-storage-name"]//option[@value=:field_name]', [':field_name' => $field_name]), "The 're-use existing field' select respects field types 'no_ui' property.");
-    $this->assertNotEmpty($this->xpath('//select[@id="edit-existing-storage-name"]//option[@value=:field_name]', [':field_name' => 'field_tags']), "The 're-use existing field' select shows a valid option.");
+    $this->assertFalse($this->xpath('//select[@id="edit-existing-storage-name"]//option[@value=:field_name]', [':field_name' => $field_name]), "The 're-use existing field' select respects field types 'no_ui' property.");
+    $this->assertTrue($this->xpath('//select[@id="edit-existing-storage-name"]//option[@value=:field_name]', [':field_name' => 'field_tags']), "The 're-use existing field' select shows a valid option.");
 
     // Check that non-configurable fields are not available.
     $field_types = \Drupal::service('plugin.manager.field.field_type')->getDefinitions();
     foreach ($field_types as $field_type => $definition) {
       if (empty($definition['no_ui'])) {
-        $this->assertNotEmpty($this->xpath('//select[@id="edit-new-storage-type"]//option[@value=:field_type]', [':field_type' => $field_type]), new FormattableMarkup('Configurable field type @field_type is available.', ['@field_type' => $field_type]));
+        $this->assertTrue($this->xpath('//select[@id="edit-new-storage-type"]//option[@value=:field_type]', [':field_type' => $field_type]), new FormattableMarkup('Configurable field type @field_type is available.', ['@field_type' => $field_type]));
       }
       else {
-        $this->assertEmpty($this->xpath('//select[@id="edit-new-storage-type"]//option[@value=:field_type]', [':field_type' => $field_type]), new FormattableMarkup('Non-configurable field type @field_type is not available.', ['@field_type' => $field_type]));
+        $this->assertFalse($this->xpath('//select[@id="edit-new-storage-type"]//option[@value=:field_type]', [':field_type' => $field_type]), new FormattableMarkup('Non-configurable field type @field_type is not available.', ['@field_type' => $field_type]));
       }
     }
   }
@@ -701,10 +689,7 @@ class ManageFieldsFunctionalTest extends BrowserTestBase {
       'bundle' => 'article',
     ])->save();
 
-    \Drupal::service('entity_display.repository')
-      ->getFormDisplay('node', 'article')
-      ->setComponent('field_image')
-      ->save();
+    entity_get_form_display('node', 'article', 'default')->setComponent('field_image')->save();
 
     $edit = [
       'description' => '<strong>Test with an upload field.',
@@ -758,12 +743,9 @@ class ManageFieldsFunctionalTest extends BrowserTestBase {
     $this->assertTrue($field->isRequired());
     $this->assertEqual($field->getSetting('test_field_setting'), 'preconfigured_field_setting');
 
-    /** @var \Drupal\Core\Entity\EntityDisplayRepositoryInterface $display_repository */
-    $display_repository = \Drupal::service('entity_display.repository');
-
-    $form_display = $display_repository->getFormDisplay('node', 'article');
+    $form_display = entity_get_form_display('node', 'article', 'default');
     $this->assertEqual($form_display->getComponent('field_test_custom_options')['type'], 'test_field_widget_multiple');
-    $view_display = $display_repository->getViewDisplay('node', 'article');
+    $view_display = entity_get_display('node', 'article', 'default');
     $this->assertEqual($view_display->getComponent('field_test_custom_options')['type'], 'field_test_multiple');
     $this->assertEqual($view_display->getComponent('field_test_custom_options')['settings']['test_formatter_setting_multiple'], 'altered dummy test string');
   }

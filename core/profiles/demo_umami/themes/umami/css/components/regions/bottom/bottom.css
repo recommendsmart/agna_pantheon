@@ -4,9 +4,9 @@
  */
 
 .layout-bottom {
-  overflow: hidden;
-  padding: 2rem 1rem;
   background: #fff;
+  padding: 2rem 1rem;
+  overflow: hidden;
 }
 
 @media screen and (min-width: 75rem) {

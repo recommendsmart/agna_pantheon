@@ -1,0 +1,9 @@
+langcode: en
+status: false
+dependencies:
+  module:
+    - eform
+id: eform_submission.submit
+label: Submission
+targetEntityType: eform_submission
+cache: true

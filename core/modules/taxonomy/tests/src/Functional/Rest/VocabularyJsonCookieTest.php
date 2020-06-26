@@ -26,9 +26,4 @@ class VocabularyJsonCookieTest extends VocabularyResourceTestBase {
    */
   protected static $auth = 'cookie';
 
-  /**
-   * {@inheritdoc}
-   */
-  protected $defaultTheme = 'stark';
-
 }

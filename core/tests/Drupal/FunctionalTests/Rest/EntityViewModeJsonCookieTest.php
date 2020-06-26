@@ -26,9 +26,4 @@ class EntityViewModeJsonCookieTest extends EntityViewModeResourceTestBase {
    */
   protected static $auth = 'cookie';
 
-  /**
-   * {@inheritdoc}
-   */
-  protected $defaultTheme = 'stark';
-
 }

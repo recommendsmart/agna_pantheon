@@ -25,11 +25,6 @@ class ResponsiveImageStyleHalJsonBasicAuthTest extends ResponsiveImageStyleResou
   /**
    * {@inheritdoc}
    */
-  protected $defaultTheme = 'stark';
-
-  /**
-   * {@inheritdoc}
-   */
   protected static $mimeType = 'application/hal+json';
 
   /**

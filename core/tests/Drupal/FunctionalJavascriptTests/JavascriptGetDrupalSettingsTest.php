@@ -15,11 +15,6 @@ class JavascriptGetDrupalSettingsTest extends WebDriverTestBase {
   protected static $modules = ['test_page_test'];
 
   /**
-   * {@inheritdoc}
-   */
-  protected $defaultTheme = 'stark';
-
-  /**
    * Tests retrieval of Drupal settings.
    *
    * @see \Drupal\FunctionalJavascriptTests\WebDriverTestBase::getDrupalSettings()

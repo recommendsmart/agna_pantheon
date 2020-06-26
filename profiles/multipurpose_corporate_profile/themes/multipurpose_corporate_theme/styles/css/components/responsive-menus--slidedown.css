@@ -1,0 +1,34 @@
+/*!
+ *  Font Awesome 4.6.3 by @davegandy - http://fontawesome.io - @fontawesome
+ *  License - http://fontawesome.io/license (Font: SIL OFL 1.1, CSS: MIT License)
+ */
+/**
+ * Slidedown
+ * Simple hamburger menu that slides vertically downwards. Pushes and re-flows
+ * the content below. You could try setting this to postion absolute and
+ * style like an overlay.
+ ============================================================================ */
+.ms-slidedown .rm-toggle {
+  margin-left: 0;
+  padding-left: 0;
+}
+.ms-slidedown .rm-block__content {
+  display: none;
+  clear: both;
+  opacity: 0.001;
+  -webkit-transition: all, 0.2s, ease-in-out;
+  transition: all, 0.2s, ease-in-out;
+}
+.ms-slidedown .rm-block__content .menu__link {
+  margin-bottom: 3px;
+  margin-bottom: 0.1875rem;
+  padding: 7px;
+  padding: 0.4375rem;
+}
+.ms-slidedown.rm-is-open .rm-block__content {
+  display: block;
+  opacity: 1;
+  padding: 0 0 7px;
+  padding: 0 0 0.4375rem;
+}
+/*# sourceMappingURL=maps/responsive-menus--slidedown.css.map */

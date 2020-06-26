@@ -28,9 +28,4 @@ class FileXmlCookieTest extends FileResourceTestBase {
    */
   protected static $auth = 'cookie';
 
-  /**
-   * {@inheritdoc}
-   */
-  protected $defaultTheme = 'stark';
-
 }

@@ -21,9 +21,4 @@ class RestResourceConfigJsonAnonTest extends RestResourceConfigResourceTestBase 
    */
   protected static $mimeType = 'application/json';
 
-  /**
-   * {@inheritdoc}
-   */
-  protected $defaultTheme = 'stark';
-
 }

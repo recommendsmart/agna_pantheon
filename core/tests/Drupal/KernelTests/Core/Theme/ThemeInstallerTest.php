@@ -41,13 +41,13 @@ class ThemeInstallerTest extends KernelTestBase {
    * Verifies that no themes are installed by default.
    */
   public function testEmpty() {
-    $this->assertEmpty($this->extensionConfig()->get('theme'));
+    $this->assertFalse($this->extensionConfig()->get('theme'));
 
-    $this->assertEmpty(array_keys($this->themeHandler()->listInfo()));
-    $this->assertEmpty(array_keys(\Drupal::service('theme_handler')->listInfo()));
+    $this->assertFalse(array_keys($this->themeHandler()->listInfo()));
+    $this->assertFalse(array_keys(system_list('theme')));
 
     // Rebuilding available themes should always yield results though.
-    $this->assertNotEmpty($this->themeHandler()->rebuildThemeData()['stark'], 'ThemeHandler::rebuildThemeData() yields all available themes.');
+    $this->assertTrue($this->themeHandler()->rebuildThemeData()['stark'], 'ThemeHandler::rebuildThemeData() yields all available themes.');
 
     // theme_get_setting() should return global default theme settings.
     $this->assertIdentical(theme_get_setting('features.favicon'), TRUE);
@@ -70,6 +70,8 @@ class ThemeInstallerTest extends KernelTestBase {
     $this->assertTrue(isset($themes[$name]));
     $this->assertEqual($themes[$name]->getName(), $name);
 
+    $this->assertEqual(array_keys(system_list('theme')), array_keys($themes));
+
     // Verify that test_basetheme.settings is active.
     $this->assertIdentical(theme_get_setting('features.favicon', $name), FALSE);
     $this->assertEqual(theme_get_setting('base', $name), 'only');
@@ -84,7 +86,7 @@ class ThemeInstallerTest extends KernelTestBase {
     $base_name = 'test_basetheme';
 
     $themes = $this->themeHandler()->listInfo();
-    $this->assertEmpty(array_keys($themes));
+    $this->assertFalse(array_keys($themes));
 
     $this->themeInstaller()->install([$name]);
 
@@ -106,10 +108,10 @@ class ThemeInstallerTest extends KernelTestBase {
     $name = 'non_existing_theme';
 
     $themes = $this->themeHandler()->listInfo();
-    $this->assertEmpty(array_keys($themes));
+    $this->assertFalse(array_keys($themes));
 
     try {
-      $message = 'ThemeInstaller::install() throws UnknownExtensionException upon installing a non-existing theme.';
+      $message = 'ThemeHandler::install() throws UnknownExtensionException upon installing a non-existing theme.';
       $this->themeInstaller()->install([$name]);
       $this->fail($message);
     }
@@ -118,7 +120,7 @@ class ThemeInstallerTest extends KernelTestBase {
     }
 
     $themes = $this->themeHandler()->listInfo();
-    $this->assertEmpty(array_keys($themes));
+    $this->assertFalse(array_keys($themes));
   }
 
   /**
@@ -128,7 +130,7 @@ class ThemeInstallerTest extends KernelTestBase {
     $name = 'test_theme_having_veery_long_name_which_is_too_long';
 
     try {
-      $message = 'ThemeInstaller::install() throws ExtensionNameLengthException upon installing a theme with a too long name.';
+      $message = 'ThemeHandler::install() throws ExtensionNameLengthException upon installing a theme with a too long name.';
       $this->themeInstaller()->install([$name]);
       $this->fail($message);
     }
@@ -151,8 +153,8 @@ class ThemeInstallerTest extends KernelTestBase {
     $this->assertTrue(isset($themes[$other_name]));
 
     try {
-      $message = 'ThemeInstaller::uninstall() throws InvalidArgumentException upon disabling default theme.';
-      $this->themeInstaller()->uninstall([$name]);
+      $message = 'ThemeHandler::uninstall() throws InvalidArgumentException upon disabling default theme.';
+      $this->themeHandler()->uninstall([$name]);
       $this->fail($message);
     }
     catch (\InvalidArgumentException $e) {
@@ -178,8 +180,8 @@ class ThemeInstallerTest extends KernelTestBase {
     $this->assertTrue(isset($themes[$other_name]));
 
     try {
-      $message = 'ThemeInstaller::uninstall() throws InvalidArgumentException upon disabling admin theme.';
-      $this->themeInstaller()->uninstall([$name]);
+      $message = 'ThemeHandler::uninstall() throws InvalidArgumentException upon disabling admin theme.';
+      $this->themeHandler()->uninstall([$name]);
       $this->fail($message);
     }
     catch (\InvalidArgumentException $e) {
@@ -216,7 +218,7 @@ class ThemeInstallerTest extends KernelTestBase {
     $this->themeInstaller()->install([$sub_name]);
 
     try {
-      $message = 'ThemeInstaller::install() throws InvalidArgumentException upon uninstalling base theme before sub theme.';
+      $message = 'ThemeHandler::install() throws InvalidArgumentException upon uninstalling base theme before sub theme.';
       $this->themeInstaller()->uninstall([$name]);
       $this->fail($message);
     }
@@ -243,10 +245,10 @@ class ThemeInstallerTest extends KernelTestBase {
     $name = 'non_existing_theme';
 
     $themes = $this->themeHandler()->listInfo();
-    $this->assertEmpty(array_keys($themes));
+    $this->assertFalse(array_keys($themes));
 
     try {
-      $message = 'ThemeInstaller::uninstall() throws UnknownExtensionException upon uninstalling a non-existing theme.';
+      $message = 'ThemeHandler::uninstall() throws UnknownExtensionException upon uninstalling a non-existing theme.';
       $this->themeInstaller()->uninstall([$name]);
       $this->fail($message);
     }
@@ -255,7 +257,7 @@ class ThemeInstallerTest extends KernelTestBase {
     }
 
     $themes = $this->themeHandler()->listInfo();
-    $this->assertEmpty(array_keys($themes));
+    $this->assertFalse(array_keys($themes));
   }
 
   /**
@@ -265,20 +267,22 @@ class ThemeInstallerTest extends KernelTestBase {
     $name = 'test_basetheme';
 
     $this->themeInstaller()->install([$name]);
-    $this->assertNotEmpty($this->config("$name.settings")->get());
+    $this->assertTrue($this->config("$name.settings")->get());
 
     $this->themeInstaller()->uninstall([$name]);
 
-    $this->assertEmpty(array_keys($this->themeHandler()->listInfo()));
+    $this->assertFalse(array_keys($this->themeHandler()->listInfo()));
+    $this->assertFalse(array_keys(system_list('theme')));
 
-    $this->assertEmpty($this->config("$name.settings")->get());
+    $this->assertFalse($this->config("$name.settings")->get());
 
     // Ensure that the uninstalled theme can be installed again.
     $this->themeInstaller()->install([$name]);
     $themes = $this->themeHandler()->listInfo();
     $this->assertTrue(isset($themes[$name]));
     $this->assertEqual($themes[$name]->getName(), $name);
-    $this->assertNotEmpty($this->config("$name.settings")->get());
+    $this->assertEqual(array_keys(system_list('theme')), array_keys($themes));
+    $this->assertTrue($this->config("$name.settings")->get());
   }
 
   /**
@@ -288,7 +292,7 @@ class ThemeInstallerTest extends KernelTestBase {
     $name = 'test_basetheme';
 
     try {
-      $message = 'ThemeInstaller::uninstall() throws UnknownExtensionException upon uninstalling a theme that is not installed.';
+      $message = 'ThemeHandler::uninstall() throws UnknownExtensionException upon uninstalling a theme that is not installed.';
       $this->themeInstaller()->uninstall([$name]);
       $this->fail($message);
     }
@@ -311,7 +315,9 @@ class ThemeInstallerTest extends KernelTestBase {
     $themes = $this->themeHandler()->listInfo();
     $this->assertFalse(isset($themes[$name]->info['regions']['test_region']));
 
-    // Install module_test.
+    // Rebuild module data so we know where module_test is located.
+    // @todo Remove as part of https://www.drupal.org/node/2186491
+    system_rebuild_module_data();
     $this->moduleInstaller()->install(['module_test'], FALSE);
     $this->assertTrue($this->moduleHandler()->moduleExists('module_test'));
 
@@ -321,12 +327,12 @@ class ThemeInstallerTest extends KernelTestBase {
     // Legacy assertions.
     // @todo Remove once theme initialization/info has been modernized.
     // @see https://www.drupal.org/node/2228093
-    $info = \Drupal::service('extension.list.theme')->getExtensionInfo($name);
+    $info = system_get_info('theme', $name);
     $this->assertTrue(isset($info['regions']['test_region']));
     $regions = system_region_list($name);
     $this->assertTrue(isset($regions['test_region']));
-    $theme_list = \Drupal::service('theme_handler')->listInfo();
-    $this->assertTrue(isset($theme_list[$name]->info['regions']['test_region']));
+    $system_list = system_list('theme');
+    $this->assertTrue(isset($system_list[$name]->info['regions']['test_region']));
 
     $this->moduleInstaller()->uninstall(['module_test']);
     $this->assertFalse($this->moduleHandler()->moduleExists('module_test'));
@@ -337,12 +343,12 @@ class ThemeInstallerTest extends KernelTestBase {
     // Legacy assertions.
     // @todo Remove once theme initialization/info has been modernized.
     // @see https://www.drupal.org/node/2228093
-    $info = \Drupal::service('extension.list.theme')->getExtensionInfo($name);
+    $info = system_get_info('theme', $name);
     $this->assertFalse(isset($info['regions']['test_region']));
     $regions = system_region_list($name);
     $this->assertFalse(isset($regions['test_region']));
-    $theme_list = \Drupal::service('theme_handler')->listInfo();
-    $this->assertFalse(isset($theme_list[$name]->info['regions']['test_region']));
+    $system_list = system_list('theme');
+    $this->assertFalse(isset($system_list[$name]->info['regions']['test_region']));
   }
 
   /**

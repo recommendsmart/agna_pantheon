@@ -62,7 +62,7 @@ class ConfigEntityQueryTest extends KernelTestBase {
     // The tests match array.level1.level2.
     $array['level1']['level2'] = 1;
     $entity = ConfigQueryTest::create([
-      'label' => 'entity_1',
+      'label' => $this->randomMachineName(),
       'id' => '1',
       'number' => 31,
       'array' => $array,
@@ -73,7 +73,7 @@ class ConfigEntityQueryTest extends KernelTestBase {
 
     $array['level1']['level2'] = 2;
     $entity = ConfigQueryTest::create([
-      'label' => 'entity_2',
+      'label' => $this->randomMachineName(),
       'id' => '2',
       'number' => 41,
       'array' => $array,
@@ -84,7 +84,7 @@ class ConfigEntityQueryTest extends KernelTestBase {
 
     $array['level1']['level2'] = 1;
     $entity = ConfigQueryTest::create([
-      'label' => 'test_prefix_entity_3',
+      'label' => 'test_prefix_' . $this->randomMachineName(),
       'id' => '3',
       'number' => 59,
       'array' => $array,
@@ -95,7 +95,7 @@ class ConfigEntityQueryTest extends KernelTestBase {
 
     $array['level1']['level2'] = 2;
     $entity = ConfigQueryTest::create([
-      'label' => 'entity_4_test_suffix',
+      'label' => $this->randomMachineName() . '_test_suffix',
       'id' => '4',
       'number' => 26,
       'array' => $array,
@@ -106,7 +106,7 @@ class ConfigEntityQueryTest extends KernelTestBase {
 
     $array['level1']['level2'] = 3;
     $entity = ConfigQueryTest::create([
-      'label' => 'entity_5_TEST_contains_entity_5',
+      'label' => $this->randomMachineName() . '_TEST_contains_' . $this->randomMachineName(),
       'id' => '5',
       'number' => 53,
       'array' => $array,
@@ -352,7 +352,7 @@ class ConfigEntityQueryTest extends KernelTestBase {
   public function testStringIdConditions() {
     // We need an entity with a non-numeric ID.
     $entity = ConfigQueryTest::create([
-      'label' => 'entity_1',
+      'label' => $this->randomMachineName(),
       'id' => 'foo.bar',
     ]);
     $this->entities[] = $entity;
@@ -629,13 +629,13 @@ class ConfigEntityQueryTest extends KernelTestBase {
    */
   public function testLookupKeys() {
     \Drupal::service('state')->set('config_test.lookup_keys', TRUE);
-    \Drupal::entityTypeManager()->clearCachedDefinitions();
+    \Drupal::entityManager()->clearCachedDefinitions();
     $key_value = $this->container->get('keyvalue')->get(QueryFactory::CONFIG_LOOKUP_PREFIX . 'config_test');
 
     $test_entities = [];
     $storage = \Drupal::entityTypeManager()->getStorage('config_test');
     $entity = $storage->create([
-      'label' => 'entity_1',
+      'label' => $this->randomMachineName(),
       'id' => '1',
       'style' => 'test',
     ]);
@@ -647,7 +647,7 @@ class ConfigEntityQueryTest extends KernelTestBase {
     $this->assertEqual($expected, $key_value->get('style:test'));
 
     $entity = $storage->create([
-      'label' => 'entity_2',
+      'label' => $this->randomMachineName(),
       'id' => '2',
       'style' => 'test',
     ]);
@@ -658,7 +658,7 @@ class ConfigEntityQueryTest extends KernelTestBase {
     $this->assertEqual($expected, $key_value->get('style:test'));
 
     $entity = $storage->create([
-      'label' => 'entity_3',
+      'label' => $this->randomMachineName(),
       'id' => '3',
       'style' => 'blah',
     ]);

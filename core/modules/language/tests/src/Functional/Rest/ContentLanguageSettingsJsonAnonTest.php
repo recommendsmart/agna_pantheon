@@ -21,9 +21,4 @@ class ContentLanguageSettingsJsonAnonTest extends ContentLanguageSettingsResourc
    */
   protected static $mimeType = 'application/json';
 
-  /**
-   * {@inheritdoc}
-   */
-  protected $defaultTheme = 'stark';
-
 }

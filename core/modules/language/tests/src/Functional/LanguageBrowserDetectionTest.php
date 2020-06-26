@@ -2,7 +2,6 @@
 
 namespace Drupal\Tests\language\Functional;
 
-use Drupal\Core\Url;
 use Drupal\Tests\BrowserTestBase;
 
 /**
@@ -13,11 +12,6 @@ use Drupal\Tests\BrowserTestBase;
 class LanguageBrowserDetectionTest extends BrowserTestBase {
 
   public static $modules = ['language'];
-
-  /**
-   * {@inheritdoc}
-   */
-  protected $defaultTheme = 'stark';
 
   /**
    * Tests for adding, editing and deleting mappings between browser language
@@ -56,7 +50,7 @@ class LanguageBrowserDetectionTest extends BrowserTestBase {
     $this->assertRaw(t('The mapping for the %browser browser language code has been deleted.', $t_args), 'The test browser language code has been deleted.');
 
     // Check we went back to the browser negotiation mapping overview.
-    $this->assertUrl(Url::fromRoute('language.negotiation_browser', [], ['absolute' => TRUE])->toString());
+    $this->assertUrl(\Drupal::url('language.negotiation_browser', [], ['absolute' => TRUE]));
     // Check that ch-zn no longer exists.
     $this->assertNoField('edit-mappings-zh-cn-browser-langcode', 'Chinese browser language code no longer exists.');
 
@@ -66,7 +60,7 @@ class LanguageBrowserDetectionTest extends BrowserTestBase {
       'new_mapping[drupal_langcode]' => 'en',
     ];
     $this->drupalPostForm('admin/config/regional/language/detection/browser', $edit, t('Save configuration'));
-    $this->assertUrl(Url::fromRoute('language.negotiation_browser', [], ['absolute' => TRUE])->toString());
+    $this->assertUrl(\Drupal::url('language.negotiation_browser', [], ['absolute' => TRUE]));
     $this->assertField('edit-mappings-xx-browser-langcode', 'xx', 'Browser language code found.');
     $this->assertField('edit-mappings-xx-drupal-langcode', 'en', 'Drupal language code found.');
 
@@ -88,7 +82,7 @@ class LanguageBrowserDetectionTest extends BrowserTestBase {
       'mappings[xx][drupal_langcode]' => 'zh-hans',
     ];
     $this->drupalPostForm('admin/config/regional/language/detection/browser', $edit, t('Save configuration'));
-    $this->assertUrl(Url::fromRoute('language.negotiation_browser', [], ['absolute' => TRUE])->toString());
+    $this->assertUrl(\Drupal::url('language.negotiation_browser', [], ['absolute' => TRUE]));
     $this->assertField('edit-mappings-xx-browser-langcode', 'xx', 'Browser language code found.');
     $this->assertField('edit-mappings-xx-drupal-langcode', 'zh-hans', 'Drupal language code found.');
   }

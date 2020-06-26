@@ -112,7 +112,7 @@ class PhpBackend implements CacheBackendInterface {
    * as appropriate.
    *
    * @param object $cache
-   *   An item loaded from self::get() or self::getMultiple().
+   *   An item loaded from cache_get() or cache_get_multiple().
    * @param bool $allow_invalid
    *   If FALSE, the method returns FALSE if the cache item is not valid.
    *
@@ -237,7 +237,7 @@ class PhpBackend implements CacheBackendInterface {
    *
    * @param string $cidhash
    *   The hashed version of the original cache ID after being normalized.
-   * @param object $item
+   * @param \stdClass $item
    *   The cache item to store.
    */
   protected function writeItem($cidhash, \stdClass $item) {

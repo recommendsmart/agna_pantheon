@@ -11,7 +11,7 @@ class SerializationTestEncoder implements EncoderInterface {
    *
    * @var string
    */
-  protected static $format = 'serialization_test';
+  static protected $format = 'serialization_test';
 
   /**
    * {@inheritdoc}

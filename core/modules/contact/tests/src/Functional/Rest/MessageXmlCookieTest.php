@@ -26,11 +26,6 @@ class MessageXmlCookieTest extends MessageResourceTestBase {
   /**
    * {@inheritdoc}
    */
-  protected $defaultTheme = 'stark';
-
-  /**
-   * {@inheritdoc}
-   */
   protected static $auth = 'cookie';
 
 }

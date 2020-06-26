@@ -1,0 +1,42 @@
+langcode: en
+status: true
+dependencies:
+  config:
+    - field.field.node.team_member.body
+    - field.field.node.team_member.comment_node_team_member
+    - field.field.node.team_member.field_photo
+    - node.type.team_member
+  module:
+    - comment
+    - image
+    - text
+    - user
+id: node.team_member.default
+targetEntityType: node
+bundle: team_member
+mode: default
+content:
+  body:
+    label: hidden
+    weight: 2
+    type: text_default
+    settings: {  }
+    third_party_settings: {  }
+  comment_node_team_member:
+    label: hidden
+    type: comment_default
+    weight: 20
+    settings:
+      pager_id: 0
+    third_party_settings: {  }
+  field_photo:
+    label: above
+    weight: 0
+    type: image
+    settings:
+      image_style: ''
+      image_link: ''
+    third_party_settings: {  }
+  links:
+    weight: 100
+hidden: {  }

@@ -44,6 +44,7 @@ class ApplicationDescription
     private $aliases;
 
     /**
+     * @param Application $application
      * @param string|null $namespace
      * @param bool        $showHidden
      */
@@ -96,12 +97,12 @@ class ApplicationDescription
 
     private function inspectApplication()
     {
-        $this->commands = [];
-        $this->namespaces = [];
+        $this->commands = array();
+        $this->namespaces = array();
 
         $all = $this->application->all($this->namespace ? $this->application->findNamespace($this->namespace) : null);
         foreach ($this->sortCommands($all) as $namespace => $commands) {
-            $names = [];
+            $names = array();
 
             /** @var Command $command */
             foreach ($commands as $name => $command) {
@@ -118,7 +119,7 @@ class ApplicationDescription
                 $names[] = $name;
             }
 
-            $this->namespaces[$namespace] = ['id' => $namespace, 'commands' => $names];
+            $this->namespaces[$namespace] = array('id' => $namespace, 'commands' => $names);
         }
     }
 
@@ -127,8 +128,8 @@ class ApplicationDescription
      */
     private function sortCommands(array $commands)
     {
-        $namespacedCommands = [];
-        $globalCommands = [];
+        $namespacedCommands = array();
+        $globalCommands = array();
         foreach ($commands as $name => $command) {
             $key = $this->application->extractNamespace($name, 1);
             if (!$key) {

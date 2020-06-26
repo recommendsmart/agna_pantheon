@@ -1,0 +1,54 @@
+{
+    "_links": {
+        "self": {
+            "href": "http:\/\/default\/portfolioterms\/aliens?_format=hal_json"
+        },
+        "type": {
+            "href": "http:\/\/drupal.org\/rest\/type\/taxonomy_term\/portfolio_terms"
+        }
+    },
+    "tid": [
+        {
+            "value": "1"
+        }
+    ],
+    "uuid": [
+        {
+            "value": "f7124243-ffac-4e1a-8b6b-1cd3aa684f51"
+        }
+    ],
+    "vid": [
+        {
+            "target_id": "portfolio_terms"
+        }
+    ],
+    "langcode": [
+        {
+            "value": "en",
+            "lang": "en"
+        }
+    ],
+    "name": [
+        {
+            "value": "Aliens",
+            "lang": "en"
+        }
+    ],
+    "weight": [
+        {
+            "value": "4"
+        }
+    ],
+    "changed": [
+        {
+            "value": "1464076307",
+            "lang": "en"
+        }
+    ],
+    "default_langcode": [
+        {
+            "value": "1",
+            "lang": "en"
+        }
+    ]
+}

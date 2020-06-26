@@ -28,9 +28,4 @@ class WorkspaceJsonCookieTest extends WorkspaceResourceTestBase {
    */
   protected static $auth = 'cookie';
 
-  /**
-   * {@inheritdoc}
-   */
-  protected $defaultTheme = 'stark';
-
 }

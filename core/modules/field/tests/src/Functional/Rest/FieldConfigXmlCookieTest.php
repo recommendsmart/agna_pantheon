@@ -28,9 +28,4 @@ class FieldConfigXmlCookieTest extends FieldConfigResourceTestBase {
    */
   protected static $auth = 'cookie';
 
-  /**
-   * {@inheritdoc}
-   */
-  protected $defaultTheme = 'stark';
-
 }

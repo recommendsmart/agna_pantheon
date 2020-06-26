@@ -1,0 +1,31 @@
+langcode: en
+status: true
+dependencies:
+  config:
+    - core.entity_view_mode.node.teaser
+    - field.field.node.portfolio.body
+    - field.field.node.portfolio.comment_node_portfolio
+    - field.field.node.portfolio.field_portfolio_image
+    - field.field.node.portfolio.field_portfolio_terms
+    - node.type.portfolio
+  module:
+    - text
+    - user
+id: node.portfolio.teaser
+targetEntityType: node
+bundle: portfolio
+mode: teaser
+content:
+  body:
+    label: hidden
+    weight: 0
+    type: text_summary_or_trimmed
+    settings:
+      trim_length: 600
+    third_party_settings: {  }
+  links:
+    weight: 100
+hidden:
+  comment_node_portfolio: true
+  field_portfolio_image: true
+  field_portfolio_terms: true

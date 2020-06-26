@@ -2,7 +2,6 @@
 
 namespace Drupal\Tests\node\Functional\Views;
 
-use Drupal\Component\Render\FormattableMarkup;
 use Drupal\Core\Cache\Cache;
 use Drupal\Core\Language\LanguageInterface;
 use Drupal\Core\Url;
@@ -20,11 +19,6 @@ use Drupal\views\Views;
 class FrontPageTest extends ViewTestBase {
 
   use AssertViewsCacheTagsTrait;
-
-  /**
-   * {@inheritdoc}
-   */
-  protected $defaultTheme = 'classy';
 
   /**
    * {@inheritdoc}
@@ -51,7 +45,7 @@ class FrontPageTest extends ViewTestBase {
   protected function setUp($import_test_views = TRUE) {
     parent::setUp($import_test_views);
 
-    $this->nodeStorage = $this->container->get('entity_type.manager')
+    $this->nodeStorage = $this->container->get('entity.manager')
       ->getStorage('node');
   }
 
@@ -83,7 +77,7 @@ class FrontPageTest extends ViewTestBase {
     $this->executeView($view);
     $view->preview();
 
-    $this->assertEqual($view->getTitle(), new FormattableMarkup('Welcome to @site_name', ['@site_name' => $site_name]), 'The welcome title is used for the empty view.');
+    $this->assertEqual($view->getTitle(), format_string('Welcome to @site_name', ['@site_name' => $site_name]), 'The welcome title is used for the empty view.');
     $view->destroy();
 
     // Create some nodes on the frontpage view. Add more than 10 nodes in order
@@ -171,7 +165,7 @@ class FrontPageTest extends ViewTestBase {
     $found_nids = array_filter($view->result, function ($row) use ($not_expected_nids) {
       return in_array($row->nid, $not_expected_nids);
     });
-    $this->assertEmpty($found_nids, $message);
+    $this->assertFalse($found_nids, $message);
   }
 
   /**

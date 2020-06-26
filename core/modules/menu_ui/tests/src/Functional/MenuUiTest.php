@@ -10,7 +10,6 @@ use Drupal\menu_link_content\Entity\MenuLinkContent;
 use Drupal\system\Entity\Menu;
 use Drupal\node\Entity\Node;
 use Drupal\node\NodeInterface;
-use Drupal\system\MenuStorage;
 use Drupal\Tests\BrowserTestBase;
 use Drupal\Tests\menu_ui\Traits\MenuUiTrait;
 
@@ -39,11 +38,6 @@ class MenuUiTest extends BrowserTestBase {
     'path',
     'test_page_test',
   ];
-
-  /**
-   * {@inheritdoc}
-   */
-  protected $defaultTheme = 'stark';
 
   /**
    * A user with administration rights.
@@ -168,7 +162,7 @@ class MenuUiTest extends BrowserTestBase {
    */
   public function addCustomMenuCRUD() {
     // Add a new custom menu.
-    $menu_name = strtolower($this->randomMachineName(MenuStorage::MAX_ID_LENGTH));
+    $menu_name = substr(hash('sha256', $this->randomMachineName(16)), 0, MENU_MAX_MENU_NAME_LENGTH_UI);
     $label = $this->randomMachineName(16);
 
     $menu = Menu::create([
@@ -199,7 +193,7 @@ class MenuUiTest extends BrowserTestBase {
   public function addCustomMenu() {
     // Try adding a menu using a menu_name that is too long.
     $this->drupalGet('admin/structure/menu/add');
-    $menu_name = strtolower($this->randomMachineName(MenuStorage::MAX_ID_LENGTH + 1));
+    $menu_name = substr(hash('sha256', $this->randomMachineName(16)), 0, MENU_MAX_MENU_NAME_LENGTH_UI + 1);
     $label = $this->randomMachineName(16);
     $edit = [
       'id' => $menu_name,
@@ -212,19 +206,19 @@ class MenuUiTest extends BrowserTestBase {
     // message.
     $this->assertRaw(t('@name cannot be longer than %max characters but is currently %length characters long.', [
       '@name' => t('Menu name'),
-      '%max' => MenuStorage::MAX_ID_LENGTH,
+      '%max' => MENU_MAX_MENU_NAME_LENGTH_UI,
       '%length' => mb_strlen($menu_name),
     ]));
 
     // Change the menu_name so it no longer exceeds the maximum length.
-    $menu_name = strtolower($this->randomMachineName(MenuStorage::MAX_ID_LENGTH));
+    $menu_name = substr(hash('sha256', $this->randomMachineName(16)), 0, MENU_MAX_MENU_NAME_LENGTH_UI);
     $edit['id'] = $menu_name;
     $this->drupalPostForm('admin/structure/menu/add', $edit, t('Save'));
 
     // Verify that no validation error is given for menu_name length.
     $this->assertNoRaw(t('@name cannot be longer than %max characters but is currently %length characters long.', [
       '@name' => t('Menu name'),
-      '%max' => MenuStorage::MAX_ID_LENGTH,
+      '%max' => MENU_MAX_MENU_NAME_LENGTH_UI,
       '%length' => mb_strlen($menu_name),
     ]));
     // Verify that the confirmation message is displayed.
@@ -260,8 +254,8 @@ class MenuUiTest extends BrowserTestBase {
     $this->assertNull(Menu::load($menu_name), 'Custom menu was deleted');
     // Test if all menu links associated with the menu were removed from
     // database.
-    $result = \Drupal::entityTypeManager()->getStorage('menu_link_content')->loadByProperties(['menu_name' => $menu_name]);
-    $this->assertEmpty($result, 'All menu links associated with the custom menu were deleted.');
+    $result = entity_load_multiple_by_properties('menu_link_content', ['menu_name' => $menu_name]);
+    $this->assertFalse($result, 'All menu links associated with the custom menu were deleted.');
 
     // Make sure there's no delete button on system menus.
     $this->drupalGet('admin/structure/menu/manage/main');
@@ -618,10 +612,10 @@ class MenuUiTest extends BrowserTestBase {
     $this->assertResponse(200);
     $this->assertText('The menu link has been saved.');
 
-    $menu_links = \Drupal::entityTypeManager()->getStorage('menu_link_content')->loadByProperties(['title' => $title]);
+    $menu_links = entity_load_multiple_by_properties('menu_link_content', ['title' => $title]);
 
     $menu_link = reset($menu_links);
-    $this->assertInstanceOf(MenuLinkContent::class, $menu_link, 'Menu link was found in database.');
+    $this->assertTrue($menu_link, 'Menu link was found in database.');
     $this->assertMenuLink(['menu_name' => $menu_name, 'children' => [], 'parent' => $parent], $menu_link->getPluginId());
 
     return $menu_link;
@@ -666,7 +660,7 @@ class MenuUiTest extends BrowserTestBase {
         'weight[0][value]' => '0',
       ];
       $this->drupalPostForm("admin/structure/menu/manage/{$this->menu->id()}/add", $edit, t('Save'));
-      $menu_links = \Drupal::entityTypeManager()->getStorage('menu_link_content')->loadByProperties(['title' => $title]);
+      $menu_links = entity_load_multiple_by_properties('menu_link_content', ['title' => $title]);
       $last_link = reset($menu_links);
       $created_links[] = 'tools:' . $last_link->getPluginId();
     }
@@ -871,47 +865,6 @@ class MenuUiTest extends BrowserTestBase {
   }
 
   /**
-   * Test the "expand all items" feature.
-   */
-  public function testExpandAllItems() {
-    $this->drupalLogin($this->adminUser);
-    $menu = $this->addCustomMenu();
-    $node = $this->drupalCreateNode(['type' => 'article']);
-
-    // Create three menu items, none of which are expanded.
-    $parent = $this->addMenuLink('', $node->toUrl()->toString(), $menu->id(), FALSE);
-    $child_1 = $this->addMenuLink($parent->getPluginId(), $node->toUrl()->toString(), $menu->id(), FALSE);
-    $child_2 = $this->addMenuLink($parent->getPluginId(), $node->toUrl()->toString(), $menu->id(), FALSE);
-
-    // The menu will not automatically show all levels of depth.
-    $this->drupalGet('<front>');
-    $this->assertSession()->linkExists($parent->getTitle());
-    $this->assertSession()->linkNotExists($child_1->getTitle());
-    $this->assertSession()->linkNotExists($child_2->getTitle());
-
-    // Update the menu block to show all levels of depth as expanded.
-    $block_id = $this->blockPlacements[$menu->id()];
-    $this->drupalGet('admin/structure/block/manage/' . $block_id);
-    $this->assertSession()->checkboxNotChecked('settings[expand_all_items]');
-    $this->drupalPostForm(NULL, [
-      'settings[depth]' => 2,
-      'settings[level]' => 1,
-      'settings[expand_all_items]' => 1,
-    ], t('Save block'));
-
-    // Ensure the setting is persisted.
-    $this->drupalGet('admin/structure/block/manage/' . $block_id);
-    $this->assertSession()->checkboxChecked('settings[expand_all_items]');
-
-    // Ensure all three links are shown, including the children which would
-    // usually be hidden without the "expand all items" setting.
-    $this->drupalGet('<front>');
-    $this->assertSession()->linkExists($parent->getTitle());
-    $this->assertSession()->linkExists($child_1->getTitle());
-    $this->assertSession()->linkExists($child_2->getTitle());
-  }
-
-  /**
    * Returns standard menu link.
    *
    * @return \Drupal\Core\Menu\MenuLinkInterface
@@ -991,49 +944,6 @@ class MenuUiTest extends BrowserTestBase {
     $block->getPlugin()->setConfigurationValue('depth', 0);
     $block->getPlugin()->setConfigurationValue('level', 1);
     $block->save();
-  }
-
-  /**
-   * Test that menu links with pending revisions can not be re-parented.
-   */
-  public function testMenuUiWithPendingRevisions() {
-    $this->drupalLogin($this->adminUser);
-    $assert_session = $this->assertSession();
-
-    // Add four menu links in two separate menus.
-    $menu_1 = $this->addCustomMenu();
-    $root_1 = $this->addMenuLink('', '/', $menu_1->id());
-    $this->addMenuLink($root_1->getPluginId(), '/', $menu_1->id());
-
-    $menu_2 = $this->addCustomMenu();
-    $root_2 = $this->addMenuLink('', '/', $menu_2->id());
-    $child_2 = $this->addMenuLink($root_2->getPluginId(), '/', $menu_2->id());
-
-    $this->drupalGet('admin/structure/menu/manage/' . $menu_2->id());
-    $assert_session->pageTextNotContains($menu_2->label() . ' contains 1 menu link with pending revisions. Manipulation of a menu tree having links with pending revisions is not supported, but you can re-enable manipulation by getting each menu link to a published state.');
-
-    $this->drupalGet('admin/structure/menu/manage/' . $menu_1->id());
-    $assert_session->pageTextNotContains($menu_1->label() . ' contains 1 menu link with pending revisions. Manipulation of a menu tree having links with pending revisions is not supported, but you can re-enable manipulation by getting each menu link to a published state.');
-
-    // Create a pending revision for one of the menu links and check that it can
-    // no longer be re-parented in the UI. We can not create pending revisions
-    // through the UI yet so we have to use API calls.
-    \Drupal::entityTypeManager()->getStorage('menu_link_content')->createRevision($child_2, FALSE)->save();
-
-    $this->drupalGet('admin/structure/menu/manage/' . $menu_2->id());
-    $assert_session->pageTextContains($menu_2->label() . ' contains 1 menu link with pending revisions. Manipulation of a menu tree having links with pending revisions is not supported, but you can re-enable manipulation by getting each menu link to a published state.');
-
-    // Check that the 'Enabled' checkbox is hidden for a pending revision.
-    $this->assertNotEmpty($this->cssSelect('input[name="links[menu_plugin_id:' . $root_2->getPluginId() . '][enabled]"]'), 'The publishing status of a default revision can be changed.');
-    $this->assertEmpty($this->cssSelect('input[name="links[menu_plugin_id:' . $child_2->getPluginId() . '][enabled]"]'), 'The publishing status of a pending revision can not be changed.');
-
-    $this->drupalGet('admin/structure/menu/manage/' . $menu_1->id());
-    $assert_session->pageTextNotContains($menu_1->label() . ' contains 1 menu link with pending revisions. Manipulation of a menu tree having links with pending revisions is not supported, but you can re-enable manipulation by getting each menu link to a published state.');
-
-    // Check that the menu overview form can be saved without errors when there
-    // are pending revisions.
-    $this->drupalPostForm('admin/structure/menu/manage/' . $menu_2->id(), [], 'Save');
-    $this->assertSession()->elementNotExists('xpath', '//div[contains(@class, "messages--error")]');
   }
 
 }

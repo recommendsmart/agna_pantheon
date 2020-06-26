@@ -16,11 +16,6 @@ class TermAccessTest extends TaxonomyTestBase {
   use AssertPageCacheContextsAndTagsTrait;
 
   /**
-   * {@inheritdoc}
-   */
-  protected $defaultTheme = 'stark';
-
-  /**
    * Test access control functionality for taxonomy terms.
    */
   public function testTermAccess() {

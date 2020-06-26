@@ -22,11 +22,6 @@ class ContentTranslationContextualLinksTest extends BrowserTestBase {
   protected $bundle;
 
   /**
-   * {@inheritdoc}
-   */
-  protected $defaultTheme = 'stark';
-
-  /**
    * The content type being tested.
    *
    * @var \Drupal\node\Entity\NodeType
@@ -84,8 +79,7 @@ class ContentTranslationContextualLinksTest extends BrowserTestBase {
       'bundle' => $this->bundle,
       'label' => 'Test text-field',
     ])->save();
-    $this->container->get('entity_display.repository')
-      ->getFormDisplay('node', $this->bundle)
+    entity_get_form_display('node', $this->bundle, 'default')
       ->setComponent('field_test_text', [
         'type' => 'text_textfield',
         'weight' => 0,

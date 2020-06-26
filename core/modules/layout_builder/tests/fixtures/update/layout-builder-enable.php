@@ -32,7 +32,6 @@ $display['third_party_settings']['layout_builder']['sections'][] = [
       'weight' => 0,
     ],
   ],
-  'third_party_settings' => [],
 ];
 $connection->update('config')
   ->fields([

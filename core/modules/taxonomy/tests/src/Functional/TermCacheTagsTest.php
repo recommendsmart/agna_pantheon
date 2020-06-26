@@ -21,11 +21,6 @@ class TermCacheTagsTest extends EntityWithUriCacheTagsTestBase {
   /**
    * {@inheritdoc}
    */
-  protected $defaultTheme = 'stark';
-
-  /**
-   * {@inheritdoc}
-   */
   protected function createEntity() {
     // Create a "Camelids" vocabulary.
     $vocabulary = Vocabulary::create([

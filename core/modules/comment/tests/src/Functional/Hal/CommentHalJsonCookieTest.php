@@ -16,9 +16,4 @@ class CommentHalJsonCookieTest extends CommentHalJsonTestBase {
    */
   protected static $auth = 'cookie';
 
-  /**
-   * {@inheritdoc}
-   */
-  protected $defaultTheme = 'stark';
-
 }

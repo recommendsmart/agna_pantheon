@@ -3,14 +3,12 @@
 namespace Drupal\Core\Cache;
 
 use Drupal\Core\Database\Connection;
-use Drupal\Core\Database\DatabaseException;
+use Drupal\Core\Database\SchemaObjectExistsException;
 
 /**
  * Cache tags invalidations checksum implementation that uses the database.
  */
 class DatabaseCacheTagsChecksum implements CacheTagsChecksumInterface, CacheTagsInvalidatorInterface {
-
-  use CacheTagsChecksumTrait;
 
   /**
    * The database connection.
@@ -18,6 +16,22 @@ class DatabaseCacheTagsChecksum implements CacheTagsChecksumInterface, CacheTags
    * @var \Drupal\Core\Database\Connection
    */
   protected $connection;
+
+  /**
+   * Contains already loaded cache invalidations from the database.
+   *
+   * @var array
+   */
+  protected $tagCache = [];
+
+  /**
+   * A list of tags that have already been invalidated in this request.
+   *
+   * Used to prevent the invalidation of the same cache tag multiple times.
+   *
+   * @var array
+   */
+  protected $invalidatedTags = [];
 
   /**
    * Constructs a DatabaseCacheTagsChecksum object.
@@ -32,9 +46,15 @@ class DatabaseCacheTagsChecksum implements CacheTagsChecksumInterface, CacheTags
   /**
    * {@inheritdoc}
    */
-  protected function doInvalidateTags(array $tags) {
+  public function invalidateTags(array $tags) {
     try {
       foreach ($tags as $tag) {
+        // Only invalidate tags once per request unless they are written again.
+        if (isset($this->invalidatedTags[$tag])) {
+          continue;
+        }
+        $this->invalidatedTags[$tag] = TRUE;
+        unset($this->tagCache[$tag]);
         $this->connection->merge('cachetags')
           ->insertFields(['invalidations' => 1])
           ->expression('invalidations', 'invalidations + 1')
@@ -55,18 +75,67 @@ class DatabaseCacheTagsChecksum implements CacheTagsChecksumInterface, CacheTags
   /**
    * {@inheritdoc}
    */
-  protected function getTagInvalidationCounts(array $tags) {
-    try {
-      return $this->connection->query('SELECT tag, invalidations FROM {cachetags} WHERE tag IN ( :tags[] )', [':tags[]' => $tags])
-        ->fetchAllKeyed();
+  public function getCurrentChecksum(array $tags) {
+    // Remove tags that were already invalidated during this request from the
+    // static caches so that another invalidation can occur later in the same
+    // request. Without that, written cache items would not be invalidated
+    // correctly.
+    foreach ($tags as $tag) {
+      unset($this->invalidatedTags[$tag]);
     }
-    catch (\Exception $e) {
-      // If the table does not exist yet, create.
-      if (!$this->ensureTableExists()) {
-        $this->catchException($e);
+    return $this->calculateChecksum($tags);
+  }
+
+  /**
+   * {@inheritdoc}
+   */
+  public function isValid($checksum, array $tags) {
+    return $checksum == $this->calculateChecksum($tags);
+  }
+
+  /**
+   * Calculates the current checksum for a given set of tags.
+   *
+   * @param array $tags
+   *   The array of tags to calculate the checksum for.
+   *
+   * @return int
+   *   The calculated checksum.
+   */
+  protected function calculateChecksum(array $tags) {
+    $checksum = 0;
+
+    $query_tags = array_diff($tags, array_keys($this->tagCache));
+    if ($query_tags) {
+      $db_tags = [];
+      try {
+        $db_tags = $this->connection->query('SELECT tag, invalidations FROM {cachetags} WHERE tag IN ( :tags[] )', [':tags[]' => $query_tags])
+          ->fetchAllKeyed();
+        $this->tagCache += $db_tags;
       }
+      catch (\Exception $e) {
+        // If the table does not exist yet, create.
+        if (!$this->ensureTableExists()) {
+          $this->catchException($e);
+        }
+      }
+      // Fill static cache with empty objects for tags not found in the database.
+      $this->tagCache += array_fill_keys(array_diff($query_tags, array_keys($db_tags)), 0);
     }
-    return [];
+
+    foreach ($tags as $tag) {
+      $checksum += $this->tagCache[$tag];
+    }
+
+    return $checksum;
+  }
+
+  /**
+   * {@inheritdoc}
+   */
+  public function reset() {
+    $this->tagCache = [];
+    $this->invalidatedTags = [];
   }
 
   /**
@@ -86,7 +155,7 @@ class DatabaseCacheTagsChecksum implements CacheTagsChecksumInterface, CacheTags
     // If another process has already created the cachetags table, attempting to
     // recreate it will throw an exception. In this case just catch the
     // exception and do nothing.
-    catch (DatabaseException $e) {
+    catch (SchemaObjectExistsException $e) {
       return TRUE;
     }
     return FALSE;
@@ -136,13 +205,6 @@ class DatabaseCacheTagsChecksum implements CacheTagsChecksumInterface, CacheTags
     if ($this->connection->schema()->tableExists('cachetags')) {
       throw $e;
     }
-  }
-
-  /**
-   * {@inheritdoc}
-   */
-  public function getDatabaseConnection() {
-    return $this->connection;
   }
 
 }

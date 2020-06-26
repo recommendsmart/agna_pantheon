@@ -21,11 +21,6 @@ class BooleanFormatterSettingsTest extends WebDriverTestBase {
   public static $modules = ['field', 'field_ui', 'text', 'node', 'user'];
 
   /**
-   * {@inheritdoc}
-   */
-  protected $defaultTheme = 'stark';
-
-  /**
    * The name of the entity bundle that is created in the test.
    *
    * @var string
@@ -76,7 +71,7 @@ class BooleanFormatterSettingsTest extends WebDriverTestBase {
     ]);
     $instance->save();
 
-    $display = \Drupal::service('entity_display.repository')->getViewDisplay('node', $this->bundle)
+    $display = entity_get_display('node', $this->bundle, 'default')
       ->setComponent($this->fieldName, [
         'type' => 'boolean',
         'settings' => [],

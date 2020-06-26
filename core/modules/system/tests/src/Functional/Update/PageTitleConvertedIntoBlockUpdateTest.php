@@ -18,11 +18,6 @@ class PageTitleConvertedIntoBlockUpdateTest extends UpdatePathTestBase {
   /**
    * {@inheritdoc}
    */
-  protected $defaultTheme = 'stark';
-
-  /**
-   * {@inheritdoc}
-   */
   protected function setDatabaseDumpFiles() {
     $this->databaseDumpFiles = [
       __DIR__ . '/../../../../../system/tests/fixtures/update/drupal-8.bare.standard.php.gz',
@@ -48,7 +43,7 @@ class PageTitleConvertedIntoBlockUpdateTest extends UpdatePathTestBase {
     $this->runUpdates();
 
     /** @var \Drupal\block\BlockInterface $block_storage */
-    $block_storage = \Drupal::entityTypeManager()->getStorage('block');
+    $block_storage = \Drupal::entityManager()->getStorage('block');
 
     $this->assertRaw('Because your site has custom theme(s) installed, we have placed the page title block in the content region. Please manually review the block configuration and remove the page title variables from your page templates.');
 

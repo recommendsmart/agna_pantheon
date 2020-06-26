@@ -2,6 +2,7 @@
 
 namespace Drupal\layout_builder\Controller;
 
+use Drupal\Core\DependencyInjection\ClassResolverInterface;
 use Drupal\Core\DependencyInjection\ContainerInjectionInterface;
 use Drupal\layout_builder\LayoutTempstoreRepositoryInterface;
 use Drupal\layout_builder\SectionStorageInterface;
@@ -11,7 +12,6 @@ use Symfony\Component\DependencyInjection\ContainerInterface;
  * Defines a controller to move a block.
  *
  * @internal
- *   Controller classes are internal.
  */
 class MoveBlockController implements ContainerInjectionInterface {
 
@@ -29,9 +29,12 @@ class MoveBlockController implements ContainerInjectionInterface {
    *
    * @param \Drupal\layout_builder\LayoutTempstoreRepositoryInterface $layout_tempstore_repository
    *   The layout tempstore repository.
+   * @param \Drupal\Core\DependencyInjection\ClassResolverInterface $class_resolver
+   *   The class resolver.
    */
-  public function __construct(LayoutTempstoreRepositoryInterface $layout_tempstore_repository) {
+  public function __construct(LayoutTempstoreRepositoryInterface $layout_tempstore_repository, ClassResolverInterface $class_resolver) {
     $this->layoutTempstoreRepository = $layout_tempstore_repository;
+    $this->classResolver = $class_resolver;
   }
 
   /**
@@ -39,7 +42,8 @@ class MoveBlockController implements ContainerInjectionInterface {
    */
   public static function create(ContainerInterface $container) {
     return new static(
-      $container->get('layout_builder.tempstore_repository')
+      $container->get('layout_builder.tempstore_repository'),
+      $container->get('class_resolver')
     );
   }
 

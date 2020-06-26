@@ -1,0 +1,38 @@
+langcode: en
+status: true
+dependencies:
+  config:
+    - core.entity_form_mode.eform_submission.submit_previous
+    - eform.type.contact_us
+    - field.field.eform_submission.contact_us.field_email_address
+    - field.field.eform_submission.contact_us.field_message
+    - field.field.eform_submission.contact_us.field_subject
+    - field.field.eform_submission.contact_us.field_your_name
+id: eform_submission.contact_us.submit_previous
+targetEntityType: eform_submission
+bundle: contact_us
+mode: submit_previous
+content:
+  field_email_address:
+    weight: 4
+    settings:
+      size: 60
+      placeholder: ''
+    third_party_settings: {  }
+    type: email_default
+  field_subject:
+    weight: 5
+    settings:
+      size: 60
+      placeholder: ''
+    third_party_settings: {  }
+    type: string_textfield
+  field_your_name:
+    weight: 3
+    settings:
+      size: 60
+      placeholder: ''
+    third_party_settings: {  }
+    type: string_textfield
+hidden:
+  field_message: true

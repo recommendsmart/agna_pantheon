@@ -24,11 +24,6 @@ class MultiFormTest extends WebDriverTestBase {
   /**
    * {@inheritdoc}
    */
-  protected $defaultTheme = 'stark';
-
-  /**
-   * {@inheritdoc}
-   */
   protected function setUp() {
     parent::setUp();
 
@@ -47,7 +42,7 @@ class MultiFormTest extends WebDriverTestBase {
       'entity_type' => 'node',
       'bundle' => 'page',
     ])->save();
-    \Drupal::service('entity_display.repository')->getFormDisplay('node', 'page', 'default')
+    entity_get_form_display('node', 'page', 'default')
       ->setComponent($field_name, ['type' => 'text_textfield'])
       ->save();
 

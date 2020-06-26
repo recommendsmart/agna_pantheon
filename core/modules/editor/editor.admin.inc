@@ -5,7 +5,6 @@
  * Administration functions for editor.module.
  */
 
-use Drupal\Component\Utility\Environment;
 use Drupal\Core\StreamWrapper\StreamWrapperInterface;
 use Drupal\editor\Entity\Editor;
 
@@ -30,7 +29,7 @@ function editor_image_upload_settings_form(Editor $editor) {
   $image_upload = $editor->getImageUploadSettings();
   $image_upload += [
     'status' => FALSE,
-    'scheme' => \Drupal::config('system.file')->get('default_scheme'),
+    'scheme' => file_default_scheme(),
     'directory' => 'inline-images',
     'max_size' => '',
     'max_dimensions' => ['width' => '', 'height' => ''],
@@ -78,7 +77,7 @@ function editor_image_upload_settings_form(Editor $editor) {
     '#states' => $show_if_image_uploads_enabled,
   ];
 
-  $default_max_size = format_size(Environment::getUploadMaxSize());
+  $default_max_size = format_size(file_upload_max_size());
   $form['max_size'] = [
     '#type' => 'textfield',
     '#default_value' => $image_upload['max_size'],
@@ -93,6 +92,8 @@ function editor_image_upload_settings_form(Editor $editor) {
   $form['max_dimensions'] = [
     '#type' => 'item',
     '#title' => t('Maximum dimensions'),
+    '#field_prefix' => '<div class="container-inline clearfix">',
+    '#field_suffix' => '</div>',
     '#description' => t('Images larger than these dimensions will be scaled down.'),
     '#states' => $show_if_image_uploads_enabled,
   ];
@@ -108,7 +109,6 @@ function editor_image_upload_settings_form(Editor $editor) {
     '#placeholder' => t('width'),
     '#field_suffix' => ' x ',
     '#states' => $show_if_image_uploads_enabled,
-    '#prefix' => '<div class="form--inline clearfix">',
   ];
   $form['max_dimensions']['height'] = [
     '#title' => t('Height'),
@@ -122,7 +122,6 @@ function editor_image_upload_settings_form(Editor $editor) {
     '#placeholder' => t('height'),
     '#field_suffix' => t('pixels'),
     '#states' => $show_if_image_uploads_enabled,
-    '#suffix' => '</div>',
   ];
 
   return $form;

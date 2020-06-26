@@ -2,7 +2,6 @@
 
 namespace Drupal\Tests\config\Functional;
 
-use Drupal\Core\Site\Settings;
 use Drupal\Tests\BrowserTestBase;
 use Drupal\Tests\TestFileCreationTrait;
 
@@ -29,11 +28,6 @@ class ConfigImportUploadTest extends BrowserTestBase {
    */
   public static $modules = ['config'];
 
-  /**
-   * {@inheritdoc}
-   */
-  protected $defaultTheme = 'stark';
-
   protected function setUp() {
     parent::setUp();
 
@@ -56,7 +50,7 @@ class ConfigImportUploadTest extends BrowserTestBase {
     $this->assertText(t('Could not extract the contents of the tar file'));
 
     // Make the sync directory read-only.
-    $directory = Settings::get('config_sync_directory');
+    $directory = config_get_config_directory(CONFIG_SYNC_DIRECTORY);
     \Drupal::service('file_system')->chmod($directory, 0555);
     $this->drupalGet('admin/config/development/configuration/full/import');
     $this->assertRaw(t('The directory %directory is not writable.', ['%directory' => $directory]));

@@ -9,7 +9,6 @@ use Drupal\layout_builder\SectionStorageInterface;
  * Provides a form to confirm the removal of a section.
  *
  * @internal
- *   Form classes are internal.
  */
 class RemoveSectionForm extends LayoutRebuildConfirmFormBase {
 
@@ -24,11 +23,7 @@ class RemoveSectionForm extends LayoutRebuildConfirmFormBase {
    * {@inheritdoc}
    */
   public function getQuestion() {
-    $configuration = $this->sectionStorage->getSection($this->delta)->getLayoutSettings();
-    if ($configuration['label']) {
-      return $this->t('Are you sure you want to remove @section?', ['@section' => $configuration['label']]);
-    }
-    return $this->t('Are you sure you want to remove section @section?', ['@section' => $this->delta + 1]);
+    return $this->t('Are you sure you want to remove this section?');
   }
 
   /**

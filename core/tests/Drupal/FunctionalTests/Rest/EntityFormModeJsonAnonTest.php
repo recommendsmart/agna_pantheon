@@ -21,9 +21,4 @@ class EntityFormModeJsonAnonTest extends EntityFormModeResourceTestBase {
    */
   protected static $mimeType = 'application/json';
 
-  /**
-   * {@inheritdoc}
-   */
-  protected $defaultTheme = 'stark';
-
 }

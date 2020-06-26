@@ -63,8 +63,6 @@ class Extension {
    *   (optional) The filename of the main extension file; e.g., 'node.module'.
    */
   public function __construct($root, $type, $pathname, $filename = NULL) {
-    // @see \Drupal\Core\Theme\ThemeInitialization::getActiveThemeByName()
-    assert($pathname === 'core/core.info.yml' || ($pathname[0] !== '/' && file_exists($root . '/' . $pathname)), sprintf('The file specified by the given app root, relative path and file name (%s) do not exist.', $root . '/' . $pathname));
     $this->root = $root;
     $this->type = $type;
     $this->pathname = $pathname;
@@ -157,7 +155,7 @@ class Extension {
    */
   public function __call($method, array $args) {
     if (!isset($this->splFileInfo)) {
-      $this->splFileInfo = new \SplFileInfo($this->root . '/' . $this->pathname);
+      $this->splFileInfo = new \SplFileInfo($this->pathname);
     }
     return call_user_func_array([$this->splFileInfo, $method], $args);
   }
@@ -183,7 +181,7 @@ class Extension {
    */
   public function __wakeup() {
     // Get the app root from the container.
-    $this->root = \Drupal::hasService('app.root') ? \Drupal::root() : DRUPAL_ROOT;
+    $this->root = DRUPAL_ROOT;
   }
 
 }

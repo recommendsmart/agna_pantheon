@@ -5,7 +5,6 @@ namespace Drupal\Tests\user\Functional;
 use Drupal\comment\CommentInterface;
 use Drupal\comment\Entity\Comment;
 use Drupal\comment\Tests\CommentTestTrait;
-use Drupal\node\Entity\Node;
 use Drupal\Tests\BrowserTestBase;
 use Drupal\user\Entity\User;
 
@@ -25,11 +24,6 @@ class UserCancelTest extends BrowserTestBase {
    */
   public static $modules = ['node', 'comment'];
 
-  /**
-   * {@inheritdoc}
-   */
-  protected $defaultTheme = 'stark';
-
   protected function setUp() {
     parent::setUp();
 
@@ -40,9 +34,9 @@ class UserCancelTest extends BrowserTestBase {
    * Attempt to cancel account without permission.
    */
   public function testUserCancelWithoutPermission() {
-    $node_storage = $this->container->get('entity_type.manager')->getStorage('node');
+    $node_storage = $this->container->get('entity.manager')->getStorage('node');
     $this->config('user.settings')->set('cancel_method', 'user_cancel_reassign')->save();
-    $user_storage = $this->container->get('entity_type.manager')->getStorage('user');
+    $user_storage = $this->container->get('entity.manager')->getStorage('user');
 
     // Create a user.
     $account = $this->drupalCreateUser([]);
@@ -90,8 +84,8 @@ class UserCancelTest extends BrowserTestBase {
     $this->drupalPostForm('user_form_test_cancel/' . $account->id(), [], t('Cancel account'));
 
     // Confirm deletion.
-    $this->assertRaw(t('%name has been deleted.', ['%name' => $account->getAccountName()]), 'User deleted.');
-    $this->assertNull(User::load($account->id()), 'User is not found in the database.');
+    $this->assertRaw(t('%name has been deleted.', ['%name' => $account->getUsername()]), 'User deleted.');
+    $this->assertFalse(User::load($account->id()), 'User is not found in the database.');
   }
 
   /**
@@ -101,7 +95,7 @@ class UserCancelTest extends BrowserTestBase {
    * administer the site.
    */
   public function testUserCancelUid1() {
-    $user_storage = $this->container->get('entity_type.manager')->getStorage('user');
+    $user_storage = $this->container->get('entity.manager')->getStorage('user');
 
     \Drupal::service('module_installer')->install(['views']);
     \Drupal::service('router.builder')->rebuild();
@@ -125,9 +119,9 @@ class UserCancelTest extends BrowserTestBase {
    * Attempt invalid account cancellations.
    */
   public function testUserCancelInvalid() {
-    $node_storage = $this->container->get('entity_type.manager')->getStorage('node');
+    $node_storage = $this->container->get('entity.manager')->getStorage('node');
     $this->config('user.settings')->set('cancel_method', 'user_cancel_reassign')->save();
-    $user_storage = $this->container->get('entity_type.manager')->getStorage('user');
+    $user_storage = $this->container->get('entity.manager')->getStorage('user');
 
     // Create a user.
     $account = $this->drupalCreateUser(['cancel account']);
@@ -174,7 +168,7 @@ class UserCancelTest extends BrowserTestBase {
    */
   public function testUserBlock() {
     $this->config('user.settings')->set('cancel_method', 'user_cancel_block')->save();
-    $user_storage = $this->container->get('entity_type.manager')->getStorage('user');
+    $user_storage = $this->container->get('entity.manager')->getStorage('user');
 
     // Create a user.
     $web_user = $this->drupalCreateUser(['cancel account']);
@@ -204,18 +198,18 @@ class UserCancelTest extends BrowserTestBase {
     $this->assertTrue($account->isBlocked(), 'User has been blocked.');
 
     // Confirm that the confirmation message made it through to the end user.
-    $this->assertRaw(t('%name has been disabled.', ['%name' => $account->getAccountName()]), "Confirmation message displayed to user.");
+    $this->assertRaw(t('%name has been disabled.', ['%name' => $account->getUsername()]), "Confirmation message displayed to user.");
   }
 
   /**
    * Disable account and unpublish all content.
    */
   public function testUserBlockUnpublish() {
-    $node_storage = $this->container->get('entity_type.manager')->getStorage('node');
+    $node_storage = $this->container->get('entity.manager')->getStorage('node');
     $this->config('user.settings')->set('cancel_method', 'user_cancel_block_unpublish')->save();
     // Create comment field on page.
     $this->addDefaultCommentField('node', 'page');
-    $user_storage = $this->container->get('entity_type.manager')->getStorage('user');
+    $user_storage = $this->container->get('entity.manager')->getStorage('user');
 
     // Create a user.
     $account = $this->drupalCreateUser(['cancel account']);
@@ -261,7 +255,7 @@ class UserCancelTest extends BrowserTestBase {
     $this->assertSession()->addressEquals('');
     $this->assertSession()->statusCodeEquals(200);
     // Confirm that the confirmation message made it through to the end user.
-    $this->assertRaw(t('%name has been disabled.', ['%name' => $account->getAccountName()]), "Confirmation message displayed to user.");
+    $this->assertRaw(t('%name has been disabled.', ['%name' => $account->getUsername()]), "Confirmation message displayed to user.");
 
     $user_storage->resetCache([$account->id()]);
     $account = $user_storage->load($account->id());
@@ -274,7 +268,7 @@ class UserCancelTest extends BrowserTestBase {
     $test_node = node_revision_load($node->getRevisionId());
     $this->assertFalse($test_node->isPublished(), 'Node revision of the user has been unpublished.');
 
-    $storage = \Drupal::entityTypeManager()->getStorage('comment');
+    $storage = \Drupal::entityManager()->getStorage('comment');
     $storage->resetCache([$comment->id()]);
     $comment = $storage->load($comment->id());
     $this->assertFalse($comment->isPublished(), 'Comment of the user has been unpublished.');
@@ -284,11 +278,11 @@ class UserCancelTest extends BrowserTestBase {
    * Delete account and anonymize all content.
    */
   public function testUserAnonymize() {
-    $node_storage = $this->container->get('entity_type.manager')->getStorage('node');
+    $node_storage = $this->container->get('entity.manager')->getStorage('node');
     $this->config('user.settings')->set('cancel_method', 'user_cancel_reassign')->save();
     // Create comment field on page.
     $this->addDefaultCommentField('node', 'page');
-    $user_storage = $this->container->get('entity_type.manager')->getStorage('user');
+    $user_storage = $this->container->get('entity.manager')->getStorage('user');
 
     // Create a user.
     $account = $this->drupalCreateUser(['cancel account']);
@@ -338,7 +332,7 @@ class UserCancelTest extends BrowserTestBase {
     // Confirm account cancellation request.
     $this->drupalGet("user/" . $account->id() . "/cancel/confirm/$timestamp/" . user_pass_rehash($account, $timestamp));
     $user_storage->resetCache([$account->id()]);
-    $this->assertNull($user_storage->load($account->id()), 'User is not found in the database.');
+    $this->assertFalse($user_storage->load($account->id()), 'User is not found in the database.');
 
     // Confirm that user's content has been attributed to anonymous user.
     $anonymous_user = User::getAnonymousUser();
@@ -351,23 +345,23 @@ class UserCancelTest extends BrowserTestBase {
     $test_node = $node_storage->load($revision_node->id());
     $this->assertTrue(($test_node->getOwnerId() != 0 && $test_node->isPublished()), "Current revision of the user's node was not attributed to anonymous user.");
 
-    $storage = \Drupal::entityTypeManager()->getStorage('comment');
+    $storage = \Drupal::entityManager()->getStorage('comment');
     $storage->resetCache([$comment->id()]);
     $test_comment = $storage->load($comment->id());
     $this->assertTrue(($test_comment->getOwnerId() == 0 && $test_comment->isPublished()), 'Comment of the user has been attributed to anonymous user.');
     $this->assertEqual($test_comment->getAuthorName(), $anonymous_user->getDisplayName(), 'Comment of the user has been attributed to anonymous user name.');
 
     // Confirm that the confirmation message made it through to the end user.
-    $this->assertRaw(t('%name has been deleted.', ['%name' => $account->getAccountName()]), "Confirmation message displayed to user.");
+    $this->assertRaw(t('%name has been deleted.', ['%name' => $account->getUsername()]), "Confirmation message displayed to user.");
   }
 
   /**
    * Delete account and anonymize all content using a batch process.
    */
   public function testUserAnonymizeBatch() {
-    $node_storage = $this->container->get('entity_type.manager')->getStorage('node');
+    $node_storage = $this->container->get('entity.manager')->getStorage('node');
     $this->config('user.settings')->set('cancel_method', 'user_cancel_reassign')->save();
-    $user_storage = $this->container->get('entity_type.manager')->getStorage('user');
+    $user_storage = $this->container->get('entity.manager')->getStorage('user');
 
     // Create a user.
     $account = $this->drupalCreateUser(['cancel account']);
@@ -398,7 +392,7 @@ class UserCancelTest extends BrowserTestBase {
     // Confirm account cancellation request.
     $this->drupalGet("user/" . $account->id() . "/cancel/confirm/$timestamp/" . user_pass_rehash($account, $timestamp));
     $user_storage->resetCache([$account->id()]);
-    $this->assertNull($user_storage->load($account->id()), 'User is not found in the database.');
+    $this->assertFalse($user_storage->load($account->id()), 'User is not found in the database.');
 
     // Confirm that user's content has been attributed to anonymous user.
     $node_storage->resetCache(array_keys($nodes));
@@ -412,12 +406,12 @@ class UserCancelTest extends BrowserTestBase {
    * Delete account and remove all content.
    */
   public function testUserDelete() {
-    $node_storage = $this->container->get('entity_type.manager')->getStorage('node');
+    $node_storage = $this->container->get('entity.manager')->getStorage('node');
     $this->config('user.settings')->set('cancel_method', 'user_cancel_delete')->save();
     \Drupal::service('module_installer')->install(['comment']);
     $this->resetAll();
     $this->addDefaultCommentField('node', 'page');
-    $user_storage = $this->container->get('entity_type.manager')->getStorage('user');
+    $user_storage = $this->container->get('entity.manager')->getStorage('user');
 
     // Create a user.
     $account = $this->drupalCreateUser(['cancel account', 'post comments', 'skip comment approval']);
@@ -437,9 +431,9 @@ class UserCancelTest extends BrowserTestBase {
     $this->drupalPostForm('comment/reply/node/' . $node->id() . '/comment', $edit, t('Preview'));
     $this->drupalPostForm(NULL, [], t('Save'));
     $this->assertText(t('Your comment has been posted.'));
-    $comments = \Drupal::entityTypeManager()->getStorage('comment')->loadByProperties(['subject' => $edit['subject[0][value]']]);
+    $comments = entity_load_multiple_by_properties('comment', ['subject' => $edit['subject[0][value]']]);
     $comment = reset($comments);
-    $this->assertNotEmpty($comment->id(), 'Comment found.');
+    $this->assertTrue($comment->id(), 'Comment found.');
 
     // Create a node with two revisions, the initial one belonging to the
     // cancelling user.
@@ -465,19 +459,19 @@ class UserCancelTest extends BrowserTestBase {
     // Confirm account cancellation request.
     $this->drupalGet("user/" . $account->id() . "/cancel/confirm/$timestamp/" . user_pass_rehash($account, $timestamp));
     $user_storage->resetCache([$account->id()]);
-    $this->assertNull($user_storage->load($account->id()), 'User is not found in the database.');
+    $this->assertFalse($user_storage->load($account->id()), 'User is not found in the database.');
 
     // Confirm that user's content has been deleted.
     $node_storage->resetCache([$node->id()]);
-    $this->assertNull($node_storage->load($node->id()), 'Node of the user has been deleted.');
-    $this->assertNull(node_revision_load($revision), 'Node revision of the user has been deleted.');
+    $this->assertFalse($node_storage->load($node->id()), 'Node of the user has been deleted.');
+    $this->assertFalse(node_revision_load($revision), 'Node revision of the user has been deleted.');
     $node_storage->resetCache([$revision_node->id()]);
-    $this->assertInstanceOf(Node::class, $node_storage->load($revision_node->id()), "Current revision of the user's node was not deleted.");
-    \Drupal::entityTypeManager()->getStorage('comment')->resetCache([$comment->id()]);
-    $this->assertNull(Comment::load($comment->id()), 'Comment of the user has been deleted.');
+    $this->assertTrue($node_storage->load($revision_node->id()), "Current revision of the user's node was not deleted.");
+    \Drupal::entityManager()->getStorage('comment')->resetCache([$comment->id()]);
+    $this->assertFalse(Comment::load($comment->id()), 'Comment of the user has been deleted.');
 
     // Confirm that the confirmation message made it through to the end user.
-    $this->assertRaw(t('%name has been deleted.', ['%name' => $account->getAccountName()]), "Confirmation message displayed to user.");
+    $this->assertRaw(t('%name has been deleted.', ['%name' => $account->getUsername()]), "Confirmation message displayed to user.");
   }
 
   /**
@@ -496,13 +490,13 @@ class UserCancelTest extends BrowserTestBase {
     // Delete regular user.
     $this->drupalGet('user/' . $account->id() . '/edit');
     $this->drupalPostForm(NULL, NULL, t('Cancel account'));
-    $this->assertRaw(t('Are you sure you want to cancel the account %name?', ['%name' => $account->getAccountName()]), 'Confirmation form to cancel account displayed.');
+    $this->assertRaw(t('Are you sure you want to cancel the account %name?', ['%name' => $account->getUsername()]), 'Confirmation form to cancel account displayed.');
     $this->assertText(t('Select the method to cancel the account above.'), 'Allows to select account cancellation method.');
 
     // Confirm deletion.
     $this->drupalPostForm(NULL, NULL, t('Cancel account'));
-    $this->assertRaw(t('%name has been deleted.', ['%name' => $account->getAccountName()]), 'User deleted.');
-    $this->assertNull(User::load($account->id()), 'User is not found in the database.');
+    $this->assertRaw(t('%name has been deleted.', ['%name' => $account->getUsername()]), 'User deleted.');
+    $this->assertFalse(User::load($account->id()), 'User is not found in the database.');
   }
 
   /**
@@ -524,13 +518,13 @@ class UserCancelTest extends BrowserTestBase {
     // Delete regular user without email address.
     $this->drupalGet('user/' . $account->id() . '/edit');
     $this->drupalPostForm(NULL, NULL, t('Cancel account'));
-    $this->assertRaw(t('Are you sure you want to cancel the account %name?', ['%name' => $account->getAccountName()]), 'Confirmation form to cancel account displayed.');
+    $this->assertRaw(t('Are you sure you want to cancel the account %name?', ['%name' => $account->getUsername()]), 'Confirmation form to cancel account displayed.');
     $this->assertText(t('Select the method to cancel the account above.'), 'Allows to select account cancellation method.');
 
     // Confirm deletion.
     $this->drupalPostForm(NULL, NULL, t('Cancel account'));
-    $this->assertRaw(t('%name has been deleted.', ['%name' => $account->getAccountName()]), 'User deleted.');
-    $this->assertNull(User::load($account->id()), 'User is not found in the database.');
+    $this->assertRaw(t('%name has been deleted.', ['%name' => $account->getUsername()]), 'User deleted.');
+    $this->assertFalse(User::load($account->id()), 'User is not found in the database.');
   }
 
   /**
@@ -540,7 +534,7 @@ class UserCancelTest extends BrowserTestBase {
     \Drupal::service('module_installer')->install(['views']);
     \Drupal::service('router.builder')->rebuild();
     $this->config('user.settings')->set('cancel_method', 'user_cancel_reassign')->save();
-    $user_storage = $this->container->get('entity_type.manager')->getStorage('user');
+    $user_storage = $this->container->get('entity.manager')->getStorage('user');
     // Enable account cancellation notification.
     $this->config('user.settings')->set('notify.status_canceled', TRUE)->save();
 
@@ -571,7 +565,7 @@ class UserCancelTest extends BrowserTestBase {
     $this->drupalPostForm(NULL, NULL, t('Cancel accounts'));
     $status = TRUE;
     foreach ($users as $account) {
-      $status = $status && (strpos($this->getTextContent(), $account->getAccountName() . ' has been deleted.') !== FALSE);
+      $status = $status && (strpos($this->getTextContent(), $account->getUsername() . ' has been deleted.') !== FALSE);
       $user_storage->resetCache([$account->id()]);
       $status = $status && !$user_storage->load($account->id());
     }

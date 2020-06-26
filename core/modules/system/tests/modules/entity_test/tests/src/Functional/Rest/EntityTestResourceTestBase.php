@@ -5,14 +5,12 @@ namespace Drupal\Tests\entity_test\Functional\Rest;
 use Drupal\entity_test\Entity\EntityTest;
 use Drupal\Tests\rest\Functional\BcTimestampNormalizerUnixTestTrait;
 use Drupal\Tests\rest\Functional\EntityResource\EntityResourceTestBase;
-use Drupal\Tests\system\Functional\Entity\Traits\EntityDefinitionTestTrait;
 use Drupal\Tests\Traits\ExpectDeprecationTrait;
 use Drupal\user\Entity\User;
 
 abstract class EntityTestResourceTestBase extends EntityResourceTestBase {
 
   use BcTimestampNormalizerUnixTestTrait;
-  use EntityDefinitionTestTrait;
   use ExpectDeprecationTrait;
 
   /**
@@ -60,7 +58,7 @@ abstract class EntityTestResourceTestBase extends EntityResourceTestBase {
     // Set flag so that internal field 'internal_string_field' is created.
     // @see entity_test_entity_base_field_info()
     $this->container->get('state')->set('entity_test.internal_field', TRUE);
-    $this->applyEntityUpdates('entity_test');
+    \Drupal::entityDefinitionUpdateManager()->applyUpdates();
 
     $entity_test = EntityTest::create([
       'name' => 'Llama',

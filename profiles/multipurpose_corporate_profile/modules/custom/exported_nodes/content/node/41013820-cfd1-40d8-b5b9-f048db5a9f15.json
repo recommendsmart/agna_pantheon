@@ -1,0 +1,209 @@
+{
+    "_links": {
+        "self": {
+            "href": "http:\/\/default\/content\/they-are-among-us-0?_format=hal_json"
+        },
+        "type": {
+            "href": "http:\/\/drupal.org\/rest\/type\/node\/main_slider"
+        },
+        "http:\/\/drupal.org\/rest\/relation\/node\/main_slider\/uid": [
+            {
+                "href": "http:\/\/default\/user\/0?_format=hal_json",
+                "lang": "und"
+            }
+        ],
+        "http:\/\/drupal.org\/rest\/relation\/node\/main_slider\/revision_uid": [
+            {
+                "href": "http:\/\/default\/user\/0?_format=hal_json"
+            }
+        ],
+        "http:\/\/drupal.org\/rest\/relation\/node\/main_slider\/field_background_image": [
+            {
+                "href": "http:\/\/default\/sites\/default\/files\/Layer-14.jpg"
+            }
+        ],
+        "http:\/\/drupal.org\/rest\/relation\/node\/main_slider\/field_main_slider_image": [
+            {
+                "href": "http:\/\/default\/sites\/default\/files\/girl.png"
+            }
+        ]
+    },
+    "nid": [
+        {
+            "value": "77"
+        }
+    ],
+    "uuid": [
+        {
+            "value": "41013820-cfd1-40d8-b5b9-f048db5a9f15"
+        }
+    ],
+    "vid": [
+        {
+            "value": "77"
+        }
+    ],
+    "langcode": [
+        {
+            "value": "und",
+            "lang": "und"
+        }
+    ],
+    "type": [
+        {
+            "target_id": "main_slider"
+        }
+    ],
+    "title": [
+        {
+            "value": "They Are Among Us",
+            "lang": "und"
+        }
+    ],
+    "_embedded": {
+        "http:\/\/drupal.org\/rest\/relation\/node\/main_slider\/uid": [
+            {
+                "_links": {
+                    "self": {
+                        "href": "http:\/\/default\/user\/0?_format=hal_json"
+                    },
+                    "type": {
+                        "href": "http:\/\/drupal.org\/rest\/type\/user\/user"
+                    }
+                },
+                "uuid": [
+                    {
+                        "value": "cdddbba5-497d-4ff1-92f9-e0fb2de3e96e"
+                    }
+                ],
+                "lang": "und"
+            }
+        ],
+        "http:\/\/drupal.org\/rest\/relation\/node\/main_slider\/revision_uid": [
+            {
+                "_links": {
+                    "self": {
+                        "href": "http:\/\/default\/user\/0?_format=hal_json"
+                    },
+                    "type": {
+                        "href": "http:\/\/drupal.org\/rest\/type\/user\/user"
+                    }
+                },
+                "uuid": [
+                    {
+                        "value": "cdddbba5-497d-4ff1-92f9-e0fb2de3e96e"
+                    }
+                ]
+            }
+        ],
+        "http:\/\/drupal.org\/rest\/relation\/node\/main_slider\/field_background_image": [
+            {
+                "_links": {
+                    "self": {
+                        "href": "http:\/\/default\/sites\/default\/files\/Layer-14.jpg"
+                    },
+                    "type": {
+                        "href": "http:\/\/drupal.org\/rest\/type\/file\/image"
+                    }
+                },
+                "uuid": [
+                    {
+                        "value": "da7979d1-143a-4d25-a042-bfdf9ab517e2"
+                    }
+                ],
+                "uri": [
+                    {
+                        "value": "http:\/\/default\/sites\/default\/files\/Layer-14.jpg"
+                    }
+                ]
+            }
+        ],
+        "http:\/\/drupal.org\/rest\/relation\/node\/main_slider\/field_main_slider_image": [
+            {
+                "_links": {
+                    "self": {
+                        "href": "http:\/\/default\/sites\/default\/files\/girl.png"
+                    },
+                    "type": {
+                        "href": "http:\/\/drupal.org\/rest\/type\/file\/file"
+                    }
+                },
+                "uuid": [
+                    {
+                        "value": "81b3ecfa-2c5f-4341-9f70-8ef820e72e4a"
+                    }
+                ],
+                "uri": [
+                    {
+                        "value": "http:\/\/default\/sites\/default\/files\/girl.png"
+                    }
+                ]
+            }
+        ]
+    },
+    "status": [
+        {
+            "value": "1",
+            "lang": "und"
+        }
+    ],
+    "created": [
+        {
+            "value": "1463461258",
+            "lang": "und"
+        }
+    ],
+    "changed": [
+        {
+            "value": "1464592110",
+            "lang": "und"
+        }
+    ],
+    "promote": [
+        {
+            "value": "0",
+            "lang": "und"
+        }
+    ],
+    "sticky": [
+        {
+            "value": "0",
+            "lang": "und"
+        }
+    ],
+    "revision_timestamp": [
+        {
+            "value": "1463461258"
+        }
+    ],
+    "revision_translation_affected": [
+        {
+            "value": "1",
+            "lang": "und"
+        }
+    ],
+    "default_langcode": [
+        {
+            "value": "1",
+            "lang": "und"
+        }
+    ],
+    "body": [
+        {
+            "value": "<p>You may not know this, but there are shape-shifting extraterrestrial reptilian humanoids among us who dream to recreate ancient&nbsp;style in politics and enslave the human race again! They love to impersonate world leaders and celebrities and control you and your mind!<\/p>\r\n",
+            "format": "filtered_html",
+            "summary": ""
+        }
+    ],
+    "comment_node_main_slider": [
+        {
+            "status": "1",
+            "cid": "0",
+            "last_comment_timestamp": "1463461258",
+            "last_comment_name": null,
+            "last_comment_uid": "0",
+            "comment_count": "0",
+            "lang": "und"
+        }
+    ]
+}

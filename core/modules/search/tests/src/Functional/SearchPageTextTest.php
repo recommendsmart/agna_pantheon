@@ -19,11 +19,6 @@ class SearchPageTextTest extends BrowserTestBase {
   protected static $modules = ['block', 'node', 'search'];
 
   /**
-   * {@inheritdoc}
-   */
-  protected $defaultTheme = 'stark';
-
-  /**
    * A user with permission to use advanced search.
    *
    * @var \Drupal\user\UserInterface
@@ -100,10 +95,10 @@ class SearchPageTextTest extends BrowserTestBase {
     $actual_title = $this->xpath('//title')[0]->getText();
     $this->assertEqual($actual_title, Html::decodeEntities(t($title_source, ['@keywords' => Unicode::truncate($search_terms, 60, TRUE, TRUE)])), 'Search page title is correct');
 
-    $edit['keys'] = $this->searchingUser->getAccountName();
+    $edit['keys'] = $this->searchingUser->getUsername();
     $this->drupalPostForm('search/user', $edit, t('Search'));
     $this->assertText(t('Search'));
-    $this->assertTitle(t($title_source, ['@keywords' => Unicode::truncate($this->searchingUser->getAccountName(), 60, TRUE, TRUE)]));
+    $this->assertTitle(t($title_source, ['@keywords' => Unicode::truncate($this->searchingUser->getUsername(), 60, TRUE, TRUE)]));
 
     $this->clickLink('Search help');
     $this->assertText('Search help', 'Correct title is on search help page');

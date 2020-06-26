@@ -21,11 +21,6 @@ class NoHelpTest extends BrowserTestBase {
   public static $modules = ['help', 'menu_test'];
 
   /**
-   * {@inheritdoc}
-   */
-  protected $defaultTheme = 'stark';
-
-  /**
    * The user who will be created.
    */
   protected $adminUser;

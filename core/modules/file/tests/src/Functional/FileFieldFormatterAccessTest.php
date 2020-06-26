@@ -16,11 +16,6 @@ class FileFieldFormatterAccessTest extends FileFieldTestBase {
   public static $modules = ['node', 'file', 'field_ui', 'file_test'];
 
   /**
-   * {@inheritdoc}
-   */
-  protected $defaultTheme = 'stark';
-
-  /**
    * Tests the custom access handler is invoked.
    */
   public function testFileAccessHandler() {
@@ -28,7 +23,7 @@ class FileFieldFormatterAccessTest extends FileFieldTestBase {
     $field_name = strtolower($this->randomMachineName());
     $this->createFileField($field_name, 'node', $type_name);
     \Drupal::state()->set('file_test_alternate_access_handler', TRUE);
-    \Drupal::entityTypeManager()->clearCachedDefinitions();
+    \Drupal::entityManager()->clearCachedDefinitions();
     $test_file = $this->getTestFile('text');
     $nid = $this->uploadNodeFile($test_file, $field_name, $type_name);
     $this->drupalGet('node/' . $nid);

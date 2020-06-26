@@ -2,7 +2,6 @@
 
 namespace Drupal\Tests\filter\Functional;
 
-use Drupal\Component\Render\FormattableMarkup;
 use Drupal\comment\Tests\CommentTestTrait;
 use Drupal\Core\StreamWrapper\PublicStream;
 use Drupal\filter\Entity\FilterFormat;
@@ -25,11 +24,6 @@ class FilterHtmlImageSecureTest extends BrowserTestBase {
    * @var array
    */
   public static $modules = ['filter', 'node', 'comment'];
-
-  /**
-   * {@inheritdoc}
-   */
-  protected $defaultTheme = 'stark';
 
   /**
    * An authenticated user.
@@ -105,7 +99,7 @@ class FilterHtmlImageSecureTest extends BrowserTestBase {
     $special_filename = 'tést fïle nàme.png';
     $special_image = rawurlencode($special_filename);
     $special_uri = str_replace($test_images[0]->filename, $special_filename, $test_images[0]->uri);
-    \Drupal::service('file_system')->copy($test_images[0]->uri, $special_uri);
+    file_unmanaged_copy($test_images[0]->uri, $special_uri);
 
     // Create a list of test image sources.
     // The keys become the value of the IMG 'src' attribute, the values are the
@@ -159,7 +153,7 @@ class FilterHtmlImageSecureTest extends BrowserTestBase {
           $this->assertEqual($element->getAttribute('src'), $converted);
         }
       }
-      $this->assertTrue($found, new FormattableMarkup('@image was found.', ['@image' => $image]));
+      $this->assertTrue($found, format_string('@image was found.', ['@image' => $image]));
     }
   }
 

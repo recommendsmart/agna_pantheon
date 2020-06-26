@@ -5,15 +5,12 @@ import mkdirp from 'mkdirp';
 import chromedriver from 'chromedriver';
 import nightwatchSettings from './nightwatch.conf';
 
-export const commandAsWebserver = command => {
+const commandAsWebserver = command => {
   if (process.env.DRUPAL_TEST_WEBSERVER_USER) {
     return `sudo -u ${process.env.DRUPAL_TEST_WEBSERVER_USER} ${command}`;
   }
   return command;
 };
-
-export const drupalDbPrefix = null;
-export const drupalSitePath = null;
 
 module.exports = {
   before: done => {
@@ -38,7 +35,9 @@ module.exports = {
     ) {
       const resultPath = path.join(
         __dirname,
-        `../../../${nightwatchSettings.output_folder}/consoleLogs/${browser.currentTest.module}`,
+        `../../../${nightwatchSettings.output_folder}/consoleLogs/${
+          browser.currentTest.module
+        }`,
       );
       const status =
         browser.currentTest.results.errors > 0 ||

@@ -22,7 +22,7 @@ class DateTimeWidgetBase extends WidgetBase {
       '#type' => 'datetime',
       '#default_value' => NULL,
       '#date_increment' => 1,
-      '#date_timezone' => date_default_timezone_get(),
+      '#date_timezone' => drupal_get_user_timezone(),
       '#required' => $element['#required'],
     ];
 
@@ -50,24 +50,21 @@ class DateTimeWidgetBase extends WidgetBase {
     // The widget form element type has transformed the value to a
     // DrupalDateTime object at this point. We need to convert it back to the
     // storage timezone and format.
-
-    $datetime_type = $this->getFieldSetting('datetime_type');
-    if ($datetime_type === DateTimeItem::DATETIME_TYPE_DATE) {
-      $storage_format = DateTimeItemInterface::DATE_STORAGE_FORMAT;
-    }
-    else {
-      $storage_format = DateTimeItemInterface::DATETIME_STORAGE_FORMAT;
-    }
-
-    $storage_timezone = new \DateTimezone(DateTimeItemInterface::STORAGE_TIMEZONE);
-
     foreach ($values as &$item) {
       if (!empty($item['value']) && $item['value'] instanceof DrupalDateTime) {
-        /** @var \Drupal\Core\Datetime\DrupalDateTime $date */
         $date = $item['value'];
+        switch ($this->getFieldSetting('datetime_type')) {
+          case DateTimeItem::DATETIME_TYPE_DATE:
+            $format = DateTimeItemInterface::DATE_STORAGE_FORMAT;
+            break;
 
+          default:
+            $format = DateTimeItemInterface::DATETIME_STORAGE_FORMAT;
+            break;
+        }
         // Adjust the date for storage.
-        $item['value'] = $date->setTimezone($storage_timezone)->format($storage_format);
+        $date->setTimezone(new \DateTimezone(DateTimeItemInterface::STORAGE_TIMEZONE));
+        $item['value'] = $date->format($format);
       }
     }
     return $values;

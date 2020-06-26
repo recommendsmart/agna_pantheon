@@ -22,11 +22,6 @@ class EntityFilteringThemeTest extends BrowserTestBase {
   use CommentTestTrait;
 
   /**
-   * {@inheritdoc}
-   */
-  protected $defaultTheme = 'stark';
-
-  /**
    * Use the standard profile.
    *
    * We test entity theming with the default node, user, comment, and taxonomy
@@ -87,7 +82,7 @@ class EntityFilteringThemeTest extends BrowserTestBase {
     // Install all available non-testing themes.
     $listing = new ExtensionDiscovery(\Drupal::root());
     $this->themes = $listing->scan('theme', FALSE);
-    \Drupal::service('theme_installer')->install(array_keys($this->themes));
+    \Drupal::service('theme_handler')->install(array_keys($this->themes));
 
     // Create a test user.
     $this->user = $this->drupalCreateUser(['access content', 'access user profiles']);

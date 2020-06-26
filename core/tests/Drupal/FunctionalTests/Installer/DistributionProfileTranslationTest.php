@@ -16,11 +16,6 @@ class DistributionProfileTranslationTest extends InstallerTestBase {
   /**
    * {@inheritdoc}
    */
-  protected $defaultTheme = 'stark';
-
-  /**
-   * {@inheritdoc}
-   */
   protected $langcode = 'de';
 
   /**
@@ -35,11 +30,9 @@ class DistributionProfileTranslationTest extends InstallerTestBase {
    */
   protected function prepareEnvironment() {
     parent::prepareEnvironment();
-    // We set core_version_requirement to '*' for the test so that it does not
-    // need to be updated between major versions.
     $this->info = [
       'type' => 'profile',
-      'core_version_requirement' => '*',
+      'core' => \Drupal::CORE_COMPATIBILITY,
       'name' => 'Distribution profile',
       'distribution' => [
         'name' => 'My Distribution',

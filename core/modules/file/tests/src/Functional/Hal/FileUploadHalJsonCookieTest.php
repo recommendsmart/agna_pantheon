@@ -16,9 +16,4 @@ class FileUploadHalJsonCookieTest extends FileUploadHalJsonTestBase {
    */
   protected static $auth = 'cookie';
 
-  /**
-   * {@inheritdoc}
-   */
-  protected $defaultTheme = 'stark';
-
 }

@@ -21,11 +21,6 @@ class RoleXmlBasicAuthTest extends RoleResourceTestBase {
   /**
    * {@inheritdoc}
    */
-  protected $defaultTheme = 'stark';
-
-  /**
-   * {@inheritdoc}
-   */
   protected static $format = 'xml';
 
   /**

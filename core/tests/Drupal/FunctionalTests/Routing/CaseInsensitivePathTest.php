@@ -19,11 +19,6 @@ class CaseInsensitivePathTest extends BrowserTestBase {
   /**
    * {@inheritdoc}
    */
-  protected $defaultTheme = 'stark';
-
-  /**
-   * {@inheritdoc}
-   */
   protected function setUp() {
     parent::setUp();
     \Drupal::state()->set('system_test.module_hidden', FALSE);

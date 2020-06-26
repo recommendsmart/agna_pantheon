@@ -17,11 +17,6 @@ class CommentOperationsTest extends CommentTestBase {
   public static $testViews = ['test_comment_operations'];
 
   /**
-   * {@inheritdoc}
-   */
-  protected $defaultTheme = 'classy';
-
-  /**
    * Test the operations field plugin.
    */
   public function testCommentOperations() {

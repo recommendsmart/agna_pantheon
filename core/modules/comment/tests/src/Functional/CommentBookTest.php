@@ -24,11 +24,6 @@ class CommentBookTest extends BrowserTestBase {
    */
   public static $modules = ['book', 'comment'];
 
-  /**
-   * {@inheritdoc}
-   */
-  protected $defaultTheme = 'stark';
-
   protected function setUp() {
     parent::setUp();
 

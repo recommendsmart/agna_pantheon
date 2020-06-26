@@ -21,9 +21,4 @@ class RdfMappingJsonAnonTest extends RdfMappingResourceTestBase {
    */
   protected static $mimeType = 'application/json';
 
-  /**
-   * {@inheritdoc}
-   */
-  protected $defaultTheme = 'stark';
-
 }

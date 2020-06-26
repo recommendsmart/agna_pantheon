@@ -5,7 +5,6 @@ namespace Drupal\Core\Plugin\Context;
 use Drupal\Component\Plugin\Definition\ContextAwarePluginDefinitionInterface;
 use Drupal\Component\Plugin\Exception\ContextException;
 use Drupal\Component\Plugin\Exception\MissingValueContextException;
-use Drupal\Component\Plugin\Exception\PluginException;
 use Drupal\Core\Cache\CacheableDependencyInterface;
 use Drupal\Core\Plugin\ContextAwarePluginInterface;
 
@@ -51,8 +50,8 @@ class ContextHandler implements ContextHandlerInterface {
     if ($plugin_definition instanceof ContextAwarePluginDefinitionInterface) {
       return $plugin_definition->getContextDefinitions();
     }
-    if (is_array($plugin_definition) && isset($plugin_definition['context_definitions'])) {
-      return $plugin_definition['context_definitions'];
+    if (is_array($plugin_definition) && isset($plugin_definition['context'])) {
+      return $plugin_definition['context'];
     }
     return NULL;
   }
@@ -105,42 +104,21 @@ class ContextHandler implements ContextHandlerInterface {
 
         // Pass the value to the plugin if there is one.
         if ($contexts[$context_id]->hasContextValue()) {
-          $plugin->setContext($plugin_context_id, $contexts[$context_id]);
+          $plugin->setContextValue($plugin_context_id, $contexts[$context_id]->getContextData());
         }
         elseif ($plugin_context_definition->isRequired()) {
           // Collect required contexts that exist but are missing a value.
           $missing_value[] = $plugin_context_id;
         }
-
-        // Proceed to the next definition.
-        continue;
       }
-
-      try {
-        $context = $plugin->getContext($context_id);
-      }
-      catch (ContextException $e) {
-        $context = NULL;
-      }
-      // @todo Remove in https://www.drupal.org/project/drupal/issues/3046342.
-      catch (PluginException $e) {
-        $context = NULL;
-      }
-
-      if ($context && $context->hasContextValue()) {
-        // Ignore mappings if the plugin has a value for a missing context.
-        unset($mappings[$plugin_context_id]);
-        continue;
-      }
-
-      if ($plugin_context_definition->isRequired()) {
+      elseif ($plugin_context_definition->isRequired()) {
         // Collect required contexts that are missing.
         $missing_value[] = $plugin_context_id;
-        continue;
       }
-
-      // Ignore mappings for optional missing context.
-      unset($mappings[$plugin_context_id]);
+      else {
+        // Ignore mappings for optional missing context.
+        unset($mappings[$plugin_context_id]);
+      }
     }
 
     // If there are any mappings that were not satisfied, throw an exception.

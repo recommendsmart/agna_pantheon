@@ -22,11 +22,6 @@ class SearchKeywordsConditionsTest extends BrowserTestBase {
   protected static $modules = ['comment', 'search', 'search_extra_type', 'test_page_test'];
 
   /**
-   * {@inheritdoc}
-   */
-  protected $defaultTheme = 'stark';
-
-  /**
    * A user with permission to search and post comments.
    *
    * @var \Drupal\user\UserInterface

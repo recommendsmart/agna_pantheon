@@ -21,11 +21,6 @@ class RssTest extends TaxonomyTestBase {
   public static $modules = ['node', 'field_ui', 'views'];
 
   /**
-   * {@inheritdoc}
-   */
-  protected $defaultTheme = 'stark';
-
-  /**
    * Vocabulary for testing.
    *
    * @var \Drupal\taxonomy\VocabularyInterface
@@ -54,15 +49,12 @@ class RssTest extends TaxonomyTestBase {
     ];
     $this->createEntityReferenceField('node', 'article', $this->fieldName, NULL, 'taxonomy_term', 'default', $handler_settings, FieldStorageDefinitionInterface::CARDINALITY_UNLIMITED);
 
-    /** @var \Drupal\Core\Entity\EntityDisplayRepositoryInterface $display_repository */
-    $display_repository = \Drupal::service('entity_display.repository');
-
-    $display_repository->getFormDisplay('node', 'article')
+    entity_get_form_display('node', 'article', 'default')
       ->setComponent($this->fieldName, [
         'type' => 'options_select',
       ])
       ->save();
-    $display_repository->getViewDisplay('node', 'article')
+    entity_get_display('node', 'article', 'default')
       ->setComponent($this->fieldName, [
         'type' => 'entity_reference_label',
       ])
@@ -103,7 +95,7 @@ class RssTest extends TaxonomyTestBase {
     $this->drupalGet('rss.xml');
     $test_element = sprintf(
       '<category %s>%s</category>',
-      'domain="' . $term1->toUrl('canonical', ['absolute' => TRUE])->toString() . '"',
+      'domain="' . $term1->url('canonical', ['absolute' => TRUE]) . '"',
       $term1->getName()
     );
     $this->assertRaw($test_element, 'Term is displayed when viewing the rss feed.');

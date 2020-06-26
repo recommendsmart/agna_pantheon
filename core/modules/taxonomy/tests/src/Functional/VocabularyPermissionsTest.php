@@ -18,11 +18,6 @@ class VocabularyPermissionsTest extends TaxonomyTestBase {
    */
   public static $modules = ['help'];
 
-  /**
-   * {@inheritdoc}
-   */
-  protected $defaultTheme = 'stark';
-
   protected function setUp() {
     parent::setUp();
 

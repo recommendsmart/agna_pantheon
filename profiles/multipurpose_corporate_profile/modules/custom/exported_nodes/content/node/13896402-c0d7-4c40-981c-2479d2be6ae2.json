@@ -1,0 +1,204 @@
+{
+    "_links": {
+        "self": {
+            "href": "http:\/\/default\/blog\/points-flat-earth-model-0?_format=hal_json"
+        },
+        "type": {
+            "href": "http:\/\/drupal.org\/rest\/type\/node\/blog_entry"
+        },
+        "http:\/\/drupal.org\/rest\/relation\/node\/blog_entry\/uid": [
+            {
+                "href": "http:\/\/default\/user\/0?_format=hal_json",
+                "lang": "und"
+            }
+        ],
+        "http:\/\/drupal.org\/rest\/relation\/node\/blog_entry\/revision_uid": [
+            {
+                "href": "http:\/\/default\/user\/0?_format=hal_json"
+            }
+        ],
+        "http:\/\/drupal.org\/rest\/relation\/node\/blog_entry\/field_blog_image": [
+            {
+                "href": "http:\/\/default\/sites\/default\/files\/flat-earth-theory.jpg"
+            }
+        ],
+        "http:\/\/drupal.org\/rest\/relation\/node\/blog_entry\/field_tags": [
+            {
+                "href": "http:\/\/default\/tags\/space-lizards?_format=hal_json"
+            }
+        ]
+    },
+    "nid": [
+        {
+            "value": "89"
+        }
+    ],
+    "uuid": [
+        {
+            "value": "13896402-c0d7-4c40-981c-2479d2be6ae2"
+        }
+    ],
+    "vid": [
+        {
+            "value": "89"
+        }
+    ],
+    "langcode": [
+        {
+            "value": "und",
+            "lang": "und"
+        }
+    ],
+    "type": [
+        {
+            "target_id": "blog_entry"
+        }
+    ],
+    "title": [
+        {
+            "value": "Points For The Flat Earth Model",
+            "lang": "und"
+        }
+    ],
+    "_embedded": {
+        "http:\/\/drupal.org\/rest\/relation\/node\/blog_entry\/uid": [
+            {
+                "_links": {
+                    "self": {
+                        "href": "http:\/\/default\/user\/0?_format=hal_json"
+                    },
+                    "type": {
+                        "href": "http:\/\/drupal.org\/rest\/type\/user\/user"
+                    }
+                },
+                "uuid": [
+                    {
+                        "value": "cdddbba5-497d-4ff1-92f9-e0fb2de3e96e"
+                    }
+                ],
+                "lang": "und"
+            }
+        ],
+        "http:\/\/drupal.org\/rest\/relation\/node\/blog_entry\/revision_uid": [
+            {
+                "_links": {
+                    "self": {
+                        "href": "http:\/\/default\/user\/0?_format=hal_json"
+                    },
+                    "type": {
+                        "href": "http:\/\/drupal.org\/rest\/type\/user\/user"
+                    }
+                },
+                "uuid": [
+                    {
+                        "value": "cdddbba5-497d-4ff1-92f9-e0fb2de3e96e"
+                    }
+                ]
+            }
+        ],
+        "http:\/\/drupal.org\/rest\/relation\/node\/blog_entry\/field_blog_image": [
+            {
+                "_links": {
+                    "self": {
+                        "href": "http:\/\/default\/sites\/default\/files\/flat-earth-theory.jpg"
+                    },
+                    "type": {
+                        "href": "http:\/\/drupal.org\/rest\/type\/file\/image"
+                    }
+                },
+                "uuid": [
+                    {
+                        "value": "814765c7-56b3-4c10-978a-847305f9a044"
+                    }
+                ],
+                "uri": [
+                    {
+                        "value": "http:\/\/default\/sites\/default\/files\/flat-earth-theory.jpg"
+                    }
+                ]
+            }
+        ],
+        "http:\/\/drupal.org\/rest\/relation\/node\/blog_entry\/field_tags": [
+            {
+                "_links": {
+                    "self": {
+                        "href": "http:\/\/default\/tags\/space-lizards?_format=hal_json"
+                    },
+                    "type": {
+                        "href": "http:\/\/drupal.org\/rest\/type\/taxonomy_term\/tags"
+                    }
+                },
+                "uuid": [
+                    {
+                        "value": "37741ffb-7abc-487d-aaa3-af6b077bdcc4"
+                    }
+                ]
+            }
+        ]
+    },
+    "status": [
+        {
+            "value": "1",
+            "lang": "und"
+        }
+    ],
+    "created": [
+        {
+            "value": "1463461258",
+            "lang": "und"
+        }
+    ],
+    "changed": [
+        {
+            "value": "1464144881",
+            "lang": "und"
+        }
+    ],
+    "promote": [
+        {
+            "value": "0",
+            "lang": "und"
+        }
+    ],
+    "sticky": [
+        {
+            "value": "0",
+            "lang": "und"
+        }
+    ],
+    "revision_timestamp": [
+        {
+            "value": "1463461258"
+        }
+    ],
+    "revision_translation_affected": [
+        {
+            "value": "1",
+            "lang": "und"
+        }
+    ],
+    "default_langcode": [
+        {
+            "value": "1",
+            "lang": "und"
+        }
+    ],
+    "body": [
+        {
+            "value": "<p>\u2013 Lack of visible or measurable curvature: The horizon looks flat to the eye. Researchers have claimed that the skyline of cities such as New York City and Philadelphia are visible 40-60 miles away from the ground, when the alleged curvature of the Earth should not permit them to be seen. The famous Bedford Canal experiment performed in 1838 by Samuel Rowbotham showed that a canoe or small boat was visible from 6 miles away along a river (when the curvature of the earth should have rendered it invisible below the horizon or line of sight). Is this light refraction or evidence of a flat earth?&nbsp;<\/p>\r\n\r\n<p>\u2013 Lack of discernible spin: When an airborne plane is trying to land, if the earth were really spinning, it should be difficult for the plane to land. It would be landing on a moving target. Yet no planes appear to have trouble doing this or use a spinning earth in their calculations. Why not?&nbsp;<\/p>\r\n\r\n<p>\u2013 Admiral Byrd\u2019s Antarctic expedition: Admiral Richard E. Byrd was a courageous explorer who earnt the trust of the US Government. They sent him down to Antarctica on a military mission in 1947. He reported that in Antarctica he ran into UFOs \u2013 \u201cvehicles which could travel from one pole to the other in less than an hour\u201d as he wrote in his diary \u2013 and found his way into the center of the earth, \u201cinner earth\u201d, where the temperature was warm, vegetation grew and a Nordic race of people lived. Remember, this was a hardened, rational military man writing such things. In this video interview, he also reveals that beyond the South Pole there was still much of Antarctica left unexplored (an area the size of the USA in fact). After this Governments of the world joined forces and made Antarctica off limits and all trips there highly regulated. Why?&nbsp;<\/p>\r\n\r\n<p>\u2013 The problem of the Sun\u2019s heat: If the sun is really 93 million miles away, how does its heat travel through space (an apparent vacuum) to reach us? Can space conduct or transfer heat? If not, can the atmosphere of Earth take the sun\u2019s light and transform it into heat? If so, how does that work? Has it been proven beyond all doubt?&nbsp;<\/p>\r\n\r\n<p>\u2013 The problem of the Sun\u2019s light: Sometimes you can see the sun\u2019s rays coming in at wide angles. How could this be if they were all coming from 93 million miles away? From that distance they are essentially parallel. Does the atmosphere disperse them? If so, how? Has this been proven beyond all doubt?&nbsp;<\/p>\r\n\r\n<p>\u2013 Strangeness around Southern Hemisphere flights: Why are there so few direct flights in the Southern Hemisphere? Why do planes flying from places like Sydney (Australia) to Johannesburg (South Africa) routinely go via places like Dubai in the Middle East, which is completely off course and out of the way? The direct flight would be around 12 hours and planes have enough fuel to do this without needing to stop. Why are planes\u2019 GPS turned off during Southern Hemisphere flights, so that their exact trajectories can not be easily tracked?<\/p>\r\n",
+            "format": "filtered_html",
+            "summary": ""
+        }
+    ],
+    "comment_node_blog_entry": [
+        {
+            "status": "1",
+            "cid": "0",
+            "last_comment_timestamp": "1463461258",
+            "last_comment_name": null,
+            "last_comment_uid": "0",
+            "comment_count": "0",
+            "lang": "und"
+        }
+    ]
+}

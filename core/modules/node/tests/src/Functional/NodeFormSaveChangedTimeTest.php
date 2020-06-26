@@ -21,11 +21,6 @@ class NodeFormSaveChangedTimeTest extends BrowserTestBase {
   ];
 
   /**
-   * {@inheritdoc}
-   */
-  protected $defaultTheme = 'stark';
-
-  /**
    * An user with permissions to create and edit articles.
    *
    * @var \Drupal\user\UserInterface

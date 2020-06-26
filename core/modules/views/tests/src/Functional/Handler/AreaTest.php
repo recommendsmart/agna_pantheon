@@ -29,11 +29,6 @@ class AreaTest extends ViewTestBase {
    */
   public static $modules = ['node', 'views_ui'];
 
-  /**
-   * {@inheritdoc}
-   */
-  protected $defaultTheme = 'stark';
-
   protected function setUp($import_test_views = TRUE) {
     parent::setUp($import_test_views);
 
@@ -168,7 +163,7 @@ class AreaTest extends ViewTestBase {
 
     // Test that the list is token present.
     $element = $this->xpath('//ul[@class="global-tokens"]');
-    $this->assertNotEmpty($element, 'Token list found on the options form.');
+    $this->assertTrue($element, 'Token list found on the options form.');
 
     $empty_handler = &$view->empty['test_example'];
 

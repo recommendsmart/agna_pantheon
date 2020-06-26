@@ -18,11 +18,6 @@ class PrivateFileOnTranslatedEntityTest extends FileFieldTestBase {
   public static $modules = ['language', 'content_translation'];
 
   /**
-   * {@inheritdoc}
-   */
-  protected $defaultTheme = 'stark';
-
-  /**
    * The name of the file field used in the test.
    *
    * @var string
@@ -68,6 +63,7 @@ class PrivateFileOnTranslatedEntityTest extends FileFieldTestBase {
       "settings[node][page][fields][$this->fieldName]" => 1,
     ];
     $this->drupalPostForm('admin/config/regional/content-language', $edit, t('Save configuration'));
+    \Drupal::entityManager()->clearCachedDefinitions();
   }
 
   /**
@@ -75,7 +71,7 @@ class PrivateFileOnTranslatedEntityTest extends FileFieldTestBase {
    */
   public function testPrivateLanguageFile() {
     // Verify that the file field on the "Basic page" node type is translatable.
-    $definitions = \Drupal::service('entity_field.manager')->getFieldDefinitions('node', 'page');
+    $definitions = \Drupal::entityManager()->getFieldDefinitions('node', 'page');
     $this->assertTrue($definitions[$this->fieldName]->isTranslatable(), 'Node file field is translatable.');
 
     // Create a default language node.
@@ -92,7 +88,7 @@ class PrivateFileOnTranslatedEntityTest extends FileFieldTestBase {
     $this->rebuildContainer();
 
     // Ensure the file can be downloaded.
-    \Drupal::entityTypeManager()->getStorage('node')->resetCache([$default_language_node->id()]);
+    \Drupal::entityManager()->getStorage('node')->resetCache([$default_language_node->id()]);
     $node = Node::load($default_language_node->id());
     $node_file = File::load($node->{$this->fieldName}->target_id);
     $this->drupalGet(file_create_url($node_file->getFileUri()));
@@ -114,7 +110,7 @@ class PrivateFileOnTranslatedEntityTest extends FileFieldTestBase {
     $last_fid = $this->getLastFileId();
 
     // Verify the translation was created.
-    \Drupal::entityTypeManager()->getStorage('node')->resetCache([$default_language_node->id()]);
+    \Drupal::entityManager()->getStorage('node')->resetCache([$default_language_node->id()]);
     $default_language_node = Node::load($default_language_node->id());
     $this->assertTrue($default_language_node->hasTranslation('fr'), 'Node found in database.');
     $this->assertTrue($last_fid > $last_fid_prior, 'New file got saved.');

@@ -3,7 +3,6 @@
 namespace Drupal\node;
 
 use Drupal\Component\Datetime\TimeInterface;
-use Drupal\Core\Datetime\DateFormatterInterface;
 use Drupal\Core\Entity\ContentEntityForm;
 use Drupal\Core\Entity\EntityRepositoryInterface;
 use Drupal\Core\Entity\EntityTypeBundleInfoInterface;
@@ -34,13 +33,6 @@ class NodeForm extends ContentEntityForm {
   protected $currentUser;
 
   /**
-   * The date formatter service.
-   *
-   * @var \Drupal\Core\Datetime\DateFormatterInterface
-   */
-  protected $dateFormatter;
-
-  /**
    * Constructs a NodeForm object.
    *
    * @param \Drupal\Core\Entity\EntityRepositoryInterface $entity_repository
@@ -53,14 +45,11 @@ class NodeForm extends ContentEntityForm {
    *   The time service.
    * @param \Drupal\Core\Session\AccountInterface $current_user
    *   The current user.
-   * @param \Drupal\Core\Datetime\DateFormatterInterface $date_formatter
-   *   The date formatter service.
    */
-  public function __construct(EntityRepositoryInterface $entity_repository, PrivateTempStoreFactory $temp_store_factory, EntityTypeBundleInfoInterface $entity_type_bundle_info = NULL, TimeInterface $time = NULL, AccountInterface $current_user, DateFormatterInterface $date_formatter) {
+  public function __construct(EntityRepositoryInterface $entity_repository, PrivateTempStoreFactory $temp_store_factory, EntityTypeBundleInfoInterface $entity_type_bundle_info = NULL, TimeInterface $time = NULL, AccountInterface $current_user) {
     parent::__construct($entity_repository, $entity_type_bundle_info, $time);
     $this->tempStoreFactory = $temp_store_factory;
     $this->currentUser = $current_user;
-    $this->dateFormatter = $date_formatter;
   }
 
   /**
@@ -72,8 +61,7 @@ class NodeForm extends ContentEntityForm {
       $container->get('tempstore.private'),
       $container->get('entity_type.bundle.info'),
       $container->get('datetime.time'),
-      $container->get('current_user'),
-      $container->get('date.formatter')
+      $container->get('current_user')
     );
   }
 
@@ -146,13 +134,13 @@ class NodeForm extends ContentEntityForm {
     $form['meta']['changed'] = [
       '#type' => 'item',
       '#title' => $this->t('Last saved'),
-      '#markup' => !$node->isNew() ? $this->dateFormatter->format($node->getChangedTime(), 'short') : $this->t('Not saved yet'),
+      '#markup' => !$node->isNew() ? format_date($node->getChangedTime(), 'short') : $this->t('Not saved yet'),
       '#wrapper_attributes' => ['class' => ['entity-meta__last-saved']],
     ];
     $form['meta']['author'] = [
       '#type' => 'item',
       '#title' => $this->t('Author'),
-      '#markup' => $node->getOwner()->getAccountName(),
+      '#markup' => $node->getOwner()->getUsername(),
       '#wrapper_attributes' => ['class' => ['entity-meta__author']],
     ];
 
@@ -223,7 +211,7 @@ class NodeForm extends ContentEntityForm {
    *
    * @see \Drupal\node\NodeForm::form()
    *
-   * @deprecated in drupal:8.4.0 and is removed from drupal:9.0.0.
+   * @deprecated in Drupal 8.4.x, will be removed before Drupal 9.0.0.
    *   The "Publish" button was removed.
    */
   public function updateStatus($entity_type_id, NodeInterface $node, array $form, FormStateInterface $form_state) {
@@ -251,9 +239,8 @@ class NodeForm extends ContentEntityForm {
       '#submit' => ['::submitForm', '::preview'],
     ];
 
-    if (array_key_exists('delete', $element)) {
-      $element['delete']['#weight'] = 100;
-    }
+    $element['delete']['#access'] = $node->access('delete');
+    $element['delete']['#weight'] = 100;
 
     return $element;
   }
@@ -292,9 +279,9 @@ class NodeForm extends ContentEntityForm {
     $node = $this->entity;
     $insert = $node->isNew();
     $node->save();
-    $node_link = $node->toLink($this->t('View'))->toString();
+    $node_link = $node->link($this->t('View'));
     $context = ['@type' => $node->getType(), '%title' => $node->label(), 'link' => $node_link];
-    $t_args = ['@type' => node_get_type_label($node), '%title' => $node->toLink()->toString()];
+    $t_args = ['@type' => node_get_type_label($node), '%title' => $node->link($node->label())];
 
     if ($insert) {
       $this->logger('content')->notice('@type: added %title.', $context);

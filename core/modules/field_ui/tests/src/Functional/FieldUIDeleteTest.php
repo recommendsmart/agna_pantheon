@@ -26,11 +26,6 @@ class FieldUIDeleteTest extends BrowserTestBase {
   public static $modules = ['node', 'field_ui', 'field_test', 'block', 'field_test_views'];
 
   /**
-   * {@inheritdoc}
-   */
-  protected $defaultTheme = 'stark';
-
-  /**
    * Test views to enable
    *
    * @var string[]

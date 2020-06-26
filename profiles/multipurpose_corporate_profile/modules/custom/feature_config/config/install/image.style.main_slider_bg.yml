@@ -1,0 +1,13 @@
+langcode: en
+status: true
+dependencies: {  }
+name: main_slider_bg
+label: 'main slider bg'
+effects:
+  c3dafafe-129e-47dc-be66-8e486154f577:
+    uuid: c3dafafe-129e-47dc-be66-8e486154f577
+    id: image_scale_and_crop
+    weight: 3
+    data:
+      width: 1920
+      height: 740

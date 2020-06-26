@@ -3,7 +3,7 @@
 namespace Drupal\Tests\system\Functional\Module;
 
 use Drupal\Tests\BrowserTestBase;
-use Drupal\Tests\taxonomy\Traits\TaxonomyTestTrait;
+use Drupal\Tests\taxonomy\Functional\TaxonomyTestTrait;
 
 /**
  * Tests that modules which provide entity types can be uninstalled.
@@ -13,11 +13,6 @@ use Drupal\Tests\taxonomy\Traits\TaxonomyTestTrait;
 class PrepareUninstallTest extends BrowserTestBase {
 
   use TaxonomyTestTrait;
-
-  /**
-   * {@inheritdoc}
-   */
-  protected $defaultTheme = 'stark';
 
   /**
    * An array of node objects.
@@ -163,7 +158,7 @@ class PrepareUninstallTest extends BrowserTestBase {
 
     // Test an entity type without a label.
     /** @var \Drupal\Core\Entity\EntityStorageInterface $storage */
-    $storage = $this->container->get('entity_type.manager')
+    $storage = $this->container->get('entity.manager')
       ->getStorage('entity_test_no_label');
     $storage->create([
       'id' => mb_strtolower($this->randomMachineName()),

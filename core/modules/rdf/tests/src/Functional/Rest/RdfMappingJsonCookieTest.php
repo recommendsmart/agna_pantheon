@@ -26,9 +26,4 @@ class RdfMappingJsonCookieTest extends RdfMappingResourceTestBase {
    */
   protected static $auth = 'cookie';
 
-  /**
-   * {@inheritdoc}
-   */
-  protected $defaultTheme = 'stark';
-
 }

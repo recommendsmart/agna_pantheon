@@ -26,9 +26,4 @@ class SearchPageJsonCookieTest extends SearchPageResourceTestBase {
    */
   protected static $auth = 'cookie';
 
-  /**
-   * {@inheritdoc}
-   */
-  protected $defaultTheme = 'stark';
-
 }

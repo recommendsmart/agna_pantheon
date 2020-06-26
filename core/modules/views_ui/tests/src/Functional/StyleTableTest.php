@@ -13,11 +13,6 @@ use Drupal\views\Views;
 class StyleTableTest extends UITestBase {
 
   /**
-   * {@inheritdoc}
-   */
-  protected $defaultTheme = 'stark';
-
-  /**
    * Tests created a table style view.
    */
   public function testWizard() {

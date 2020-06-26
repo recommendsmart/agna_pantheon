@@ -11,7 +11,6 @@ use Symfony\Component\EventDispatcher\EventSubscriberInterface;
  * Provides routes for the Layout Builder UI.
  *
  * @internal
- *   Tagged services are internal.
  */
 class LayoutBuilderRoutes implements EventSubscriberInterface {
 

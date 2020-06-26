@@ -19,11 +19,6 @@ class ArgumentValidatorTest extends UITestBase {
   public static $testViews = ['test_argument'];
 
   /**
-   * {@inheritdoc}
-   */
-  protected $defaultTheme = 'stark';
-
-  /**
    * Tests the 'Specify validation criteria' checkbox functionality.
    */
   public function testSpecifyValidation() {

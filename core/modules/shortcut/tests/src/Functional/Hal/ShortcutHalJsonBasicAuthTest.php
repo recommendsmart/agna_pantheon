@@ -19,11 +19,6 @@ class ShortcutHalJsonBasicAuthTest extends ShortcutHalJsonAnonTest {
   /**
    * {@inheritdoc}
    */
-  protected $defaultTheme = 'stark';
-
-  /**
-   * {@inheritdoc}
-   */
   protected static $auth = 'basic_auth';
 
 }

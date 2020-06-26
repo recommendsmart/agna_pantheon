@@ -1,0 +1,209 @@
+{
+    "_links": {
+        "self": {
+            "href": "http:\/\/default\/content\/tin-foil-hat-0?_format=hal_json"
+        },
+        "type": {
+            "href": "http:\/\/drupal.org\/rest\/type\/node\/main_slider"
+        },
+        "http:\/\/drupal.org\/rest\/relation\/node\/main_slider\/uid": [
+            {
+                "href": "http:\/\/default\/user\/0?_format=hal_json",
+                "lang": "und"
+            }
+        ],
+        "http:\/\/drupal.org\/rest\/relation\/node\/main_slider\/revision_uid": [
+            {
+                "href": "http:\/\/default\/user\/0?_format=hal_json"
+            }
+        ],
+        "http:\/\/drupal.org\/rest\/relation\/node\/main_slider\/field_background_image": [
+            {
+                "href": "http:\/\/default\/sites\/default\/files\/Layer-4.jpg"
+            }
+        ],
+        "http:\/\/drupal.org\/rest\/relation\/node\/main_slider\/field_main_slider_image": [
+            {
+                "href": "http:\/\/default\/sites\/default\/files\/screens.png"
+            }
+        ]
+    },
+    "nid": [
+        {
+            "value": "73"
+        }
+    ],
+    "uuid": [
+        {
+            "value": "eb54f859-3004-4278-b69c-c47e7cb0fdae"
+        }
+    ],
+    "vid": [
+        {
+            "value": "73"
+        }
+    ],
+    "langcode": [
+        {
+            "value": "und",
+            "lang": "und"
+        }
+    ],
+    "type": [
+        {
+            "target_id": "main_slider"
+        }
+    ],
+    "title": [
+        {
+            "value": "Tin Foil Hat",
+            "lang": "und"
+        }
+    ],
+    "_embedded": {
+        "http:\/\/drupal.org\/rest\/relation\/node\/main_slider\/uid": [
+            {
+                "_links": {
+                    "self": {
+                        "href": "http:\/\/default\/user\/0?_format=hal_json"
+                    },
+                    "type": {
+                        "href": "http:\/\/drupal.org\/rest\/type\/user\/user"
+                    }
+                },
+                "uuid": [
+                    {
+                        "value": "cdddbba5-497d-4ff1-92f9-e0fb2de3e96e"
+                    }
+                ],
+                "lang": "und"
+            }
+        ],
+        "http:\/\/drupal.org\/rest\/relation\/node\/main_slider\/revision_uid": [
+            {
+                "_links": {
+                    "self": {
+                        "href": "http:\/\/default\/user\/0?_format=hal_json"
+                    },
+                    "type": {
+                        "href": "http:\/\/drupal.org\/rest\/type\/user\/user"
+                    }
+                },
+                "uuid": [
+                    {
+                        "value": "cdddbba5-497d-4ff1-92f9-e0fb2de3e96e"
+                    }
+                ]
+            }
+        ],
+        "http:\/\/drupal.org\/rest\/relation\/node\/main_slider\/field_background_image": [
+            {
+                "_links": {
+                    "self": {
+                        "href": "http:\/\/default\/sites\/default\/files\/Layer-4.jpg"
+                    },
+                    "type": {
+                        "href": "http:\/\/drupal.org\/rest\/type\/file\/image"
+                    }
+                },
+                "uuid": [
+                    {
+                        "value": "0e8a6368-c6fd-43a3-ae2a-eff3113d1f94"
+                    }
+                ],
+                "uri": [
+                    {
+                        "value": "http:\/\/default\/sites\/default\/files\/Layer-4.jpg"
+                    }
+                ]
+            }
+        ],
+        "http:\/\/drupal.org\/rest\/relation\/node\/main_slider\/field_main_slider_image": [
+            {
+                "_links": {
+                    "self": {
+                        "href": "http:\/\/default\/sites\/default\/files\/screens.png"
+                    },
+                    "type": {
+                        "href": "http:\/\/drupal.org\/rest\/type\/file\/file"
+                    }
+                },
+                "uuid": [
+                    {
+                        "value": "cb527199-8471-4a23-b655-6c1f462a2c15"
+                    }
+                ],
+                "uri": [
+                    {
+                        "value": "http:\/\/default\/sites\/default\/files\/screens.png"
+                    }
+                ]
+            }
+        ]
+    },
+    "status": [
+        {
+            "value": "1",
+            "lang": "und"
+        }
+    ],
+    "created": [
+        {
+            "value": "1463461258",
+            "lang": "und"
+        }
+    ],
+    "changed": [
+        {
+            "value": "1464582827",
+            "lang": "und"
+        }
+    ],
+    "promote": [
+        {
+            "value": "0",
+            "lang": "und"
+        }
+    ],
+    "sticky": [
+        {
+            "value": "0",
+            "lang": "und"
+        }
+    ],
+    "revision_timestamp": [
+        {
+            "value": "1463461258"
+        }
+    ],
+    "revision_translation_affected": [
+        {
+            "value": "1",
+            "lang": "und"
+        }
+    ],
+    "default_langcode": [
+        {
+            "value": "1",
+            "lang": "und"
+        }
+    ],
+    "body": [
+        {
+            "value": "<p>Shields your brain from:<\/p>\r\n\r\n<ul class=\"check-list\">\r\n\t<li>Mind control rays<\/li>\r\n\t<li>Mind reading<\/li>\r\n\t<li>Electromagnetic fields<\/li>\r\n<\/ul>\r\n",
+            "format": "full_html",
+            "summary": ""
+        }
+    ],
+    "comment_node_main_slider": [
+        {
+            "status": "1",
+            "cid": "0",
+            "last_comment_timestamp": "1463461258",
+            "last_comment_name": null,
+            "last_comment_uid": "0",
+            "comment_count": "0",
+            "lang": "und"
+        }
+    ]
+}

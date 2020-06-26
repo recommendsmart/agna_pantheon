@@ -1,0 +1,22 @@
+langcode: en
+status: true
+dependencies:
+  config:
+    - comment.type.comment_node_clients
+    - field.field.comment.comment_node_clients.comment_body
+  module:
+    - text
+id: comment.comment_node_clients.default
+targetEntityType: comment
+bundle: comment_node_clients
+mode: default
+content:
+  comment_body:
+    label: hidden
+    weight: 0
+    type: text_default
+    settings: {  }
+    third_party_settings: {  }
+  links:
+    weight: 100
+hidden: {  }

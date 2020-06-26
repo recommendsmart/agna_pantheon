@@ -14,13 +14,9 @@ process:
   # the cid field to allow incremental migrations.
   cid: cid
   pid:
-    -
-      plugin: skip_on_empty
-      method: process
-      source: pid
-    -
-      plugin: migration_lookup
-      migration: d7_comment
+    plugin: migration_lookup
+    migration: d7_comment
+    source: pid
   entity_id:
     -
       plugin: migration_lookup
@@ -40,11 +36,7 @@ process:
     -
       plugin: skip_on_empty
       method: row
-  # Comments migrated from Drupal 6 to Drupal 7 may not have a language.
-  langcode:
-    plugin: default_value
-    source: language
-    default_value: und
+  langcode: language
   field_name: '@comment_type'
   subject: subject
   uid: uid

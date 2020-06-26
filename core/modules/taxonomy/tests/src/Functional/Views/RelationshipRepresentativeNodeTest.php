@@ -19,11 +19,6 @@ class RelationshipRepresentativeNodeTest extends TaxonomyTestBase {
   public static $testViews = ['test_groupwise_term'];
 
   /**
-   * {@inheritdoc}
-   */
-  protected $defaultTheme = 'stark';
-
-  /**
    * Tests the relationship.
    */
   public function testRelationship() {

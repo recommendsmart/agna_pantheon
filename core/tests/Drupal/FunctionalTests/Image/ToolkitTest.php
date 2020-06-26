@@ -10,11 +10,6 @@ namespace Drupal\FunctionalTests\Image;
 class ToolkitTest extends ToolkitTestBase {
 
   /**
-   * {@inheritdoc}
-   */
-  protected $defaultTheme = 'stark';
-
-  /**
    * Check that ImageToolkitManager::getAvailableToolkits() only returns
    * available toolkits.
    */

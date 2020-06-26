@@ -20,11 +20,6 @@ class EntityFormModeHalJsonBasicAuthTest extends EntityFormModeResourceTestBase 
   /**
    * {@inheritdoc}
    */
-  protected $defaultTheme = 'stark';
-
-  /**
-   * {@inheritdoc}
-   */
   protected static $format = 'hal_json';
 
   /**

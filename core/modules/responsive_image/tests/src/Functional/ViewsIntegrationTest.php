@@ -35,11 +35,6 @@ class ViewsIntegrationTest extends ViewTestBase {
   ];
 
   /**
-   * {@inheritdoc}
-   */
-  protected $defaultTheme = 'stark';
-
-  /**
    * The test views to enable.
    */
   public static $testViews = ['entity_test_row'];

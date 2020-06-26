@@ -1,0 +1,54 @@
+{
+    "_links": {
+        "self": {
+            "href": "http:\/\/default\/portfolioterms\/tin-foil-hat?_format=hal_json"
+        },
+        "type": {
+            "href": "http:\/\/drupal.org\/rest\/type\/taxonomy_term\/portfolio_terms"
+        }
+    },
+    "tid": [
+        {
+            "value": "8"
+        }
+    ],
+    "uuid": [
+        {
+            "value": "a407504e-f0e7-4f6d-8363-3d9fac01170f"
+        }
+    ],
+    "vid": [
+        {
+            "target_id": "portfolio_terms"
+        }
+    ],
+    "langcode": [
+        {
+            "value": "en",
+            "lang": "en"
+        }
+    ],
+    "name": [
+        {
+            "value": "Tin Foil Hat",
+            "lang": "en"
+        }
+    ],
+    "weight": [
+        {
+            "value": "3"
+        }
+    ],
+    "changed": [
+        {
+            "value": "1464076307",
+            "lang": "en"
+        }
+    ],
+    "default_langcode": [
+        {
+            "value": "1",
+            "lang": "en"
+        }
+    ]
+}

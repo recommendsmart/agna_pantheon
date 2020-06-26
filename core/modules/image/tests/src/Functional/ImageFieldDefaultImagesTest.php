@@ -2,9 +2,7 @@
 
 namespace Drupal\Tests\image\Functional;
 
-use Drupal\Component\Render\FormattableMarkup;
 use Drupal\Core\Entity\Entity\EntityViewDisplay;
-use Drupal\Core\File\FileSystemInterface;
 use Drupal\field\Entity\FieldConfig;
 use Drupal\file\Entity\File;
 use Drupal\field\Entity\FieldStorageConfig;
@@ -34,22 +32,17 @@ class ImageFieldDefaultImagesTest extends ImageFieldTestBase {
   public static $modules = ['field_ui'];
 
   /**
-   * {@inheritdoc}
-   */
-  protected $defaultTheme = 'stark';
-
-  /**
    * Tests CRUD for fields and field storages with default images.
    */
   public function testDefaultImages() {
-    $node_storage = $this->container->get('entity_type.manager')->getStorage('node');
+    $node_storage = $this->container->get('entity.manager')->getStorage('node');
     // Create files to use as the default images.
     $files = $this->drupalGetTestFiles('image');
     // Create 10 files so the default image fids are not a single value.
     for ($i = 1; $i <= 10; $i++) {
       $filename = $this->randomMachineName() . "$i";
       $desired_filepath = 'public://' . $filename;
-      \Drupal::service('file_system')->copy($files[0]->uri, $desired_filepath, FileSystemInterface::EXISTS_ERROR);
+      file_unmanaged_copy($files[0]->uri, $desired_filepath, FILE_EXISTS_ERROR);
       $file = File::create(['uri' => $desired_filepath, 'filename' => $filename, 'name' => $filename]);
       $file->save();
     }
@@ -114,14 +107,11 @@ class ImageFieldDefaultImagesTest extends ImageFieldTestBase {
     ]);
     $field2->save();
 
-    /** @var \Drupal\Core\Entity\EntityDisplayRepositoryInterface $display_repository */
-    $display_repository = \Drupal::service('entity_display.repository');
-
-    $widget_settings = $display_repository->getFormDisplay('node', $field->getTargetBundle())->getComponent($field_name);
-    $display_repository->getFormDisplay('node', 'page')
+    $widget_settings = entity_get_form_display('node', $field->getTargetBundle(), 'default')->getComponent($field_name);
+    entity_get_form_display('node', 'page', 'default')
       ->setComponent($field_name, $widget_settings)
       ->save();
-    $display_repository->getViewDisplay('node', 'page')
+    entity_get_display('node', 'page', 'default')
       ->setComponent($field_name)
       ->save();
 
@@ -132,7 +122,7 @@ class ImageFieldDefaultImagesTest extends ImageFieldTestBase {
     $this->assertFieldByXpath(
       '//input[@name="settings[default_image][uuid][fids]"]',
       $default_images['field_storage']->id(),
-      new FormattableMarkup(
+      format_string(
         'Article image field storage default equals expected file ID of @fid.',
         ['@fid' => $default_images['field_storage']->id()]
       )
@@ -142,7 +132,7 @@ class ImageFieldDefaultImagesTest extends ImageFieldTestBase {
     $this->assertFieldByXpath(
       '//input[@name="settings[default_image][uuid][fids]"]',
       $default_images['field']->id(),
-      new FormattableMarkup(
+      format_string(
         'Article image field default equals expected file ID of @fid.',
         ['@fid' => $default_images['field']->id()]
       )
@@ -153,7 +143,7 @@ class ImageFieldDefaultImagesTest extends ImageFieldTestBase {
     $this->assertFieldByXpath(
       '//input[@name="settings[default_image][uuid][fids]"]',
       $default_images['field_storage']->id(),
-      new FormattableMarkup(
+      format_string(
         'Page image field storage default equals expected file ID of @fid.',
         ['@fid' => $default_images['field_storage']->id()]
       )
@@ -164,7 +154,7 @@ class ImageFieldDefaultImagesTest extends ImageFieldTestBase {
     $this->assertFieldByXpath(
       '//input[@name="settings[default_image][uuid][fids]"]',
       $default_images['field2']->id(),
-      new FormattableMarkup(
+      format_string(
         'Page image field default equals expected file ID of @fid.',
         ['@fid' => $default_images['field2']->id()]
       )
@@ -176,7 +166,7 @@ class ImageFieldDefaultImagesTest extends ImageFieldTestBase {
     $this->assertEqual(
       $article_built[$field_name][0]['#item']->target_id,
       $default_images['field']->id(),
-      new FormattableMarkup(
+      format_string(
         'A new article node without an image has the expected default image file ID of @fid.',
         ['@fid' => $default_images['field']->id()]
       )
@@ -195,7 +185,7 @@ class ImageFieldDefaultImagesTest extends ImageFieldTestBase {
     $this->assertEqual(
       $page_built[$field_name][0]['#item']->target_id,
       $default_images['field2']->id(),
-      new FormattableMarkup(
+      format_string(
         'A new page node without an image has the expected default image file ID of @fid.',
         ['@fid' => $default_images['field2']->id()]
       )
@@ -213,7 +203,7 @@ class ImageFieldDefaultImagesTest extends ImageFieldTestBase {
     $this->assertFieldByXpath(
       '//input[@name="settings[default_image][uuid][fids]"]',
       $default_images['field_storage_new']->id(),
-      new FormattableMarkup(
+      format_string(
         'Updated image field storage default equals expected file ID of @fid.',
         ['@fid' => $default_images['field_storage_new']->id()]
       )
@@ -226,7 +216,7 @@ class ImageFieldDefaultImagesTest extends ImageFieldTestBase {
     $this->assertEqual(
       $article_built[$field_name][0]['#item']->target_id,
       $default_images['field']->id(),
-      new FormattableMarkup(
+      format_string(
         'An existing article node without an image has the expected default image file ID of @fid.',
         ['@fid' => $default_images['field']->id()]
       )
@@ -234,7 +224,7 @@ class ImageFieldDefaultImagesTest extends ImageFieldTestBase {
     $this->assertEqual(
       $page_built[$field_name][0]['#item']->target_id,
       $default_images['field2']->id(),
-      new FormattableMarkup(
+      format_string(
         'An existing page node without an image has the expected default image file ID of @fid.',
         ['@fid' => $default_images['field2']->id()]
       )
@@ -251,7 +241,7 @@ class ImageFieldDefaultImagesTest extends ImageFieldTestBase {
     $this->assertFieldByXpath(
       '//input[@name="settings[default_image][uuid][fids]"]',
       $default_images['field_new']->id(),
-      new FormattableMarkup(
+      format_string(
         'Updated article image field default equals expected file ID of @fid.',
         ['@fid' => $default_images['field_new']->id()]
       )
@@ -266,7 +256,7 @@ class ImageFieldDefaultImagesTest extends ImageFieldTestBase {
     $this->assertEqual(
       $article_built[$field_name][0]['#item']->target_id,
       $default_images['field_new']->id(),
-      new FormattableMarkup(
+      format_string(
         'An existing article node without an image has the expected default image file ID of @fid.',
         ['@fid' => $default_images['field_new']->id()]
       )
@@ -275,7 +265,7 @@ class ImageFieldDefaultImagesTest extends ImageFieldTestBase {
     $this->assertEqual(
       $page_built[$field_name][0]['#item']->target_id,
       $default_images['field2']->id(),
-      new FormattableMarkup(
+      format_string(
         'An existing page node without an image has the expected default image file ID of @fid.',
         ['@fid' => $default_images['field2']->id()]
       )
@@ -308,7 +298,7 @@ class ImageFieldDefaultImagesTest extends ImageFieldTestBase {
     $this->assertEqual(
       $article_built[$field_name][0]['#item']->target_id,
       $default_images['field_storage_new']->id(),
-      new FormattableMarkup(
+      format_string(
         'An existing article node without an image has the expected default image file ID of @fid.',
         ['@fid' => $default_images['field_storage_new']->id()]
       )
@@ -317,7 +307,7 @@ class ImageFieldDefaultImagesTest extends ImageFieldTestBase {
     $this->assertEqual(
       $page_built[$field_name][0]['#item']->target_id,
       $default_images['field2']->id(),
-      new FormattableMarkup(
+      format_string(
         'An existing page node without an image has the expected default image file ID of @fid.',
         ['@fid' => $default_images['field2']->id()]
       )
@@ -347,7 +337,7 @@ class ImageFieldDefaultImagesTest extends ImageFieldTestBase {
     $this->assertFieldByXpath(
       '//input[@name="settings[default_image][uuid][fids]"]',
       $default_images['field_storage_private']->id(),
-      new FormattableMarkup(
+      format_string(
         'Updated image field storage default equals expected file ID of @fid.',
         ['@fid' => $default_images['field_storage_private']->id()]
       )
@@ -366,7 +356,7 @@ class ImageFieldDefaultImagesTest extends ImageFieldTestBase {
     $this->assertFieldByXpath(
       '//input[@name="settings[default_image][uuid][fids]"]',
       $default_images['field_private']->id(),
-      new FormattableMarkup(
+      format_string(
         'Updated article image field default equals expected file ID of @fid.',
         ['@fid' => $default_images['field_private']->id()]
       )

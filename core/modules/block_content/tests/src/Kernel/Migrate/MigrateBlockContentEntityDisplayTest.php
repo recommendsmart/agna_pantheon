@@ -22,7 +22,6 @@ class MigrateBlockContentEntityDisplayTest extends MigrateDrupal7TestBase {
    */
   protected function setUp() {
     parent::setUp();
-    $this->installEntitySchema('block_content');
     $this->installConfig(static::$modules);
     $this->executeMigrations([
       'block_content_type',

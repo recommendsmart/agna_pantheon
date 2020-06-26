@@ -15,11 +15,6 @@ class ImageStyleDeleteTest extends ImageFieldTestBase {
   /**
    * {@inheritdoc}
    */
-  protected $defaultTheme = 'stark';
-
-  /**
-   * {@inheritdoc}
-   */
   protected function setUp() {
     parent::setUp();
     // Create an image field 'foo' having the image style 'medium' as widget

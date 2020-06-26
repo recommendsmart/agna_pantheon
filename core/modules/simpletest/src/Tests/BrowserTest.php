@@ -2,14 +2,12 @@
 
 namespace Drupal\simpletest\Tests;
 
-use Drupal\Core\Url;
 use Drupal\simpletest\WebTestBase;
 
 /**
  * Tests the internal browser of the testing framework.
  *
  * @group simpletest
- * @group WebTestBase
  */
 class BrowserTest extends WebTestBase {
 
@@ -43,7 +41,7 @@ class BrowserTest extends WebTestBase {
     $url = 'user/login';
 
     $this->drupalGet($url);
-    $absolute = Url::fromRoute('user.login', [], ['absolute' => TRUE])->toString();
+    $absolute = \Drupal::url('user.login', [], ['absolute' => TRUE]);
     $this->assertEqual($absolute, $this->url, 'Passed and requested URL are equal.');
     $this->assertEqual($this->url, $this->getAbsoluteUrl($this->url), 'Requested and returned absolute URL are equal.');
 
@@ -52,7 +50,7 @@ class BrowserTest extends WebTestBase {
     $this->assertEqual($this->url, $this->getAbsoluteUrl($this->url), 'Requested and returned absolute URL are equal.');
 
     $this->clickLink('Create new account');
-    $absolute = Url::fromRoute('user.register', [], ['absolute' => TRUE])->toString();
+    $absolute = \Drupal::url('user.register', [], ['absolute' => TRUE]);
     $this->assertEqual($absolute, $this->url, 'Passed and requested URL are equal.');
     $this->assertEqual($this->url, $this->getAbsoluteUrl($this->url), 'Requested and returned absolute URL are equal.');
   }
@@ -93,7 +91,7 @@ EOF;
   public function testCookies() {
     // Check that the $this->cookies property is populated when a user logs in.
     $user = $this->drupalCreateUser();
-    $edit = ['name' => $user->getAccountName(), 'pass' => $user->pass_raw];
+    $edit = ['name' => $user->getUsername(), 'pass' => $user->pass_raw];
     $this->drupalPostForm('<front>', $edit, t('Log in'));
     $this->assertEqual(count($this->cookies), 1, 'A cookie is set when the user logs in.');
 

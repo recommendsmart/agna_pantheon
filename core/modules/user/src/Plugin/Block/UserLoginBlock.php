@@ -4,13 +4,11 @@ namespace Drupal\user\Plugin\Block;
 
 use Drupal\Core\Access\AccessResult;
 use Drupal\Core\Plugin\ContainerFactoryPluginInterface;
-use Drupal\Core\Security\TrustedCallbackInterface;
 use Drupal\Core\Routing\RedirectDestinationTrait;
 use Drupal\Core\Routing\RouteMatchInterface;
 use Drupal\Core\Url;
 use Drupal\Core\Session\AccountInterface;
 use Drupal\Core\Block\BlockBase;
-use Drupal\user\UserInterface;
 use Symfony\Component\DependencyInjection\ContainerInterface;
 
 /**
@@ -22,7 +20,7 @@ use Symfony\Component\DependencyInjection\ContainerInterface;
  *   category = @Translation("Forms")
  * )
  */
-class UserLoginBlock extends BlockBase implements ContainerFactoryPluginInterface, TrustedCallbackInterface {
+class UserLoginBlock extends BlockBase implements ContainerFactoryPluginInterface {
 
   use RedirectDestinationTrait;
 
@@ -113,7 +111,7 @@ class UserLoginBlock extends BlockBase implements ContainerFactoryPluginInterfac
 
     // Build action links.
     $items = [];
-    if (\Drupal::config('user.settings')->get('register') != UserInterface::REGISTER_ADMINISTRATORS_ONLY) {
+    if (\Drupal::config('user.settings')->get('register') != USER_REGISTER_ADMINISTRATORS_ONLY) {
       $items['create_account'] = [
         '#type' => 'link',
         '#title' => $this->t('Create new account'),
@@ -158,13 +156,6 @@ class UserLoginBlock extends BlockBase implements ContainerFactoryPluginInterfac
       '#markup' => Url::fromRoute('<current>', [], ['query' => \Drupal::destination()->getAsArray(), 'external' => FALSE])->toString(),
       '#cache' => ['contexts' => ['url.path', 'url.query_args']],
     ];
-  }
-
-  /**
-   * {@inheritdoc}
-   */
-  public static function trustedCallbacks() {
-    return ['renderPlaceholderFormAction'];
   }
 
 }

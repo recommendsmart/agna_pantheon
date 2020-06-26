@@ -19,11 +19,6 @@ class UserCreateFailMailTest extends BrowserTestBase {
   public static $modules = ['system_mail_failure_test'];
 
   /**
-   * {@inheritdoc}
-   */
-  protected $defaultTheme = 'stark';
-
-  /**
    * Tests the create user administration page.
    */
   public function testUserAdd() {

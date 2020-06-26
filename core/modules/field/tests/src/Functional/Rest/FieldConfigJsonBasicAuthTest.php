@@ -19,11 +19,6 @@ class FieldConfigJsonBasicAuthTest extends FieldConfigResourceTestBase {
   /**
    * {@inheritdoc}
    */
-  protected $defaultTheme = 'stark';
-
-  /**
-   * {@inheritdoc}
-   */
   protected static $format = 'json';
 
   /**

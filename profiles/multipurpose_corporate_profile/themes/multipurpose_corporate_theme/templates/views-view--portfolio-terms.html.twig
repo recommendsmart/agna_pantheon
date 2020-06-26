@@ -1,0 +1,49 @@
+
+<div class="view-portfolio-terms">
+    {{ title_prefix }}
+    {% if title %}
+        {{ title }}
+    {% endif %}
+    {{ title_suffix }}
+    {% if header %}
+        <div class="view-header">
+            {% if '/portfolio/column_three'in current_path %}
+                <a href="/portfolio/column_three">  All </a>
+            {% elseif '/portfolio/column_four' in current_path %}
+                <a href="/portfolio/column_four">  All </a>
+            {% else %}
+                {{ header }}
+            {% endif %}
+        </div>
+    {% endif %}
+    {% if exposed %}
+        <div class="view-filters">
+            {{ exposed }}
+        </div>
+   {% endif %}
+
+    {% if attachment_before %}
+        <div class="attachment attachment-before">
+            {{ attachment_before }}
+        </div>
+    {% endif %}
+
+    {% if rows %}
+        <div class="view-content">
+            {{ rows }}
+        </div>
+    {% endif %}
+    <div class="view-empty">
+        {{ empty }}
+    </div>
+
+    {% if pager %}
+        {{ pager }}
+    {% endif %}
+
+    {% if attachment_after %}
+        <div class="attachment attachment-after">
+            {{ attachment_after }}
+        </div>
+    {% endif %}
+</div>

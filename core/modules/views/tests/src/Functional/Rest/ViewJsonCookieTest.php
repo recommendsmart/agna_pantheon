@@ -26,9 +26,4 @@ class ViewJsonCookieTest extends ViewResourceTestBase {
    */
   protected static $auth = 'cookie';
 
-  /**
-   * {@inheritdoc}
-   */
-  protected $defaultTheme = 'stark';
-
 }

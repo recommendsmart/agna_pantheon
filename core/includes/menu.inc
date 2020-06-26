@@ -106,7 +106,7 @@ function menu_list_system_menus() {
  * @see hook_menu_local_tasks_alter()
  * @see https://www.drupal.org/node/2544940
  *
- * @deprecated in drupal:8.0.0 and is removed from drupal:9.0.0.
+ * @deprecated in Drupal 8.0.0, will be removed before Drupal 9.0.0.
  */
 function menu_local_tasks($level = 0) {
   /** @var \Drupal\Core\Menu\LocalTaskManagerInterface $manager */
@@ -117,13 +117,11 @@ function menu_local_tasks($level = 0) {
 /**
  * Returns the rendered local tasks at the top level.
  *
- * @deprecated in drupal:8.0.0 and is removed from drupal:9.0.0. Use
- *   \Drupal\Core\Menu\LocalTaskManagerInterface::getLocalTasks() instead.
- *
  * @see https://www.drupal.org/node/2874695
+ *
+ * @deprecated in Drupal 8.0.0, will be removed before Drupal 9.0.0.
  */
 function menu_primary_local_tasks() {
-  @trigger_error(__FUNCTION__ . '() is deprecated in drupal:8.0.0 and is removed from drupal:9.0.0. Use \Drupal\Core\Menu\LocalTaskManagerInterface::getLocalTasks() instead. See https://www.drupal.org/node/2874695', E_USER_DEPRECATED);
   /** @var \Drupal\Core\Menu\LocalTaskManagerInterface $manager */
   $manager = \Drupal::service('plugin.manager.menu.local_task');
   $links = $manager->getLocalTasks(\Drupal::routeMatch()->getRouteName(), 0);
@@ -134,13 +132,11 @@ function menu_primary_local_tasks() {
 /**
  * Returns the rendered local tasks at the second level.
  *
- * @deprecated in drupal:8.0.0 and is removed from drupal:9.0.0. Use
- *   \Drupal\Core\Menu\LocalTaskManagerInterface::getLocalTasks() instead.
- *
  * @see https://www.drupal.org/node/2874695
+ *
+ * @deprecated in Drupal 8.0.0, will be removed before Drupal 9.0.0.
  */
 function menu_secondary_local_tasks() {
-  @trigger_error(__FUNCTION__ . '() is deprecated in drupal:8.0.0 and is removed from drupal:9.0.0. Use \Drupal\Core\Menu\LocalTaskManagerInterface::getLocalTasks() instead. See https://www.drupal.org/node/2874695', E_USER_DEPRECATED);
   /** @var \Drupal\Core\Menu\LocalTaskManagerInterface $manager */
   $manager = \Drupal::service('plugin.manager.menu.local_task');
   $links = $manager->getLocalTasks(\Drupal::routeMatch()->getRouteName(), 1);
@@ -150,14 +146,8 @@ function menu_secondary_local_tasks() {
 
 /**
  * Returns a renderable element for the primary and secondary tabs.
- *
- * @deprecated in drupal:8.8.0 and is removed from drupal:9.0.0. Use
- *   local_tasks_block block or inline theming instead.
- *
- * @see https://www.drupal.org/node/2874695
  */
 function menu_local_tabs() {
-  @trigger_error(__FUNCTION__ . '() is deprecated in drupal:8.8.0 and is removed from drupal:9.0.0. Use local_tasks_block block or inline theming instead. See https://www.drupal.org/node/2874695', E_USER_DEPRECATED);
   $build = [
     '#theme' => 'menu_local_tasks',
     '#primary' => menu_primary_local_tasks(),
@@ -172,7 +162,7 @@ function menu_local_tabs() {
  * This should be called any time broad changes
  * might have been made to the router items or menu links.
  *
- * @deprecated in drupal:8.6.0 and is removed from drupal:9.0.0. Use
+ * @deprecated in Drupal 8.6.0, will be removed before Drupal 9.0.0. Use
  *   \Drupal::cache('menu')->invalidateAll() instead.
  *
  * @see https://www.drupal.org/node/2989138

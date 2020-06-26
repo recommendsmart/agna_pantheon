@@ -25,11 +25,6 @@ class DisplayFeedTest extends UITestBase {
   public static $modules = ['views_ui', 'aggregator'];
 
   /**
-   * {@inheritdoc}
-   */
-  protected $defaultTheme = 'stark';
-
-  /**
    * Tests feed display admin UI.
    */
   public function testFeedUI() {

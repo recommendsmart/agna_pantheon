@@ -19,11 +19,6 @@ class DependencyHookInvocationTest extends BrowserTestBase {
    */
   public static $modules = ['update_test_0', 'update_test_1', 'update_test_2'];
 
-  /**
-   * {@inheritdoc}
-   */
-  protected $defaultTheme = 'stark';
-
   protected function setUp() {
     parent::setUp();
     require_once $this->root . '/core/includes/update.inc';

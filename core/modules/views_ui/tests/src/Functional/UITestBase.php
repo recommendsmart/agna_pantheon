@@ -81,7 +81,7 @@ abstract class UITestBase extends ViewTestBase {
       $result = $this->drupalGet($url, $options);
       $this->assertSession()->statusCodeEquals(200);
       $this->assertEquals('application/json', $this->getSession()->getResponseHeader('Content-Type'));
-      $this->assertNotEmpty(json_decode($result), 'Ensure that the AJAX request returned valid content.');
+      $this->assertTrue(json_decode($result), 'Ensure that the AJAX request returned valid content.');
     }
 
     return parent::drupalGet($path, $options, $headers);

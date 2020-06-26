@@ -19,6 +19,7 @@ class InlineFormErrorsServiceProvider extends ServiceProviderBase {
       ->setClass(FormErrorHandler::class)
       ->setArguments([
         new Reference('string_translation'),
+        new Reference('link_generator'),
         new Reference('renderer'),
         new Reference('messenger'),
       ]);

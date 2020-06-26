@@ -16,9 +16,4 @@ class MessageHalJsonCookieTest extends MessageHalJsonAnonTest {
    */
   protected static $auth = 'cookie';
 
-  /**
-   * {@inheritdoc}
-   */
-  protected $defaultTheme = 'stark';
-
 }

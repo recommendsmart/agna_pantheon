@@ -17,11 +17,6 @@ class AnalyzeTest extends UITestBase {
   public static $modules = ['views_ui'];
 
   /**
-   * {@inheritdoc}
-   */
-  protected $defaultTheme = 'stark';
-
-  /**
    * Views used by this test.
    *
    * @var array
@@ -42,8 +37,8 @@ class AnalyzeTest extends UITestBase {
     $this->assertSession()->titleEquals('View analysis | Drupal');
 
     foreach (['ok', 'warning', 'error'] as $type) {
-      // Check that analyse messages with the expected type found.
-      $this->assertSession()->elementExists('css', 'div.' . $type);
+      $xpath = $this->xpath('//div[contains(@class, :class)]', [':class' => $type]);
+      $this->assertTrue(count($xpath), format_string('Analyse messages with @type found', ['@type' => $type]));
     }
 
     // This redirects the user back to the main views edit page.

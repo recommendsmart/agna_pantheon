@@ -18,11 +18,6 @@ class BlockHookOperationTest extends BrowserTestBase {
    */
   public static $modules = ['block', 'entity_test'];
 
-  /**
-   * {@inheritdoc}
-   */
-  protected $defaultTheme = 'stark';
-
   protected function setUp() {
     parent::setUp();
 

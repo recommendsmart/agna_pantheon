@@ -215,21 +215,21 @@ class CommentAdminOverview extends FormBase {
             '#type' => 'link',
             '#title' => $commented_entity->label(),
             '#access' => $commented_entity->access('view'),
-            '#url' => $commented_entity->toUrl(),
+            '#url' => $commented_entity->urlInfo(),
           ],
         ],
         'changed' => $this->dateFormatter->format($comment->getChangedTimeAcrossTranslations(), 'short'),
       ];
-      $comment_uri_options = $comment->toUrl()->getOptions() + ['query' => $destination];
+      $comment_uri_options = $comment->urlInfo()->getOptions() + ['query' => $destination];
       $links = [];
       $links['edit'] = [
         'title' => $this->t('Edit'),
-        'url' => $comment->toUrl('edit-form', $comment_uri_options),
+        'url' => $comment->urlInfo('edit-form', $comment_uri_options),
       ];
       if ($this->moduleHandler->moduleExists('content_translation') && $this->moduleHandler->invoke('content_translation', 'translate_access', [$comment])->isAllowed()) {
         $links['translate'] = [
           'title' => $this->t('Translate'),
-          'url' => $comment->toUrl('drupal:content-translation-overview', $comment_uri_options),
+          'url' => $comment->urlInfo('drupal:content-translation-overview', $comment_uri_options),
         ];
       }
       $options[$comment->id()]['operations']['data'] = [

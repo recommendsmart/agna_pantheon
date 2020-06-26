@@ -27,11 +27,6 @@ class DisplayAttachmentTest extends ViewTestBase {
    */
   public static $modules = ['node', 'views'];
 
-  /**
-   * {@inheritdoc}
-   */
-  protected $defaultTheme = 'classy';
-
   protected function setUp($import_test_views = TRUE) {
     parent::setUp($import_test_views);
 

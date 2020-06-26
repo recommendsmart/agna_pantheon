@@ -1,0 +1,37 @@
+langcode: en
+status: true
+dependencies:
+  config:
+    - core.entity_view_mode.eform_submission.email
+    - eform.type.contact_us
+    - field.field.eform_submission.contact_us.field_email_address
+    - field.field.eform_submission.contact_us.field_message
+    - field.field.eform_submission.contact_us.field_subject
+    - field.field.eform_submission.contact_us.field_your_name
+id: eform_submission.contact_us.email
+targetEntityType: eform_submission
+bundle: contact_us
+mode: email
+content:
+  field_email_address:
+    weight: 1
+    label: above
+    settings: {  }
+    third_party_settings: {  }
+    type: basic_string
+  field_subject:
+    weight: 2
+    label: above
+    settings:
+      link_to_entity: false
+    third_party_settings: {  }
+    type: string
+  field_your_name:
+    weight: 0
+    label: above
+    settings:
+      link_to_entity: false
+    third_party_settings: {  }
+    type: string
+hidden:
+  field_message: true

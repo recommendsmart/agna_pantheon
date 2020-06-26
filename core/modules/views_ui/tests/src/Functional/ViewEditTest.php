@@ -20,18 +20,13 @@ class ViewEditTest extends UITestBase {
   public static $testViews = ['test_view', 'test_display', 'test_groupwise_term_ui'];
 
   /**
-   * {@inheritdoc}
-   */
-  protected $defaultTheme = 'stark';
-
-  /**
    * Tests the delete link on a views UI.
    */
   public function testDeleteLink() {
     $this->drupalGet('admin/structure/views/view/test_view');
     $this->assertLink(t('Delete view'), 0, 'Ensure that the view delete link appears');
 
-    $view = $this->container->get('entity_type.manager')->getStorage('view')->load('test_view');
+    $view = $this->container->get('entity.manager')->getStorage('view')->load('test_view');
     $this->assertTrue($view instanceof View);
     $this->clickLink(t('Delete view'));
     $this->assertUrl('admin/structure/views/view/test_view/delete');
@@ -39,7 +34,7 @@ class ViewEditTest extends UITestBase {
     $this->assertRaw(t('The view %name has been deleted.', ['%name' => $view->label()]));
 
     $this->assertUrl('admin/structure/views');
-    $view = $this->container->get('entity_type.manager')->getStorage('view')->load('test_view');
+    $view = $this->container->get('entity.manager')->getStorage('view')->load('test_view');
     $this->assertFalse($view instanceof View);
   }
 
@@ -63,7 +58,7 @@ class ViewEditTest extends UITestBase {
 
     // Save the view, and test the new ID has been saved.
     $this->drupalPostForm(NULL, [], 'Save');
-    $view = \Drupal::entityTypeManager()->getStorage('view')->load('test_view');
+    $view = \Drupal::entityManager()->getStorage('view')->load('test_view');
     $displays = $view->get('display');
     $this->assertTrue(!empty($displays['test_1']), 'Display data found for new display ID key.');
     $this->assertIdentical($displays['test_1']['id'], 'test_1', 'New display ID matches the display ID key.');

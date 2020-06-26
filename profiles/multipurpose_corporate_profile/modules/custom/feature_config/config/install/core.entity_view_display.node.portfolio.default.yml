@@ -1,0 +1,50 @@
+langcode: en
+status: true
+dependencies:
+  config:
+    - field.field.node.portfolio.body
+    - field.field.node.portfolio.comment_node_portfolio
+    - field.field.node.portfolio.field_portfolio_image
+    - field.field.node.portfolio.field_portfolio_terms
+    - node.type.portfolio
+  module:
+    - comment
+    - image
+    - text
+    - user
+id: node.portfolio.default
+targetEntityType: node
+bundle: portfolio
+mode: default
+content:
+  body:
+    label: hidden
+    weight: 2
+    type: text_default
+    settings: {  }
+    third_party_settings: {  }
+  comment_node_portfolio:
+    label: hidden
+    type: comment_default
+    weight: 20
+    settings:
+      pager_id: 0
+    third_party_settings: {  }
+  field_portfolio_image:
+    label: hidden
+    weight: 0
+    type: image
+    settings:
+      image_style: ''
+      image_link: ''
+    third_party_settings: {  }
+  field_portfolio_terms:
+    label: above
+    weight: 3
+    type: entity_reference_label
+    settings:
+      link: true
+    third_party_settings: {  }
+  links:
+    weight: 100
+hidden: {  }

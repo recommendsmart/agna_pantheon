@@ -21,9 +21,4 @@ class FieldConfigJsonAnonTest extends FieldConfigResourceTestBase {
    */
   protected static $mimeType = 'application/json';
 
-  /**
-   * {@inheritdoc}
-   */
-  protected $defaultTheme = 'stark';
-
 }

@@ -2,7 +2,6 @@
 
 namespace Drupal\Tests\comment\Functional\Views;
 
-use Drupal\Component\Render\FormattableMarkup;
 use Drupal\comment\CommentInterface;
 use Drupal\comment\Entity\Comment;
 use Drupal\comment\Tests\CommentTestTrait;
@@ -24,11 +23,6 @@ class DefaultViewRecentCommentsTest extends ViewTestBase {
    * @var array
    */
   public static $modules = ['node', 'comment', 'block'];
-
-  /**
-   * {@inheritdoc}
-   */
-  protected $defaultTheme = 'stark';
 
   /**
    * Number of results for the Master display.
@@ -137,7 +131,7 @@ class DefaultViewRecentCommentsTest extends ViewTestBase {
 
     // Check the number of results given by the display is the expected.
     $this->assertEqual(count($view->result), $this->blockDisplayResults,
-      new FormattableMarkup('There are exactly @results comments. Expected @expected',
+      format_string('There are exactly @results comments. Expected @expected',
         ['@results' => count($view->result), '@expected' => $this->blockDisplayResults]
       )
     );

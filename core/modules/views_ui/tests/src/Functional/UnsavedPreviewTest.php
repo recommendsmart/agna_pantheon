@@ -17,11 +17,6 @@ class UnsavedPreviewTest extends UITestBase {
   public static $testViews = ['content'];
 
   /**
-   * {@inheritdoc}
-   */
-  protected $defaultTheme = 'stark';
-
-  /**
    * An admin user with the 'administer views' permission.
    *
    * @var \Drupal\user\UserInterface

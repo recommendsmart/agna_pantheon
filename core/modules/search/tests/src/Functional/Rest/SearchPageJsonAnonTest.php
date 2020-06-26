@@ -21,9 +21,4 @@ class SearchPageJsonAnonTest extends SearchPageResourceTestBase {
    */
   protected static $mimeType = 'application/json';
 
-  /**
-   * {@inheritdoc}
-   */
-  protected $defaultTheme = 'stark';
-
 }

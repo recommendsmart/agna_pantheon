@@ -45,7 +45,7 @@ class ConfigImportAllTest extends ModuleTestBase {
   public function testInstallUninstall() {
 
     // Get a list of modules to enable.
-    $all_modules = $this->container->get('extension.list.module')->getList();
+    $all_modules = system_rebuild_module_data();
     $all_modules = array_filter($all_modules, function ($module) {
       // Filter contrib, hidden, already enabled modules and modules in the
       // Testing package.
@@ -67,6 +67,7 @@ class ConfigImportAllTest extends ModuleTestBase {
     // Export active config to sync.
     $this->copyConfig($this->container->get('config.storage'), $this->container->get('config.storage.sync'));
 
+    system_list_reset();
     $this->resetAll();
 
     // Delete all entities provided by modules that prevent uninstallation. For
@@ -86,11 +87,12 @@ class ConfigImportAllTest extends ModuleTestBase {
     // Purge the field data.
     field_purge_batch(1000);
 
-    $all_modules = \Drupal::service('extension.list.module')->getList();
+    system_list_reset();
+    $all_modules = system_rebuild_module_data();
 
     // Ensure that only core required modules and the install profile can not be uninstalled.
     $validation_reasons = \Drupal::service('module_installer')->validateUninstall(array_keys($all_modules));
-    $this->assertEquals(['path_alias', 'system', 'user', 'standard'], array_keys($validation_reasons));
+    $this->assertEqual(['system', 'user', 'standard'], array_keys($validation_reasons));
 
     $modules_to_uninstall = array_filter($all_modules, function ($module) use ($validation_reasons) {
       // Filter required and not enabled modules.
@@ -134,7 +136,8 @@ class ConfigImportAllTest extends ModuleTestBase {
     // Ensure that we have no configuration changes to import.
     $storage_comparer = new StorageComparer(
       $this->container->get('config.storage.sync'),
-      $this->container->get('config.storage')
+      $this->container->get('config.storage'),
+      $this->container->get('config.manager')
     );
     $this->assertIdentical($storage_comparer->createChangelist()->getChangelist(), $storage_comparer->getEmptyChangelist());
 

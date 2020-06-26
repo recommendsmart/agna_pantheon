@@ -3,7 +3,7 @@
 namespace Drupal\Core\Batch;
 
 use Drupal\Core\Database\Connection;
-use Drupal\Core\Database\DatabaseException;
+use Drupal\Core\Database\SchemaObjectExistsException;
 use Symfony\Component\HttpFoundation\Session\SessionInterface;
 use Drupal\Core\Access\CsrfTokenGenerator;
 
@@ -174,7 +174,7 @@ class BatchStorage implements BatchStorageInterface {
     // If another process has already created the batch table, attempting to
     // recreate it will throw an exception. In this case just catch the
     // exception and do nothing.
-    catch (DatabaseException $e) {
+    catch (SchemaObjectExistsException $e) {
       return TRUE;
     }
     return FALSE;

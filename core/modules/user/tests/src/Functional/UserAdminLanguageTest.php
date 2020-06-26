@@ -33,11 +33,6 @@ class UserAdminLanguageTest extends BrowserTestBase {
    */
   public static $modules = ['user', 'language', 'language_test'];
 
-  /**
-   * {@inheritdoc}
-   */
-  protected $defaultTheme = 'stark';
-
   protected function setUp() {
     parent::setUp();
     // User to add and remove language.

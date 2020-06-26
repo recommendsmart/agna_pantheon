@@ -13,7 +13,7 @@ use Drupal\views\Tests\ViewTestData;
 /**
  * Base class for all block_content tests.
  *
- * @deprecated in drupal:8.4.0 and is removed from drupal:9.0.0.
+ * @deprecated in Drupal 8.4.0 and will be removed before Drupal 9.0.0.
  *   Use \Drupal\Tests\block_content\Functional\Views\BlockContentTestBase.
  */
 abstract class BlockContentTestBase extends ViewTestBase {
@@ -56,20 +56,21 @@ abstract class BlockContentTestBase extends ViewTestBase {
   /**
    * Creates a custom block.
    *
-   * @param array $values
-   *   (optional) The values for the block_content entity.
+   * @param array $settings
+   *   (optional) An associative array of settings for the block_content, as
+   *   used in entity_create().
    *
    * @return \Drupal\block_content\Entity\BlockContent
    *   Created custom block.
    */
-  protected function createBlockContent(array $values = []) {
+  protected function createBlockContent(array $settings = []) {
     $status = 0;
-    $values += [
+    $settings += [
       'info' => $this->randomMachineName(),
       'type' => 'basic',
       'langcode' => 'en',
     ];
-    if ($block_content = BlockContent::create($values)) {
+    if ($block_content = BlockContent::create($settings)) {
       $status = $block_content->save();
     }
     $this->assertEqual($status, SAVED_NEW, new FormattableMarkup('Created block content %info.', ['%info' => $block_content->label()]));

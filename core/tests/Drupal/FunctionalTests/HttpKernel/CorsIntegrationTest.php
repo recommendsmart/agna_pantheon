@@ -21,11 +21,6 @@ class CorsIntegrationTest extends BrowserTestBase {
    */
   public static $modules = ['system', 'test_page_test', 'page_cache'];
 
-  /**
-   * {@inheritdoc}
-   */
-  protected $defaultTheme = 'stark';
-
   public function testCrossSiteRequest() {
     // Test default parameters.
     $cors_config = $this->container->getParameter('cors.config');

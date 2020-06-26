@@ -26,9 +26,4 @@ class NodeJsonCookieTest extends NodeResourceTestBase {
    */
   protected static $auth = 'cookie';
 
-  /**
-   * {@inheritdoc}
-   */
-  protected $defaultTheme = 'stark';
-
 }

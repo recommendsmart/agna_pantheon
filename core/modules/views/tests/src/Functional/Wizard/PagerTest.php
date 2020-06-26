@@ -10,11 +10,6 @@ namespace Drupal\Tests\views\Functional\Wizard;
 class PagerTest extends WizardTestBase {
 
   /**
-   * {@inheritdoc}
-   */
-  protected $defaultTheme = 'stark';
-
-  /**
    * Tests the pager option.
    */
   public function testPager() {

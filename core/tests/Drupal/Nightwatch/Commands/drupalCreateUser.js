@@ -10,7 +10,7 @@
  * @param {array} [settings.permissions=[]]
  *   The list of permissions granted for the user.
  * @param {function} callback
- *   A callback which will be called when creating the user is finished.
+ *   A callback which will be called, when the creating the use is finished.
  * @return {object}
  *   The drupalCreateUser command.
  */
@@ -46,9 +46,9 @@ exports.command = function drupalCreateUser(
       })
       .submitForm('#user-register-form')
       .assert.containsText(
-        '[data-drupal-messages]',
+        '.messages',
         'Created a new user account',
-        `User "${name}" was created successfully.`,
+        `User "${name}" was created succesfully.`,
       );
   });
 

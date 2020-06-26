@@ -4,7 +4,6 @@ namespace Drupal\KernelTests\Core\Entity;
 
 use Drupal\Core\Field\BaseFieldDefinition;
 use Drupal\Core\Field\FieldStorageDefinitionInterface;
-use Drupal\Tests\system\Functional\Entity\Traits\EntityDefinitionTestTrait;
 
 /**
  * Tests the default table mapping class for content entities stored in SQL.
@@ -16,8 +15,6 @@ use Drupal\Tests\system\Functional\Entity\Traits\EntityDefinitionTestTrait;
  * @group Entity
  */
 class DefaultTableMappingIntegrationTest extends EntityKernelTestBase {
-
-  use EntityDefinitionTestTrait;
 
   /**
    * The table mapping for the tested entity type.
@@ -49,10 +46,11 @@ class DefaultTableMappingIntegrationTest extends EntityKernelTestBase {
       ->setRevisionable(FALSE);
     $this->state->set('entity_test_mulrev.additional_base_field_definitions', $definitions);
 
-    $this->tableMapping = $this->entityTypeManager->getStorage('entity_test_mulrev')->getTableMapping();
+    $this->entityManager->clearCachedDefinitions();
+    $this->tableMapping = $this->entityManager->getStorage('entity_test_mulrev')->getTableMapping();
 
     // Ensure that the tables for the new field are created.
-    $this->applyEntityUpdates('entity_test_mulrev');
+    \Drupal::entityDefinitionUpdateManager()->applyUpdates();
   }
 
   /**
@@ -83,7 +81,7 @@ class DefaultTableMappingIntegrationTest extends EntityKernelTestBase {
    * @covers ::getTableNames
    */
   public function testGetTableNames() {
-    $storage_definitions = \Drupal::service('entity_field.manager')->getFieldStorageDefinitions('entity_test_mulrev');
+    $storage_definitions = $this->entityManager->getFieldStorageDefinitions('entity_test_mulrev');
     $dedicated_data_table = $this->tableMapping->getDedicatedDataTableName($storage_definitions['multivalued_base_field']);
     $dedicated_revision_table = $this->tableMapping->getDedicatedRevisionTableName($storage_definitions['multivalued_base_field']);
 

@@ -26,11 +26,6 @@ class ModerationLocaleTest extends ModerationStateTestBase {
   /**
    * {@inheritdoc}
    */
-  protected $defaultTheme = 'stark';
-
-  /**
-   * {@inheritdoc}
-   */
   protected function setUp() {
     parent::setUp();
 

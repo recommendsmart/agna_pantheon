@@ -140,18 +140,18 @@ class ThemeInitialization implements ThemeInitializationInterface {
       include_once $this->root . '/' . $active_theme->getOwner();
 
       if (function_exists($theme_engine . '_init')) {
-        foreach ($active_theme->getBaseThemeExtensions() as $base) {
-          call_user_func($theme_engine . '_init', $base);
+        foreach ($active_theme->getBaseThemes() as $base) {
+          call_user_func($theme_engine . '_init', $base->getExtension());
         }
         call_user_func($theme_engine . '_init', $active_theme->getExtension());
       }
     }
     else {
       // include non-engine theme files
-      foreach ($active_theme->getBaseThemeExtensions() as $base) {
+      foreach ($active_theme->getBaseThemes() as $base) {
         // Include the theme file or the engine.
-        if ($base->owner) {
-          include_once $this->root . '/' . $base->owner;
+        if ($base->getOwner()) {
+          include_once $this->root . '/' . $base->getOwner();
         }
       }
       // and our theme gets one too.
@@ -260,10 +260,10 @@ class ThemeInitialization implements ThemeInitializationInterface {
 
     $base_active_themes = [];
     foreach ($base_themes as $base_theme) {
-      $base_active_themes[$base_theme->getName()] = $base_theme;
+      $base_active_themes[$base_theme->getName()] = $this->getActiveTheme($base_theme, array_slice($base_themes, 1));
     }
 
-    $values['base_theme_extensions'] = $base_active_themes;
+    $values['base_themes'] = $base_active_themes;
     if (!empty($theme->info['regions'])) {
       $values['regions'] = $theme->info['regions'];
     }

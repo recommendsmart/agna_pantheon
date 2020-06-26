@@ -63,7 +63,7 @@ require_once __DIR__ . '/field_test.field.inc';
  *   for that key.
  */
 function field_test_memorize($key = NULL, $value = NULL) {
-  static $memorize;
+  $memorize = &drupal_static(__FUNCTION__, NULL);
 
   if (!isset($key)) {
     $return = $memorize;

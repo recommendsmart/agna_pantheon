@@ -19,11 +19,6 @@ class TwigLoaderTest extends BrowserTestBase {
   public static $modules = ['twig_loader_test'];
 
   /**
-   * {@inheritdoc}
-   */
-  protected $defaultTheme = 'stark';
-
-  /**
    * Tests adding an additional twig loader to the loader chain.
    */
   public function testTwigLoaderAddition() {

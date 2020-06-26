@@ -42,11 +42,6 @@ class ConfigTranslationListUiTest extends BrowserTestBase {
   ];
 
   /**
-   * {@inheritdoc}
-   */
-  protected $defaultTheme = 'stark';
-
-  /**
    * Admin user with all needed permissions.
    *
    * @var \Drupal\user\Entity\User

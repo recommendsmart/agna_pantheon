@@ -1,0 +1,29 @@
+langcode: en
+status: true
+dependencies:
+  config:
+    - views.view.secondary_slider
+  module:
+    - system
+    - views
+  theme:
+    - multipurpose_corporate_theme
+id: views_block__secondary_slider_block_1
+theme: multipurpose_corporate_theme
+region: content
+weight: -11
+provider: null
+plugin: 'views_block:secondary_slider-block_1'
+settings:
+  id: 'views_block:secondary_slider-block_1'
+  label: ''
+  provider: views
+  label_display: '0'
+  views_label: ''
+  items_per_page: none
+visibility:
+  request_path:
+    id: request_path
+    pages: '<front>'
+    negate: false
+    context_mapping: {  }

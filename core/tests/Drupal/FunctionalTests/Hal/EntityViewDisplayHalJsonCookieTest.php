@@ -16,9 +16,4 @@ class EntityViewDisplayHalJsonCookieTest extends EntityViewDisplayHalJsonAnonTes
    */
   protected static $auth = 'cookie';
 
-  /**
-   * {@inheritdoc}
-   */
-  protected $defaultTheme = 'stark';
-
 }

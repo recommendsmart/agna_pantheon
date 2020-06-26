@@ -2,9 +2,7 @@
 
 namespace Drupal\views\Plugin\views\row;
 
-use Drupal\Core\DependencyInjection\DeprecatedServicePropertyTrait;
-use Drupal\Core\Entity\EntityDisplayRepositoryInterface;
-use Drupal\Core\Entity\EntityTypeManagerInterface;
+use Drupal\Core\Entity\EntityManagerInterface;
 use Drupal\Core\Form\FormStateInterface;
 use Symfony\Component\DependencyInjection\ContainerInterface;
 
@@ -13,26 +11,12 @@ use Symfony\Component\DependencyInjection\ContainerInterface;
  */
 abstract class RssPluginBase extends RowPluginBase {
 
-  use DeprecatedServicePropertyTrait;
-
-  /**
-   * {@inheritdoc}
-   */
-  protected $deprecatedProperties = ['entityManager' => 'entity.manager'];
-
   /**
    * The entity manager.
    *
-   * @var \Drupal\Core\Entity\EntityTypeManagerInterface
+   * @var \Drupal\Core\Entity\EntityManagerInterface
    */
-  protected $entityTypeManager;
-
-  /**
-   * The entity display repository.
-   *
-   * @var \Drupal\Core\Entity\EntityDisplayRepositoryInterface
-   */
-  protected $entityDisplayRepository;
+  protected $entityManager;
 
   /**
    * Constructs a RssPluginBase  object.
@@ -43,20 +27,13 @@ abstract class RssPluginBase extends RowPluginBase {
    *   The plugin_id for the plugin instance.
    * @param mixed $plugin_definition
    *   The plugin implementation definition.
-   * @param \Drupal\Core\Entity\EntityTypeManagerInterface $entity_type_manager
-   *   The entity type manager.
-   * @param \Drupal\Core\Entity\EntityDisplayRepositoryInterface $entity_display_repository
-   *   The entity display repository.
+   * @param \Drupal\Core\Entity\EntityManagerInterface $entity_manager
+   *   The entity manager.
    */
-  public function __construct(array $configuration, $plugin_id, $plugin_definition, EntityTypeManagerInterface $entity_type_manager, EntityDisplayRepositoryInterface $entity_display_repository = NULL) {
+  public function __construct(array $configuration, $plugin_id, $plugin_definition, EntityManagerInterface $entity_manager) {
     parent::__construct($configuration, $plugin_id, $plugin_definition);
 
-    $this->entityTypeManager = $entity_type_manager;
-    if (!$entity_display_repository) {
-      @trigger_error('Calling RssPluginBase::__construct() with the $entity_repository argument is supported in drupal:8.7.0 and will be required before drupal:9.0.0. See https://www.drupal.org/node/2549139.', E_USER_DEPRECATED);
-      $entity_display_repository = \Drupal::service('entity_display.repository');
-    }
-    $this->entityDisplayRepository = $entity_display_repository;
+    $this->entityManager = $entity_manager;
   }
 
   /**
@@ -67,8 +44,7 @@ abstract class RssPluginBase extends RowPluginBase {
       $configuration,
       $plugin_id,
       $plugin_definition,
-      $container->get('entity_type.manager'),
-      $container->get('entity_display.repository')
+      $container->get('entity.manager')
     );
   }
 
@@ -108,7 +84,7 @@ abstract class RssPluginBase extends RowPluginBase {
    * Return the main options, which are shown in the summary title.
    */
   public function buildOptionsForm_summary_options() {
-    $view_modes = $this->entityDisplayRepository->getViewModes($this->entityTypeId);
+    $view_modes = $this->entityManager->getViewModes($this->entityTypeId);
     $options = [];
     foreach ($view_modes as $mode => $settings) {
       $options[$mode] = $settings['label'];
@@ -122,7 +98,7 @@ abstract class RssPluginBase extends RowPluginBase {
   public function calculateDependencies() {
     $dependencies = parent::calculateDependencies();
 
-    $view_mode = $this->entityTypeManager
+    $view_mode = $this->entityManager
       ->getStorage('entity_view_mode')
       ->load($this->entityTypeId . '.' . $this->options['view_mode']);
     if ($view_mode) {

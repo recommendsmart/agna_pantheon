@@ -19,11 +19,6 @@ class AreaEntityUITest extends UITestBase {
    */
   public static $modules = ['entity_test'];
 
-  /**
-   * {@inheritdoc}
-   */
-  protected $defaultTheme = 'stark';
-
   public function testUI() {
     // Set up a block and a entity_test entity.
     $block = Block::create(['id' => 'test_id', 'plugin' => 'system_main_block']);
@@ -36,7 +31,7 @@ class AreaEntityUITest extends UITestBase {
     $id = $default['id'];
     $view = View::load($id);
 
-    $this->drupalGet($view->toUrl('edit-form'));
+    $this->drupalGet($view->urlInfo('edit-form'));
 
     // Add a global NULL argument to the view for testing argument placeholders.
     $this->drupalPostForm("admin/structure/views/nojs/add-handler/$id/page_1/argument", ['name[views.null]' => TRUE], 'Add and configure contextual filters');

@@ -8,8 +8,8 @@
   outline: medium none;
 }
 .views-live-preview .contextual {
-  top: auto;
   right: auto; /* LTR */
+  top: auto;
 }
 [dir="rtl"] .views-live-preview .contextual {
   left: auto;
@@ -21,25 +21,25 @@
   display: block;
 }
 .contextual .contextual-links {
-  right: auto; /* LTR */
+  border-radius: 0 4px 4px 4px; /* LTR */
   min-width: 10em;
   padding: 6px 6px 9px 6px;
-  border-radius: 0 4px 4px 4px; /* LTR */
+  right: auto; /* LTR */
 }
 [dir="rtl"] .contextual .contextual-links {
-  left: auto;
   border-radius: 4px 0 4px 4px;
+  left: auto;
 }
 .contextual-links li a,
 .contextual-links li span {
-  padding-top: 0.25em;
-  padding-right: 0.1667em; /* LTR */
   padding-bottom: 0.25em;
+  padding-right: 0.1667em; /* LTR */
+  padding-top: 0.25em;
 }
 [dir="rtl"] .contextual-links li a,
 [dir="rtl"] .contextual-links li span {
-  padding-right: 0;
   padding-left: 0.1667em;
+  padding-right: 0;
 }
 .contextual-links li span {
   font-weight: bold;
@@ -49,8 +49,8 @@
   padding-left: 1em; /* LTR */
 }
 [dir="rtl"] .contextual-links li a {
-  padding-right: 1em;
   padding-left: 0.1667em;
+  padding-right: 1em;
 }
 .contextual-links li a:hover {
   background-color: #badbec;

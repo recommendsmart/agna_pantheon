@@ -14,11 +14,6 @@ class FeedFetcherPluginTest extends AggregatorTestBase {
   /**
    * {@inheritdoc}
    */
-  protected $defaultTheme = 'stark';
-
-  /**
-   * {@inheritdoc}
-   */
   protected function setUp() {
     parent::setUp();
     // Enable test plugins.

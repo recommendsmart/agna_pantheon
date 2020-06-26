@@ -3,6 +3,7 @@
 namespace Drupal\block_content\Form;
 
 use Drupal\Core\Entity\ContentEntityDeleteForm;
+use Drupal\Core\Form\FormStateInterface;
 
 /**
  * Provides a confirmation form for deleting a custom block entity.
@@ -14,12 +15,15 @@ class BlockContentDeleteForm extends ContentEntityDeleteForm {
   /**
    * {@inheritdoc}
    */
-  public function getDescription() {
+  public function buildForm(array $form, FormStateInterface $form_state) {
     $instances = $this->entity->getInstances();
-    if (!empty($instances)) {
-      return $this->formatPlural(count($instances), 'This will also remove 1 placed block instance. This action cannot be undone.', 'This will also remove @count placed block instances. This action cannot be undone.');
-    }
-    return parent::getDescription();
+
+    $form['message'] = [
+      '#markup' => $this->formatPlural(count($instances), 'This will also remove 1 placed block instance.', 'This will also remove @count placed block instances.'),
+      '#access' => !empty($instances),
+    ];
+
+    return parent::buildForm($form, $form_state);
   }
 
 }

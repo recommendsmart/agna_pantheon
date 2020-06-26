@@ -18,16 +18,11 @@ class DistributionProfileTest extends InstallerTestBase {
    */
   protected $info;
 
-  /**
-   * {@inheritdoc}
-   */
-  protected $defaultTheme = 'stark';
-
   protected function prepareEnvironment() {
     parent::prepareEnvironment();
     $this->info = [
       'type' => 'profile',
-      'core_version_requirement' => '*',
+      'core' => \Drupal::CORE_COMPATIBILITY,
       'name' => 'Distribution profile',
       'distribution' => [
         'name' => 'My Distribution',
@@ -41,7 +36,7 @@ class DistributionProfileTest extends InstallerTestBase {
     $path = $this->siteDirectory . '/profiles/mydistro';
     mkdir($path, 0777, TRUE);
     file_put_contents("$path/mydistro.info.yml", Yaml::encode($this->info));
-    file_put_contents("$path/mydistro.install", "<?php function mydistro_install() {\Drupal::entityTypeManager()->getStorage('path_alias')->create(['path' => '/user/1', 'alias' => '/myrootuser'])->save();}");
+    file_put_contents("$path/mydistro.install", "<?php function mydistro_install() {\Drupal::service('path.alias_storage')->save('/user/1', '/myrootuser');}");
   }
 
   /**
@@ -74,7 +69,7 @@ class DistributionProfileTest extends InstallerTestBase {
     $this->assertUrl('myrootuser');
     $this->assertResponse(200);
     // Confirm that we are logged-in after installation.
-    $this->assertText($this->rootUser->getAccountName());
+    $this->assertText($this->rootUser->getUsername());
 
     // Confirm that Drupal recognizes this distribution as the current profile.
     $this->assertEqual(\Drupal::installProfile(), 'mydistro');

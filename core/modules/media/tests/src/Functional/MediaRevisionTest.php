@@ -16,18 +16,13 @@ use Drupal\user\RoleInterface;
 class MediaRevisionTest extends MediaFunctionalTestBase {
 
   /**
-   * {@inheritdoc}
-   */
-  protected $defaultTheme = 'stark';
-
-  /**
    * Checks media revision operations.
    */
   public function testRevisions() {
     $assert = $this->assertSession();
 
     /** @var \Drupal\Core\Entity\Sql\SqlContentEntityStorage $media_storage */
-    $media_storage = $this->container->get('entity_type.manager')->getStorage('media');
+    $media_storage = $this->container->get('entity.manager')->getStorage('media');
 
     // Create a media type and media item.
     $media_type = $this->createMediaType('test');
@@ -85,10 +80,10 @@ class MediaRevisionTest extends MediaFunctionalTestBase {
     $uri = 'temporary://foo.txt';
     file_put_contents($uri, $this->randomString(128));
 
-    $this->createMediaType('file', ['id' => 'document', 'new_revision' => TRUE]);
+    $this->createMediaType('file', ['id' => 'file', 'new_revision' => TRUE]);
 
     // Create a media item.
-    $this->drupalGet('/media/add/document');
+    $this->drupalGet('/media/add/file');
     $page = $this->getSession()->getPage();
     $page->fillField('Name', 'Foobar');
     $page->attachFileToField('File', $this->container->get('file_system')->realpath($uri));

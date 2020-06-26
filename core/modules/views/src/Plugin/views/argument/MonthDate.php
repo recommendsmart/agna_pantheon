@@ -20,19 +20,19 @@ class MonthDate extends Date {
   protected $argFormat = 'm';
 
   /**
-   * {@inheritdoc}
+   * Provide a link to the next level of the view
    */
   public function summaryName($data) {
     $month = str_pad($data->{$this->name_alias}, 2, '0', STR_PAD_LEFT);
-    return $this->dateFormatter->format(strtotime("2005" . $month . "15" . " 00:00:00 UTC"), 'custom', $this->format, 'UTC');
+    return format_date(strtotime("2005" . $month . "15" . " 00:00:00 UTC"), 'custom', $this->format, 'UTC');
   }
 
   /**
-   * {@inheritdoc}
+   * Provide a link to the next level of the view
    */
   public function title() {
     $month = str_pad($this->argument, 2, '0', STR_PAD_LEFT);
-    return $this->dateFormatter->format(strtotime("2005" . $month . "15" . " 00:00:00 UTC"), 'custom', $this->format, 'UTC');
+    return format_date(strtotime("2005" . $month . "15" . " 00:00:00 UTC"), 'custom', $this->format, 'UTC');
   }
 
   public function summaryArgument($data) {

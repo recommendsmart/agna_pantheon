@@ -26,11 +26,6 @@ class ViewNonTranslatableEntityTest extends BrowserTestBase {
   ];
 
   /**
-   * {@inheritdoc}
-   */
-  protected $defaultTheme = 'stark';
-
-  /**
    * Tests displaying a view of non-translatable entities.
    */
   public function testViewNoTranslatableEntity() {

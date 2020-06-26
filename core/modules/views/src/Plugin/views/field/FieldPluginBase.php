@@ -724,11 +724,7 @@ abstract class FieldPluginBase extends HandlerBase implements FieldHandlerInterf
         '#title' => $this->t('Text'),
         '#type' => 'textarea',
         '#default_value' => $this->options['alter']['text'],
-        // The tag list will be escaped.
-        '#description' => $this->t('The text to display for this field. You may enter data from this view as per the "Replacement patterns" below. You may include <a href="@twig_docs">Twig</a> or the following allowed HTML tags: <code>@tags</code>', [
-          '@twig_docs' => 'https://twig.symfony.com/doc/' . \Twig_Environment::MAJOR_VERSION . '.x',
-          '@tags' => '<' . implode('> <', Xss::getAdminTagList()) . '>',
-        ]),
+        '#description' => $this->t('The text to display for this field. You may include HTML or <a href=":url">Twig</a>. You may enter data from this view as per the "Replacement patterns" below.', [':url' => CoreUrl::fromUri('http://twig.sensiolabs.org/documentation')->toString()]),
         '#states' => [
           'visible' => [
             ':input[name="options[alter][alter_text]"]' => ['checked' => TRUE],

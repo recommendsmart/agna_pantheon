@@ -1,0 +1,26 @@
+/*!
+ *  Font Awesome 4.6.3 by @davegandy - http://fontawesome.io - @fontawesome
+ *  License - http://fontawesome.io/license (Font: SIL OFL 1.1, CSS: MIT License)
+ */
+/**
+ * Field Taxonomy Reference (Entity Reference as tags).
+ *  - to have all taxonomy fields themed the same be sure to include the
+ *    word "tags" somewhere in the field name.
+ ============================================================================ */
+[class*="tags"].field-type-entity-reference .field__item {
+  margin: 0 11px 0 0;
+  margin: 0 0.6875rem 0 0;
+}
+[dir="rtl"] [class*="tags"].field-type-entity-reference li {
+  margin: 0 0 0 11px;
+  margin: 0 0 0 0.6875rem;
+}
+[class*="tags"].field-type-entity-reference .field__items {
+  padding: 0;
+}
+[class*="tags"].field-type-entity-reference .field__item {
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+/*# sourceMappingURL=maps/taxonomy.css.map */

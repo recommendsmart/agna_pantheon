@@ -201,7 +201,7 @@
     triggerUploadButton(event) {
       $(event.target)
         .closest('.js-form-managed-file')
-        .find('.js-form-submit[data-drupal-selector$="upload-button"]')
+        .find('.js-form-submit')
         .trigger('mousedown');
     },
 

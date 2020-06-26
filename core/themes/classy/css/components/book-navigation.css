@@ -4,12 +4,12 @@
  */
 
 .book-navigation .menu {
-  padding-top: 1em;
   padding-bottom: 0;
+  padding-top: 1em;
 }
 .book-navigation .book-pager {
-  overflow: auto;
   margin: 0;
+  overflow: auto;
   padding: 0.5em 0;
 }
 .book-pager__item {
@@ -18,21 +18,21 @@
   vertical-align: top;
 }
 .book-pager__item--previous {
-  width: 45%;
   text-align: left; /* LTR */
+  width: 45%;
 }
 [dir="rtl"] .book-pager__item--previous {
   float: right;
   text-align: right;
 }
 .book-pager__item--center {
-  width: 8%;
   text-align: center;
+  width: 8%;
 }
 .book-pager__item--next {
   float: right; /* LTR */
-  width: 45%;
   text-align: right; /* LTR */
+  width: 45%;
 }
 [dir="rtl"] .book-pager__item--next {
   float: left;

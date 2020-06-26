@@ -26,11 +26,6 @@ class WizardTest extends WizardTestBase {
   /**
    * {@inheritdoc}
    */
-  protected $defaultTheme = 'stark';
-
-  /**
-   * {@inheritdoc}
-   */
   protected function setUp($import_test_views = TRUE) {
     parent::setUp($import_test_views);
     $this->drupalCreateContentType(['type' => 'page', 'name' => t('Basic page')]);
@@ -65,7 +60,7 @@ class WizardTest extends WizardTestBase {
     $fields = $this->xpath($xpath);
     $options = [];
     foreach ($fields as $field) {
-      $items = $field->findAll('xpath', 'option');
+      $items = $this->getAllOptions($field);
       foreach ($items as $item) {
         $options[] = $item->getValue();
       }
@@ -88,10 +83,10 @@ class WizardTest extends WizardTestBase {
     // Check for the default filters.
     $this->assertEqual($view->filter['status']->table, 'comment_field_data');
     $this->assertEqual($view->filter['status']->field, 'status');
-    $this->assertEquals('1', $view->filter['status']->value);
+    $this->assertTrue($view->filter['status']->value);
     $this->assertEqual($view->filter['status_node']->table, 'node_field_data');
     $this->assertEqual($view->filter['status_node']->field, 'status');
-    $this->assertEquals('1', $view->filter['status_node']->value);
+    $this->assertTrue($view->filter['status_node']->value);
 
     // Check for the default fields.
     $this->assertEqual($view->field['subject']->table, 'comment_field_data');

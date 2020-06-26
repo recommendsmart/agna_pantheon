@@ -92,7 +92,7 @@
         const element = classes.shift();
 
         // Build the data structure CKEditor's stylescombo plugin expects.
-        // @see https://ckeditor.com/docs/ckeditor4/latest/guide/dev_howtos_styles.html
+        // @see http://docs.cksource.com/CKEditor_3.x/Developers_Guide/Styles
         stylesSet.push({
           attributes: { class: classes.join(' ') },
           element,

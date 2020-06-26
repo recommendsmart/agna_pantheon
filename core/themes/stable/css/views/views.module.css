@@ -13,11 +13,7 @@
   float: left;
 }
 .views-view-grid .views-row {
-  float: left;
   clear: both;
+  float: left;
   width: 100%;
-}
-/* Provide some space between display links. */
-.views-display-link + .views-display-link {
-  margin-left: 0.5em;
 }

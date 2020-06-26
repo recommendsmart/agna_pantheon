@@ -21,11 +21,6 @@ class TokenReplaceWebTest extends BrowserTestBase {
   public static $modules = ['token_test', 'filter', 'node'];
 
   /**
-   * {@inheritdoc}
-   */
-  protected $defaultTheme = 'stark';
-
-  /**
    * Tests a token replacement on an actual website.
    */
   public function testTokens() {

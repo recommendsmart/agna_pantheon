@@ -19,11 +19,6 @@ class ViewsFormTest extends ViewTestBase {
   public static $modules = ['action_bulk_test'];
 
   /**
-   * {@inheritdoc}
-   */
-  protected $defaultTheme = 'stark';
-
-  /**
    * Tests the Views form wrapper.
    */
   public function testFormWrapper() {

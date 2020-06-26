@@ -23,9 +23,4 @@ class ViewXmlAnonTest extends ViewResourceTestBase {
    */
   protected static $mimeType = 'text/xml; charset=UTF-8';
 
-  /**
-   * {@inheritdoc}
-   */
-  protected $defaultTheme = 'stark';
-
 }

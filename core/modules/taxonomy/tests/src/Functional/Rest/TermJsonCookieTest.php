@@ -26,9 +26,4 @@ class TermJsonCookieTest extends TermResourceTestBase {
    */
   protected static $auth = 'cookie';
 
-  /**
-   * {@inheritdoc}
-   */
-  protected $defaultTheme = 'stark';
-
 }

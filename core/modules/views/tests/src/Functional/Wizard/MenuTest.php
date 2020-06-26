@@ -13,11 +13,6 @@ use Drupal\Core\Url;
 class MenuTest extends WizardTestBase {
 
   /**
-   * {@inheritdoc}
-   */
-  protected $defaultTheme = 'stark';
-
-  /**
    * Tests the menu functionality.
    */
   public function testMenus() {

@@ -21,9 +21,4 @@ class EntityTestLabelJsonAnonTest extends EntityTestLabelResourceTestBase {
    */
   protected static $mimeType = 'application/json';
 
-  /**
-   * {@inheritdoc}
-   */
-  protected $defaultTheme = 'stark';
-
 }

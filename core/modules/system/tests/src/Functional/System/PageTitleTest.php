@@ -21,11 +21,6 @@ class PageTitleTest extends BrowserTestBase {
    */
   public static $modules = ['node', 'test_page_test', 'form_test', 'block'];
 
-  /**
-   * {@inheritdoc}
-   */
-  protected $defaultTheme = 'classy';
-
   protected $contentUser;
   protected $savedTitle;
 

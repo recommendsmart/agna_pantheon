@@ -1,0 +1,92 @@
+{#
+/**
+ * @file
+ * Adaptivetheme implementation for the basic structure of a single Drupal page.
+ *
+ * Variables:
+ * - placeholder_token: The token for generating head, css, js and js-bottom
+ *   placeholders.
+ * - head_title: A modified version of the page title, for use in the TITLE tag.
+ * - head_title_array: List of text elements that make up the head_title
+ *   variable. May contain or more of the following:
+ *   - title: The title of the page.
+ *   - name: The name of the site.
+ *   - slogan: The slogan of the site.
+ * - page_top: Initial rendered markup. This should be printed before 'page'.
+ * - page: The rendered page markup.
+ * - page_bottom: Closing rendered markup. This variable should be printed after
+ *   'page'.
+ * - db_offline: A flag indicating if the database is offline.
+ * - touch_icons: bool, true if touch icons extension is enabled.
+ * - touch_rel: string, defaults to apple-touch-icon, or apple-touch-icon-precomposed
+ *   if set in appearance settings.
+ * - touch_icon_ipad_retina: path to ipad retina touch icon.
+ * - touch_icon_iphone_retina: path to iphone retina touch icon.
+ * - touch_icon_ipad: path to ipad touch icon.
+ * - touch_icon_default: path to old iphone touch icon.
+ * - touch_icon_nokia: path to old school nokia touch icon.
+ * - googlefonts_url: URL as supplied by the Google fonts wizard.
+ * - typekit_id: Typekit ID as supplied by the Typekit embed wizard.
+ * - theme: List (array) with two or more items, at least:
+ *   - name: The name of the theme.
+ *   - path: The path to the active theme.
+ *
+ * @see template_preprocess_html()
+ *
+ * @ingroup themeable
+ */
+#}
+{{ attach_library(theme.name ~ '/global-styling') }}
+<!DOCTYPE html>
+{%
+  set html_classes = [
+    'no-js',
+    'adaptivetheme',
+  ]
+%}
+<html{{ html_attributes.addClass(html_classes) }}>
+  <head>
+    {% if touch_icons == true %}
+      {% if touch_icon_ipad_retina %}
+        <link href="{{ touch_icon_ipad_retina }}" rel="{{ touch_rel }}" sizes="152x152" />
+      {% endif %}
+      {% if touch_icon_iphone_retina %}
+        <link href="{{ touch_icon_iphone_retina }}" rel="{{ touch_rel }}" sizes="120x120" />
+      {% endif %}
+      {% if touch_icon_ipad %}
+        <link href="{{ touch_icon_ipad }}" rel="{{ touch_rel }}" sizes="76x76" />
+      {% endif %}
+      {% if touch_icon_default %}
+        <link href="{{ touch_icon_default }}" rel="{{ touch_rel }}" sizes="60x60" />
+      {% endif %}
+      {% if touch_icon_nokia %}
+        <link href="{{ touch_icon_nokia }}" rel="shortcut icon" />
+      {% endif %}
+    {% endif %}
+    <head-placeholder token="{{ placeholder_token|raw }}">
+    <title>{{ head_title|safe_join(' | ') }}</title>
+    <css-placeholder token="{{ placeholder_token|raw }}">
+    <js-placeholder token="{{ placeholder_token|raw }}">
+  </head>
+  {%
+    set body_classes = [
+      logged_in ? 'user-logged-in',
+      not root_path ? 'path-frontpage' : 'path-' ~ root_path|clean_class,
+      path_info.args ? 'path-' ~ path_info.args,
+      path_info.query ? 'path-query-' ~ path_info.query,
+      node_type ? 'node--type-' ~ node_type,
+      url.path ? 'page--url-' ~ url.path,
+      head_title_array.name ? 'site-name--' ~ head_title_array.name|clean_class,
+      theme.name ? 'theme-name--' ~ theme.name|clean_class,
+      db_offline ? 'db-offline',
+      page.sidebar_second ? 'one-sidebar sidebar-second'
+    ]
+  %}
+  <body {{ attributes.addClass(body_classes) }}>
+    <a href="{{ skip_link_target }}" class="visually-hidden focusable skip-link">{{ 'Skip to main content'|t }}</a>
+    {{ page_top }}
+    {{ page }}
+    {{ page_bottom }}
+    <js-bottom-placeholder token="{{ placeholder_token|raw }}">
+  </body>
+</html>

@@ -2,29 +2,24 @@
 
 namespace Drupal\Tests\system\Functional\Update;
 
-use Drupal\Core\Url;
-use Drupal\Tests\BrowserTestBase;
-use Drupal\Tests\UpdatePathTestTrait;
+use Drupal\FunctionalTests\Update\UpdatePathTestBase;
 
 /**
  * Tests the update path with a broken router.
  *
  * @group Update
+ * @group legacy
  */
-class UpdatePathWithBrokenRoutingTest extends BrowserTestBase {
-  use UpdatePathTestTrait;
+class UpdatePathWithBrokenRoutingTest extends UpdatePathTestBase {
 
   /**
    * {@inheritdoc}
    */
-  protected $defaultTheme = 'stark';
-
-  /**
-   * {@inheritdoc}
-   */
-  protected function setUp() {
-    parent::setUp();
-    $this->ensureUpdatesToRun();
+  protected function setDatabaseDumpFiles() {
+    $this->databaseDumpFiles = [
+      __DIR__ . '/../../../../tests/fixtures/update/drupal-8.bare.standard.php.gz',
+      __DIR__ . '/../../../../tests/fixtures/update/drupal-8.broken_routing.php',
+    ];
   }
 
   /**
@@ -34,11 +29,11 @@ class UpdatePathWithBrokenRoutingTest extends BrowserTestBase {
     // Simulate a broken router, and make sure the front page is
     // inaccessible.
     \Drupal::state()->set('update_script_test_broken_inbound', TRUE);
-    $this->resetAll();
+    \Drupal::service('cache_tags.invalidator')->invalidateTags(['route_match', 'rendered']);
     $this->drupalGet('<front>');
     $this->assertResponse(500);
 
-    $this->runUpdates(Url::fromRoute('system.db_update', [], ['path_processing' => FALSE]));
+    $this->runUpdates();
 
     // Remove the simulation of the broken router, and make sure we can get to
     // the front page again.

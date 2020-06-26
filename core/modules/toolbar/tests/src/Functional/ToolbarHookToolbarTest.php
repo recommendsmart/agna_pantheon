@@ -25,11 +25,6 @@ class ToolbarHookToolbarTest extends BrowserTestBase {
    */
   public static $modules = ['toolbar', 'toolbar_test', 'test_page_test'];
 
-  /**
-   * {@inheritdoc}
-   */
-  protected $defaultTheme = 'stark';
-
   protected function setUp() {
     parent::setUp();
 

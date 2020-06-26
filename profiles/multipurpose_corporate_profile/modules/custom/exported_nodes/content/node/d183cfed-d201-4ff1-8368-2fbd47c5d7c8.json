@@ -1,0 +1,182 @@
+{
+    "_links": {
+        "self": {
+            "href": "http:\/\/default\/content\/ordinary-tin-foil-hat?_format=hal_json"
+        },
+        "type": {
+            "href": "http:\/\/drupal.org\/rest\/type\/node\/secondary_slider"
+        },
+        "http:\/\/drupal.org\/rest\/relation\/node\/secondary_slider\/uid": [
+            {
+                "href": "http:\/\/default\/user\/0?_format=hal_json",
+                "lang": "und"
+            }
+        ],
+        "http:\/\/drupal.org\/rest\/relation\/node\/secondary_slider\/revision_uid": [
+            {
+                "href": "http:\/\/default\/user\/0?_format=hal_json"
+            }
+        ],
+        "http:\/\/drupal.org\/rest\/relation\/node\/secondary_slider\/field_image": [
+            {
+                "href": "http:\/\/default\/sites\/default\/files\/slide-2.png"
+            }
+        ]
+    },
+    "nid": [
+        {
+            "value": "25"
+        }
+    ],
+    "uuid": [
+        {
+            "value": "d183cfed-d201-4ff1-8368-2fbd47c5d7c8"
+        }
+    ],
+    "vid": [
+        {
+            "value": "25"
+        }
+    ],
+    "langcode": [
+        {
+            "value": "und",
+            "lang": "und"
+        }
+    ],
+    "type": [
+        {
+            "target_id": "secondary_slider"
+        }
+    ],
+    "title": [
+        {
+            "value": "Ordinary Tin Foil Hat",
+            "lang": "und"
+        }
+    ],
+    "_embedded": {
+        "http:\/\/drupal.org\/rest\/relation\/node\/secondary_slider\/uid": [
+            {
+                "_links": {
+                    "self": {
+                        "href": "http:\/\/default\/user\/0?_format=hal_json"
+                    },
+                    "type": {
+                        "href": "http:\/\/drupal.org\/rest\/type\/user\/user"
+                    }
+                },
+                "uuid": [
+                    {
+                        "value": "cdddbba5-497d-4ff1-92f9-e0fb2de3e96e"
+                    }
+                ],
+                "lang": "und"
+            }
+        ],
+        "http:\/\/drupal.org\/rest\/relation\/node\/secondary_slider\/revision_uid": [
+            {
+                "_links": {
+                    "self": {
+                        "href": "http:\/\/default\/user\/0?_format=hal_json"
+                    },
+                    "type": {
+                        "href": "http:\/\/drupal.org\/rest\/type\/user\/user"
+                    }
+                },
+                "uuid": [
+                    {
+                        "value": "cdddbba5-497d-4ff1-92f9-e0fb2de3e96e"
+                    }
+                ]
+            }
+        ],
+        "http:\/\/drupal.org\/rest\/relation\/node\/secondary_slider\/field_image": [
+            {
+                "_links": {
+                    "self": {
+                        "href": "http:\/\/default\/sites\/default\/files\/slide-2.png"
+                    },
+                    "type": {
+                        "href": "http:\/\/drupal.org\/rest\/type\/file\/image"
+                    }
+                },
+                "uuid": [
+                    {
+                        "value": "160029fd-8d73-4661-8742-3b23b8a6517c"
+                    }
+                ],
+                "uri": [
+                    {
+                        "value": "http:\/\/default\/sites\/default\/files\/slide-2.png"
+                    }
+                ]
+            }
+        ]
+    },
+    "status": [
+        {
+            "value": "1",
+            "lang": "und"
+        }
+    ],
+    "created": [
+        {
+            "value": "1463461002",
+            "lang": "und"
+        }
+    ],
+    "changed": [
+        {
+            "value": "1464601093",
+            "lang": "und"
+        }
+    ],
+    "promote": [
+        {
+            "value": "0",
+            "lang": "und"
+        }
+    ],
+    "sticky": [
+        {
+            "value": "0",
+            "lang": "und"
+        }
+    ],
+    "revision_timestamp": [
+        {
+            "value": "1463461002"
+        }
+    ],
+    "revision_translation_affected": [
+        {
+            "value": "1",
+            "lang": "und"
+        }
+    ],
+    "default_langcode": [
+        {
+            "value": "1",
+            "lang": "und"
+        }
+    ],
+    "body": [
+        {
+            "value": "<p>Our first model is the very hat Buddha used to wear to get enlightened. It's a perfect solution for those who have just stepped on the path of awakening.<\/p>\r\n",
+            "format": "filtered_html",
+            "summary": ""
+        }
+    ],
+    "comment_node_secondary_slider": [
+        {
+            "status": "1",
+            "cid": "0",
+            "last_comment_timestamp": "1463461002",
+            "last_comment_name": null,
+            "last_comment_uid": "0",
+            "comment_count": "0",
+            "lang": "und"
+        }
+    ]
+}

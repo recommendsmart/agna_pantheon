@@ -1,0 +1,18 @@
+langcode: en
+status: true
+dependencies:
+  config:
+    - core.entity_view_mode.node.teaser
+    - field.field.node.contact_us_page_gmap.field_gmap
+    - node.type.contact_us_page_gmap
+  module:
+    - user
+id: node.contact_us_page_gmap.teaser
+targetEntityType: node
+bundle: contact_us_page_gmap
+mode: teaser
+content:
+  links:
+    weight: 100
+hidden:
+  field_gmap: true

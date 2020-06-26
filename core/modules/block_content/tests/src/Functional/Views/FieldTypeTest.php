@@ -12,11 +12,6 @@ use Drupal\views\Views;
 class FieldTypeTest extends BlockContentTestBase {
 
   /**
-   * {@inheritdoc}
-   */
-  protected $defaultTheme = 'stark';
-
-  /**
    * Views used by this test.
    *
    * @var array

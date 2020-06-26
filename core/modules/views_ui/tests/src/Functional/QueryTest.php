@@ -22,11 +22,6 @@ class QueryTest extends UITestBase {
   /**
    * {@inheritdoc}
    */
-  protected $defaultTheme = 'stark';
-
-  /**
-   * {@inheritdoc}
-   */
   protected function viewsData() {
     $data = parent::viewsData();
     $data['views_test_data']['table']['base']['query_id'] = 'query_test';

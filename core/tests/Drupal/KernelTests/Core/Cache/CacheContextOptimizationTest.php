@@ -3,7 +3,7 @@
 namespace Drupal\KernelTests\Core\Cache;
 
 use Drupal\KernelTests\KernelTestBase;
-use Drupal\Tests\user\Traits\UserCreationTrait;
+use Drupal\simpletest\UserCreationTrait;
 use Drupal\user\Entity\Role;
 
 /**

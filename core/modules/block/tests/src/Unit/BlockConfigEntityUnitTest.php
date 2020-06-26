@@ -4,8 +4,6 @@ namespace Drupal\Tests\block\Unit;
 
 use Drupal\Core\DependencyInjection\ContainerBuilder;
 use Drupal\Core\Entity\EntityTypeManagerInterface;
-use Drupal\Core\Extension\ModuleHandlerInterface;
-use Drupal\Core\Extension\ThemeHandlerInterface;
 use Drupal\Tests\Core\Plugin\Fixtures\TestConfigurablePlugin;
 use Drupal\Tests\UnitTestCase;
 
@@ -18,14 +16,14 @@ class BlockConfigEntityUnitTest extends UnitTestCase {
   /**
    * The entity type used for testing.
    *
-   * @var \Drupal\Core\Entity\EntityTypeInterface|\PHPUnit\Framework\MockObject\MockObject
+   * @var \Drupal\Core\Entity\EntityTypeInterface|\PHPUnit_Framework_MockObject_MockObject
    */
   protected $entityType;
 
   /**
    * The entity type manager used for testing.
    *
-   * @var \Drupal\Core\Entity\EntityTypeManagerInterface|\PHPUnit\Framework\MockObject\MockObject
+   * @var \Drupal\Core\Entity\EntityTypeManagerInterface|\PHPUnit_Framework_MockObject_MockObject
    */
   protected $entityTypeManager;
 
@@ -39,23 +37,9 @@ class BlockConfigEntityUnitTest extends UnitTestCase {
   /**
    * The UUID generator used for testing.
    *
-   * @var \Drupal\Component\Uuid\UuidInterface|\PHPUnit\Framework\MockObject\MockObject
+   * @var \Drupal\Component\Uuid\UuidInterface|\PHPUnit_Framework_MockObject_MockObject
    */
   protected $uuid;
-
-  /**
-   * The module handler.
-   *
-   * @var \Drupal\Core\Extension\ModuleHandlerInterface|\Prophecy\Prophecy\ProphecyInterface
-   */
-  protected $moduleHandler;
-
-  /**
-   * The theme handler.
-   *
-   * @var \Drupal\Core\Extension\ThemeHandlerInterface|\Prophecy\Prophecy\ProphecyInterface
-   */
-  protected $themeHandler;
 
   /**
    * {@inheritdoc}
@@ -63,26 +47,21 @@ class BlockConfigEntityUnitTest extends UnitTestCase {
   protected function setUp() {
     $this->entityTypeId = $this->randomMachineName();
 
-    $this->entityType = $this->createMock('\Drupal\Core\Entity\EntityTypeInterface');
+    $this->entityType = $this->getMock('\Drupal\Core\Entity\EntityTypeInterface');
     $this->entityType->expects($this->any())
       ->method('getProvider')
       ->will($this->returnValue('block'));
 
-    $this->entityTypeManager = $this->createMock(EntityTypeManagerInterface::class);
+    $this->entityTypeManager = $this->getMock(EntityTypeManagerInterface::class);
     $this->entityTypeManager->expects($this->any())
       ->method('getDefinition')
       ->with($this->entityTypeId)
       ->will($this->returnValue($this->entityType));
 
-    $this->uuid = $this->createMock('\Drupal\Component\Uuid\UuidInterface');
-
-    $this->moduleHandler = $this->prophesize(ModuleHandlerInterface::class);
-    $this->themeHandler = $this->prophesize(ThemeHandlerInterface::class);
+    $this->uuid = $this->getMock('\Drupal\Component\Uuid\UuidInterface');
 
     $container = new ContainerBuilder();
     $container->set('entity_type.manager', $this->entityTypeManager);
-    $container->set('module_handler', $this->moduleHandler->reveal());
-    $container->set('theme_handler', $this->themeHandler->reveal());
     $container->set('uuid', $this->uuid);
     \Drupal::setContainer($container);
   }
@@ -91,7 +70,6 @@ class BlockConfigEntityUnitTest extends UnitTestCase {
    * @covers ::calculateDependencies
    */
   public function testCalculateDependencies() {
-    $this->themeHandler->themeExists('stark')->willReturn(TRUE);
     $values = ['theme' => 'stark'];
     // Mock the entity under test so that we can mock getPluginCollections().
     $entity = $this->getMockBuilder('\Drupal\block\Entity\Block')
@@ -100,7 +78,6 @@ class BlockConfigEntityUnitTest extends UnitTestCase {
       ->getMock();
     // Create a configurable plugin that would add a dependency.
     $instance_id = $this->randomMachineName();
-    $this->moduleHandler->moduleExists('test')->willReturn(TRUE);
     $instance = new TestConfigurablePlugin([], $instance_id, ['provider' => 'test']);
 
     // Create a plugin collection to contain the instance.

@@ -1,0 +1,19 @@
+langcode: en
+status: true
+dependencies:
+  module:
+    - views
+id: views_block__popular_tags_block_1_2
+theme: multipurpose_corporate_theme
+region: tertiary
+weight: -15
+provider: null
+plugin: 'views_block:popular_tags-block_1'
+settings:
+  id: 'views_block:popular_tags-block_1'
+  label: ''
+  provider: views
+  label_display: visible
+  views_label: ''
+  items_per_page: none
+visibility: {  }

@@ -1,0 +1,8 @@
+langcode: en
+status: true
+dependencies: {  }
+name: portfolio_terms
+vid: portfolio_terms
+description: ''
+hierarchy: 0
+weight: 0

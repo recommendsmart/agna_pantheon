@@ -31,11 +31,6 @@ class PathContentModerationTest extends BrowserTestBase {
   /**
    * {@inheritdoc}
    */
-  protected $defaultTheme = 'stark';
-
-  /**
-   * {@inheritdoc}
-   */
   protected function setUp() {
     parent::setUp();
     ConfigurableLanguage::createFromLangcode('fr')->save();

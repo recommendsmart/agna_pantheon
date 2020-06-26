@@ -32,11 +32,6 @@ class QuickEditIntegrationTest extends QuickEditJavascriptTestBase {
   ];
 
   /**
-   * {@inheritdoc}
-   */
-  protected $defaultTheme = 'classy';
-
-  /**
    * A user with permissions to edit Articles and use Quick Edit.
    *
    * @var \Drupal\user\UserInterface

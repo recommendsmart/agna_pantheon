@@ -18,11 +18,6 @@ class ForumIndexTest extends BrowserTestBase {
    */
   public static $modules = ['taxonomy', 'comment', 'forum'];
 
-  /**
-   * {@inheritdoc}
-   */
-  protected $defaultTheme = 'stark';
-
   protected function setUp() {
     parent::setUp();
 

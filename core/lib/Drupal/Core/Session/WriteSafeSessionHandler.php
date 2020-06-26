@@ -3,7 +3,7 @@
 namespace Drupal\Core\Session;
 
 /**
- * Wraps the session handler to prevent writes when not necessary or allowed.
+ * Wraps another SessionHandlerInterface to prevent writes when not allowed.
  */
 class WriteSafeSessionHandler implements \SessionHandlerInterface, WriteSafeSessionHandlerInterface {
 
@@ -18,14 +18,6 @@ class WriteSafeSessionHandler implements \SessionHandlerInterface, WriteSafeSess
    * @var bool
    */
   protected $sessionWritable;
-
-  /**
-   * The read sessions.
-   *
-   * @var array
-   *   Session data keyed by the session ID.
-   */
-  private $readSessions;
 
   /**
    * Constructs a new write safe session handler.
@@ -72,23 +64,19 @@ class WriteSafeSessionHandler implements \SessionHandlerInterface, WriteSafeSess
    * {@inheritdoc}
    */
   public function read($session_id) {
-    $value = $this->wrappedSessionHandler->read($session_id);
-    $this->readSessions[$session_id] = $value;
-    return $value;
+    return $this->wrappedSessionHandler->read($session_id);
   }
 
   /**
    * {@inheritdoc}
    */
   public function write($session_id, $session_data) {
-    // Only write the session when it has been modified.
-    if (isset($this->readSessions[$session_id]) && $this->readSessions[$session_id] === $session_data) {
-      return TRUE;
-    }
     if ($this->isSessionWritable()) {
       return $this->wrappedSessionHandler->write($session_id, $session_data);
     }
-    return TRUE;
+    else {
+      return TRUE;
+    }
   }
 
   /**

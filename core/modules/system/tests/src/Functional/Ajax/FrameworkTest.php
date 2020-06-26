@@ -23,11 +23,6 @@ class FrameworkTest extends BrowserTestBase {
   /**
    * {@inheritdoc}
    */
-  protected $defaultTheme = 'stark';
-
-  /**
-   * {@inheritdoc}
-   */
   protected static $modules = ['node', 'ajax_test', 'ajax_forms_test'];
 
   /**

@@ -26,9 +26,4 @@ class WorkflowJsonCookieTest extends WorkflowResourceTestBase {
    */
   protected static $auth = 'cookie';
 
-  /**
-   * {@inheritdoc}
-   */
-  protected $defaultTheme = 'stark';
-
 }

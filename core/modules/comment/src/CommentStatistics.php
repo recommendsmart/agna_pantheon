@@ -3,22 +3,15 @@
 namespace Drupal\comment;
 
 use Drupal\Core\Database\Connection;
-use Drupal\Core\DependencyInjection\DeprecatedServicePropertyTrait;
-use Drupal\Core\Entity\EntityTypeManagerInterface;
 use Drupal\Core\Entity\FieldableEntityInterface;
 use Drupal\Core\Entity\EntityChangedInterface;
 use Drupal\Core\Entity\EntityInterface;
+use Drupal\Core\Entity\EntityManagerInterface;
 use Drupal\Core\State\StateInterface;
 use Drupal\Core\Session\AccountInterface;
 use Drupal\user\EntityOwnerInterface;
 
 class CommentStatistics implements CommentStatisticsInterface {
-  use DeprecatedServicePropertyTrait;
-
-  /**
-   * {@inheritdoc}
-   */
-  protected $deprecatedProperties = ['entityManager' => 'entity.manager'];
 
   /**
    * The current database connection.
@@ -28,13 +21,6 @@ class CommentStatistics implements CommentStatisticsInterface {
   protected $database;
 
   /**
-   * The replica database connection.
-   *
-   * @var \Drupal\Core\Database\Connection
-   */
-  protected $databaseReplica;
-
-  /**
    * The current logged in user.
    *
    * @var \Drupal\Core\Session\AccountInterface
@@ -42,11 +28,11 @@ class CommentStatistics implements CommentStatisticsInterface {
   protected $currentUser;
 
   /**
-   * The entity type manager.
+   * The entity manager service.
    *
-   * @var \Drupal\Core\Entity\EntityTypeManagerInterface
+   * @var \Drupal\Core\Entity\EntityManagerInterface
    */
-  protected $entityTypeManager;
+  protected $entityManager;
 
   /**
    * The state service.
@@ -62,18 +48,15 @@ class CommentStatistics implements CommentStatisticsInterface {
    *   The active database connection.
    * @param \Drupal\Core\Session\AccountInterface $current_user
    *   The current logged in user.
-   * @param \Drupal\Core\Entity\EntityTypeManagerInterface $entity_type_manager
-   *   The entity type manager.
+   * @param \Drupal\Core\Entity\EntityManagerInterface $entity_manager
+   *   The entity manager service.
    * @param \Drupal\Core\State\StateInterface $state
    *   The state service.
-   * @param \Drupal\Core\Database\Connection|null $database_replica
-   *   (Optional) the replica database connection.
    */
-  public function __construct(Connection $database, AccountInterface $current_user, EntityTypeManagerInterface $entity_type_manager, StateInterface $state, Connection $database_replica = NULL) {
+  public function __construct(Connection $database, AccountInterface $current_user, EntityManagerInterface $entity_manager, StateInterface $state) {
     $this->database = $database;
-    $this->databaseReplica = $database_replica ?: $database;
     $this->currentUser = $current_user;
-    $this->entityTypeManager = $entity_type_manager;
+    $this->entityManager = $entity_manager;
     $this->state = $state;
   }
 
@@ -81,8 +64,8 @@ class CommentStatistics implements CommentStatisticsInterface {
    * {@inheritdoc}
    */
   public function read($entities, $entity_type, $accurate = TRUE) {
-    $connection = $accurate ? $this->database : $this->databaseReplica;
-    $stats = $connection->select('comment_entity_statistics', 'ces')
+    $options = $accurate ? [] : ['target' => 'replica'];
+    $stats = $this->database->select('comment_entity_statistics', 'ces', $options)
       ->fields('ces')
       ->condition('ces.entity_id', array_keys($entities), 'IN')
       ->condition('ces.entity_type', $entity_type)
@@ -271,7 +254,7 @@ class CommentStatistics implements CommentStatisticsInterface {
 
     // Reset the cache of the commented entity so that when the entity is loaded
     // the next time, the statistics will be loaded again.
-    $this->entityTypeManager->getStorage($comment->getCommentedEntityTypeId())->resetCache([$comment->getCommentedEntityId()]);
+    $this->entityManager->getStorage($comment->getCommentedEntityTypeId())->resetCache([$comment->getCommentedEntityId()]);
   }
 
 }

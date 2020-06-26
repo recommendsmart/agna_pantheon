@@ -23,11 +23,6 @@ class TableDragTest extends WebDriverTestBase {
   protected static $modules = ['tabledrag_test'];
 
   /**
-   * {@inheritdoc}
-   */
-  protected $defaultTheme = 'stark';
-
-  /**
    * The state service.
    *
    * @var \Drupal\Core\State\StateInterface

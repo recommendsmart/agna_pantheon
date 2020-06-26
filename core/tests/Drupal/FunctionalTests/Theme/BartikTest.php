@@ -14,7 +14,15 @@ class BartikTest extends BrowserTestBase {
   /**
    * {@inheritdoc}
    */
-  protected $defaultTheme = 'bartik';
+  public function setUp() {
+    parent::setUp();
+
+    $this->assertTrue($this->container->get('theme_installer')->install(['bartik']));
+    $this->container->get('config.factory')
+      ->getEditable('system.theme')
+      ->set('default', 'bartik')
+      ->save();
+  }
 
   /**
    * Tests that the Bartik theme always adds its message CSS and Classy's.

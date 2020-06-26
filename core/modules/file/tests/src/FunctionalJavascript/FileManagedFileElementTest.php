@@ -2,6 +2,7 @@
 
 namespace Drupal\Tests\file\FunctionalJavascript;
 
+use Drupal\Core\Database\Database;
 use Drupal\FunctionalJavascriptTests\WebDriverTestBase;
 
 /**
@@ -15,11 +16,6 @@ class FileManagedFileElementTest extends WebDriverTestBase {
    * {@inheritdoc}
    */
   protected static $modules = ['node', 'file', 'file_module_test', 'field_ui'];
-
-  /**
-   * {@inheritdoc}
-   */
-  protected $defaultTheme = 'stark';
 
   /**
    * A user with administration permissions.
@@ -99,7 +95,7 @@ class FileManagedFileElementTest extends WebDriverTestBase {
    * Retrieves the fid of the last inserted file.
    */
   protected function getLastFileId() {
-    return (int) \Drupal::entityQueryAggregate('file')->aggregate('fid', 'max')->execute()[0]['fid_max'];
+    return (int) Database::getConnection()->query('SELECT MAX(fid) FROM {file_managed}')->fetchField();
   }
 
 }

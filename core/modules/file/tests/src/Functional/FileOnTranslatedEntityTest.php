@@ -17,11 +17,6 @@ class FileOnTranslatedEntityTest extends FileFieldTestBase {
   public static $modules = ['language', 'content_translation'];
 
   /**
-   * {@inheritdoc}
-   */
-  protected $defaultTheme = 'stark';
-
-  /**
    * The name of the file field used in the test.
    *
    * @var string
@@ -79,6 +74,7 @@ class FileOnTranslatedEntityTest extends FileFieldTestBase {
       "settings[node][page][fields][$this->fieldName]" => 1,
     ];
     $this->drupalPostForm('admin/config/regional/content-language', $edit, t('Save configuration'));
+    \Drupal::entityManager()->clearCachedDefinitions();
   }
 
   /**
@@ -86,7 +82,7 @@ class FileOnTranslatedEntityTest extends FileFieldTestBase {
    */
   public function testSyncedFiles() {
     // Verify that the file field on the "Basic page" node type is translatable.
-    $definitions = \Drupal::service('entity_field.manager')->getFieldDefinitions('node', 'page');
+    $definitions = \Drupal::entityManager()->getFieldDefinitions('node', 'page');
     $this->assertTrue($definitions[$this->fieldName]->isTranslatable(), 'Node file field is translatable.');
 
     // Create a default language node.

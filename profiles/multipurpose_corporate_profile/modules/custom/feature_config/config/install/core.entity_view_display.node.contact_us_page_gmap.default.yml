@@ -1,0 +1,36 @@
+langcode: en
+status: true
+dependencies:
+  config:
+    - field.field.node.contact_us_page_gmap.field_gmap
+    - node.type.contact_us_page_gmap
+  module:
+    - simple_gmap
+    - user
+id: node.contact_us_page_gmap.default
+targetEntityType: node
+bundle: contact_us_page_gmap
+mode: default
+content:
+  field_gmap:
+    weight: 2
+    label: above
+    settings:
+      include_map: '1'
+      iframe_width: '1180'
+      iframe_height: '500'
+      link_text: 'View larger map'
+      zoom_level: '14'
+      information_bubble: '1'
+      map_type: m
+      langcode: en
+      include_static_map: 0
+      include_link: 0
+      include_text: 0
+    third_party_settings: {  }
+    type: simple_gmap
+  links:
+    weight: 1
+    settings: {  }
+    third_party_settings: {  }
+hidden: {  }

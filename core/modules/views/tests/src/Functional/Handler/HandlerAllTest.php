@@ -2,10 +2,8 @@
 
 namespace Drupal\Tests\views\Functional\Handler;
 
-use Drupal\Component\Render\FormattableMarkup;
 use Drupal\comment\Tests\CommentTestTrait;
 use Drupal\Tests\views\Functional\ViewTestBase;
-use Drupal\views\Plugin\views\filter\NumericFilter;
 use Drupal\views\ViewExecutable;
 use Drupal\views\Plugin\views\HandlerBase;
 use Drupal\views\Plugin\views\filter\InOperator;
@@ -46,11 +44,6 @@ class HandlerAllTest extends ViewTestBase {
   ];
 
   /**
-   * {@inheritdoc}
-   */
-  protected $defaultTheme = 'stark';
-
-  /**
    * Tests most of the handlers.
    */
   public function testHandlers() {
@@ -58,7 +51,7 @@ class HandlerAllTest extends ViewTestBase {
     $this->addDefaultCommentField('node', 'article');
 
     $object_types = array_keys(ViewExecutable::getHandlerTypes());
-    foreach ($this->container->get('views.views_data')->getAll() as $base_table => $info) {
+    foreach ($this->container->get('views.views_data')->get() as $base_table => $info) {
       if (!isset($info['table']['base'])) {
         continue;
       }
@@ -87,9 +80,6 @@ class HandlerAllTest extends ViewTestBase {
                 if ($handler instanceof InOperator) {
                   $options['value'] = [1];
                 }
-                elseif ($handler instanceof NumericFilter) {
-                  $options['value'] = ['value' => 1];
-                }
                 else {
                   $options['value'] = 1;
                 }
@@ -111,7 +101,7 @@ class HandlerAllTest extends ViewTestBase {
       foreach ($object_types as $type) {
         if (isset($view->{$type})) {
           foreach ($view->{$type} as $handler) {
-            $this->assertTrue($handler instanceof HandlerBase, new FormattableMarkup(
+            $this->assertTrue($handler instanceof HandlerBase, format_string(
               '@type handler of class %class is an instance of HandlerBase',
               [
                 '@type' => $type,

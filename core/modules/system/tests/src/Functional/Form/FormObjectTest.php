@@ -19,11 +19,6 @@ class FormObjectTest extends BrowserTestBase {
   public static $modules = ['form_test'];
 
   /**
-   * {@inheritdoc}
-   */
-  protected $defaultTheme = 'stark';
-
-  /**
    * Tests using an object as the form callback.
    *
    * @see \Drupal\form_test\EventSubscriber\FormTestEventSubscriber::onKernelRequest()

@@ -10,7 +10,6 @@ use Drupal\user\Entity\User;
 /**
  * Runs UpdatePathTestBaseTest with a dump filled with content.
  *
- * @group #slow
  * @group Update
  * @group legacy
  */
@@ -19,14 +18,9 @@ class UpdatePathTestBaseFilledTest extends UpdatePathTestBaseTest {
   /**
    * {@inheritdoc}
    */
-  protected $defaultTheme = 'stark';
-
-  /**
-   * {@inheritdoc}
-   */
   protected function setDatabaseDumpFiles() {
     parent::setDatabaseDumpFiles();
-    $this->databaseDumpFiles[0] = __DIR__ . '/../../../../tests/fixtures/update/drupal-8.8.0.filled.standard.php.gz';
+    $this->databaseDumpFiles[0] = __DIR__ . '/../../../../tests/fixtures/update/drupal-8.filled.standard.php.gz';
   }
 
   /**
@@ -386,6 +380,7 @@ class UpdatePathTestBaseFilledTest extends UpdatePathTestBaseTest {
       'search',
       'serialization',
       'shortcut',
+      'simpletest',
       'statistics',
       'syslog',
       'system',

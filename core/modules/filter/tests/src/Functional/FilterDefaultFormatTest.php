@@ -20,11 +20,6 @@ class FilterDefaultFormatTest extends BrowserTestBase {
   public static $modules = ['filter'];
 
   /**
-   * {@inheritdoc}
-   */
-  protected $defaultTheme = 'stark';
-
-  /**
    * Tests if the default text format is accessible to users.
    */
   public function testDefaultTextFormats() {

@@ -16,9 +16,4 @@ class NodeHalJsonCookieTest extends NodeHalJsonAnonTest {
    */
   protected static $auth = 'cookie';
 
-  /**
-   * {@inheritdoc}
-   */
-  protected $defaultTheme = 'stark';
-
 }

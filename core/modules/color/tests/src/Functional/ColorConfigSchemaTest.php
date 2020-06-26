@@ -19,11 +19,6 @@ class ColorConfigSchemaTest extends BrowserTestBase {
   public static $modules = ['color'];
 
   /**
-   * {@inheritdoc}
-   */
-  protected $defaultTheme = 'stark';
-
-  /**
    * A user with administrative permissions.
    *
    * @var \Drupal\user\UserInterface
@@ -35,7 +30,7 @@ class ColorConfigSchemaTest extends BrowserTestBase {
    */
   protected function setUp() {
     parent::setUp();
-    \Drupal::service('theme_installer')->install(['bartik']);
+    \Drupal::service('theme_handler')->install(['bartik']);
 
     // Create user.
     $this->adminUser = $this->drupalCreateUser(['administer themes']);

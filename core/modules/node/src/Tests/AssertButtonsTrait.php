@@ -7,7 +7,7 @@ namespace Drupal\node\Tests;
 /**
  * Asserts that buttons are present on a page.
  *
- * @deprecated in drupal:8.?.? and is removed from drupal:9.0.0.
+ * @deprecated Scheduled for removal before Drupal 9.0.0.
  *   Use \Drupal\Tests\node\Functional\AssertButtonsTrait instead.
  */
 trait AssertButtonsTrait {

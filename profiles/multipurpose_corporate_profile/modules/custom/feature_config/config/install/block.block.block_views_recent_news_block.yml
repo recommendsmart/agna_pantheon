@@ -1,0 +1,29 @@
+langcode: en
+status: true
+dependencies:
+  config:
+    - views.view.recent_news
+  module:
+    - system
+    - views
+  theme:
+    - multipurpose_corporate_theme
+id: block_views_recent_news_block
+theme: multipurpose_corporate_theme
+region: content
+weight: -10
+provider: null
+plugin: 'views_block:recent_news-block_1'
+settings:
+  id: 'views_block:recent_news-block_1'
+  label: ''
+  provider: views
+  label_display: visible
+  views_label: ''
+  items_per_page: none
+visibility:
+  request_path:
+    id: request_path
+    pages: '<front>'
+    negate: false
+    context_mapping: {  }

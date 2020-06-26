@@ -1,0 +1,30 @@
+langcode: en
+status: true
+dependencies:
+  content:
+    - 'block_content:basic:145c15b6-4148-4fb3-aeea-fa64109ea419'
+  module:
+    - block_content
+    - system
+  theme:
+    - multipurpose_corporate_theme
+id: our_mission
+theme: multipurpose_corporate_theme
+region: content
+weight: -9
+provider: null
+plugin: 'block_content:145c15b6-4148-4fb3-aeea-fa64109ea419'
+settings:
+  id: 'block_content:145c15b6-4148-4fb3-aeea-fa64109ea419'
+  label: 'Our mission'
+  provider: block_content
+  label_display: visible
+  status: true
+  info: ''
+  view_mode: full
+visibility:
+  request_path:
+    id: request_path
+    pages: '<front>'
+    negate: false
+    context_mapping: {  }

@@ -21,11 +21,6 @@ class MenuXmlBasicAuthTest extends MenuResourceTestBase {
   /**
    * {@inheritdoc}
    */
-  protected $defaultTheme = 'stark';
-
-  /**
-   * {@inheritdoc}
-   */
   protected static $format = 'xml';
 
   /**

@@ -28,11 +28,6 @@ class CommentCacheTagsTest extends EntityWithUriCacheTagsTestBase {
   public static $modules = ['comment'];
 
   /**
-   * {@inheritdoc}
-   */
-  protected $defaultTheme = 'stark';
-
-  /**
    * @var \Drupal\entity_test\Entity\EntityTest
    */
   protected $entityTestCamelid;
@@ -99,8 +94,8 @@ class CommentCacheTagsTest extends EntityWithUriCacheTagsTestBase {
    * Test that comments correctly invalidate the cache tag of their host entity.
    */
   public function testCommentEntity() {
-    $this->verifyPageCache($this->entityTestCamelid->toUrl(), 'MISS');
-    $this->verifyPageCache($this->entityTestCamelid->toUrl(), 'HIT');
+    $this->verifyPageCache($this->entityTestCamelid->urlInfo(), 'MISS');
+    $this->verifyPageCache($this->entityTestCamelid->urlInfo(), 'HIT');
 
     // Create a "Hippopotamus" comment.
     $this->entityTestHippopotamidae = EntityTest::create([
@@ -109,8 +104,8 @@ class CommentCacheTagsTest extends EntityWithUriCacheTagsTestBase {
     ]);
     $this->entityTestHippopotamidae->save();
 
-    $this->verifyPageCache($this->entityTestHippopotamidae->toUrl(), 'MISS');
-    $this->verifyPageCache($this->entityTestHippopotamidae->toUrl(), 'HIT');
+    $this->verifyPageCache($this->entityTestHippopotamidae->urlInfo(), 'MISS');
+    $this->verifyPageCache($this->entityTestHippopotamidae->urlInfo(), 'HIT');
 
     $hippo_comment = Comment::create([
       'subject' => 'Hippopotamus',
@@ -126,15 +121,15 @@ class CommentCacheTagsTest extends EntityWithUriCacheTagsTestBase {
     $hippo_comment->save();
 
     // Ensure that a new comment only invalidates the commented entity.
-    $this->verifyPageCache($this->entityTestCamelid->toUrl(), 'HIT');
-    $this->verifyPageCache($this->entityTestHippopotamidae->toUrl(), 'MISS');
+    $this->verifyPageCache($this->entityTestCamelid->urlInfo(), 'HIT');
+    $this->verifyPageCache($this->entityTestHippopotamidae->urlInfo(), 'MISS');
     $this->assertText($hippo_comment->getSubject());
 
     // Ensure that updating an existing comment only invalidates the commented
     // entity.
     $this->entity->save();
-    $this->verifyPageCache($this->entityTestCamelid->toUrl(), 'MISS');
-    $this->verifyPageCache($this->entityTestHippopotamidae->toUrl(), 'HIT');
+    $this->verifyPageCache($this->entityTestCamelid->urlInfo(), 'MISS');
+    $this->verifyPageCache($this->entityTestHippopotamidae->urlInfo(), 'HIT');
   }
 
   /**

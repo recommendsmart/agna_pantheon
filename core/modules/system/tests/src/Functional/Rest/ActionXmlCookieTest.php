@@ -28,9 +28,4 @@ class ActionXmlCookieTest extends ActionResourceTestBase {
    */
   protected static $auth = 'cookie';
 
-  /**
-   * {@inheritdoc}
-   */
-  protected $defaultTheme = 'stark';
-
 }

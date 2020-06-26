@@ -16,7 +16,7 @@ class TaggingTest extends DatabaseTestBase {
    * Confirms that a query has a tag added to it.
    */
   public function testHasTag() {
-    $query = $this->connection->select('test');
+    $query = db_select('test');
     $query->addField('test', 'name');
     $query->addField('test', 'age', 'age');
 
@@ -30,7 +30,7 @@ class TaggingTest extends DatabaseTestBase {
    * Tests query tagging "has all of these tags" functionality.
    */
   public function testHasAllTags() {
-    $query = $this->connection->select('test');
+    $query = db_select('test');
     $query->addField('test', 'name');
     $query->addField('test', 'age', 'age');
 
@@ -45,7 +45,7 @@ class TaggingTest extends DatabaseTestBase {
    * Tests query tagging "has at least one of these tags" functionality.
    */
   public function testHasAnyTag() {
-    $query = $this->connection->select('test');
+    $query = db_select('test');
     $query->addField('test', 'name');
     $query->addField('test', 'age', 'age');
 
@@ -59,7 +59,7 @@ class TaggingTest extends DatabaseTestBase {
    * Confirms that an extended query has a tag added to it.
    */
   public function testExtenderHasTag() {
-    $query = $this->connection->select('test')
+    $query = db_select('test')
       ->extend('Drupal\Core\Database\Query\SelectExtender');
     $query->addField('test', 'name');
     $query->addField('test', 'age', 'age');
@@ -74,7 +74,7 @@ class TaggingTest extends DatabaseTestBase {
    * Tests extended query tagging "has all of these tags" functionality.
    */
   public function testExtenderHasAllTags() {
-    $query = $this->connection->select('test')
+    $query = db_select('test')
       ->extend('Drupal\Core\Database\Query\SelectExtender');
     $query->addField('test', 'name');
     $query->addField('test', 'age', 'age');
@@ -90,7 +90,7 @@ class TaggingTest extends DatabaseTestBase {
    * Tests extended query tagging "has at least one of these tags" functionality.
    */
   public function testExtenderHasAnyTag() {
-    $query = $this->connection->select('test')
+    $query = db_select('test')
       ->extend('Drupal\Core\Database\Query\SelectExtender');
     $query->addField('test', 'name');
     $query->addField('test', 'age', 'age');
@@ -107,7 +107,7 @@ class TaggingTest extends DatabaseTestBase {
    * This is how we pass additional context to alter hooks.
    */
   public function testMetaData() {
-    $query = $this->connection->select('test');
+    $query = db_select('test');
     $query->addField('test', 'name');
     $query->addField('test', 'age', 'age');
 

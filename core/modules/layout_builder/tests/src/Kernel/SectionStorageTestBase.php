@@ -58,11 +58,11 @@ abstract class SectionStorageTestBase extends EntityKernelTestBase {
   abstract protected function getSectionStorage(array $section_data);
 
   /**
-   * Tests ::getSections().
+   * @covers ::getSections
    */
   public function testGetSections() {
     $expected = [
-      new Section('layout_test_plugin', ['setting_1' => 'Default'], [
+      new Section('layout_test_plugin', [], [
         'first-uuid' => new SectionComponent('first-uuid', 'content', ['id' => 'foo']),
       ]),
       new Section('layout_test_plugin', ['setting_1' => 'bar'], [
@@ -83,8 +83,7 @@ abstract class SectionStorageTestBase extends EntityKernelTestBase {
    * @covers ::getSection
    */
   public function testGetSectionInvalidDelta() {
-    $this->expectException(\OutOfBoundsException::class);
-    $this->expectExceptionMessage('Invalid delta "2"');
+    $this->setExpectedException(\OutOfBoundsException::class, 'Invalid delta "2"');
     $this->sectionStorage->getSection(2);
   }
 
@@ -93,16 +92,16 @@ abstract class SectionStorageTestBase extends EntityKernelTestBase {
    */
   public function testInsertSection() {
     $expected = [
-      new Section('layout_test_plugin', ['setting_1' => 'Default'], [
+      new Section('layout_test_plugin', [], [
         'first-uuid' => new SectionComponent('first-uuid', 'content', ['id' => 'foo']),
       ]),
-      new Section('layout_onecol'),
+      new Section('setting_1'),
       new Section('layout_test_plugin', ['setting_1' => 'bar'], [
         'second-uuid' => new SectionComponent('second-uuid', 'content', ['id' => 'foo']),
       ]),
     ];
 
-    $this->sectionStorage->insertSection(1, new Section('layout_onecol'));
+    $this->sectionStorage->insertSection(1, new Section('setting_1'));
     $this->assertSections($expected);
   }
 
@@ -111,43 +110,17 @@ abstract class SectionStorageTestBase extends EntityKernelTestBase {
    */
   public function testAppendSection() {
     $expected = [
-      new Section('layout_test_plugin', ['setting_1' => 'Default'], [
+      new Section('layout_test_plugin', [], [
         'first-uuid' => new SectionComponent('first-uuid', 'content', ['id' => 'foo']),
       ]),
       new Section('layout_test_plugin', ['setting_1' => 'bar'], [
         'second-uuid' => new SectionComponent('second-uuid', 'content', ['id' => 'foo']),
       ]),
-      new Section('layout_onecol'),
+      new Section('foo'),
     ];
 
-    $this->sectionStorage->appendSection(new Section('layout_onecol'));
+    $this->sectionStorage->appendSection(new Section('foo'));
     $this->assertSections($expected);
-  }
-
-  /**
-   * @covers ::removeAllSections
-   *
-   * @dataProvider providerTestRemoveAllSections
-   */
-  public function testRemoveAllSections($set_blank, $expected) {
-    if ($set_blank === NULL) {
-      $this->sectionStorage->removeAllSections();
-    }
-    else {
-      $this->sectionStorage->removeAllSections($set_blank);
-    }
-    $this->assertSections($expected);
-  }
-
-  /**
-   * Provides test data for ::testRemoveAllSections().
-   */
-  public function providerTestRemoveAllSections() {
-    $data = [];
-    $data[] = [NULL, []];
-    $data[] = [FALSE, []];
-    $data[] = [TRUE, [new Section('layout_builder_blank')]];
-    return $data;
   }
 
   /**
@@ -165,27 +138,14 @@ abstract class SectionStorageTestBase extends EntityKernelTestBase {
   }
 
   /**
-   * @covers ::removeSection
-   */
-  public function testRemoveMultipleSections() {
-    $expected = [
-      new Section('layout_builder_blank'),
-    ];
-
-    $this->sectionStorage->removeSection(0);
-    $this->sectionStorage->removeSection(0);
-    $this->assertSections($expected);
-  }
-
-  /**
    * Tests __clone().
    */
   public function testClone() {
-    $this->assertSame(['setting_1' => 'Default'], $this->sectionStorage->getSection(0)->getLayoutSettings());
+    $this->assertSame([], $this->sectionStorage->getSection(0)->getLayoutSettings());
 
     $new_section_storage = clone $this->sectionStorage;
     $new_section_storage->getSection(0)->setLayoutSettings(['asdf' => 'qwer']);
-    $this->assertSame(['setting_1' => 'Default'], $this->sectionStorage->getSection(0)->getLayoutSettings());
+    $this->assertSame([], $this->sectionStorage->getSection(0)->getLayoutSettings());
   }
 
   /**

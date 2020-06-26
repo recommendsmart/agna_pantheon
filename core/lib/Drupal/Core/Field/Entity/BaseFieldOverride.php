@@ -64,7 +64,7 @@ class BaseFieldOverride extends FieldConfigBase {
     $values = $base_field_definition->toArray();
     $values['bundle'] = $bundle;
     $values['baseFieldDefinition'] = $base_field_definition;
-    return \Drupal::entityTypeManager()->getStorage('base_field_override')->create($values);
+    return \Drupal::entityManager()->getStorage('base_field_override')->create($values);
   }
 
   /**
@@ -86,6 +86,8 @@ class BaseFieldOverride extends FieldConfigBase {
    * @param string $entity_type
    *   (optional) The type of the entity to create. Defaults to
    *   'base_field_override'.
+   *
+   * @see entity_create()
    *
    * @throws \Drupal\Core\Field\FieldException
    *   Exception thrown if $values does not contain a field_name, entity_type or
@@ -161,7 +163,7 @@ class BaseFieldOverride extends FieldConfigBase {
    */
   protected function getBaseFieldDefinition() {
     if (!isset($this->baseFieldDefinition)) {
-      $fields = \Drupal::service('entity_field.manager')->getBaseFieldDefinitions($this->entity_type);
+      $fields = $this->entityManager()->getBaseFieldDefinitions($this->entity_type);
       $this->baseFieldDefinition = $fields[$this->getName()];
     }
     return $this->baseFieldDefinition;
@@ -202,16 +204,16 @@ class BaseFieldOverride extends FieldConfigBase {
       $previous_definition = $this->original;
     }
     // Notify the entity storage.
-    $this->entityTypeManager()->getStorage($this->getTargetEntityTypeId())->onFieldDefinitionUpdate($this, $previous_definition);
+    $this->entityManager()->getStorage($this->getTargetEntityTypeId())->onFieldDefinitionUpdate($this, $previous_definition);
   }
 
   /**
    * {@inheritdoc}
    */
   public static function postDelete(EntityStorageInterface $storage, array $field_overrides) {
-    $entity_type_manager = \Drupal::entityTypeManager();
+    $entity_manager = \Drupal::entityManager();
     // Clear the cache upfront, to refresh the results of getBundles().
-    \Drupal::service('entity_field.manager')->clearCachedFieldDefinitions();
+    $entity_manager->clearCachedFieldDefinitions();
     /** @var \Drupal\Core\Field\Entity\BaseFieldOverride $field_override */
     foreach ($field_overrides as $field_override) {
       // Inform the system that the field definition is being updated back to
@@ -219,7 +221,7 @@ class BaseFieldOverride extends FieldConfigBase {
       // @todo This assumes that there isn't a non-config-based override that
       //   we're returning to, but that might not be the case:
       //   https://www.drupal.org/node/2321071.
-      $entity_type_manager->getStorage($field_override->getTargetEntityTypeId())->onFieldDefinitionUpdate($field_override->getBaseFieldDefinition(), $field_override);
+      $entity_manager->getStorage($field_override->getTargetEntityTypeId())->onFieldDefinitionUpdate($field_override->getBaseFieldDefinition(), $field_override);
     }
   }
 
@@ -238,7 +240,7 @@ class BaseFieldOverride extends FieldConfigBase {
    *   provided field name, otherwise NULL.
    */
   public static function loadByName($entity_type_id, $bundle, $field_name) {
-    return \Drupal::entityTypeManager()->getStorage('base_field_override')->load($entity_type_id . '.' . $bundle . '.' . $field_name);
+    return \Drupal::entityManager()->getStorage('base_field_override')->load($entity_type_id . '.' . $bundle . '.' . $field_name);
   }
 
   /**

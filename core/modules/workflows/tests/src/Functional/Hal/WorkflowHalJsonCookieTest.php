@@ -16,9 +16,4 @@ class WorkflowHalJsonCookieTest extends WorkflowHalJsonAnonTest {
    */
   protected static $auth = 'cookie';
 
-  /**
-   * {@inheritdoc}
-   */
-  protected $defaultTheme = 'stark';
-
 }

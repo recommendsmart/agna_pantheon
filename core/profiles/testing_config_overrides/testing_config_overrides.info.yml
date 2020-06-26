@@ -2,16 +2,15 @@ name: Testing config overrides
 type: profile
 description: 'Minimal profile for running tests with config overrides in a profile.'
 # version: VERSION
-# This profile is copied to a non-core location by
-# \Drupal\Tests\config\Functional\ConfigInstallProfileUnmetDependenciesTest.
-core_version_requirement: '*'
+# core: 8.x
 hidden: true
 install:
   - action
   - language
   - tour
 
-# Information added by Drupal.org packaging script on 2020-04-02
-version: '8.8.5'
+# Information added by Drupal.org packaging script on 2019-03-20
+version: '8.6.13'
+core: '8.x'
 project: 'drupal'
-datestamp: 1585861582
+datestamp: 1553100246

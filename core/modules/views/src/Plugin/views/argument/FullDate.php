@@ -20,18 +20,18 @@ class FullDate extends Date {
   protected $argFormat = 'Ymd';
 
   /**
-   * {@inheritdoc}
+   * Provide a link to the next level of the view
    */
   public function summaryName($data) {
     $created = $data->{$this->name_alias};
-    return $this->dateFormatter->format(strtotime($created . " 00:00:00 UTC"), 'custom', $this->format, 'UTC');
+    return format_date(strtotime($created . " 00:00:00 UTC"), 'custom', $this->format, 'UTC');
   }
 
   /**
-   * {@inheritdoc}
+   * Provide a link to the next level of the view
    */
   public function title() {
-    return $this->dateFormatter->format(strtotime($this->argument . " 00:00:00 UTC"), 'custom', $this->format, 'UTC');
+    return format_date(strtotime($this->argument . " 00:00:00 UTC"), 'custom', $this->format, 'UTC');
   }
 
 }

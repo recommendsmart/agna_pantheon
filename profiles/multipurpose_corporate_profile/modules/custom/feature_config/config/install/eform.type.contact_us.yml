@@ -1,0 +1,22 @@
+langcode: en
+status: true
+dependencies: {  }
+name: 'Contact us'
+type: contact_us
+description: ''
+form_title: 'Contact us'
+help: ''
+form_status: EFORM_OPEN
+resubmit_action: EFORM_RESUBMIT_NEW
+disallow_text:
+  value: ''
+  format: basic_html
+preview_page: false
+submission_page_title: ''
+submission_text:
+  value: ''
+  format: basic_html
+submission_show_submitted: false
+draftable: false
+admin_submissions_view: ''
+user_submissions_view: ''

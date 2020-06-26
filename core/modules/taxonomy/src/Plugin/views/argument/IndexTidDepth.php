@@ -2,7 +2,6 @@
 
 namespace Drupal\taxonomy\Plugin\views\argument;
 
-use Drupal\Core\Database\Database;
 use Drupal\Core\Database\Query\Condition;
 use Drupal\Core\Entity\EntityStorageInterface;
 use Drupal\Core\Form\FormStateInterface;
@@ -40,12 +39,7 @@ class IndexTidDepth extends ArgumentPluginBase implements ContainerFactoryPlugin
    * {@inheritdoc}
    */
   public static function create(ContainerInterface $container, array $configuration, $plugin_id, $plugin_definition) {
-    return new static(
-      $configuration,
-      $plugin_id,
-      $plugin_definition,
-      $container->get('entity_type.manager')->getStorage('taxonomy_term')
-    );
+    return new static($configuration, $plugin_id, $plugin_definition, $container->get('entity.manager')->getStorage('taxonomy_term'));
   }
 
   protected function defineOptions() {
@@ -111,7 +105,7 @@ class IndexTidDepth extends ArgumentPluginBase implements ContainerFactoryPlugin
       $tids = $this->argument;
     }
     // Now build the subqueries.
-    $subquery = Database::getConnection()->select('taxonomy_index', 'tn');
+    $subquery = db_select('taxonomy_index', 'tn');
     $subquery->addField('tn', 'nid');
     $where = (new Condition('OR'))->condition('tn.tid', $tids, $operator);
     $last = "tn";

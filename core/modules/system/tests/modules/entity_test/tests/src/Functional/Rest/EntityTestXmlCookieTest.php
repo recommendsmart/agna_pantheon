@@ -28,9 +28,4 @@ class EntityTestXmlCookieTest extends EntityTestResourceTestBase {
    */
   protected static $auth = 'cookie';
 
-  /**
-   * {@inheritdoc}
-   */
-  protected $defaultTheme = 'stark';
-
 }

@@ -1,0 +1,7 @@
+langcode: en
+status: true
+dependencies: {  }
+id: comment_node_clients
+label: 'Clients comment'
+target_entity_type_id: node
+description: null

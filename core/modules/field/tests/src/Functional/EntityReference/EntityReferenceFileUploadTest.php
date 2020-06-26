@@ -20,11 +20,6 @@ class EntityReferenceFileUploadTest extends BrowserTestBase {
   public static $modules = ['entity_reference', 'node', 'file'];
 
   /**
-   * {@inheritdoc}
-   */
-  protected $defaultTheme = 'stark';
-
-  /**
    * The name of a content type that will reference $referencedType.
    *
    * @var string
@@ -100,14 +95,11 @@ class EntityReferenceFileUploadTest extends BrowserTestBase {
       'label' => $this->randomMachineName() . '_label',
     ])->save();
 
-    /** @var \Drupal\Core\Entity\EntityDisplayRepositoryInterface $display_repository */
-    $display_repository = \Drupal::service('entity_display.repository');
-
-    $display_repository->getViewDisplay('node', $referencing->id())
+    entity_get_display('node', $referencing->id(), 'default')
       ->setComponent('test_field')
       ->setComponent($file_field_name)
       ->save();
-    $display_repository->getFormDisplay('node', $referencing->id())
+    entity_get_form_display('node', $referencing->id(), 'default')
       ->setComponent('test_field', [
         'type' => 'entity_reference_autocomplete',
       ])

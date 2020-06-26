@@ -7,7 +7,6 @@ source:
   plugin: d7_filter_format
 process:
   format: format
-  status: status
   name: name
   cache: cache
   weight: weight

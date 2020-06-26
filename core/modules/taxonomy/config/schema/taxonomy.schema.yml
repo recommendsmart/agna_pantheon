@@ -27,6 +27,9 @@ taxonomy.vocabulary.*:
     description:
       type: label
       label: 'Description'
+    hierarchy:
+      type: integer
+      label: 'Hierarchy'
     weight:
       type: integer
       label: 'Weight'

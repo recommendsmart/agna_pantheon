@@ -20,11 +20,6 @@ class RearrangeFieldsTest extends UITestBase {
   public static $testViews = ['test_view'];
 
   /**
-   * {@inheritdoc}
-   */
-  protected $defaultTheme = 'stark';
-
-  /**
    * Gets the fields from the View.
    */
   protected function getViewFields($view_name = 'test_view', $display_id = 'default') {

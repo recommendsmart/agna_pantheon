@@ -9,7 +9,7 @@ use Drupal\Component\Render\MarkupInterface;
 use Drupal\FunctionalTests\AssertLegacyTrait;
 use Drupal\Tests\UnitTestCase;
 use Drupal\Tests\WebAssert;
-use PHPUnit\Framework\ExpectationFailedException;
+use PHPUnit_Framework_ExpectationFailedException;
 
 /**
  * @coversDefaultClass \Drupal\FunctionalTests\AssertLegacyTrait
@@ -66,7 +66,7 @@ class AssertLegacyTraitTest extends UnitTestCase {
    */
   public function testAssertUniqueTextFail() {
     $this->page->getText()->willReturn('foo bar bar');
-    $this->expectException(ExpectationFailedException::class);
+    $this->setExpectedException(PHPUnit_Framework_ExpectationFailedException::class);
     $this->assertUniqueText('bar');
   }
 
@@ -75,7 +75,7 @@ class AssertLegacyTraitTest extends UnitTestCase {
    */
   public function testAssertUniqueTextUnknown() {
     $this->page->getText()->willReturn('foo bar bar');
-    $this->expectException(ExpectationFailedException::class);
+    $this->setExpectedException(PHPUnit_Framework_ExpectationFailedException::class);
     $this->assertUniqueText('alice');
   }
 
@@ -102,7 +102,7 @@ class AssertLegacyTraitTest extends UnitTestCase {
    */
   public function testAssertNoUniqueTextFail() {
     $this->page->getText()->willReturn('foo bar bar');
-    $this->expectException(ExpectationFailedException::class);
+    $this->setExpectedException(PHPUnit_Framework_ExpectationFailedException::class);
     $this->assertNoUniqueText('foo');
   }
 
@@ -111,7 +111,7 @@ class AssertLegacyTraitTest extends UnitTestCase {
    */
   public function testAssertNoUniqueTextUnknown() {
     $this->page->getText()->willReturn('foo bar bar');
-    $this->expectException(ExpectationFailedException::class);
+    $this->setExpectedException(PHPUnit_Framework_ExpectationFailedException::class);
     $this->assertNoUniqueText('alice');
   }
 
@@ -150,13 +150,12 @@ class AssertLegacyTraitTest extends UnitTestCase {
       ->optionExists('myselect', 'two')
       ->willReturn($option_field->reveal());
 
-    $this->expectException(ExpectationFailedException::class);
+    $this->setExpectedException(PHPUnit_Framework_ExpectationFailedException::class);
     $this->assertOptionSelected('myselect', 'two');
   }
 
   /**
    * @covers ::assertNoPattern
-   * @expectedDeprecation AssertLegacyTrait::assertNoPattern() is deprecated in drupal:8.4.0 and is removed from drupal:10.0.0. Use $this->assertSession()->responseNotMatches() instead. See https://www.drupal.org/node/2864262
    */
   public function testAssertNoPattern() {
     $this->webAssert
@@ -168,7 +167,7 @@ class AssertLegacyTraitTest extends UnitTestCase {
 
   /**
    * @covers ::assertNoCacheTag
-   * @expectedDeprecation AssertLegacyTrait::assertNoCacheTag() is deprecated in drupal:8.4.0 and is removed from drupal:10.0.0. Use $this->assertSession()->responseHeaderNotContains() instead. See https://www.drupal.org/node/2864029
+   * @expectedDeprecation assertNoCacheTag() is deprecated and scheduled for removal in Drupal 9.0.0. Use $this->assertSession()->responseHeaderNotContains() instead. See https://www.drupal.org/node/2864029.
    */
   public function testAssertNoCacheTag() {
     $this->webAssert

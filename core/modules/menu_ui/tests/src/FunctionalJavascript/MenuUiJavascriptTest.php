@@ -4,7 +4,6 @@ namespace Drupal\Tests\menu_ui\FunctionalJavascript;
 
 use Drupal\FunctionalJavascriptTests\WebDriverTestBase;
 use Drupal\system\Entity\Menu;
-use Drupal\system\MenuStorage;
 use Drupal\Tests\contextual\FunctionalJavascript\ContextualLinkClickTrait;
 use Drupal\Tests\menu_ui\Traits\MenuUiTrait;
 
@@ -28,11 +27,6 @@ class MenuUiJavascriptTest extends WebDriverTestBase {
     'menu_ui',
     'test_page_test',
   ];
-
-  /**
-   * {@inheritdoc}
-   */
-  protected $defaultTheme = 'stark';
 
   /**
    * Tests the contextual links on a menu block.
@@ -75,7 +69,7 @@ class MenuUiJavascriptTest extends WebDriverTestBase {
   protected function addCustomMenu() {
     // Try adding a menu using a menu_name that is too long.
     $label = $this->randomMachineName(16);
-    $menu_id = strtolower($this->randomMachineName(MenuStorage::MAX_ID_LENGTH + 1));
+    $menu_id = strtolower($this->randomMachineName(MENU_MAX_MENU_NAME_LENGTH_UI + 1));
 
     $this->drupalGet('admin/structure/menu/add');
     $page = $this->getSession()->getPage();
@@ -89,7 +83,7 @@ class MenuUiJavascriptTest extends WebDriverTestBase {
     $page->fillField('Menu name', $menu_id);
     $page->pressButton('Save');
     // Check that the menu was saved with the ID truncated to the max length.
-    $menu = Menu::load(substr($menu_id, 0, MenuStorage::MAX_ID_LENGTH));
+    $menu = Menu::load(substr($menu_id, 0, MENU_MAX_MENU_NAME_LENGTH_UI));
     $this->assertEquals($label, $menu->label());
 
     // Check that the menu was added.

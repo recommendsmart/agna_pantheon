@@ -1,0 +1,29 @@
+langcode: en
+status: true
+dependencies:
+  config:
+    - core.entity_view_mode.node.teaser
+    - field.field.node.clients.body
+    - field.field.node.clients.comment_node_clients
+    - field.field.node.clients.field_clients_image
+    - node.type.clients
+  module:
+    - text
+    - user
+id: node.clients.teaser
+targetEntityType: node
+bundle: clients
+mode: teaser
+content:
+  body:
+    label: hidden
+    weight: 0
+    type: text_summary_or_trimmed
+    settings:
+      trim_length: 600
+    third_party_settings: {  }
+  links:
+    weight: 100
+hidden:
+  comment_node_clients: true
+  field_clients_image: true

@@ -21,11 +21,6 @@ class WorkflowXmlBasicAuthTest extends WorkflowResourceTestBase {
   /**
    * {@inheritdoc}
    */
-  protected $defaultTheme = 'stark';
-
-  /**
-   * {@inheritdoc}
-   */
   protected static $format = 'xml';
 
   /**

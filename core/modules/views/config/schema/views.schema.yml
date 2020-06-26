@@ -90,6 +90,9 @@ views.view.*:
     base_field:
       type: string
       label: 'Base field'
+    core:
+      type: string
+      label: 'Drupal version'
     display:
       type: sequence
       label: 'Displays'
@@ -138,7 +141,7 @@ views_block:
   mapping:
     views_label:
       type: label
-      label: 'Title'
+      lable: 'Title'
     items_per_page:
       type: string
       label: 'Items per block'

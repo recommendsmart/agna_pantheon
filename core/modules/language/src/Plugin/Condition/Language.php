@@ -15,7 +15,7 @@ use Symfony\Component\DependencyInjection\ContainerInterface;
  * @Condition(
  *   id = "language",
  *   label = @Translation("Language"),
- *   context_definitions = {
+ *   context = {
  *     "language" = @ContextDefinition("language", label = @Translation("Language"))
  *   }
  * )

@@ -18,11 +18,6 @@ class StackSessionHandlerIntegrationTest extends BrowserTestBase {
   protected static $modules = ['session_test'];
 
   /**
-   * {@inheritdoc}
-   */
-  protected $defaultTheme = 'stark';
-
-  /**
    * Tests a request.
    */
   public function testRequest() {

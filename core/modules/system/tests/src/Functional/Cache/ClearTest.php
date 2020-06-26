@@ -7,15 +7,9 @@ namespace Drupal\Tests\system\Functional\Cache;
  *
  * @group Cache
  */
-use Drupal\Component\Render\FormattableMarkup;
 use Drupal\Core\Cache\Cache;
 
 class ClearTest extends CacheTestBase {
-
-  /**
-   * {@inheritdoc}
-   */
-  protected $defaultTheme = 'stark';
 
   protected function setUp() {
     $this->defaultBin = 'render';
@@ -30,7 +24,7 @@ class ClearTest extends CacheTestBase {
   public function testFlushAllCaches() {
     // Create cache entries for each flushed cache bin.
     $bins = Cache::getBins();
-    $this->assertNotEmpty($bins, 'Cache::getBins() returned bins to flush.');
+    $this->assertTrue($bins, 'Cache::getBins() returned bins to flush.');
     foreach ($bins as $bin => $cache_backend) {
       $cid = 'test_cid_clear' . $bin;
       $cache_backend->set($cid, $this->defaultValue);
@@ -41,7 +35,7 @@ class ClearTest extends CacheTestBase {
 
     foreach ($bins as $bin => $cache_backend) {
       $cid = 'test_cid_clear' . $bin;
-      $this->assertFalse($this->checkCacheExists($cid, $this->defaultValue, $bin), new FormattableMarkup('All cache entries removed from @bin.', ['@bin' => $bin]));
+      $this->assertFalse($this->checkCacheExists($cid, $this->defaultValue, $bin), format_string('All cache entries removed from @bin.', ['@bin' => $bin]));
     }
   }
 

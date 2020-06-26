@@ -20,11 +20,6 @@ class HandlerFieldUserNameTest extends UserTestBase {
    */
   public static $testViews = ['test_views_handler_field_user_name'];
 
-  /**
-   * {@inheritdoc}
-   */
-  protected $defaultTheme = 'stark';
-
   public function testUserName() {
     /** @var \Drupal\Core\Render\RendererInterface $renderer */
     $renderer = \Drupal::service('renderer');

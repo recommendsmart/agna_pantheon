@@ -14,7 +14,7 @@
  */
 #}
 {% if url %}
-  {{ link(image, url) }}
+  <a href="{{ url }}">{{ image }}</a>
 {% else %}
   {{ image }}
 {% endif %}

@@ -2,7 +2,6 @@
 
 namespace Drupal\Tests\node\Functional;
 
-use Drupal\Core\Database\Database;
 use Drupal\node\Entity\NodeType;
 
 /**
@@ -18,11 +17,6 @@ class NodeAccessBaseTableTest extends NodeTestBase {
    * @var array
    */
   public static $modules = ['node_access_test', 'views'];
-
-  /**
-   * {@inheritdoc}
-   */
-  protected $defaultTheme = 'stark';
 
   /**
    * The installation profile to use with this test.
@@ -106,7 +100,7 @@ class NodeAccessBaseTableTest extends NodeTestBase {
       $this->drupalLogin($this->webUser);
       foreach ([0 => 'Public', 1 => 'Private'] as $is_private => $type) {
         $edit = [
-          'title[0][value]' => t('@private_public Article created by @user', ['@private_public' => $type, '@user' => $this->webUser->getAccountName()]),
+          'title[0][value]' => t('@private_public Article created by @user', ['@private_public' => $type, '@user' => $this->webUser->getUsername()]),
         ];
         if ($is_private) {
           $edit['private[0][value]'] = TRUE;
@@ -128,11 +122,10 @@ class NodeAccessBaseTableTest extends NodeTestBase {
         $this->nodesByUser[$this->webUser->id()][$node->id()] = $is_private;
       }
     }
-    $connection = Database::getConnection();
-    $this->publicTid = $connection->query('SELECT tid FROM {taxonomy_term_field_data} WHERE name = :name AND default_langcode = 1', [':name' => 'public'])->fetchField();
-    $this->privateTid = $connection->query('SELECT tid FROM {taxonomy_term_field_data} WHERE name = :name AND default_langcode = 1', [':name' => 'private'])->fetchField();
-    $this->assertNotEmpty($this->publicTid, 'Public tid was found');
-    $this->assertNotEmpty($this->privateTid, 'Private tid was found');
+    $this->publicTid = db_query('SELECT tid FROM {taxonomy_term_field_data} WHERE name = :name AND default_langcode = 1', [':name' => 'public'])->fetchField();
+    $this->privateTid = db_query('SELECT tid FROM {taxonomy_term_field_data} WHERE name = :name AND default_langcode = 1', [':name' => 'private'])->fetchField();
+    $this->assertTrue($this->publicTid, 'Public tid was found');
+    $this->assertTrue($this->privateTid, 'Private tid was found');
     foreach ($simple_users as $this->webUser) {
       $this->drupalLogin($this->webUser);
       // Check own nodes to see that all are readable.
@@ -205,7 +198,7 @@ class NodeAccessBaseTableTest extends NodeTestBase {
       $this->nidsVisible = [];
       foreach ($this->xpath("//a[text()='Read more']") as $link) {
         // See also testTranslationRendering() in NodeTranslationUITest.
-        $this->assertEquals(1, preg_match('|node/(\d+)$|', $link->getAttribute('href'), $matches), 'Read more points to a node');
+        $this->assertTrue(preg_match('|node/(\d+)$|', $link->getAttribute('href'), $matches), 'Read more points to a node');
         $this->nidsVisible[$matches[1]] = TRUE;
       }
       foreach ($this->nodesByUser as $uid => $data) {

@@ -3,14 +3,15 @@ type: module
 description: 'Allows the creation of custom blocks through the user interface.'
 package: Core
 # version: VERSION
-core: 8.x
+# core: 8.x
 dependencies:
   - drupal:block
   - drupal:text
   - drupal:user
 configure: entity.block_content.collection
 
-# Information added by Drupal.org packaging script on 2020-04-02
-version: '8.8.5'
+# Information added by Drupal.org packaging script on 2019-03-20
+version: '8.6.13'
+core: '8.x'
 project: 'drupal'
-datestamp: 1585861582
+datestamp: 1553100246

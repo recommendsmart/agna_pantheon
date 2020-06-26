@@ -1,0 +1,54 @@
+{
+    "_links": {
+        "self": {
+            "href": "http:\/\/default\/portfolioterms\/control?_format=hal_json"
+        },
+        "type": {
+            "href": "http:\/\/drupal.org\/rest\/type\/taxonomy_term\/portfolio_terms"
+        }
+    },
+    "tid": [
+        {
+            "value": "2"
+        }
+    ],
+    "uuid": [
+        {
+            "value": "1fc9bc10-e138-4ad3-989b-bbe7f61f48cc"
+        }
+    ],
+    "vid": [
+        {
+            "target_id": "portfolio_terms"
+        }
+    ],
+    "langcode": [
+        {
+            "value": "en",
+            "lang": "en"
+        }
+    ],
+    "name": [
+        {
+            "value": "Control",
+            "lang": "en"
+        }
+    ],
+    "weight": [
+        {
+            "value": "1"
+        }
+    ],
+    "changed": [
+        {
+            "value": "1464076307",
+            "lang": "en"
+        }
+    ],
+    "default_langcode": [
+        {
+            "value": "1",
+            "lang": "en"
+        }
+    ]
+}

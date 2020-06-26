@@ -21,9 +21,4 @@ class ShortcutJsonAnonTest extends ShortcutResourceTestBase {
    */
   protected static $mimeType = 'application/json';
 
-  /**
-   * {@inheritdoc}
-   */
-  protected $defaultTheme = 'stark';
-
 }

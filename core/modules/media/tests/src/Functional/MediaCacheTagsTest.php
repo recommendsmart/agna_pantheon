@@ -27,23 +27,6 @@ class MediaCacheTagsTest extends EntityWithUriCacheTagsTestBase {
   /**
    * {@inheritdoc}
    */
-  protected $defaultTheme = 'stark';
-
-  /**
-   * {@inheritdoc}
-   */
-  protected function setUp() {
-    parent::setUp();
-    \Drupal::configFactory()
-      ->getEditable('media.settings')
-      ->set('standalone_url', TRUE)
-      ->save(TRUE);
-    $this->container->get('router.builder')->rebuild();
-  }
-
-  /**
-   * {@inheritdoc}
-   */
   protected function createEntity() {
     // Create a media type.
     $mediaType = $this->createMediaType('test');

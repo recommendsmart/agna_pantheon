@@ -21,11 +21,6 @@ class ConfigTestXmlBasicAuthTest extends ConfigTestResourceTestBase {
   /**
    * {@inheritdoc}
    */
-  protected $defaultTheme = 'stark';
-
-  /**
-   * {@inheritdoc}
-   */
   protected static $format = 'xml';
 
   /**

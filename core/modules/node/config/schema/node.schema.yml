@@ -42,7 +42,6 @@ search.plugin.node_search:
     rankings:
       type: sequence
       label: 'Content ranking'
-      orderby: key
       sequence:
         type: integer
         label: 'Influence'

@@ -28,9 +28,4 @@ class FieldStorageConfigXmlCookieTest extends FieldStorageConfigResourceTestBase
    */
   protected static $auth = 'cookie';
 
-  /**
-   * {@inheritdoc}
-   */
-  protected $defaultTheme = 'stark';
-
 }

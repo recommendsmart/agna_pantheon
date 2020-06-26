@@ -2,12 +2,12 @@
 
 namespace Drupal\system\Form;
 
+use Drupal\Component\Utility\Unicode;
 use Drupal\Core\Config\PreExistingConfigException;
 use Drupal\Core\Config\UnmetDependenciesException;
 use Drupal\Core\Access\AccessManagerInterface;
 use Drupal\Core\Extension\Extension;
 use Drupal\Core\Extension\InfoParserException;
-use Drupal\Core\Extension\ModuleExtensionList;
 use Drupal\Core\Extension\ModuleHandlerInterface;
 use Drupal\Core\Extension\ModuleInstallerInterface;
 use Drupal\Core\Form\FormBase;
@@ -67,13 +67,6 @@ class ModulesListForm extends FormBase {
   protected $permissionHandler;
 
   /**
-   * The module extension list.
-   *
-   * @var \Drupal\Core\Extension\ModuleExtensionList
-   */
-  protected $moduleExtensionList;
-
-  /**
    * {@inheritdoc}
    */
   public static function create(ContainerInterface $container) {
@@ -83,8 +76,7 @@ class ModulesListForm extends FormBase {
       $container->get('keyvalue.expirable')->get('module_list'),
       $container->get('access_manager'),
       $container->get('current_user'),
-      $container->get('user.permissions'),
-      $container->get('extension.list.module')
+      $container->get('user.permissions')
     );
   }
 
@@ -103,11 +95,8 @@ class ModulesListForm extends FormBase {
    *   The current user.
    * @param \Drupal\user\PermissionHandlerInterface $permission_handler
    *   The permission handler.
-   * @param \Drupal\Core\Extension\ModuleExtensionList $extension_list_module
-   *   The module extension list.
    */
-  public function __construct(ModuleHandlerInterface $module_handler, ModuleInstallerInterface $module_installer, KeyValueStoreExpirableInterface $key_value_expirable, AccessManagerInterface $access_manager, AccountInterface $current_user, PermissionHandlerInterface $permission_handler, ModuleExtensionList $extension_list_module) {
-    $this->moduleExtensionList = $extension_list_module;
+  public function __construct(ModuleHandlerInterface $module_handler, ModuleInstallerInterface $module_installer, KeyValueStoreExpirableInterface $key_value_expirable, AccessManagerInterface $access_manager, AccountInterface $current_user, PermissionHandlerInterface $permission_handler) {
     $this->moduleHandler = $module_handler;
     $this->moduleInstaller = $module_installer;
     $this->keyValueExpirable = $key_value_expirable;
@@ -156,9 +145,7 @@ class ModulesListForm extends FormBase {
 
     // Sort all modules by their names.
     try {
-      // The module list needs to be reset so that it can re-scan and include
-      // any new modules that may have been added directly into the filesystem.
-      $modules = $this->moduleExtensionList->reset()->getList();
+      $modules = system_rebuild_module_data();
       uasort($modules, 'system_sort_modules_by_info_name');
     }
     catch (InfoParserException $e) {
@@ -294,14 +281,10 @@ class ModulesListForm extends FormBase {
     $reasons = [];
 
     // Check the core compatibility.
-    if ($module->info['core_incompatible']) {
+    if ($module->info['core'] != \Drupal::CORE_COMPATIBILITY) {
       $compatible = FALSE;
       $reasons[] = $this->t('This version is not compatible with Drupal @core_version and should be replaced.', [
-        '@core_version' => \Drupal::VERSION,
-      ]);
-      $row['#requires']['core'] = $this->t('Drupal Core (@core_requirement) (<span class="admin-missing">incompatible with</span> version @core_version)', [
-        '@core_requirement' => isset($module->info['core_version_requirement']) ? $module->info['core_version_requirement'] : $module->info['core'],
-        '@core_version' => \Drupal::VERSION,
+        '@core_version' => \Drupal::CORE_COMPATIBILITY,
       ]);
     }
 
@@ -324,10 +307,9 @@ class ModulesListForm extends FormBase {
     }
 
     // If this module requires other modules, add them to the array.
-    /** @var \Drupal\Core\Extension\Dependency $dependency_object */
-    foreach ($module->requires as $dependency => $dependency_object) {
+    foreach ($module->requires as $dependency => $version) {
       if (!isset($modules[$dependency])) {
-        $row['#requires'][$dependency] = $this->t('@module (<span class="admin-missing">missing</span>)', ['@module' => $dependency]);
+        $row['#requires'][$dependency] = $this->t('@module (<span class="admin-missing">missing</span>)', ['@module' => Unicode::ucfirst($dependency)]);
         $row['enable']['#disabled'] = TRUE;
       }
       // Only display visible modules.
@@ -335,17 +317,16 @@ class ModulesListForm extends FormBase {
         $name = $modules[$dependency]->info['name'];
         // Disable the module's checkbox if it is incompatible with the
         // dependency's version.
-        if (!$dependency_object->isCompatible(str_replace(\Drupal::CORE_COMPATIBILITY . '-', '', $modules[$dependency]->info['version']))) {
-          $row['#requires'][$dependency] = $this->t('@module (@constraint) (<span class="admin-missing">incompatible with</span> version @version)', [
-            '@module' => $name,
-            '@constraint' => $dependency_object->getConstraintString(),
+        if ($incompatible_version = drupal_check_incompatibility($version, str_replace(\Drupal::CORE_COMPATIBILITY . '-', '', $modules[$dependency]->info['version']))) {
+          $row['#requires'][$dependency] = $this->t('@module (<span class="admin-missing">incompatible with</span> version @version)', [
+            '@module' => $name . $incompatible_version,
             '@version' => $modules[$dependency]->info['version'],
           ]);
           $row['enable']['#disabled'] = TRUE;
         }
         // Disable the checkbox if the dependency is incompatible with this
         // version of Drupal core.
-        elseif ($modules[$dependency]->info['core_incompatible']) {
+        elseif ($modules[$dependency]->info['core'] != \Drupal::CORE_COMPATIBILITY) {
           $row['#requires'][$dependency] = $this->t('@module (<span class="admin-missing">incompatible with</span> this version of Drupal core)', [
             '@module' => $name,
           ]);
@@ -394,7 +375,7 @@ class ModulesListForm extends FormBase {
       'experimental' => [],
     ];
 
-    $data = $this->moduleExtensionList->getList();
+    $data = system_rebuild_module_data();
     foreach ($data as $name => $module) {
       // If the module is installed there is nothing to do.
       if ($this->moduleHandler->moduleExists($name)) {

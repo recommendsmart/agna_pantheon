@@ -3,25 +3,22 @@
 namespace Drupal\Tests\menu_link_content\Kernel;
 
 use Drupal\Core\DependencyInjection\ContainerBuilder;
+use Drupal\Core\Language\LanguageInterface;
 use Drupal\Core\Menu\MenuTreeParameters;
 use Drupal\menu_link_content\Entity\MenuLinkContent;
 use Drupal\KernelTests\KernelTestBase;
-use Drupal\Tests\Traits\Core\PathAliasTestTrait;
 
 /**
  * Ensures that the menu tree adapts to path alias changes.
  *
  * @group menu_link_content
- * @group path
  */
 class PathAliasMenuLinkContentTest extends KernelTestBase {
-
-  use PathAliasTestTrait;
 
   /**
    * {@inheritdoc}
    */
-  public static $modules = ['menu_link_content', 'system', 'link', 'path_alias', 'test_page_test', 'user'];
+  public static $modules = ['menu_link_content', 'system', 'link', 'test_page_test'];
 
   /**
    * {@inheritdoc}
@@ -29,9 +26,7 @@ class PathAliasMenuLinkContentTest extends KernelTestBase {
   protected function setUp() {
     parent::setUp();
 
-    $this->installEntitySchema('user');
     $this->installEntitySchema('menu_link_content');
-    $this->installEntitySchema('path_alias');
 
     // Ensure that the weight of module_link_content is higher than system.
     // @see menu_link_content_install()
@@ -44,7 +39,7 @@ class PathAliasMenuLinkContentTest extends KernelTestBase {
   public function register(ContainerBuilder $container) {
     parent::register($container);
 
-    $definition = $container->getDefinition('path_alias.path_processor');
+    $definition = $container->getDefinition('path_processor_alias');
     $definition
       ->addTag('path_processor_inbound', ['priority' => 100]);
   }
@@ -55,7 +50,11 @@ class PathAliasMenuLinkContentTest extends KernelTestBase {
   public function testPathAliasChange() {
     \Drupal::service('router.builder')->rebuild();
 
-    $path_alias = $this->createPathAlias('/test-page', '/my-blog');
+    /** @var \Drupal\Core\Path\AliasStorageInterface $path_alias_storage */
+    $path_alias_storage = \Drupal::service('path.alias_storage');
+    $alias = $path_alias_storage->save('/test-page', '/my-blog');
+    $pid = $alias['pid'];
+
     $menu_link_content = MenuLinkContent::create([
       'title' => 'Menu title',
       'link' => ['uri' => 'internal:/my-blog'],
@@ -67,15 +66,13 @@ class PathAliasMenuLinkContentTest extends KernelTestBase {
     $this->assertEqual('test_page_test.test_page', $tree[$menu_link_content->getPluginId()]->link->getPluginDefinition()['route_name']);
 
     // Saving an alias should clear the alias manager cache.
-    $path_alias->setPath('/test-render-title');
-    $path_alias->setAlias('/my-blog');
-    $path_alias->save();
+    $path_alias_storage->save('/test-render-title', '/my-blog', LanguageInterface::LANGCODE_NOT_SPECIFIED, $pid);
 
     $tree = \Drupal::menuTree()->load('tools', new MenuTreeParameters());
     $this->assertEqual('test_page_test.render_title', $tree[$menu_link_content->getPluginId()]->link->getPluginDefinition()['route_name']);
 
     // Delete the alias.
-    $path_alias->delete();
+    $path_alias_storage->delete(['pid' => $pid]);
     $tree = \Drupal::menuTree()->load('tools', new MenuTreeParameters());
     $this->assertTrue(isset($tree[$menu_link_content->getPluginId()]));
     $this->assertEqual('', $tree[$menu_link_content->getPluginId()]->link->getRouteName());

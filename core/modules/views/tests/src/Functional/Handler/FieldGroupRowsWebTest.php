@@ -29,11 +29,6 @@ class FieldGroupRowsWebTest extends ViewTestBase {
   public static $modules = ['node'];
 
   /**
-   * {@inheritdoc}
-   */
-  protected $defaultTheme = 'stark';
-
-  /**
    * The page node type.
    *
    * @var \Drupal\node\NodeTypeInterface

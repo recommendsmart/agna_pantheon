@@ -2,7 +2,6 @@
 
 namespace Drupal\FunctionalTests;
 
-use Drupal\Component\Render\FormattableMarkup;
 use Drupal\Tests\BrowserTestBase;
 use Drupal\Core\Test\AssertMailTrait;
 
@@ -16,11 +15,6 @@ class MailCaptureTest extends BrowserTestBase {
   use AssertMailTrait {
     getMails as drupalGetMails;
   }
-
-  /**
-   * {@inheritdoc}
-   */
-  protected $defaultTheme = 'stark';
 
   /**
    * Test to see if the wrapper function is executed correctly.
@@ -51,7 +45,7 @@ class MailCaptureTest extends BrowserTestBase {
     // Assert that the email was sent by iterating over the message properties
     // and ensuring that they are captured intact.
     foreach ($message as $field => $value) {
-      $this->assertMail($field, $value, new FormattableMarkup('The email was sent and the value for property @field is intact.', ['@field' => $field]), 'Email');
+      $this->assertMail($field, $value, format_string('The email was sent and the value for property @field is intact.', ['@field' => $field]), 'Email');
     }
 
     // Send additional emails so more than one email is captured.

@@ -21,7 +21,6 @@ use Drupal\Core\StringTranslation\TranslatableMarkup;
  *   label = @Translation("Test entity update"),
  *   handlers = {
  *     "storage_schema" = "Drupal\entity_test_update\EntityTestUpdateStorageSchema",
- *     "storage" = "Drupal\entity_test_update\EntityTestUpdateStorage",
  *   },
  *   base_table = "entity_test_update",
  *   persistent_cache = FALSE,

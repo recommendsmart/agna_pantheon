@@ -46,7 +46,8 @@ abstract class InlineBlockTestBase extends WebDriverTestBase {
    */
   protected function setUp() {
     parent::setUp();
-
+    // @todo The Layout Builder UI relies on local tasks; fix in
+    //   https://www.drupal.org/project/drupal/issues/2917777.
     $this->drupalPlaceBlock('local_tasks_block');
 
     $this->createContentType(['type' => 'bundle_with_section_field', 'new_revision' => TRUE]);
@@ -78,11 +79,13 @@ abstract class InlineBlockTestBase extends WebDriverTestBase {
    */
   protected function assertSaveLayout() {
     $assert_session = $this->assertSession();
-    $page = $this->getSession()->getPage();
-
-    // Reload the page to prevent random failures.
-    $this->drupalGet($this->getUrl());
-    $page->pressButton('Save layout');
+    $assert_session->linkExists('Save Layout');
+    // Go to the Save Layout page. Currently there are random test failures if
+    // 'clickLink()' is used.
+    // @todo Convert tests that extend this class to NightWatch tests in
+    // https://www.drupal.org/node/2984161
+    $link = $this->getSession()->getPage()->findLink('Save Layout');
+    $this->drupalGet($link->getAttribute('href'));
     $this->assertNotEmpty($assert_session->waitForElement('css', '.messages--status'));
 
     if (stristr($this->getUrl(), 'admin/structure') === FALSE) {
@@ -116,8 +119,8 @@ abstract class InlineBlockTestBase extends WebDriverTestBase {
     $assert_session->waitForElement('css', "#drupal-off-canvas input[value='Remove']");
     $assert_session->assertWaitOnAjaxRequest();
     $page->find('css', '#drupal-off-canvas')->pressButton('Remove');
-    $assert_session->assertNoElementAfterWait('css', '#drupal-off-canvas');
-    $assert_session->assertNoElementAfterWait('css', static::INLINE_BLOCK_LOCATOR);
+    $this->waitForNoElement('#drupal-off-canvas');
+    $this->waitForNoElement(static::INLINE_BLOCK_LOCATOR);
     $assert_session->assertWaitOnAjaxRequest();
     $assert_session->pageTextNotContains($block_text);
   }
@@ -133,7 +136,7 @@ abstract class InlineBlockTestBase extends WebDriverTestBase {
   protected function addInlineBlockToLayout($title, $body) {
     $assert_session = $this->assertSession();
     $page = $this->getSession()->getPage();
-    $page->clickLink('Add block');
+    $page->clickLink('Add Block');
     $assert_session->assertWaitOnAjaxRequest();
     $this->assertNotEmpty($assert_session->waitForLink('Create custom block'));
     $this->clickLink('Create custom block');
@@ -143,7 +146,7 @@ abstract class InlineBlockTestBase extends WebDriverTestBase {
     $assert_session->fieldValueEquals('Title', '');
     $page->findField('Title')->setValue($title);
     $textarea->setValue($body);
-    $page->pressButton('Add block');
+    $page->pressButton('Add Block');
     $this->assertDialogClosedAndTextVisible($body, static::INLINE_BLOCK_LOCATOR);
   }
 
@@ -167,7 +170,7 @@ abstract class InlineBlockTestBase extends WebDriverTestBase {
     $this->assertSame($old_body, $textarea->getValue());
     $textarea->setValue($new_body);
     $page->pressButton('Update');
-    $assert_session->assertNoElementAfterWait('css', '#drupal-off-canvas');
+    $this->waitForNoElement('#drupal-off-canvas');
     $assert_session->assertWaitOnAjaxRequest();
     $this->assertDialogClosedAndTextVisible($new_body);
   }
@@ -180,11 +183,9 @@ abstract class InlineBlockTestBase extends WebDriverTestBase {
    * @param int $timeout
    *   (optional) Timeout in milliseconds, defaults to 10000.
    *
-   * @deprecated in drupal:8.8.0 and is removed from drupal:9.0.0. Use
-   *   Drupal\FunctionalJavascriptTests\JSWebAssert::assertNoElementAfterWait()
+   * @todo Remove in https://www.drupal.org/node/2892440.
    */
   protected function waitForNoElement($selector, $timeout = 10000) {
-    @trigger_error('::waitForNoElement is deprecated in Drupal 8.8.0 and will be removed before Drupal 9.0.0. Use \Drupal\FunctionalJavascriptTests\JSWebAssert::assertNoElementAfterWait() instead.', E_USER_DEPRECATED);
     $condition = "(typeof jQuery !== 'undefined' && jQuery('$selector').length === 0)";
     $this->assertJsCondition($condition, $timeout);
   }
@@ -199,7 +200,7 @@ abstract class InlineBlockTestBase extends WebDriverTestBase {
    */
   protected function assertDialogClosedAndTextVisible($text, $css_locator = NULL) {
     $assert_session = $this->assertSession();
-    $assert_session->assertNoElementAfterWait('css', '#drupal-off-canvas');
+    $this->waitForNoElement('#drupal-off-canvas');
     $assert_session->assertWaitOnAjaxRequest();
     $assert_session->elementNotExists('css', '#drupal-off-canvas');
     if ($css_locator) {

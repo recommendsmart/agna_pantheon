@@ -8,6 +8,7 @@ description: ''
 tag: ''
 base_table: views_test_data
 base_field: id
+core: 8.x
 display:
   default:
     display_plugin: default
@@ -56,11 +57,10 @@ display:
     position: 2
     display_options:
       displays:
-        page: page
-        attachment_1: attachment_1
-  page:
+        page_1: page_1
+  page_1:
     display_plugin: page
-    id: page
+    id: page_1
     display_title: Page
     position: 1
     display_options:

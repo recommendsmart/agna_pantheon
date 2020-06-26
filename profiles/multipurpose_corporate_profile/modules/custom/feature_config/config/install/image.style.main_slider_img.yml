@@ -1,0 +1,14 @@
+langcode: en
+status: true
+dependencies: {  }
+name: main_slider_img
+label: 'main slider img'
+effects:
+  e2647d7c-6a45-4f89-9c29-0c14390ff57e:
+    uuid: e2647d7c-6a45-4f89-9c29-0c14390ff57e
+    id: image_scale
+    weight: 1
+    data:
+      width: 600
+      height: 485
+      upscale: true

@@ -25,8 +25,6 @@ class FieldInstance extends DrupalSqlBase {
     }
     $query->join('content_node_field', 'cnf', 'cnf.field_name = cnfi.field_name');
     $query->fields('cnf');
-    $query->orderBy('cnfi.field_name');
-    $query->orderBy('cnfi.type_name');
 
     return $query;
   }
@@ -61,17 +59,6 @@ class FieldInstance extends DrupalSqlBase {
     $row->setSourceProperty('widget_settings', $widget_settings);
     $row->setSourceProperty('display_settings', $display_settings);
     $row->setSourceProperty('global_settings', $global_settings);
-
-    // Determine the translatable setting.
-    $translatable = TRUE;
-    $synchronized_fields = $this->variableGet('i18nsync_nodeapi_' . $row->getSourceProperty('type_name'), NULL);
-    if ($synchronized_fields) {
-      if (in_array($row->getSourceProperty('field_name'), $synchronized_fields)) {
-        $translatable = FALSE;
-      }
-    }
-    $row->setSourceProperty('translatable', $translatable);
-
     return parent::prepareRow($row);
   }
 

@@ -12,11 +12,6 @@ class InstallerEmptySettingsTest extends InstallerTestBase {
   /**
    * {@inheritdoc}
    */
-  protected $defaultTheme = 'stark';
-
-  /**
-   * {@inheritdoc}
-   */
   protected function prepareEnvironment() {
     parent::prepareEnvironment();
     // Create an empty settings.php file.

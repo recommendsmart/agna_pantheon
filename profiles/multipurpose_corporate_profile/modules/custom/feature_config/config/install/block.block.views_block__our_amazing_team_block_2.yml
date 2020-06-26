@@ -1,0 +1,29 @@
+langcode: en
+status: true
+dependencies:
+  config:
+    - views.view.our_amazing_team
+  module:
+    - system
+    - views
+  theme:
+    - multipurpose_corporate_theme
+id: views_block__our_amazing_team_block_2
+theme: multipurpose_corporate_theme
+region: content
+weight: -7
+provider: null
+plugin: 'views_block:our_amazing_team-block_2'
+settings:
+  id: 'views_block:our_amazing_team-block_2'
+  label: ''
+  provider: views
+  label_display: visible
+  views_label: ''
+  items_per_page: none
+visibility:
+  request_path:
+    id: request_path
+    pages: /about-us
+    negate: false
+    context_mapping: {  }

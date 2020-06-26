@@ -17,11 +17,6 @@ class BlockContentContextualLinksTest extends BlockContentTestBase {
   ];
 
   /**
-   * {@inheritdoc}
-   */
-  protected $defaultTheme = 'stark';
-
-  /**
    * Tests contextual links.
    */
   public function testBlockContentContextualLinks() {

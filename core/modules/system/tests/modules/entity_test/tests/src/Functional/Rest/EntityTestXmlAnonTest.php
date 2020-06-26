@@ -25,9 +25,4 @@ class EntityTestXmlAnonTest extends EntityTestResourceTestBase {
    */
   protected static $mimeType = 'text/xml; charset=UTF-8';
 
-  /**
-   * {@inheritdoc}
-   */
-  protected $defaultTheme = 'stark';
-
 }

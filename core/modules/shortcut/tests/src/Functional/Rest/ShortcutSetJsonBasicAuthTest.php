@@ -19,11 +19,6 @@ class ShortcutSetJsonBasicAuthTest extends ShortcutSetResourceTestBase {
   /**
    * {@inheritdoc}
    */
-  protected $defaultTheme = 'stark';
-
-  /**
-   * {@inheritdoc}
-   */
   protected static $format = 'json';
 
   /**

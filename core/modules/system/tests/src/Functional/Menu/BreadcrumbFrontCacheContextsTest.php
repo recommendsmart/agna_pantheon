@@ -26,11 +26,6 @@ class BreadcrumbFrontCacheContextsTest extends BrowserTestBase {
   ];
 
   /**
-   * {@inheritdoc}
-   */
-  protected $defaultTheme = 'classy';
-
-  /**
    * A test node with path alias.
    *
    * @var \Drupal\node\NodeInterface

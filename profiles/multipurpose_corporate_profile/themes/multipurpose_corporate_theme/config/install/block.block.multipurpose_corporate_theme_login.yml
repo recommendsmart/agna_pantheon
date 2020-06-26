@@ -1,0 +1,19 @@
+langcode: en
+status: true
+dependencies:
+  module:
+    - user
+  theme:
+    - multipurpose_corporate_theme
+id: multipurpose_corporate_theme_login
+theme: multipurpose_corporate_theme
+region: sidebar_second
+weight: 20
+provider: null
+plugin: user_login_block
+settings:
+  id: user_login_block
+  label: 'User login'
+  provider: user
+  label_display: visible
+visibility: {  }

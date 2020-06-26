@@ -14,11 +14,6 @@ class AggregatorCronTest extends AggregatorTestBase {
   use CronRunTrait;
 
   /**
-   * {@inheritdoc}
-   */
-  protected $defaultTheme = 'stark';
-
-  /**
    * Adds feeds and updates them via cron process.
    */
   public function testCron() {

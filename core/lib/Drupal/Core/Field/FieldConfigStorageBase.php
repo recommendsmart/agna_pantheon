@@ -2,7 +2,6 @@
 
 namespace Drupal\Core\Field;
 
-use Drupal\Component\Plugin\Exception\PluginNotFoundException;
 use Drupal\Core\Config\Entity\ConfigEntityStorage;
 use Drupal\Core\Entity\EntityInterface;
 
@@ -23,12 +22,10 @@ abstract class FieldConfigStorageBase extends ConfigEntityStorage {
    */
   protected function mapFromStorageRecords(array $records) {
     foreach ($records as $id => &$record) {
-      try {
-        $class = $this->fieldTypeManager->getPluginClass($record['field_type']);
-      }
-      catch (PluginNotFoundException $e) {
+      $class = $this->fieldTypeManager->getPluginClass($record['field_type']);
+      if (empty($class)) {
         $config_id = $this->getPrefix() . $id;
-        throw new PluginNotFoundException($record['field_type'], "Unable to determine class for field type '{$record['field_type']}' found in the '$config_id' configuration", $e->getCode(), $e);
+        throw new \RuntimeException("Unable to determine class for field type '{$record['field_type']}' found in the '$config_id' configuration");
       }
       $record['settings'] = $class::fieldSettingsFromConfigData($record['settings']);
     }

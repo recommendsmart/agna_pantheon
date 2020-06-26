@@ -2,7 +2,6 @@
 
 namespace Drupal\Tests\system\Functional\Form;
 
-use Drupal\Component\Render\FormattableMarkup;
 use Drupal\Tests\BrowserTestBase;
 
 /**
@@ -20,11 +19,6 @@ class ElementTest extends BrowserTestBase {
   public static $modules = ['form_test'];
 
   /**
-   * {@inheritdoc}
-   */
-  protected $defaultTheme = 'classy';
-
-  /**
    * Tests placeholder text for elements that support placeholders.
    */
   public function testPlaceHolderText() {
@@ -36,7 +30,7 @@ class ElementTest extends BrowserTestBase {
         ':id' => 'edit-' . $type,
         ':expected' => $expected,
       ]);
-      $this->assertTrue(!empty($element), new FormattableMarkup('Placeholder text placed in @type.', ['@type' => $type]));
+      $this->assertTrue(!empty($element), format_string('Placeholder text placed in @type.', ['@type' => $type]));
     }
 
     // Test to make sure textarea has the proper placeholder text.
@@ -88,7 +82,7 @@ class ElementTest extends BrowserTestBase {
         ':id' => 'edit-' . $type . '-foo',
         ':class' => 'description',
       ]);
-      $this->assertGreaterThan(0, count($elements), new FormattableMarkup('Custom %type option description found.', [
+      $this->assertTrue(count($elements), format_string('Custom %type option description found.', [
         '%type' => $type,
       ]));
     }
@@ -144,8 +138,8 @@ class ElementTest extends BrowserTestBase {
     foreach (['checkboxes', 'radios'] as $type) {
       $element_ids = $this->xpath('//div[@id=:id]', [':id' => 'edit-' . $type]);
       $wrapper_ids = $this->xpath('//fieldset[@id=:id]', [':id' => 'edit-' . $type . '--wrapper']);
-      $this->assertTrue(count($element_ids) == 1, new FormattableMarkup('A single element id found for type %type', ['%type' => $type]));
-      $this->assertTrue(count($wrapper_ids) == 1, new FormattableMarkup('A single wrapper id found for type %type', ['%type' => $type]));
+      $this->assertTrue(count($element_ids) == 1, format_string('A single element id found for type %type', ['%type' => $type]));
+      $this->assertTrue(count($wrapper_ids) == 1, format_string('A single wrapper id found for type %type', ['%type' => $type]));
     }
   }
 
@@ -188,13 +182,13 @@ class ElementTest extends BrowserTestBase {
    */
   public function testRequiredFieldsetsAndDetails() {
     $this->drupalGet('form-test/group-details');
-    $this->assertEmpty($this->cssSelect('summary.form-required'));
+    $this->assertFalse($this->cssSelect('summary.form-required'));
     $this->drupalGet('form-test/group-details/1');
-    $this->assertNotEmpty($this->cssSelect('summary.form-required'));
+    $this->assertTrue($this->cssSelect('summary.form-required'));
     $this->drupalGet('form-test/group-fieldset');
-    $this->assertEmpty($this->cssSelect('span.form-required'));
+    $this->assertFalse($this->cssSelect('span.form-required'));
     $this->drupalGet('form-test/group-fieldset/1');
-    $this->assertNotEmpty($this->cssSelect('span.form-required'));
+    $this->assertTrue($this->cssSelect('span.form-required'));
   }
 
   /**
@@ -234,7 +228,7 @@ class ElementTest extends BrowserTestBase {
    */
   public function testDetailsSummaryAttributes() {
     $this->drupalGet('form-test/group-details');
-    $this->assertSession()->elementExists('css', 'summary[data-summary-attribute="test"]');
+    $this->assertTrue($this->cssSelect('summary[data-summary-attribute="test"]'));
   }
 
 }

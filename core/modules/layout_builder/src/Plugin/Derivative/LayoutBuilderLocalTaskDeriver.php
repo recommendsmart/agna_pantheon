@@ -16,7 +16,6 @@ use Symfony\Component\DependencyInjection\ContainerInterface;
  * @todo Remove this in https://www.drupal.org/project/drupal/issues/2936655.
  *
  * @internal
- *   Plugin derivers are internal.
  */
 class LayoutBuilderLocalTaskDeriver extends DeriverBase implements ContainerDeriverInterface {
 

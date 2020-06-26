@@ -1,0 +1,29 @@
+langcode: en
+status: true
+dependencies:
+  config:
+    - core.entity_view_mode.node.teaser
+    - field.field.node.dignities.body
+    - field.field.node.dignities.comment_node_dignities
+    - field.field.node.dignities.field_image
+    - node.type.dignities
+  module:
+    - text
+    - user
+id: node.dignities.teaser
+targetEntityType: node
+bundle: dignities
+mode: teaser
+content:
+  body:
+    label: hidden
+    weight: 0
+    type: text_summary_or_trimmed
+    settings:
+      trim_length: 600
+    third_party_settings: {  }
+  links:
+    weight: 100
+hidden:
+  comment_node_dignities: true
+  field_image: true

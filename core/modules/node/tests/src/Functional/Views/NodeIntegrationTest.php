@@ -17,11 +17,6 @@ class NodeIntegrationTest extends NodeTestBase {
   public static $testViews = ['test_node_view'];
 
   /**
-   * {@inheritdoc}
-   */
-  protected $defaultTheme = 'stark';
-
-  /**
    * Tests basic node view with a node type argument.
    */
   public function testNodeViewTypeArgument() {

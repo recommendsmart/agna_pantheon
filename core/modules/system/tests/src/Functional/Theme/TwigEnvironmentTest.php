@@ -17,11 +17,6 @@ class TwigEnvironmentTest extends BrowserTestBase {
   protected static $modules = ['twig_theme_test'];
 
   /**
-   * {@inheritdoc}
-   */
-  protected $defaultTheme = 'stark';
-
-  /**
    * Tests template class loading with Twig embed.
    */
   public function testTwigEmbed() {

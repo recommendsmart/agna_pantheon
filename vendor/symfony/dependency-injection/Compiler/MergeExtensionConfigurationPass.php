@@ -110,7 +110,7 @@ class MergeExtensionConfigurationParameterBag extends EnvPlaceholderParameterBag
             // Extension::processConfiguration() wasn't called, we cannot know how configs were merged
             return;
         }
-        $this->processedEnvPlaceholders = [];
+        $this->processedEnvPlaceholders = array();
 
         // serialize config and container to catch env vars nested in object graphs
         $config = serialize($config).serialize($container->getDefinitions()).serialize($container->getAliases()).serialize($container->getParameterBag()->all());
@@ -185,10 +185,6 @@ class MergeExtensionConfigurationContainerBuilder extends ContainerBuilder
 
         $bag = $this->getParameterBag();
         $value = $bag->resolveValue($value);
-
-        if (!$bag instanceof EnvPlaceholderParameterBag) {
-            return parent::resolveEnvPlaceholders($value, $format, $usedEnvs);
-        }
 
         foreach ($bag->getEnvPlaceholders() as $env => $placeholders) {
             if (false === strpos($env, ':')) {

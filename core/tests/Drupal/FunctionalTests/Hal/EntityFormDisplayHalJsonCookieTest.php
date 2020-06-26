@@ -20,11 +20,6 @@ class EntityFormDisplayHalJsonCookieTest extends EntityFormDisplayResourceTestBa
   /**
    * {@inheritdoc}
    */
-  protected $defaultTheme = 'stark';
-
-  /**
-   * {@inheritdoc}
-   */
   protected static $format = 'hal_json';
 
   /**

@@ -4,7 +4,6 @@ namespace Drupal\Core\Entity\Query;
 
 use Drupal\Core\Database\Query\PagerSelectExtender;
 use Drupal\Core\Entity\EntityTypeInterface;
-use Drupal\Core\Utility\TableSort;
 
 /**
  * The base entity query class.
@@ -310,11 +309,11 @@ abstract class QueryBase implements QueryInterface {
    */
   protected function initializePager() {
     if ($this->pager && !empty($this->pager['limit']) && !$this->count) {
-      $page = \Drupal::service('pager.parameters')->findPage($this->pager['element']);
+      $page = pager_find_page($this->pager['element']);
       $count_query = clone $this;
       $this->pager['total'] = $count_query->count()->execute();
       $this->pager['start'] = $page * $this->pager['limit'];
-      \Drupal::service('pager.manager')->createPager($this->pager['total'], $this->pager['limit'], $this->pager['element']);
+      pager_default_initialize($this->pager['total'], $this->pager['limit'], $this->pager['element']);
       $this->range($this->pager['start'], $this->pager['limit']);
     }
   }
@@ -330,8 +329,8 @@ abstract class QueryBase implements QueryInterface {
       }
     }
 
-    $order = TableSort::getOrder($headers, \Drupal::request());
-    $direction = TableSort::getSort($headers, \Drupal::request());
+    $order = tablesort_get_order($headers);
+    $direction = tablesort_get_sort($headers);
     foreach ($headers as $header) {
       if (is_array($header) && ($header['data'] == $order['name'])) {
         $this->sort($header['specifier'], $direction, isset($header['langcode']) ? $header['langcode'] : NULL);

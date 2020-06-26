@@ -20,11 +20,6 @@ class ViewsUITourTest extends TourTestBase {
   protected $adminUser;
 
   /**
-   * {@inheritdoc}
-   */
-  protected $defaultTheme = 'stark';
-
-  /**
    * String translation storage object.
    *
    * @var \Drupal\locale\StringStorageInterface

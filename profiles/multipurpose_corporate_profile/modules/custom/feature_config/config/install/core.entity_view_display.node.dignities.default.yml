@@ -1,0 +1,42 @@
+langcode: en
+status: true
+dependencies:
+  config:
+    - field.field.node.dignities.body
+    - field.field.node.dignities.comment_node_dignities
+    - field.field.node.dignities.field_image
+    - node.type.dignities
+  module:
+    - comment
+    - image
+    - text
+    - user
+id: node.dignities.default
+targetEntityType: node
+bundle: dignities
+mode: default
+content:
+  body:
+    label: hidden
+    weight: 0
+    type: text_default
+    settings: {  }
+    third_party_settings: {  }
+  comment_node_dignities:
+    label: hidden
+    type: comment_default
+    weight: 20
+    settings:
+      pager_id: 0
+    third_party_settings: {  }
+  field_image:
+    label: above
+    weight: 1
+    type: image
+    settings:
+      image_style: ''
+      image_link: ''
+    third_party_settings: {  }
+  links:
+    weight: 100
+hidden: {  }

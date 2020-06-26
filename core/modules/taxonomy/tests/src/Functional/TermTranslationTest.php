@@ -41,11 +41,6 @@ class TermTranslationTest extends TaxonomyTestBase {
   /**
    * {@inheritdoc}
    */
-  protected $defaultTheme = 'classy';
-
-  /**
-   * {@inheritdoc}
-   */
   protected function setUp() {
     parent::setUp();
     $this->setupLanguages();
@@ -62,14 +57,14 @@ class TermTranslationTest extends TaxonomyTestBase {
     // Ensure non-translated breadcrumb is correct.
     $breadcrumb = [Url::fromRoute('<front>')->toString() => 'Home'];
     foreach ($this->terms as $term) {
-      $breadcrumb[$term->toUrl()->toString()] = $term->label();
+      $breadcrumb[$term->url()] = $term->label();
     }
     // The last item will not be in the breadcrumb.
     array_pop($breadcrumb);
 
     // Check the breadcrumb on the leaf term page.
     $term = $this->getLeafTerm();
-    $this->assertBreadcrumb($term->toUrl(), $breadcrumb, $term->label());
+    $this->assertBreadcrumb($term->urlInfo(), $breadcrumb, $term->label());
 
     $languages = \Drupal::languageManager()->getLanguages();
 
@@ -77,7 +72,7 @@ class TermTranslationTest extends TaxonomyTestBase {
     $breadcrumb = [Url::fromRoute('<front>', [], ['language' => $languages[$this->translateToLangcode]])->toString() => 'Home'];
     foreach ($this->terms as $term) {
       $translated = $term->getTranslation($this->translateToLangcode);
-      $url = $translated->toUrl('canonical', ['language' => $languages[$this->translateToLangcode]])->toString();
+      $url = $translated->url('canonical', ['language' => $languages[$this->translateToLangcode]]);
       $breadcrumb[$url] = $translated->label();
     }
     array_pop($breadcrumb);
@@ -85,7 +80,7 @@ class TermTranslationTest extends TaxonomyTestBase {
     // Check for the translated breadcrumb on the translated leaf term page.
     $term = $this->getLeafTerm();
     $translated = $term->getTranslation($this->translateToLangcode);
-    $this->assertBreadcrumb($translated->toUrl('canonical', ['language' => $languages[$this->translateToLangcode]]), $breadcrumb, $translated->label());
+    $this->assertBreadcrumb($translated->urlInfo('canonical', ['language' => $languages[$this->translateToLangcode]]), $breadcrumb, $translated->label());
 
   }
 
@@ -96,8 +91,7 @@ class TermTranslationTest extends TaxonomyTestBase {
 
     // Set the display of the term reference field on the article content type
     // to "Check boxes/radio buttons".
-    \Drupal::service('entity_display.repository')
-      ->getFormDisplay('node', 'article')
+    entity_get_form_display('node', 'article', 'default')
       ->setComponent($this->termFieldName, [
         'type' => 'options_buttons',
       ])

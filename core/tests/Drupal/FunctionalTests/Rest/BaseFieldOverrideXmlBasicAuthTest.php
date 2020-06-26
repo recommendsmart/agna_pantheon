@@ -31,11 +31,6 @@ class BaseFieldOverrideXmlBasicAuthTest extends BaseFieldOverrideResourceTestBas
   /**
    * {@inheritdoc}
    */
-  protected $defaultTheme = 'stark';
-
-  /**
-   * {@inheritdoc}
-   */
   protected static $auth = 'basic_auth';
 
 }

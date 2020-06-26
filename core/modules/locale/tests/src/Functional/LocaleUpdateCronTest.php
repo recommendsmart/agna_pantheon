@@ -2,7 +2,6 @@
 
 namespace Drupal\Tests\locale\Functional;
 
-use Drupal\Core\Database\Database;
 use Drupal\Tests\Traits\Core\CronRunTrait;
 
 /**
@@ -15,11 +14,6 @@ class LocaleUpdateCronTest extends LocaleUpdateBase {
   use CronRunTrait;
 
   protected $batchOutput = [];
-
-  /**
-   * {@inheritdoc}
-   */
-  protected $defaultTheme = 'stark';
 
   /**
    * {@inheritdoc}
@@ -57,7 +51,7 @@ class LocaleUpdateCronTest extends LocaleUpdateBase {
 
     // Prepare for test: Simulate that the file has not been checked for a long
     // time. Set the last_check timestamp to zero.
-    $query = Database::getConnection()->update('locale_file');
+    $query = db_update('locale_file');
     $query->fields(['last_checked' => 0]);
     $query->condition('project', 'contrib_module_two');
     $query->condition('langcode', 'de');

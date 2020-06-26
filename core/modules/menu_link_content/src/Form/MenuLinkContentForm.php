@@ -127,11 +127,19 @@ class MenuLinkContentForm extends ContentEntityForm {
   public function save(array $form, FormStateInterface $form_state) {
     // The entity is rebuilt in parent::submit().
     $menu_link = $this->entity;
-    $menu_link->save();
+    $saved = $menu_link->save();
 
-    $this->messenger()->addStatus($this->t('The menu link has been saved.'));
-
-    $form_state->setRedirectUrl($menu_link->toUrl('canonical'));
+    if ($saved) {
+      $this->messenger()->addStatus($this->t('The menu link has been saved.'));
+      $form_state->setRedirect(
+        'entity.menu_link_content.canonical',
+        ['menu_link_content' => $menu_link->id()]
+      );
+    }
+    else {
+      $this->messenger()->addError($this->t('There was an error saving the menu link.'));
+      $form_state->setRebuild();
+    }
   }
 
 }

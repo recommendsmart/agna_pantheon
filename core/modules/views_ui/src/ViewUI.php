@@ -6,8 +6,6 @@ use Drupal\Component\Utility\Html;
 use Drupal\Component\Utility\Timer;
 use Drupal\Core\EventSubscriber\AjaxResponseSubscriber;
 use Drupal\Core\Form\FormStateInterface;
-use Drupal\Core\Link;
-use Drupal\Core\TempStore\Lock;
 use Drupal\views\Views;
 use Drupal\Core\Entity\EntityStorageInterface;
 use Drupal\views\ViewExecutable;
@@ -50,14 +48,12 @@ class ViewUI implements ViewEntityInterface {
    * If this view is locked for editing.
    *
    * If this view is locked it will contain the result of
-   * \Drupal\Core\TempStore\SharedTempStore::getMetadata().
+   * \Drupal\Core\TempStore\SharedTempStore::getMetadata(). Which can be a stdClass or
+   * NULL.
    *
-   * For backwards compatibility, public access to this property is provided by
-   * ::__set() and ::__get().
-   *
-   * @var \Drupal\Core\TempStore\Lock|null
+   * @var object
    */
-  private $lock;
+  public $lock;
 
   /**
    * If this view has been changed.
@@ -268,7 +264,7 @@ class ViewUI implements ViewEntityInterface {
       $this->cacheSet();
     }
 
-    $form_state->setRedirectUrl($this->toUrl('edit-form'));
+    $form_state->setRedirectUrl($this->urlInfo('edit-form'));
   }
 
   /**
@@ -700,7 +696,7 @@ class ViewUI implements ViewEntityInterface {
             if (isset($path)) {
               // @todo Views should expect and store a leading /. See:
               //   https://www.drupal.org/node/2423913
-              $path = Link::fromTextAndUrl($path->toString(), $path)->toString();
+              $path = \Drupal::l($path->toString(), $path);
             }
             else {
               $path = t('This display has no path.');
@@ -892,8 +888,7 @@ class ViewUI implements ViewEntityInterface {
    *   TRUE if the view is locked, FALSE otherwise.
    */
   public function isLocked() {
-    $lock = $this->getLock();
-    return $lock && $lock->getOwnerId() != \Drupal::currentUser()->id();
+    return is_object($this->lock) && ($this->lock->owner != \Drupal::currentUser()->id());
   }
 
   /**
@@ -998,7 +993,7 @@ class ViewUI implements ViewEntityInterface {
    * {@inheritdoc}
    */
   public function urlInfo($rel = 'edit-form', array $options = []) {
-    return $this->storage->toUrl($rel, $options);
+    return $this->storage->urlInfo($rel, $options);
   }
 
   /**
@@ -1354,65 +1349,6 @@ class ViewUI implements ViewEntityInterface {
    */
   public function addCacheTags(array $cache_tags) {
     return $this->storage->addCacheTags($cache_tags);
-  }
-
-  /**
-   * Gets the lock on this View.
-   *
-   * @return \Drupal\Core\TempStore\Lock|null
-   *   The lock, if one exists.
-   */
-  public function getLock() {
-    return $this->lock;
-  }
-
-  /**
-   * Sets a lock on this View.
-   *
-   * @param \Drupal\Core\TempStore\Lock $lock
-   *   The lock object.
-   *
-   * @return $this
-   */
-  public function setLock(Lock $lock) {
-    $this->lock = $lock;
-    return $this;
-  }
-
-  /**
-   * Unsets the lock on this View.
-   *
-   * @return $this
-   */
-  public function unsetLock() {
-    $this->lock = NULL;
-    return $this;
-  }
-
-  /**
-   * {@inheritdoc}
-   */
-  public function __set($name, $value) {
-    if ($name === 'lock') {
-      @trigger_error('Using the "lock" public property of a View is deprecated in Drupal 8.7.0 and will not be allowed in Drupal 9.0.0. Use \Drupal\views_ui\ViewUI::setLock() instead. See https://www.drupal.org/node/3025869.', E_USER_DEPRECATED);
-      if ($value instanceof \stdClass && property_exists($value, 'owner') && property_exists($value, 'updated')) {
-        $value = new Lock($value->owner, $value->updated);
-      }
-      $this->setLock($value);
-    }
-    else {
-      $this->{$name} = $value;
-    }
-  }
-
-  /**
-   * {@inheritdoc}
-   */
-  public function __get($name) {
-    if ($name === 'lock') {
-      @trigger_error('Using the "lock" public property of a View is deprecated in Drupal 8.7.0 and will not be allowed in Drupal 9.0.0. Use \Drupal\views_ui\ViewUI::getLock() instead. See https://www.drupal.org/node/3025869.', E_USER_DEPRECATED);
-      return $this->getLock();
-    }
   }
 
 }

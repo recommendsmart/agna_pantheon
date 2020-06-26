@@ -1,0 +1,9 @@
+langcode: en
+status: false
+dependencies:
+  module:
+    - eform
+id: eform_submission.edit
+label: Edit
+targetEntityType: eform_submission
+cache: true

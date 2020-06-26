@@ -1,0 +1,24 @@
+langcode: en
+status: true
+dependencies:
+  content:
+    - 'block_content:basic:82a6d4b4-8a9e-4e7b-9bf2-552df1a3c612'
+  module:
+    - block_content
+  theme:
+    - multipurpose_corporate_theme
+id: multipurpose_corporate_theme_block_1
+theme: multipurpose_corporate_theme
+region: tertiary
+weight: -16
+provider: null
+plugin: 'block_content:82a6d4b4-8a9e-4e7b-9bf2-552df1a3c612'
+settings:
+  id: 'block_content:82a6d4b4-8a9e-4e7b-9bf2-552df1a3c612'
+  label: ''
+  provider: block_content
+  label_display: '0'
+  status: true
+  info: ''
+  view_mode: full
+visibility: {  }

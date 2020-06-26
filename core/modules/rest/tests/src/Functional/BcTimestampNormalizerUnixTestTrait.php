@@ -31,8 +31,6 @@ trait BcTimestampNormalizerUnixTestTrait {
     // \Drupal\serialization\Normalizer\TimestampItemNormalizer will produce.
     $date = new \DateTime();
     $date->setTimestamp($timestamp);
-    // Per \Drupal\Core\TypedData\Plugin\DataType\Timestamp::getDateTime(), they
-    // default to string representations in the UTC timezone.
     $date->setTimezone(new \DateTimeZone('UTC'));
 
     // Format is also added to the expected return values.

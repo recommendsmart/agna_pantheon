@@ -1,0 +1,99 @@
+@charset "UTF-8";
+/*!
+ *  Font Awesome 4.6.3 by @davegandy - http://fontawesome.io - @fontawesome
+ *  License - http://fontawesome.io/license (Font: SIL OFL 1.1, CSS: MIT License)
+ */
+/**
+ * Drop menus
+ * Standard CSS drop menus that will expand any nesting level.
+ ============================================================================ */
+.ms-dropmenu .rm-toggle {
+  position: absolute !important;
+  clip: rect(1px, 1px, 1px, 1px);
+  overflow: hidden;
+  height: 1px;
+  width: 1px;
+  padding: 0;
+  word-wrap: normal;
+  font: 0/0 a;
+}
+.ms-dropmenu .rm-block__content .menu__item {
+  text-align: center;
+  position: relative;
+}
+.ms-dropmenu .rm-block__content .menu__item--expanded .menu__item {
+  text-align: left;
+}
+.ms-dropmenu .rm-block__content .menu__link {
+  position: relative;
+  padding: 7px 18px;
+  padding: 0.4375rem 1.125rem;
+}
+.ms-dropmenu .rm-block__content .menu__link:after {
+  font-family: FontAwesome, sans-serif;
+  padding: 0 1px;
+  text-align: right;
+  position: absolute;
+  right: 16px;
+  right: 1rem;
+}
+.ms-dropmenu .rm-block__content .menu-level-1 {
+  position: relative;
+}
+.ms-dropmenu .rm-block__content .menu-level-1 .menu__item {
+  float: left;
+  width: auto;
+}
+.ms-dropmenu .rm-block__content .menu-level-1 .menu__item a:after {
+  content: '';
+  display: none;
+}
+.fa-loaded .ms-dropmenu .rm-block__content .menu-level-1 .menu__item--collapsed > a, .fa-loaded .ms-dropmenu .rm-block__content .menu-level-1 .menu__item--expanded > a {
+  padding-right: 40px;
+  padding-right: 2.5rem;
+}
+.fa-loaded .ms-dropmenu .rm-block__content .menu-level-1 .menu__item--collapsed > a:after, .fa-loaded .ms-dropmenu .rm-block__content .menu-level-1 .menu__item--expanded > a:after {
+  display: inline-block;
+}
+.fa-loaded .ms-dropmenu .rm-block__content .menu-level-1 .menu__item--expanded > a:after {
+  content: "";
+}
+.fa-loaded .ms-dropmenu .rm-block__content .menu-level-1 .menu__item--collapsed > a:after {
+  content: '';
+}
+.ms-dropmenu .rm-block__content .menu-level-1 .menu__item .menu {
+  display: none;
+  position: absolute;
+  margin: 0;
+  padding: 0;
+  -webkit-transition: all, 0.2s, ease-in-out;
+  transition: all, 0.2s, ease-in-out;
+}
+.ms-dropmenu .rm-block__content .menu-level-1 .menu__item .menu .menu__item {
+  min-width: 12em;
+  text-align: left;
+}
+.ms-dropmenu .rm-block__content .menu-level-1 .menu__item .menu .menu__item:hover, .ms-dropmenu .rm-block__content .menu-level-1 .menu__item .menu .menu__item:focus {
+  font-family: inherit;
+}
+.ms-dropmenu .rm-block__content .menu-level-1 .menu__item:hover > .menu, .ms-dropmenu .rm-block__content .menu-level-1 .menu__item:focus > .menu {
+  display: block;
+}
+.ms-dropmenu .rm-block__content .odd ul {
+  left: 0;
+  top: auto;
+}
+.fa-loaded .ms-dropmenu .rm-block__content .odd ul > .menu__item--expanded > a:after {
+  content: "";
+}
+[dir="rtl"] .fa-loaded .ms-dropmenu .rm-block__content .odd ul > .menu__item--expanded > a:after {
+  content: "";
+}
+.ms-dropmenu .rm-block__content .odd ul .odd {
+  left: 100%;
+  top: 0;
+}
+.fa-loaded .ms-dropmenu .rm-block__content .odd ul .odd > .menu__item--expanded > a:after {
+  content: "";
+}
+/*# sourceMappingURL=maps/responsive-menus--dropmenu.css.map */

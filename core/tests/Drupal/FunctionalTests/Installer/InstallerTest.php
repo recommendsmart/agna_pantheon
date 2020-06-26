@@ -10,18 +10,13 @@ namespace Drupal\FunctionalTests\Installer;
 class InstallerTest extends InstallerTestBase {
 
   /**
-   * {@inheritdoc}
-   */
-  protected $defaultTheme = 'stark';
-
-  /**
    * Ensures that the user page is available after installation.
    */
   public function testInstaller() {
     $this->assertUrl('user/1');
     $this->assertResponse(200);
     // Confirm that we are logged-in after installation.
-    $this->assertText($this->rootUser->getAccountName());
+    $this->assertText($this->rootUser->getUsername());
 
     // Verify that the confirmation message appears.
     require_once $this->root . '/core/includes/install.inc';
@@ -32,13 +27,6 @@ class InstallerTest extends InstallerTestBase {
     // Ensure that the timezone is correct for sites under test after installing
     // interactively.
     $this->assertEqual($this->config('system.date')->get('timezone.default'), 'Australia/Sydney');
-
-    // Ensure the profile has a weight of 1000.
-    $module_extension_list = \Drupal::service('extension.list.module');
-    $extensions = $module_extension_list->getList();
-
-    $this->assertArrayHasKey('testing', $extensions);
-    $this->assertEquals(1000, $extensions['testing']->weight);
   }
 
   /**

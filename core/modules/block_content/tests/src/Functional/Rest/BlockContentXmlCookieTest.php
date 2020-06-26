@@ -28,9 +28,4 @@ class BlockContentXmlCookieTest extends BlockContentResourceTestBase {
    */
   protected static $auth = 'cookie';
 
-  /**
-   * {@inheritdoc}
-   */
-  protected $defaultTheme = 'stark';
-
 }

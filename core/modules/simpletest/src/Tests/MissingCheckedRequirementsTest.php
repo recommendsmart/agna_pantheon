@@ -8,8 +8,6 @@ use Drupal\simpletest\WebTestBase;
  * Tests a test case with missing requirements.
  *
  * @group simpletest
- * @group WebTestBase
- * @group legacy
  */
 class MissingCheckedRequirementsTest extends WebTestBase {
 

@@ -20,11 +20,6 @@ class ReportFieldsTest extends UITestBase {
   /**
    * {@inheritdoc}
    */
-  protected $defaultTheme = 'stark';
-
-  /**
-   * {@inheritdoc}
-   */
   public static $modules = ['entity_test'];
 
   /**

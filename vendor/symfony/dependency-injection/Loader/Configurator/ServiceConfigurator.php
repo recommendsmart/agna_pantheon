@@ -59,8 +59,6 @@ class ServiceConfigurator extends AbstractServiceConfigurator
     {
         parent::__destruct();
 
-        $this->container->removeBindings($this->id);
-
         if (!$this->definition instanceof ChildDefinition) {
             $this->container->setDefinition($this->id, $this->definition->setInstanceofConditionals($this->instanceof));
         } else {

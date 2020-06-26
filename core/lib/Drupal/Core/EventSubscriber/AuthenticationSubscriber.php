@@ -2,14 +2,15 @@
 
 namespace Drupal\Core\EventSubscriber;
 
-use Drupal\Core\Authentication\AuthenticationProviderChallengeInterface;
 use Drupal\Core\Authentication\AuthenticationProviderFilterInterface;
+use Drupal\Core\Authentication\AuthenticationProviderChallengeInterface;
 use Drupal\Core\Authentication\AuthenticationProviderInterface;
 use Drupal\Core\Session\AccountProxyInterface;
 use Symfony\Component\EventDispatcher\EventSubscriberInterface;
 use Symfony\Component\HttpKernel\Event\GetResponseEvent;
 use Symfony\Component\HttpKernel\Event\GetResponseForExceptionEvent;
 use Symfony\Component\HttpKernel\Exception\AccessDeniedHttpException;
+use Symfony\Component\HttpKernel\HttpKernelInterface;
 use Symfony\Component\HttpKernel\KernelEvents;
 
 /**
@@ -71,7 +72,7 @@ class AuthenticationSubscriber implements EventSubscriberInterface {
    * @see \Drupal\Core\Authentication\AuthenticationProviderInterface::authenticate()
    */
   public function onKernelRequestAuthenticate(GetResponseEvent $event) {
-    if ($event->isMasterRequest()) {
+    if ($event->getRequestType() === HttpKernelInterface::MASTER_REQUEST) {
       $request = $event->getRequest();
       if ($this->authenticationProvider->applies($request)) {
         $account = $this->authenticationProvider->authenticate($request);
@@ -80,6 +81,8 @@ class AuthenticationSubscriber implements EventSubscriberInterface {
           return;
         }
       }
+      // No account has been set explicitly, initialize the timezone here.
+      date_default_timezone_set(drupal_get_user_timezone());
     }
   }
 
@@ -90,7 +93,7 @@ class AuthenticationSubscriber implements EventSubscriberInterface {
    *   The request event.
    */
   public function onKernelRequestFilterProvider(GetResponseEvent $event) {
-    if (isset($this->filter) && $event->isMasterRequest()) {
+    if (isset($this->filter) && $event->getRequestType() === HttpKernelInterface::MASTER_REQUEST) {
       $request = $event->getRequest();
       if ($this->authenticationProvider->applies($request) && !$this->filter->appliesToRoutedRequest($request, TRUE)) {
         throw new AccessDeniedHttpException('The used authentication method is not allowed on this route.');
@@ -109,7 +112,7 @@ class AuthenticationSubscriber implements EventSubscriberInterface {
    *   The exception event.
    */
   public function onExceptionSendChallenge(GetResponseForExceptionEvent $event) {
-    if (isset($this->challengeProvider) && $event->isMasterRequest()) {
+    if (isset($this->challengeProvider) && $event->getRequestType() === HttpKernelInterface::MASTER_REQUEST) {
       $request = $event->getRequest();
       $exception = $event->getException();
       if ($exception instanceof AccessDeniedHttpException && !$this->authenticationProvider->applies($request) && (!isset($this->filter) || $this->filter->appliesToRoutedRequest($request, FALSE))) {
@@ -126,7 +129,7 @@ class AuthenticationSubscriber implements EventSubscriberInterface {
    *
    * @param \Symfony\Component\HttpKernel\Event\GetResponseForExceptionEvent $event
    */
-  public function onExceptionAccessDenied(GetResponseForExceptionEvent $event) {
+  public function _onExceptionAccessDenied(GetResponseForExceptionEvent $event) {
     if (isset($this->filter) && $event->isMasterRequest()) {
       $request = $event->getRequest();
       $exception = $event->getException();
@@ -149,7 +152,7 @@ class AuthenticationSubscriber implements EventSubscriberInterface {
     // Access check must be performed after routing.
     $events[KernelEvents::REQUEST][] = ['onKernelRequestFilterProvider', 31];
     $events[KernelEvents::EXCEPTION][] = ['onExceptionSendChallenge', 75];
-    $events[KernelEvents::EXCEPTION][] = ['onExceptionAccessDenied', 80];
+    $events[KernelEvents::EXCEPTION][] = ['_onExceptionAccessDenied', 80];
     return $events;
   }
 

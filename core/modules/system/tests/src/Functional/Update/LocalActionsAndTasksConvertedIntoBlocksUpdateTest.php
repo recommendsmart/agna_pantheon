@@ -18,11 +18,6 @@ class LocalActionsAndTasksConvertedIntoBlocksUpdateTest extends UpdatePathTestBa
   /**
    * {@inheritdoc}
    */
-  protected $defaultTheme = 'stark';
-
-  /**
-   * {@inheritdoc}
-   */
   public function setDatabaseDumpFiles() {
     $this->databaseDumpFiles = [
       __DIR__ . '/../../../../../system/tests/fixtures/update/drupal-8.bare.standard.php.gz',
@@ -47,7 +42,7 @@ class LocalActionsAndTasksConvertedIntoBlocksUpdateTest extends UpdatePathTestBa
     $this->runUpdates();
 
     /** @var \Drupal\block\BlockInterface $block_storage */
-    $block_storage = \Drupal::entityTypeManager()->getStorage('block');
+    $block_storage = \Drupal::entityManager()->getStorage('block');
     /* @var \Drupal\block\BlockInterface[] $help_blocks */
     $help_blocks = $block_storage->loadByProperties(['theme' => 'bartik', 'region' => 'help']);
 
@@ -80,7 +75,7 @@ class LocalActionsAndTasksConvertedIntoBlocksUpdateTest extends UpdatePathTestBa
     // Local actions are visible on the content listing page.
     $this->drupalGet('admin/content');
     $action_link = $this->cssSelect('.action-links');
-    $this->assertNotEmpty($action_link);
+    $this->assertTrue($action_link);
 
     $this->drupalGet('admin/structure/block/list/seven');
 

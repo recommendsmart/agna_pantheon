@@ -10,11 +10,6 @@ namespace Drupal\Tests\node\Functional;
  */
 class NodePostSettingsTest extends NodeTestBase {
 
-  /**
-   * {@inheritdoc}
-   */
-  protected $defaultTheme = 'classy';
-
   protected function setUp() {
     parent::setUp();
 

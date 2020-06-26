@@ -1,0 +1,68 @@
+{
+    "_links": {
+        "self": {
+            "href": "http:\/\/default\/block\/6?_format=hal_json"
+        },
+        "type": {
+            "href": "http:\/\/drupal.org\/rest\/type\/block_content\/basic"
+        }
+    },
+    "id": [
+        {
+            "value": "6"
+        }
+    ],
+    "uuid": [
+        {
+            "value": "29ed1665-bd76-4b0e-a2a3-739ce965f4e2"
+        }
+    ],
+    "revision_id": [
+        {
+            "value": "6"
+        }
+    ],
+    "langcode": [
+        {
+            "value": "en",
+            "lang": "en"
+        }
+    ],
+    "info": [
+        {
+            "value": "Contact us block text",
+            "lang": "en"
+        }
+    ],
+    "type": [
+        {
+            "target_id": "basic"
+        }
+    ],
+    "changed": [
+        {
+            "value": "1465187506",
+            "lang": "en"
+        }
+    ],
+    "revision_translation_affected": [
+        {
+            "value": "1",
+            "lang": "en"
+        }
+    ],
+    "default_langcode": [
+        {
+            "value": "1",
+            "lang": "en"
+        }
+    ],
+    "body": [
+        {
+            "value": "<h2>We\u2019d love to hear from you!<\/h2>\r\n\r\n<p>If You want to buy one of our tin foil hats to protect your mind from an external&nbsp;invasion or if You have a mystical conspiracy story You want us to investigate, then contact us in any manner convenient to you<\/p>\r\n\r\n<p>Joomla HQ, 1 Made Ave,<br \/>\r\nManchester United Kingdom,<br \/>\r\nM1 9BB<\/p>\r\n\r\n<p>0161 657 657<\/p>\r\n\r\n<p><a href=\"mailto:hello@galeria.co.uk\">hello@galeria.co.uk<\/a><\/p>\r\n",
+            "format": "full_html",
+            "summary": "",
+            "lang": "en"
+        }
+    ]
+}

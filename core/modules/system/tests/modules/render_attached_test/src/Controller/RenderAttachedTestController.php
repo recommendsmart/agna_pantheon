@@ -15,7 +15,7 @@ class RenderAttachedTestController {
    */
   public function teapotHeaderStatus() {
     $render = [];
-    $render['#attached']['http_header'][] = ['Status', 418];
+    $render['#attached']['http_header'][] = ['Status', "418 I'm a teapot."];
     return $render;
   }
 

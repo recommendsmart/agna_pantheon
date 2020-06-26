@@ -19,11 +19,6 @@ class RdfMappingJsonBasicAuthTest extends RdfMappingResourceTestBase {
   /**
    * {@inheritdoc}
    */
-  protected $defaultTheme = 'stark';
-
-  /**
-   * {@inheritdoc}
-   */
   protected static $format = 'json';
 
   /**

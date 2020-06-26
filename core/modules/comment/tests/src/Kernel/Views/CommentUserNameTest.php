@@ -42,7 +42,7 @@ class CommentUserNameTest extends ViewsKernelTestBase {
     $this->installConfig(['user']);
 
     // Create an anonymous user.
-    $storage = \Drupal::entityTypeManager()->getStorage('user');
+    $storage = \Drupal::entityManager()->getStorage('user');
     // Insert a row for the anonymous user.
     $storage
       ->create([
@@ -78,7 +78,6 @@ class CommentUserNameTest extends ViewsKernelTestBase {
       'uid' => $this->adminUser->id(),
       'name' => $this->adminUser->label(),
       'entity_type' => 'entity_test',
-      'field_name' => 'comment',
       'entity_id' => $host->id(),
       'comment_type' => 'entity_test',
       'status' => 1,
@@ -92,7 +91,6 @@ class CommentUserNameTest extends ViewsKernelTestBase {
       'mail' => 'test@example.com',
       'homepage' => 'https://example.com',
       'entity_type' => 'entity_test',
-      'field_name' => 'comment',
       'entity_id' => $host->id(),
       'comment_type' => 'entity_test',
       'created' => 123456,

@@ -17,11 +17,6 @@ class ReportTest extends UITestBase {
   public static $modules = ['views', 'views_ui'];
 
   /**
-   * {@inheritdoc}
-   */
-  protected $defaultTheme = 'stark';
-
-  /**
    * Stores an admin user used by the different tests.
    *
    * @var \Drupal\user\User

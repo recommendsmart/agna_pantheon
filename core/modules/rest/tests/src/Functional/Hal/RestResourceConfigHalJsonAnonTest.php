@@ -20,11 +20,6 @@ class RestResourceConfigHalJsonAnonTest extends RestResourceConfigResourceTestBa
   /**
    * {@inheritdoc}
    */
-  protected $defaultTheme = 'stark';
-
-  /**
-   * {@inheritdoc}
-   */
   protected static $format = 'hal_json';
 
   /**

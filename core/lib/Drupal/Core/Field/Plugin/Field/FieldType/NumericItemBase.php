@@ -79,7 +79,7 @@ abstract class NumericItemBase extends FieldItemBase {
     $settings = $this->getSettings();
     $label = $this->getFieldDefinition()->getLabel();
 
-    if (isset($settings['min']) && $settings['min'] !== '') {
+    if (!empty($settings['min'])) {
       $min = $settings['min'];
       $constraints[] = $constraint_manager->create('ComplexData', [
         'value' => [
@@ -91,7 +91,7 @@ abstract class NumericItemBase extends FieldItemBase {
       ]);
     }
 
-    if (isset($settings['max']) && $settings['max'] !== '') {
+    if (!empty($settings['max'])) {
       $max = $settings['max'];
       $constraints[] = $constraint_manager->create('ComplexData', [
         'value' => [

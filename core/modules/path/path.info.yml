@@ -3,12 +3,11 @@ type: module
 description: 'Allows users to rename URLs.'
 package: Core
 # version: VERSION
-core: 8.x
-configure: entity.path_alias.collection
-dependencies:
-  - drupal:path_alias
+# core: 8.x
+configure: path.admin_overview
 
-# Information added by Drupal.org packaging script on 2020-04-02
-version: '8.8.5'
+# Information added by Drupal.org packaging script on 2019-03-20
+version: '8.6.13'
+core: '8.x'
 project: 'drupal'
-datestamp: 1585861582
+datestamp: 1553100246

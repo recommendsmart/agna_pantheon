@@ -22,11 +22,6 @@ class BulkFormAccessTest extends UserTestBase {
   public static $modules = ['user_access_test'];
 
   /**
-   * {@inheritdoc}
-   */
-  protected $defaultTheme = 'stark';
-
-  /**
    * Views used by this test.
    *
    * @var array

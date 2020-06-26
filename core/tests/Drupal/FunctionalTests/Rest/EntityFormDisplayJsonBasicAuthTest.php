@@ -29,11 +29,6 @@ class EntityFormDisplayJsonBasicAuthTest extends EntityFormDisplayResourceTestBa
   /**
    * {@inheritdoc}
    */
-  protected $defaultTheme = 'stark';
-
-  /**
-   * {@inheritdoc}
-   */
   protected static $auth = 'basic_auth';
 
 }

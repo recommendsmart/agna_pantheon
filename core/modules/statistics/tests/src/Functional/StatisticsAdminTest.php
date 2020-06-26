@@ -2,7 +2,6 @@
 
 namespace Drupal\Tests\statistics\Functional;
 
-use Drupal\Core\Database\Database;
 use Drupal\Tests\BrowserTestBase;
 use Drupal\Tests\Traits\Core\CronRunTrait;
 
@@ -21,11 +20,6 @@ class StatisticsAdminTest extends BrowserTestBase {
    * @var array
    */
   public static $modules = ['node', 'statistics'];
-
-  /**
-   * {@inheritdoc}
-   */
-  protected $defaultTheme = 'stark';
 
   /**
    * A user that has permission to administer statistics.
@@ -69,13 +63,13 @@ class StatisticsAdminTest extends BrowserTestBase {
    */
   public function testStatisticsSettings() {
     $config = $this->config('statistics.settings');
-    $this->assertEmpty($config->get('count_content_views'), 'Count content view log is disabled by default.');
+    $this->assertFalse($config->get('count_content_views'), 'Count content view log is disabled by default.');
 
     // Enable counter on content view.
     $edit['statistics_count_content_views'] = 1;
     $this->drupalPostForm('admin/config/system/statistics', $edit, t('Save configuration'));
     $config = $this->config('statistics.settings');
-    $this->assertNotEmpty($config->get('count_content_views'), 'Count content view log is enabled.');
+    $this->assertTrue($config->get('count_content_views'), 'Count content view log is enabled.');
 
     // Hit the node.
     $this->drupalGet('node/' . $this->testNode->id());
@@ -121,8 +115,7 @@ class StatisticsAdminTest extends BrowserTestBase {
     $stats_path = $base_url . '/' . drupal_get_path('module', 'statistics') . '/statistics.php';
     $this->client->post($stats_path, ['form_params' => $post]);
 
-    $connection = Database::getConnection();
-    $result = $connection->select('node_counter', 'n')
+    $result = db_select('node_counter', 'n')
       ->fields('n', ['nid'])
       ->condition('n.nid', $this->testNode->id())
       ->execute()
@@ -131,7 +124,7 @@ class StatisticsAdminTest extends BrowserTestBase {
 
     $this->testNode->delete();
 
-    $result = $connection->select('node_counter', 'n')
+    $result = db_select('node_counter', 'n')
       ->fields('n', ['nid'])
       ->condition('n.nid', $this->testNode->id())
       ->execute()
@@ -169,12 +162,12 @@ class StatisticsAdminTest extends BrowserTestBase {
     $this->drupalGet('admin/reports/pages');
     $this->assertNoText('node/' . $this->testNode->id(), 'No hit URL found.');
 
-    $result = Database::getConnection()->select('node_counter', 'nc')
+    $result = db_select('node_counter', 'nc')
       ->fields('nc', ['daycount'])
       ->condition('nid', $this->testNode->id(), '=')
       ->execute()
       ->fetchField();
-    $this->assertEmpty($result, 'Daycounter is zero.');
+    $this->assertFalse($result, 'Daycounter is zero.');
   }
 
 }

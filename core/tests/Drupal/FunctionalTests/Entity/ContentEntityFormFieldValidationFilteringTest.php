@@ -53,11 +53,6 @@ class ContentEntityFormFieldValidationFilteringTest extends BrowserTestBase {
   /**
    * {@inheritdoc}
    */
-  protected $defaultTheme = 'classy';
-
-  /**
-   * {@inheritdoc}
-   */
   protected function setUp() {
     parent::setUp();
     $web_user = $this->drupalCreateUser(['administer entity_test content']);
@@ -117,8 +112,7 @@ class ContentEntityFormFieldValidationFilteringTest extends BrowserTestBase {
       'translatable' => FALSE,
     ])->save();
 
-    $this->container->get('entity_display.repository')
-      ->getFormDisplay($this->entityTypeId, $this->entityTypeId, 'default')
+    entity_get_form_display($this->entityTypeId, $this->entityTypeId, 'default')
       ->setComponent($this->fieldNameSingle, ['type' => 'test_field_widget'])
       ->setComponent($this->fieldNameMultiple, ['type' => 'test_field_widget'])
       ->setComponent($this->fieldNameFile, ['type' => 'file_generic'])

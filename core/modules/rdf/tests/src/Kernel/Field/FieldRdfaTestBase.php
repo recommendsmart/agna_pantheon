@@ -5,11 +5,8 @@ namespace Drupal\Tests\rdf\Kernel\Field;
 use Drupal\field\Entity\FieldConfig;
 use Drupal\Tests\field\Kernel\FieldKernelTestBase;
 use Drupal\field\Entity\FieldStorageConfig;
-use Drupal\Tests\rdf\Traits\RdfParsingTrait;
 
 abstract class FieldRdfaTestBase extends FieldKernelTestBase {
-
-  use RdfParsingTrait;
 
   /**
    * The machine name of the field type to test.
@@ -90,16 +87,22 @@ abstract class FieldRdfaTestBase extends FieldKernelTestBase {
 
     // The field formatter will be rendered inside the entity. Set the field
     // formatter in the entity display options before rendering the entity.
-    \Drupal::service('entity_display.repository')
-      ->getViewDisplay('entity_test', 'entity_test')
+    entity_get_display('entity_test', 'entity_test', 'default')
       ->setComponent($this->fieldName, $formatter)
       ->save();
-    $build = \Drupal::entityTypeManager()
-      ->getViewBuilder($this->entity->getEntityTypeId())
-      ->view($this->entity, 'default');
+    $build = entity_view($this->entity, 'default');
     $output = \Drupal::service('renderer')->renderRoot($build);
+    $graph = new \EasyRdf_Graph($this->uri, $output, 'rdfa');
     $this->setRawContent($output);
-    $this->assertTrue($this->hasRdfProperty($output, $this->uri, $this->uri, $property, $expected_rdf_value), "Formatter {$formatter['type']} exposes data correctly for {$this->fieldType} fields.");
+
+    // If verbose debugging is turned on, display the HTML and parsed RDF
+    // in the results.
+    if ($this->debug) {
+      print_r($output);
+      print_r($graph->toRdfPhp());
+    }
+
+    $this->assertTrue($graph->hasProperty($this->uri, $property, $expected_rdf_value), "Formatter {$formatter['type']} exposes data correctly for {$this->fieldType} fields.");
   }
 
   /**
@@ -132,7 +135,7 @@ abstract class FieldRdfaTestBase extends FieldKernelTestBase {
    *   The absolute URI.
    */
   protected function getAbsoluteUri($entity) {
-    return $entity->toUrl('canonical', ['absolute' => TRUE])->toString();
+    return $entity->url('canonical', ['absolute' => TRUE]);
   }
 
   /**

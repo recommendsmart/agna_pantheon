@@ -1,0 +1,29 @@
+name: feature_views
+type: module
+# core: 8.x
+dependencies:
+  - block
+  - block_content
+  - eform
+  - feature_config
+  - file
+  - file_entity
+  - node
+  - rdf
+  - system
+  - taxonomy
+  - user
+  - views
+description: 'views and taxonomy configurations'
+
+# Information added by Drupal.org packaging script on 2018-06-07
+# version: '8.x-1.0-beta6+2-dev'
+# core: '8.x'
+# project: 'multipurpose_corporate_profile'
+# datestamp: 1528358589
+
+# Information added by Drupal.org packaging script on 2019-03-26
+version: '8.x-1.2'
+core: '8.x'
+project: 'multipurpose_corporate_profile'
+datestamp: 1553590327

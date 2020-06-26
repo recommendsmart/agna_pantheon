@@ -1,0 +1,18 @@
+langcode: en
+status: true
+dependencies:
+  config:
+    - contact.form.contact_us_form
+    - field.storage.contact_message.field_your_email
+id: contact_message.contact_us_form.field_your_email
+field_name: field_your_email
+entity_type: contact_message
+bundle: contact_us_form
+label: 'Your Email Address'
+description: ''
+required: true
+translatable: false
+default_value: {  }
+default_value_callback: ''
+settings: {  }
+field_type: email

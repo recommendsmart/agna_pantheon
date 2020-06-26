@@ -1,0 +1,68 @@
+{
+    "_links": {
+        "self": {
+            "href": "http:\/\/default\/block\/1?_format=hal_json"
+        },
+        "type": {
+            "href": "http:\/\/drupal.org\/rest\/type\/block_content\/basic"
+        }
+    },
+    "id": [
+        {
+            "value": "1"
+        }
+    ],
+    "uuid": [
+        {
+            "value": "82a6d4b4-8a9e-4e7b-9bf2-552df1a3c612"
+        }
+    ],
+    "revision_id": [
+        {
+            "value": "1"
+        }
+    ],
+    "langcode": [
+        {
+            "value": "en",
+            "lang": "en"
+        }
+    ],
+    "info": [
+        {
+            "value": "New Corporate",
+            "lang": "en"
+        }
+    ],
+    "type": [
+        {
+            "target_id": "basic"
+        }
+    ],
+    "changed": [
+        {
+            "value": "1464333792",
+            "lang": "en"
+        }
+    ],
+    "revision_translation_affected": [
+        {
+            "value": "1",
+            "lang": "en"
+        }
+    ],
+    "default_langcode": [
+        {
+            "value": "1",
+            "lang": "en"
+        }
+    ],
+    "body": [
+        {
+            "value": "<div class=\"new-corporate\"><img alt=\"\" data-entity-type=\"file\" data-entity-uuid=\"4be53104-7b4d-4fe8-a585-c338872c01e8\" src=\"\/sites\/default\/files\/inline-images\/footer-logo.png\" \/><\/div>\r\n\r\n<div class=\"about-this-theme\">About us<\/div>\r\n\r\n<p>We are a&nbsp;youthful team of hopeful enthusiasts who wish to free the world of conspiring tyranny. &nbsp;As determined&nbsp;as Rocky and as powerful as Rambo, we follow any means that can help us bring truth and justice to this mad, mad and conspired world. Don\u2019t contacts us as we will contact you first.<\/p>\r\n",
+            "format": "full_html",
+            "summary": "",
+            "lang": "en"
+        }
+    ]
+}

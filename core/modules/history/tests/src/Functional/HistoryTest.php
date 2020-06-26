@@ -24,11 +24,6 @@ class HistoryTest extends BrowserTestBase {
   public static $modules = ['node', 'history'];
 
   /**
-   * {@inheritdoc}
-   */
-  protected $defaultTheme = 'stark';
-
-  /**
    * The main user for testing.
    *
    * @var object

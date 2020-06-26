@@ -21,11 +21,6 @@ class CKEditorStylesComboAdminTest extends BrowserTestBase {
   public static $modules = ['filter', 'editor', 'ckeditor'];
 
   /**
-   * {@inheritdoc}
-   */
-  protected $defaultTheme = 'stark';
-
-  /**
    * A user with the 'administer filters' permission.
    *
    * @var \Drupal\user\UserInterface

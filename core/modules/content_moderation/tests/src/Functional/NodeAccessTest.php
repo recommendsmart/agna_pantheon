@@ -25,11 +25,6 @@ class NodeAccessTest extends ModerationStateTestBase {
   ];
 
   /**
-   * {@inheritdoc}
-   */
-  protected $defaultTheme = 'stark';
-
-  /**
    * Permissions to grant admin user.
    *
    * @var array

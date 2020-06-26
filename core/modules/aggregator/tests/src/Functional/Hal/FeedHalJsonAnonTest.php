@@ -16,9 +16,4 @@ class FeedHalJsonAnonTest extends FeedHalJsonTestBase {
    */
   protected static $mimeType = 'application/hal+json';
 
-  /**
-   * {@inheritdoc}
-   */
-  protected $defaultTheme = 'stark';
-
 }

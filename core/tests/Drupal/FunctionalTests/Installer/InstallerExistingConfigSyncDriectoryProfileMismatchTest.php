@@ -12,11 +12,6 @@ class InstallerExistingConfigSyncDriectoryProfileMismatchTest extends InstallerE
   /**
    * {@inheritdoc}
    */
-  protected $defaultTheme = 'stark';
-
-  /**
-   * {@inheritdoc}
-   */
   protected $profile = 'testing_config_install_multilingual';
 
   /**

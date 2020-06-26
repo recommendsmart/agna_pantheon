@@ -5,7 +5,7 @@ namespace Drupal\Tests\block\Kernel;
 use Drupal\block\Entity\Block;
 use Drupal\Core\StringTranslation\TranslatableMarkup;
 use Drupal\KernelTests\KernelTestBase;
-use Drupal\Tests\block\Traits\BlockCreationTrait;
+use Drupal\simpletest\BlockCreationTrait;
 
 /**
  * Tests block_rebuild().

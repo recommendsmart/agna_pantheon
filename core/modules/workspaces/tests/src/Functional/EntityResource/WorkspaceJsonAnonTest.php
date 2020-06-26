@@ -23,9 +23,4 @@ class WorkspaceJsonAnonTest extends WorkspaceResourceTestBase {
    */
   protected static $mimeType = 'application/json';
 
-  /**
-   * {@inheritdoc}
-   */
-  protected $defaultTheme = 'stark';
-
 }

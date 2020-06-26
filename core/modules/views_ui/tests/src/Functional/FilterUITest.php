@@ -27,11 +27,6 @@ class FilterUITest extends UITestBase {
   /**
    * {@inheritdoc}
    */
-  protected $defaultTheme = 'stark';
-
-  /**
-   * {@inheritdoc}
-   */
   protected function setUp($import_test_views = TRUE) {
     parent::setUp($import_test_views);
     $this->drupalCreateContentType(['type' => 'page']);
@@ -114,14 +109,12 @@ class FilterUITest extends UITestBase {
     $this->drupalPostForm($path, $edit, t('Apply'));
     $this->assertText('This identifier is not allowed.');
 
-    // Try a few restricted values for the identifier.
-    foreach (['value value', 'value^value'] as $identifier) {
-      $edit = [
-        'options[expose][identifier]' => $identifier,
-      ];
-      $this->drupalPostForm($path, $edit, t('Apply'));
-      $this->assertText('This identifier has illegal characters.');
-    }
+    // Set the identifier to a value with a restricted character.
+    $edit = [
+      'options[expose][identifier]' => 'value value',
+    ];
+    $this->drupalPostForm($path, $edit, t('Apply'));
+    $this->assertText('This identifier has illegal characters.');
   }
 
 }

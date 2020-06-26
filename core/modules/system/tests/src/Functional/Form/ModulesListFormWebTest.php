@@ -19,11 +19,6 @@ class ModulesListFormWebTest extends BrowserTestBase {
   /**
    * {@inheritdoc}
    */
-  protected $defaultTheme = 'stark';
-
-  /**
-   * {@inheritdoc}
-   */
   protected function setUp() {
     parent::setUp();
     \Drupal::state()->set('system_test.module_hidden', FALSE);
@@ -75,10 +70,10 @@ BROKEN;
 
     // Confirm that the error message is shown.
     $this->assertSession()
-      ->pageTextContains("The 'core' or the 'core_version_requirement' key must be present in " . $path . '/broken.info.yml');
+      ->pageTextContains('Modules could not be listed due to an error: Missing required keys (core) in ' . $path . '/broken.info.yml');
 
     // Check that the module filter text box is available.
-    $this->assertSession()->elementExists('xpath', '//input[@name="text"]');
+    $this->assertTrue($this->xpath('//input[@name="text"]'));
   }
 
 }

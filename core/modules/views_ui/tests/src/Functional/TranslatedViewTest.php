@@ -22,11 +22,6 @@ class TranslatedViewTest extends UITestBase {
   ];
 
   /**
-   * {@inheritdoc}
-   */
-  protected $defaultTheme = 'stark';
-
-  /**
    * Languages to enable.
    *
    * @var array

@@ -19,11 +19,6 @@ class TaxonomyVocabularyArgumentTest extends TaxonomyTestBase {
   /**
    * {@inheritdoc}
    */
-  protected $defaultTheme = 'stark';
-
-  /**
-   * {@inheritdoc}
-   */
   public static $testViews = ['test_argument_taxonomy_vocabulary'];
 
   /**

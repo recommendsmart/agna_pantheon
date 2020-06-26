@@ -9,17 +9,12 @@ namespace Drupal\Tests\taxonomy\Functional;
  */
 class ThemeTest extends TaxonomyTestBase {
 
-  /**
-   * {@inheritdoc}
-   */
-  protected $defaultTheme = 'stark';
-
   protected function setUp() {
     parent::setUp();
 
     // Make sure we are using distinct default and administrative themes for
     // the duration of these tests.
-    \Drupal::service('theme_installer')->install(['bartik', 'seven']);
+    \Drupal::service('theme_handler')->install(['bartik', 'seven']);
     $this->config('system.theme')
       ->set('default', 'bartik')
       ->set('admin', 'seven')

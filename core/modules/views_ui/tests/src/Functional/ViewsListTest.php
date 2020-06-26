@@ -20,11 +20,6 @@ class ViewsListTest extends UITestBase {
   public static $modules = ['block', 'views_ui'];
 
   /**
-   * {@inheritdoc}
-   */
-  protected $defaultTheme = 'stark';
-
-  /**
    * A user with permission to administer views.
    *
    * @var \Drupal\user\Entity\User

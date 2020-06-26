@@ -1,0 +1,17 @@
+{% set active = " " %}
+{% if '/portfolio/column_three' in current_path %}
+    {% if current_path|last == row.tid  %}
+        {% set active = "active" %}
+    {% endif %}
+    <a href="/portfolio/column_three/{{ row.tid }}" class="{{ active }}">{{ view.field.name.original_value|striptags }} </a>
+{% elseif '/portfolio/column_four' in current_path %}
+    {% if current_path|last == row.tid  %}
+        {% set active = "active" %}
+    {% endif %}
+    <a href="/portfolio/column_four/{{ row.tid }}" class="{{ active }}">{{ view.field.name.original_value|striptags }} </a>
+{% else %}
+    {% if current_path|last == row.tid  %}
+        {% set active = "active" %}
+    {% endif %}
+    <a href="/portfolio/{{ row.tid }}" class="{{ active }}" > {{ view.field.name.original_value|striptags }} </a>
+{% endif %}

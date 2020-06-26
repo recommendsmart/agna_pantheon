@@ -25,11 +25,6 @@ class UpdateUploadTest extends UpdateTestBase {
    */
   public static $modules = ['update', 'update_test'];
 
-  /**
-   * {@inheritdoc}
-   */
-  protected $defaultTheme = 'stark';
-
   protected function setUp() {
     parent::setUp();
     $admin_user = $this->drupalCreateUser(['administer modules', 'administer software updates', 'administer site configuration']);
@@ -54,8 +49,7 @@ class UpdateUploadTest extends UpdateTestBase {
     ];
     // This also checks that the correct archive extensions are allowed.
     $this->drupalPostForm('admin/modules/install', $edit, t('Install'));
-    $extensions = \Drupal::service('plugin.manager.archiver')->getExtensions();
-    $this->assertSession()->pageTextContains(t('Only files with the following extensions are allowed: @archive_extensions.', ['@archive_extensions' => $extensions]));
+    $this->assertText(t('Only files with the following extensions are allowed: @archive_extensions.', ['@archive_extensions' => archiver_get_extensions()]), 'Only valid archives can be uploaded.');
     $this->assertUrl('admin/modules/install');
 
     // Check to ensure an existing module can't be reinstalled. Also checks that
@@ -104,7 +98,7 @@ class UpdateUploadTest extends UpdateTestBase {
     // child site has access to, standard module API functions won't find it
     // when called here. To get the version, the info file must be parsed
     // directly instead.
-    $info_parser = new InfoParserDynamic(DRUPAL_ROOT);
+    $info_parser = new InfoParserDynamic();
     $info = $info_parser->parse($installedInfoFilePath);
     $this->assertEqual($info['version'], '8.x-1.0');
 

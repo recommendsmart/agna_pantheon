@@ -21,11 +21,6 @@ class FormGroupingElementsTest extends WebDriverTestBase {
   /**
    * {@inheritdoc}
    */
-  protected $defaultTheme = 'stark';
-
-  /**
-   * {@inheritdoc}
-   */
   protected function setUp() {
     parent::setUp();
 
@@ -131,8 +126,8 @@ class FormGroupingElementsTest extends WebDriverTestBase {
     $summary = $page->find('css', '#edit-meta > summary');
 
     // Assert that both aria-expanded and aria-pressed are true.
-    $this->assertEquals('true', $summary->getAttribute('aria-expanded'));
-    $this->assertEquals('true', $summary->getAttribute('aria-pressed'));
+    $this->assertTrue($summary->getAttribute('aria-expanded'));
+    $this->assertTrue($summary->getAttribute('aria-pressed'));
   }
 
 }

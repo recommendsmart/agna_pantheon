@@ -2,10 +2,12 @@
 
 namespace Drupal\forum\Form;
 
+use Drupal\Core\Entity\EntityManagerInterface;
 use Drupal\Core\Form\FormStateInterface;
 use Drupal\Core\Render\Element;
 use Drupal\Core\Url;
 use Drupal\taxonomy\Form\OverviewTerms;
+use Drupal\Core\Extension\ModuleHandlerInterface;
 use Drupal\taxonomy\VocabularyInterface;
 use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 
@@ -15,6 +17,26 @@ use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
  * @internal
  */
 class Overview extends OverviewTerms {
+
+  /**
+   * Entity manager Service Object.
+   *
+   * @var \Drupal\Core\Entity\EntityManagerInterface
+   */
+  protected $entityManager;
+
+  /**
+   * Constructs a \Drupal\forum\Form\OverviewForm object.
+   *
+   * @param \Drupal\Core\Extension\ModuleHandlerInterface $module_handler
+   *   The module handler service.
+   * @param \Drupal\Core\Entity\EntityManagerInterface $entity_manager
+   *   The entity manager service.
+   */
+  public function __construct(ModuleHandlerInterface $module_handler, EntityManagerInterface $entity_manager) {
+    parent::__construct($module_handler, $entity_manager);
+    $this->entityManager = $entity_manager;
+  }
 
   /**
    * {@inheritdoc}
@@ -29,7 +51,7 @@ class Overview extends OverviewTerms {
   public function buildForm(array $form, FormStateInterface $form_state, VocabularyInterface $taxonomy_vocabulary = NULL) {
     $forum_config = $this->config('forum.settings');
     $vid = $forum_config->get('vocabulary');
-    $vocabulary = $this->entityTypeManager->getStorage('taxonomy_vocabulary')->load($vid);
+    $vocabulary = $this->entityManager->getStorage('taxonomy_vocabulary')->load($vid);
     if (!$vocabulary) {
       throw new NotFoundHttpException();
     }
@@ -71,8 +93,8 @@ class Overview extends OverviewTerms {
 
     // Use the existing taxonomy overview submit handler.
     $form['terms']['#empty'] = $this->t('No containers or forums available. <a href=":container">Add container</a> or <a href=":forum">Add forum</a>.', [
-      ':container' => Url::fromRoute('forum.add_container')->toString(),
-      ':forum' => Url::fromRoute('forum.add_forum')->toString(),
+      ':container' => $this->url('forum.add_container'),
+      ':forum' => $this->url('forum.add_forum'),
     ]);
     return $form;
   }

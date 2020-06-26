@@ -22,11 +22,6 @@ class FeedLanguageTest extends AggregatorTestBase {
   public static $modules = ['language'];
 
   /**
-   * {@inheritdoc}
-   */
-  protected $defaultTheme = 'stark';
-
-  /**
    * List of langcodes.
    *
    * @var string[]
@@ -82,7 +77,7 @@ class FeedLanguageTest extends AggregatorTestBase {
     // the one from the feed.
     foreach ($feeds as $feed) {
       /** @var \Drupal\aggregator\ItemInterface[] $items */
-      $items = \Drupal::entityTypeManager()->getStorage('aggregator_item')->loadByProperties(['fid' => $feed->id()]);
+      $items = entity_load_multiple_by_properties('aggregator_item', ['fid' => $feed->id()]);
       $this->assertTrue(count($items) > 0, 'Feed items were created.');
       foreach ($items as $item) {
         $this->assertEqual($item->language()->getId(), $feed->language()->getId());

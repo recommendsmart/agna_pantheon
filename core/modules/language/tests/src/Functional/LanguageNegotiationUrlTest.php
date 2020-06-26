@@ -23,11 +23,6 @@ class LanguageNegotiationUrlTest extends BrowserTestBase {
   ];
 
   /**
-   * {@inheritdoc}
-   */
-  protected $defaultTheme = 'stark';
-
-  /**
    * @var \Drupal\user\Entity\User
    */
   protected $user;

@@ -15,8 +15,8 @@
 }
 .caption > figcaption {
   display: table-caption;
-  max-width: none;
   caption-side: bottom;
+  max-width: none;
 }
 
 /**

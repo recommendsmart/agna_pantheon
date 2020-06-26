@@ -26,9 +26,4 @@ class DateFormatJsonCookieTest extends DateFormatResourceTestBase {
    */
   protected static $auth = 'cookie';
 
-  /**
-   * {@inheritdoc}
-   */
-  protected $defaultTheme = 'stark';
-
 }

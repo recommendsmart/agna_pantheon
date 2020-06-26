@@ -14,7 +14,6 @@ use Drupal\Core\Cache\CacheBackendInterface;
 use Drupal\Core\DependencyInjection\ContainerInjectionInterface;
 use Drupal\Core\Entity\EntityHandlerBase;
 use Drupal\Core\Entity\EntityInterface;
-use Drupal\Core\Entity\EntityLastInstalledSchemaRepositoryInterface;
 use Drupal\Core\Entity\EntityManagerInterface;
 use Drupal\Core\Entity\EntityTypeInterface;
 use Drupal\Core\Entity\EntityTypeManager;
@@ -68,13 +67,6 @@ class EntityTypeManagerTest extends UnitTestCase {
   protected $cacheBackend;
 
   /**
-   * The entity last installed schema repository.
-   *
-   * @var \Drupal\Core\Entity\EntityLastInstalledSchemaRepositoryInterface|\Prophecy\Prophecy\ProphecyInterface
-   */
-  protected $entityLastInstalledSchemaRepository;
-
-  /**
    * {@inheritdoc}
    */
   protected function setUp() {
@@ -86,9 +78,8 @@ class EntityTypeManagerTest extends UnitTestCase {
 
     $this->cacheBackend = $this->prophesize(CacheBackendInterface::class);
     $this->translationManager = $this->prophesize(TranslationInterface::class);
-    $this->entityLastInstalledSchemaRepository = $this->prophesize(EntityLastInstalledSchemaRepositoryInterface::class);
 
-    $this->entityTypeManager = new TestEntityTypeManager(new \ArrayObject(), $this->moduleHandler->reveal(), $this->cacheBackend->reveal(), $this->translationManager->reveal(), $this->getClassResolverStub(), $this->entityLastInstalledSchemaRepository->reveal());
+    $this->entityTypeManager = new TestEntityTypeManager(new \ArrayObject(), $this->moduleHandler->reveal(), $this->cacheBackend->reveal(), $this->translationManager->reveal(), $this->getClassResolverStub());
     $this->discovery = $this->prophesize(DiscoveryInterface::class);
     $this->entityTypeManager->setDiscovery($this->discovery->reveal());
   }
@@ -231,6 +222,11 @@ class EntityTypeManagerTest extends UnitTestCase {
    * @covers ::getFormObject
    */
   public function testGetFormObject() {
+    $entity_manager = $this->prophesize(EntityManagerInterface::class);
+    $container = $this->prophesize(ContainerInterface::class);
+    $container->get('entity.manager')->willReturn($entity_manager->reveal());
+    \Drupal::setContainer($container->reveal());
+
     $apple = $this->prophesize(EntityTypeInterface::class);
     $apple->getFormClass('default')->willReturn(TestEntityForm::class);
 
@@ -263,7 +259,7 @@ class EntityTypeManagerTest extends UnitTestCase {
     $entity->getFormClass('edit')->willReturn('');
     $this->setUpEntityTypeDefinitions(['test_entity_type' => $entity]);
 
-    $this->expectException(InvalidPluginDefinitionException::class);
+    $this->setExpectedException(InvalidPluginDefinitionException::class);
     $this->entityTypeManager->getFormObject('test_entity_type', 'edit');
   }
 
@@ -296,7 +292,7 @@ class EntityTypeManagerTest extends UnitTestCase {
     $entity = $this->prophesize(EntityTypeInterface::class);
     $entity->getHandlerClass('storage')->willReturn('');
     $this->setUpEntityTypeDefinitions(['test_entity_type' => $entity]);
-    $this->expectException(InvalidPluginDefinitionException::class);
+    $this->setExpectedException(InvalidPluginDefinitionException::class);
     $this->entityTypeManager->getHandler('test_entity_type', 'storage');
   }
 
@@ -329,8 +325,7 @@ class EntityTypeManagerTest extends UnitTestCase {
     $apple->getLinkTemplates()->willReturn(['canonical' => 'path/to/apple']);
 
     $definition = $apple->reveal();
-    $this->expectException(InvalidLinkTemplateException::class);
-    $this->expectExceptionMessage("Link template 'canonical' for entity type 'apple' must start with a leading slash, the current link template is 'path/to/apple'");
+    $this->setExpectedException(InvalidLinkTemplateException::class, "Link template 'canonical' for entity type 'apple' must start with a leading slash, the current link template is 'path/to/apple'");
     $this->entityTypeManager->processDefinition($definition, 'apple');
   }
 
@@ -380,8 +375,7 @@ class EntityTypeManagerTest extends UnitTestCase {
   public function testGetDefinitionInvalidException() {
     $this->setUpEntityTypeDefinitions();
 
-    $this->expectException(PluginNotFoundException::class);
-    $this->expectExceptionMessage('The "pear" entity type does not exist.');
+    $this->setExpectedException(PluginNotFoundException::class, 'The "pear" entity type does not exist.');
     $this->entityTypeManager->getDefinition('pear', TRUE);
   }
 

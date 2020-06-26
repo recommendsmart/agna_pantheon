@@ -1,5 +1,4 @@
 <?php
-declare(strict_types=1);
 namespace TYPO3\PharStreamWrapper;
 
 /*
@@ -19,5 +18,5 @@ interface Assertable
      * @param string $command
      * @return bool
      */
-    public function assert(string $path, string $command): bool;
+    public function assert($path, $command);
 }

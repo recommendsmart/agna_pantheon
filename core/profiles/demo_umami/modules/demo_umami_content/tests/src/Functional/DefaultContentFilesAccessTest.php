@@ -12,11 +12,6 @@ use Drupal\Tests\BrowserTestBase;
 class DefaultContentFilesAccessTest extends BrowserTestBase {
 
   /**
-   * {@inheritdoc}
-   */
-  protected $defaultTheme = 'stark';
-
-  /**
    * Tests that sample images, recipes and articles are not accessible.
    */
   public function testAccessDeniedToFiles() {
@@ -26,9 +21,9 @@ class DefaultContentFilesAccessTest extends BrowserTestBase {
 
     $files_to_test = [
       'images/heritage-carrots.jpg',
-      'languages/en/recipe_instructions/mediterranean-quiche-umami.html',
-      'languages/en/article_body/lets-hear-it-for-carrots.html',
-      'languages/en/node/article.csv',
+      'recipe_instructions/mediterranean-quiche-umami.html',
+      'article_body/lets-hear-it-for-carrots.html',
+      'articles.csv',
     ];
     foreach ($files_to_test as $file) {
       // Hard code the path since the demo_umami profile is not installed.

@@ -28,9 +28,4 @@ class ConfigurableLanguageXmlCookieTest extends ConfigurableLanguageResourceTest
    */
   protected static $auth = 'cookie';
 
-  /**
-   * {@inheritdoc}
-   */
-  protected $defaultTheme = 'stark';
-
 }

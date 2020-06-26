@@ -1,0 +1,9 @@
+langcode: en
+status: true
+dependencies:
+  module:
+    - eform
+id: eform_submission.confirm
+label: 'Confirm Page'
+targetEntityType: eform_submission
+cache: true

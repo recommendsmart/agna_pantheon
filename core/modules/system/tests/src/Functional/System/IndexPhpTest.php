@@ -11,11 +11,6 @@ use Drupal\Tests\BrowserTestBase;
  */
 class IndexPhpTest extends BrowserTestBase {
 
-  /**
-   * {@inheritdoc}
-   */
-  protected $defaultTheme = 'stark';
-
   protected function setUp() {
     parent::setUp();
   }

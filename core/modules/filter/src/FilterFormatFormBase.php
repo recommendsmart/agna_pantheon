@@ -220,6 +220,8 @@ abstract class FilterFormatFormBase extends EntityForm {
       }
     }
 
+    $form_state->setRedirect('filter.admin_overview');
+
     return $this->entity;
   }
 

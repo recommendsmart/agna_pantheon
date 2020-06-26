@@ -1,0 +1,14 @@
+langcode: en
+status: true
+dependencies: {  }
+name: 580x400
+label: 580x400
+effects:
+  0cbf1f39-1582-463d-9e9f-a78f83ce199a:
+    uuid: 0cbf1f39-1582-463d-9e9f-a78f83ce199a
+    id: image_scale
+    weight: 2
+    data:
+      width: 580
+      height: 400
+      upscale: true

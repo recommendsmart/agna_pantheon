@@ -28,9 +28,4 @@ class ContactFormXmlCookieTest extends ContactFormResourceTestBase {
    */
   protected static $auth = 'cookie';
 
-  /**
-   * {@inheritdoc}
-   */
-  protected $defaultTheme = 'stark';
-
 }

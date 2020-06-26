@@ -16,9 +16,4 @@ class UserHalJsonCookieTest extends UserHalJsonAnonTest {
    */
   protected static $auth = 'cookie';
 
-  /**
-   * {@inheritdoc}
-   */
-  protected $defaultTheme = 'stark';
-
 }

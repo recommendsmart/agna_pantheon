@@ -10,7 +10,7 @@ use Drupal\Core\Condition\ConditionPluginBase;
  * @Condition(
  *   id = "condition_test_no_existing_type",
  *   label = @Translation("No existing type"),
- *   context_definitions = {
+ *   context = {
  *     "no_existing_type" = @ContextDefinition("no_existing_type", label = @Translation("No existing type")),
  *   }
  * )

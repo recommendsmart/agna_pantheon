@@ -14,11 +14,6 @@ class VocabularyLanguageTest extends TaxonomyTestBase {
 
   public static $modules = ['language'];
 
-  /**
-   * {@inheritdoc}
-   */
-  protected $defaultTheme = 'stark';
-
   protected function setUp() {
     parent::setUp();
 

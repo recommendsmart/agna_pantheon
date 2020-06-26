@@ -11,11 +11,6 @@ namespace Drupal\Tests\comment\Functional\Views;
 class RowRssTest extends CommentTestBase {
 
   /**
-   * {@inheritdoc}
-   */
-  protected $defaultTheme = 'stark';
-
-  /**
    * Views used by this test.
    *
    * @var array

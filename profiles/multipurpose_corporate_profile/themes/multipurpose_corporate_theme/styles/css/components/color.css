@@ -1,0 +1,874 @@
+/*!
+ *  Font Awesome 4.6.3 by @davegandy - http://fontawesome.io - @fontawesome
+ *  License - http://fontawesome.io/license (Font: SIL OFL 1.1, CSS: MIT License)
+ */
+/**
+ * Color
+ ============================================================================ */
+/**
+ * base.elements
+ ============================================================================ */
+html,
+body {
+  background-color: #333333;
+}
+
+body {
+  color: #363636;
+}
+
+a {
+  color: #0066cc;
+}
+a:visited {
+  color: #0066cc;
+}
+a:active, a.active {
+  color: #0066cc;
+}
+a:hover, a:focus {
+  color: #0066cc;
+}
+
+blockquote {
+  border-color: #cccccc;
+}
+blockquote p:first-child:before {
+  color: #cccccc;
+}
+blockquote small {
+  color: #434343;
+}
+blockquote.pull-right {
+  border-right-color: #cccccc;
+}
+
+hr {
+  border-color: #cccccc;
+}
+
+/**
+ * Remove text-shadow in selection highlight: h5bp.com/i
+ * These selection rule sets have to be separate.
+ * Customize the background color to match your design.
+ */
+::-moz-selection {
+  background-color: #b3d4fc;
+}
+
+::selection {
+  background-color: #b3d4fc;
+}
+
+/**
+ * Page
+ *  - mainly for markup that is printed directly in page.html.twig and
+ *    .l-r {}
+ ============================================================================ */
+.page {
+  background-color: #f7f7f7;
+}
+
+.regions {
+  background-color: #f7f7f7;
+}
+
+.pr-header {
+  color: #363636;
+  background-color: #ffffff;
+}
+.pr-header .regions {
+  background: inherit;
+}
+
+.pr-navbar {
+  color: #ffffff;
+  background-color: #666666;
+}
+.pr-navbar .regions {
+  background: inherit;
+}
+.pr-navbar a,
+.pr-navbar .menu__link {
+  color: inherit;
+}
+
+.pr-features {
+  color: #363636;
+  background-color: #d3d3d3;
+}
+.pr-features .regions {
+  background: inherit;
+}
+
+.pr-subfeatures {
+  color: #363636;
+  background-color: #d3d3d3;
+}
+.pr-subfeatures .regions {
+  background: inherit;
+}
+
+.pr-footer {
+  color: #ffffff;
+  background-color: #666666;
+}
+.pr-footer .regions {
+  background: inherit;
+}
+.pr-footer a,
+.pr-footer .menu__link {
+  color: inherit;
+}
+.pr-footer a.active, .pr-footer a:hover, .pr-footer a:focus,
+.pr-footer .menu__link.active,
+.pr-footer .menu__link:hover,
+.pr-footer .menu__link:focus {
+  color: inherit;
+}
+
+/**
+ * AT attribution message
+ *  - a toggle setting in the theme settings, you can turn it on/off using
+ *    the Markup overrides extension.
+ ============================================================================ */
+.attribution .l-rw {
+  background-color: transparent;
+}
+.attribution .attribution__link {
+  color: #363636;
+}
+
+/**
+ * Feed Icons
+ *  - icons are SVG, SEE feed-icon.html.twig in AT Core templates directory.
+ ============================================================================ */
+.feed-icon-rss__path {
+  fill: rgba(0, 0, 0, 0.6);
+}
+
+/**
+ * Branding styles
+ *  - Drupal core branding block.
+ ============================================================================ */
+/**
+ * Blocks
+ ============================================================================ */
+/**
+ * Menus
+ *  - style Drupal core block menus.
+ *  - for the drop menu and other responsive menus see the mixins and the
+ *    _navbar.scss partial.
+ ============================================================================ */
+.menu__item:first-child .menu__link {
+  border-color: #cccccc;
+}
+
+.menu__link {
+  color: #0066cc;
+  border-color: #cccccc;
+}
+.menu__link:hover, .menu__link:focus {
+  color: #0066cc;
+}
+.menu__link.active {
+  color: #0066cc;
+}
+
+/**
+ * Responsive menu styles.
+ *
+ * Mixins provide the basic structure and a base style (not much), the rest
+ * is up to you, add colors, borders, padding and so on. Icons such as
+ * the hamburger and arrows are set in variables in _variables.scss, and you
+ * use the color variables for menus from there also.
+ *
+ * Menu styles are set in Appearance settings using the Responsive Menus extension.
+ * There you select a block, breakpoint, a default style and a responsive style.
+ * You can safely remove mixins from this file if you not going to use them later
+ * on, and want to save a few bytes in stylesheet size.
+ *
+ * Each mixin takes one or more parameters. Use these to customize the basic structure
+ * of the menu, or call options, for example you can place the offcanvas menu on the
+ * left or right.
+ *
+ * Do not import into breakpoints unless you are not using the Responsive Menu
+ * settings in Appearance Extensions, in which case you will need to load the
+ * at_core/at.responsivemenus library and provide it's required drupalSettings.
+ *
+ * Breakpoints are handled in matchMedia using Enquire.
+ *
+ * Responsive styles are a combination of three things:
+ *  1. Sass/CSS defined here (with breakpoints etc).
+ *  2. jQuery: responsive-menus.js in AT Core libraries which adds/toggles classes.
+ *  3. Theme settings as set in your themes Advanced extention settings.
+ ============================================================================ */
+.rm-region,
+.rm-block,
+.rm-block * {
+  background-color: inherit;
+  color: inherit;
+}
+
+.rm-toggle__link, .rm-toggle__link:hover, .rm-toggle__link:focus, .rm-toggle__link:active {
+  background-color: #363636;
+}
+.rm-toggle__icon {
+  fill: white;
+}
+.rm-toggle span {
+  background-color: transparent;
+}
+
+.rm-block__content .menu__item--active-trail > a {
+  color: inherit;
+  background-color: rgba(255, 255, 255, 0.3);
+}
+.rm-block__content .menu__link {
+  color: inherit;
+  background-color: inherit;
+}
+.rm-block__content .menu__link:after, .rm-block__content .menu__link:before {
+  color: inherit !important;
+}
+.rm-block__content .menu__link:active {
+  text-shadow: 0 1px 1px rgba(255, 255, 255, 0.8);
+  opacity: 0.9;
+}
+.rm-block__content .menu__link:hover, .rm-block__content .menu__link:focus {
+  color: inherit;
+  background-color: rgba(255, 255, 255, 0.3);
+}
+.rm-block__content .menu__link.active {
+  color: inherit;
+  background-color: rgba(255, 255, 255, 0.3);
+}
+.rm-block__content .menu__link.active[href="/"] {
+  background-color: transparent;
+}
+.rm-block__content .menu__link.active[href="/"]:hover, .rm-block__content .menu__link.active[href="/"]:focus {
+  color: inherit;
+  background-color: rgba(255, 255, 255, 0.3);
+}
+
+.ms-slidedown .rm-block__content .menu__link, .ms-slidedown .rm-block__content .menu__link.active[href="/"] {
+  color: inherit;
+  background-color: rgba(255, 255, 255, 0.3);
+}
+.ms-slidedown .pr-header__header-second .rm-block__content .menu__link, .ms-slidedown .pr-header__header-second .rm-block__content .menu__link.active[href="/"] {
+  background-color: rgba(0, 0, 0, 0.05);
+}
+
+.ms-offcanvas .rm-block__content {
+  opacity: .001;
+  background-color: #333333;
+  color: #f7f7f7;
+}
+
+.ms-tiles .rm-block__content .menu-level-1 > .menu__item {
+  background-color: rgba(255, 255, 255, 0.3);
+}
+
+.ms-meganav.rm-is-open .rm-block__content .menu-level-1 > .menu__item {
+  border-bottom: 1px solid rgba(255, 255, 255, 0.4);
+}
+.ms-meganav.rm-is-open .rm-block__content .menu-level-1 > .menu__item > .menu__link {
+  background-color: rgba(255, 255, 255, 0.3);
+}
+
+/**
+ * Breadcrumbs
+ ============================================================================ */
+.breadcrumb li:before {
+  color: #cccccc;
+}
+.breadcrumb a {
+  color: #0066cc;
+  text-decoration: none;
+}
+
+/**
+ * Pagers
+ * - Full system pager.
+ * - Views mini pager.
+ ============================================================================ */
+.pager__link {
+  border-color: #cccccc;
+}
+.pager__link:focus, .pager__link:hover {
+  background-color: rgba(255, 255, 255, 0.75);
+}
+.pager__link:active {
+  box-shadow: inset 0 0 3px 0 rgba(0, 0, 0, 0.75);
+  opacity: 0.9;
+}
+
+.pager__link--is-active {
+  background-color: rgba(255, 255, 255, 0.75);
+}
+.pager--mini .pager__link--is-active {
+  background-color: transparent;
+  opacity: 0.65;
+}
+
+/**
+ * Table Theme
+ * Style Drupal selectors for tables.
+ ============================================================================ */
+thead tr {
+  color: #363636;
+  background-color: #ededed;
+}
+
+tr,
+td,
+th {
+  border-color: #cccccc;
+}
+
+/**
+ * Forms
+ *  - This probably seems like a lot - remember AT unsets system.theme.css and
+ *    gives you complete control over all form elements.
+ *
+ * Note:
+ *  - input type submit is treated as a 'button', see _buttons.scss
+ *  - for drop buttons see _buttons.scss
+ ============================================================================ */
+textarea,
+select,
+input[type="date"],
+input[type="datetime"],
+input[type="datetime-local"],
+input[type="email"],
+input[type="month"],
+input[type="number"],
+input[type="password"],
+input[type="search"],
+input[type="tel"],
+input[type="text"],
+input[type="time"],
+input[type="url"],
+input[type="week"] {
+  color: #505050;
+  border-color: #cccccc;
+  background-color: #ffffff;
+}
+textarea:focus,
+select:focus,
+input[type="date"]:focus,
+input[type="datetime"]:focus,
+input[type="datetime-local"]:focus,
+input[type="email"]:focus,
+input[type="month"]:focus,
+input[type="number"]:focus,
+input[type="password"]:focus,
+input[type="search"]:focus,
+input[type="tel"]:focus,
+input[type="text"]:focus,
+input[type="time"]:focus,
+input[type="url"]:focus,
+input[type="week"]:focus {
+  border-color: #cccccc;
+  color: #363636;
+}
+textarea:hover, textarea:focus,
+select:hover,
+select:focus,
+input[type="date"]:hover,
+input[type="date"]:focus,
+input[type="datetime"]:hover,
+input[type="datetime"]:focus,
+input[type="datetime-local"]:hover,
+input[type="datetime-local"]:focus,
+input[type="email"]:hover,
+input[type="email"]:focus,
+input[type="month"]:hover,
+input[type="month"]:focus,
+input[type="number"]:hover,
+input[type="number"]:focus,
+input[type="password"]:hover,
+input[type="password"]:focus,
+input[type="search"]:hover,
+input[type="search"]:focus,
+input[type="tel"]:hover,
+input[type="tel"]:focus,
+input[type="text"]:hover,
+input[type="text"]:focus,
+input[type="time"]:hover,
+input[type="time"]:focus,
+input[type="url"]:hover,
+input[type="url"]:focus,
+input[type="week"]:hover,
+input[type="week"]:focus {
+  background-color: white;
+}
+textarea[disabled]:hover, textarea[disabled]:focus,
+select[disabled]:hover,
+select[disabled]:focus,
+input[type="date"][disabled]:hover,
+input[type="date"][disabled]:focus,
+input[type="datetime"][disabled]:hover,
+input[type="datetime"][disabled]:focus,
+input[type="datetime-local"][disabled]:hover,
+input[type="datetime-local"][disabled]:focus,
+input[type="email"][disabled]:hover,
+input[type="email"][disabled]:focus,
+input[type="month"][disabled]:hover,
+input[type="month"][disabled]:focus,
+input[type="number"][disabled]:hover,
+input[type="number"][disabled]:focus,
+input[type="password"][disabled]:hover,
+input[type="password"][disabled]:focus,
+input[type="search"][disabled]:hover,
+input[type="search"][disabled]:focus,
+input[type="tel"][disabled]:hover,
+input[type="tel"][disabled]:focus,
+input[type="text"][disabled]:hover,
+input[type="text"][disabled]:focus,
+input[type="time"][disabled]:hover,
+input[type="time"][disabled]:focus,
+input[type="url"][disabled]:hover,
+input[type="url"][disabled]:focus,
+input[type="week"][disabled]:hover,
+input[type="week"][disabled]:focus {
+  color: #363636;
+}
+
+/**
+ * Collapsible details.
+ *
+ * @see collapse.js
+ * @thanks http://nicolasgallagher.com/css-background-image-hacks/
+ */
+details {
+  border-color: #cccccc;
+  background-color: #fcfcfc;
+}
+
+input[readonly],
+select[readonly],
+textarea[readonly] {
+  background-color: #ededed;
+  color: #363636;
+}
+
+button[disabled],
+input[disabled],
+select[disabled],
+select[disabled] option,
+select[disabled] optgroup,
+textarea[disabled],
+a.button_disabled {
+  background-color: #ededed;
+  color: #363636;
+}
+
+input::-webkit-input-placeholder,
+textarea::-webkit-input-placeholder {
+  color: #505050;
+}
+
+input:-moz-placeholder,
+textarea:-moz-placeholder {
+  color: #505050;
+}
+
+input.placeholder_text,
+textarea.placeholder_text {
+  color: #505050;
+}
+
+/**
+ * Form Theme
+ ============================================================================ */
+.form-type-radio label.option,
+.form-type-checkbox label.option {
+  border-color: #cccccc;
+  background-color: #ffffff;
+}
+.form-type-radio label.option:focus, .form-type-radio label.option:hover,
+.form-type-checkbox label.option:focus,
+.form-type-checkbox label.option:hover {
+  background-color: rgba(255, 255, 255, 0.75);
+}
+
+.filter-wrapper {
+  border-color: #cccccc;
+}
+
+.tips {
+  color: #505050;
+}
+
+.description {
+  color: #505050;
+}
+
+form .marker {
+  color: #ee0000;
+}
+
+.form-required:after {
+  color: #ee0000;
+}
+
+.form-item input.error,
+.form-item textarea.error,
+.form-item select.error {
+  border-color: #f9c9bf;
+}
+
+/**
+ * Buttons
+ * We include button styling separate (from _forms.scss) mainly because the form
+ * styles are quite long already and we often want to add unique button variants.
+ *
+ *  - applies to elements with class "button", includes styles for:
+ *  - input buttons
+ *  - anchor links styled as buttons
+ *  - drop buttons
+ *  - action link buttons
+ ============================================================================ */
+button,
+.button {
+  color: #ffffff;
+  background-color: #0066cc;
+  border-color: #0066cc;
+  opacity: 0.9;
+  box-shadow: inset 0 1px 0 0 rgba(255, 255, 255, 0.5);
+}
+button:hover, button:focus,
+.button:hover,
+.button:focus {
+  opacity: 1;
+  color: #ffffff;
+  background-color: #0066cc;
+}
+button:visited,
+.button:visited {
+  color: #ffffff;
+  background-color: #0066cc;
+}
+button[disabled]:hover,
+.button[disabled]:hover {
+  opacity: 1;
+}
+
+.button--primary {
+  color: #ffffff;
+  background-color: #0066cc;
+  opacity: 0.9;
+}
+.button--primary:link, .button--primary:visited {
+  color: #ffffff;
+  background-color: #0066cc;
+  border-color: #ccc;
+}
+.button--primary:hover, .button--primary:focus, .button--primary:active, .button--primary.active {
+  color: #ffffff;
+  background-color: #0066cc;
+  border-color: #ccc;
+  opacity: 1;
+}
+
+.button--danger {
+  color: #a51b00;
+  background-color: transparent;
+  opacity: 0.9;
+}
+.button--danger:link, .button--danger:visited {
+  color: #a51b00;
+  background-color: transparent;
+  border-color: #ccc;
+}
+.button--danger:hover, .button--danger:focus, .button--danger:active, .button--danger.active {
+  color: #a51b00;
+  background-color: transparent;
+  border-color: #ccc;
+  opacity: 1;
+}
+
+.button-action {
+  opacity: 1;
+}
+
+#edit-preview {
+  background-color: #ffffff;
+  color: #0066cc;
+}
+
+button.link-edit-summary {
+  background-color: inherit;
+  color: #363636;
+}
+button.link-edit-summary:hover, button.link-edit-summary:focus {
+  background-color: inherit;
+  color: #363636;
+}
+
+/* Drop buttons */
+.dropbutton-widget {
+  background-color: #f7f7f7;
+  border-color: #0066cc;
+}
+.dropbutton-widget:hover, .dropbutton-widget:focus {
+  border-color: #0066cc;
+}
+
+.dropbutton .dropbutton-action .button {
+  color: #ffffff;
+  background-color: #0066cc;
+  opacity: 0.9;
+}
+.dropbutton .dropbutton-action .button:link, .dropbutton .dropbutton-action .button:visited {
+  color: #ffffff;
+  background-color: #0066cc;
+  border-color: #ccc;
+}
+.dropbutton .dropbutton-action .button:hover, .dropbutton .dropbutton-action .button:focus, .dropbutton .dropbutton-action .button:active, .dropbutton .dropbutton-action .button.active {
+  color: #ffffff;
+  background-color: #0066cc;
+  border-color: #ccc;
+  opacity: 1;
+}
+.dropbutton .secondary-action {
+  border-top-color: #0066cc;
+}
+.dropbutton .secondary-action .button {
+  background-color: #f7f7f7;
+  color: #0066cc;
+}
+.dropbutton .dropbutton-toggle button:hover {
+  background-color: transparent;
+}
+
+.dropbutton-multiple .dropbutton {
+  border-right-color: #0066cc;
+}
+[dir="rtl"] .dropbutton-multiple .dropbutton {
+  border-left-color: #0066cc;
+}
+.dropbutton-multiple.open .dropbutton-action .button {
+  border-radius: 2px 0 0 0;
+}
+
+.dropbutton-arrow {
+  color: #0066cc;
+}
+
+/**
+ * Tabs (local tasks)
+ * TODO: fix selectors when https://www.drupal.org/node/507488 lands. This will
+ * mean the tabs are now a block, and we probably need some template revisions
+ * also.
+ ============================================================================ */
+.pr-temporary-tabs ul.tabs--primary {
+  border-bottom-color: #cccccc;
+}
+.pr-temporary-tabs ul.tabs--primary li a {
+  color: #363636;
+  background-color: #fafafa;
+  opacity: 0.9;
+  box-shadow: inset 0 1px 0 0 rgba(255, 255, 255, 0.5);
+}
+.pr-temporary-tabs ul.tabs--primary li a:link, .pr-temporary-tabs ul.tabs--primary li a:visited {
+  color: #363636;
+  background-color: #fafafa;
+  border-color: #ccc;
+}
+.pr-temporary-tabs ul.tabs--primary li a:hover, .pr-temporary-tabs ul.tabs--primary li a:focus, .pr-temporary-tabs ul.tabs--primary li a:active, .pr-temporary-tabs ul.tabs--primary li a.active {
+  color: #363636;
+  background-color: #fafafa;
+  border-color: #ccc;
+  opacity: 1;
+}
+.pr-temporary-tabs ul.tabs--primary li a:hover, .pr-temporary-tabs ul.tabs--primary li a:focus {
+  color: #363636;
+  background-color: #ededed;
+}
+.pr-temporary-tabs ul.tabs--primary li a:active {
+  text-shadow: 0 1px 1px rgba(0, 0, 0, 0.3);
+}
+.pr-temporary-tabs ul.tabs--primary li a.active {
+  color: #363636;
+  background-color: transparent;
+}
+@media all and (min-width: 60.063em) {
+  .pr-temporary-tabs ul.tabs--primary li a.active {
+    border-bottom-color: #f7f7f7;
+  }
+}
+@media all and (max-width: 60em) {
+  .pr-temporary-tabs ul.tabs--primary li a.active {
+    border-bottom-color: #cccccc;
+  }
+}
+.pr-temporary-tabs ul.tabs--primary li a.active:hover, .pr-temporary-tabs ul.tabs--primary li a.active:focus {
+  color: #363636;
+  background-color: transparent;
+}
+.pr-temporary-tabs ul.tabs--secondary li a {
+  color: #363636;
+  border-color: #cccccc;
+  border-bottom-color: transparent;
+}
+.pr-temporary-tabs ul.tabs--secondary li a:hover, .pr-temporary-tabs ul.tabs--secondary li a:focus {
+  text-decoration: none;
+  color: #363636;
+  border-color: #cccccc;
+}
+.pr-temporary-tabs ul.tabs--secondary li a.active {
+  border-color: #cccccc;
+}
+.pr-temporary-tabs ul.tabs--secondary li a.active:hover, .pr-temporary-tabs ul.tabs--secondary li a.active:focus {
+  color: #363636;
+}
+
+/**
+ * File icons
+ * AT unsets Drupal core file field CSS for image icons and replaces them
+ * with FontAwesome icons.
+ ============================================================================ */
+.file a:before {
+  color: #363636;
+}
+
+/**
+ * Image upload widget.
+ ============================================================================ */
+.image-preview {
+  background-color: transparent;
+}
+
+/**
+ * Field Taxonomy Reference
+ ============================================================================ */
+/**
+ * Labels.
+ *  -  for example "new" mark on comments, tags etc.
+ *
+ *  TODO: fix this stuff up, its just a copy/paste from system.theme.css at the moment.
+ ============================================================================ */
+.filter-help a:after,
+.more-help-link a:after {
+  color: #cccccc;
+}
+
+/**
+ * Messages
+ *  - System messages such as status, warning and error are NOT included
+ *    here as we don't want them to shift or change in color module, since
+ *    they are too important with regards to accessibility etc.
+ ============================================================================ */
+.dev-query {
+  color: #f7f7f7;
+}
+
+body > pre,
+.xdebug-var-dump {
+  color: #f7f7f7;
+}
+
+.page .xdebug-var-dump {
+  color: #363636;
+}
+
+body:before {
+  color: #a51b00;
+}
+
+/**
+ * Content Types (nodes)
+ *  - in Drupal a content type is a bunch of fields we use to enter and display
+ *    content, such as pages, blog posts, forum posts and so on. Each of those
+ *    is usually a content type you create in the Drupal admin.
+ *  - an instance of a content type (e.g. a single blog post) is called a node,
+ *    the root template is called node.html.twg and the base selector is .node {}
+ ============================================================================ */
+.node {
+  background-color: #ffffff;
+  box-shadow: 0 3px 4px 0 rgba(0, 0, 0, 0.1);
+}
+
+.node--sticky {
+  background-color: transparent;
+  box-shadow: none;
+}
+
+/**
+ * Aggregator
+ ============================================================================ */
+.aggregator-item {
+  background-color: #ffffff;
+  box-shadow: 0 3px 4px 0 rgba(0, 0, 0, 0.1);
+}
+
+/**
+ * Forums
+ *  - see table.scss for generic table styles.
+ ============================================================================ */
+.forum .icon svg {
+  fill: rgba(0, 0, 0, 0.5);
+}
+
+/**
+ * Search results pages
+ ============================================================================ */
+.item-list--search-results {
+  background-color: #ffffff;
+  box-shadow: 0 3px 4px 0 rgba(0, 0, 0, 0.1);
+}
+
+/**
+ * Comments
+ *  - comment field (holds comment title, form, comments etc)
+ *  - styles for comments
+ ============================================================================ */
+.comment {
+  border-color: #eeeeee;
+}
+
+/**
+ * Social media
+ *  - styles for socila media links, modules etc.
+ ============================================================================ */
+.block-social-media-links .platform__link,
+.pane-social-media-link-widget .platform__link {
+  color: #363636;
+  opacity: 0.65;
+}
+.block-social-media-links .platform__link:hover, .block-social-media-links .platform__link:focus,
+.pane-social-media-link-widget .platform__link:hover,
+.pane-social-media-link-widget .platform__link:focus {
+  opacity: 1;
+}
+
+/**
+ * Views
+ ============================================================================ */
+.view-empty:not(:empty) .links a[href="/node/add"] {
+  opacity: 0.9;
+  box-shadow: inset 0 1px 0 0 rgba(255, 255, 255, 0.5);
+  color: #ffffff;
+  background-color: #0066cc;
+  opacity: 0.9;
+}
+.view-empty:not(:empty) .links a[href="/node/add"]:hover, .view-empty:not(:empty) .links a[href="/node/add"]:focus {
+  opacity: 1;
+}
+.view-empty:not(:empty) .links a[href="/node/add"][disabled]:hover {
+  opacity: 1;
+}
+.view-empty:not(:empty) .links a[href="/node/add"]:link, .view-empty:not(:empty) .links a[href="/node/add"]:visited {
+  color: #ffffff;
+  background-color: #0066cc;
+  border-color: #ccc;
+}
+.view-empty:not(:empty) .links a[href="/node/add"]:hover, .view-empty:not(:empty) .links a[href="/node/add"]:focus, .view-empty:not(:empty) .links a[href="/node/add"]:active, .view-empty:not(:empty) .links a[href="/node/add"].active {
+  color: #ffffff;
+  background-color: #0066cc;
+  border-color: #ccc;
+  opacity: 1;
+}
+/*# sourceMappingURL=maps/color.css.map */

@@ -19,11 +19,6 @@ class FileHalJsonBasicAuthTest extends FileHalJsonAnonTest {
   /**
    * {@inheritdoc}
    */
-  protected $defaultTheme = 'stark';
-
-  /**
-   * {@inheritdoc}
-   */
   protected static $auth = 'basic_auth';
 
 }

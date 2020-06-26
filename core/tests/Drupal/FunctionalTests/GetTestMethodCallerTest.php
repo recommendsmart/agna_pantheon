@@ -12,18 +12,13 @@ use Drupal\Tests\BrowserTestBase;
 class GetTestMethodCallerTest extends BrowserTestBase {
 
   /**
-   * {@inheritdoc}
-   */
-  protected $defaultTheme = 'stark';
-
-  /**
    * Tests BrowserTestBase::getTestMethodCaller().
    */
   public function testGetTestMethodCaller() {
     $method_caller = $this->getTestMethodCaller();
     $expected = [
       'file' => __FILE__,
-      'line' => 23,
+      'line' => 18,
       'function' => __CLASS__ . '->' . __FUNCTION__ . '()',
       'class' => BrowserTestBase::class,
       'object' => $this,

@@ -21,11 +21,6 @@ class EditorDialogAccessTest extends BrowserTestBase {
   public static $modules = ['editor', 'filter', 'ckeditor'];
 
   /**
-   * {@inheritdoc}
-   */
-  protected $defaultTheme = 'stark';
-
-  /**
    * Test access to the editor image dialog.
    */
   public function testEditorImageDialogAccess() {
@@ -70,8 +65,8 @@ class EditorDialogAccessTest extends BrowserTestBase {
     $editor->save();
     $this->resetAll();
     $this->drupalGet($url);
-    $this->assertNotEmpty($this->cssSelect('input[type=text][name="attributes[src]"]'), 'Image uploads disabled: input[type=text][name="attributes[src]"] is present.');
-    $this->assertEmpty($this->cssSelect('input[type=file]'), 'Image uploads disabled: input[type=file] is absent.');
+    $this->assertTrue($this->cssSelect('input[type=text][name="attributes[src]"]'), 'Image uploads disabled: input[type=text][name="attributes[src]"] is present.');
+    $this->assertFalse($this->cssSelect('input[type=file]'), 'Image uploads disabled: input[type=file] is absent.');
     $session->statusCodeEquals(200);
 
     // With image upload settings, expect a 200, and now there should be an
@@ -80,8 +75,8 @@ class EditorDialogAccessTest extends BrowserTestBase {
       ->save();
     $this->resetAll();
     $this->drupalGet($url);
-    $this->assertEmpty($this->cssSelect('input[type=text][name="attributes[src]"]'), 'Image uploads enabled: input[type=text][name="attributes[src]"] is absent.');
-    $this->assertNotEmpty($this->cssSelect('input[type=file]'), 'Image uploads enabled: input[type=file] is present.');
+    $this->assertFalse($this->cssSelect('input[type=text][name="attributes[src]"]'), 'Image uploads enabled: input[type=text][name="attributes[src]"] is absent.');
+    $this->assertTrue($this->cssSelect('input[type=file]'), 'Image uploads enabled: input[type=file] is present.');
     $session->statusCodeEquals(200);
   }
 

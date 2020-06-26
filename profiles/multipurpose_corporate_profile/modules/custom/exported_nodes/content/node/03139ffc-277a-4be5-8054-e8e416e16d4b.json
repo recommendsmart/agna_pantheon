@@ -1,0 +1,209 @@
+{
+    "_links": {
+        "self": {
+            "href": "http:\/\/default\/content\/new-world-order-0?_format=hal_json"
+        },
+        "type": {
+            "href": "http:\/\/drupal.org\/rest\/type\/node\/main_slider"
+        },
+        "http:\/\/drupal.org\/rest\/relation\/node\/main_slider\/uid": [
+            {
+                "href": "http:\/\/default\/user\/0?_format=hal_json",
+                "lang": "und"
+            }
+        ],
+        "http:\/\/drupal.org\/rest\/relation\/node\/main_slider\/revision_uid": [
+            {
+                "href": "http:\/\/default\/user\/0?_format=hal_json"
+            }
+        ],
+        "http:\/\/drupal.org\/rest\/relation\/node\/main_slider\/field_background_image": [
+            {
+                "href": "http:\/\/default\/sites\/default\/files\/Layer-16.jpg"
+            }
+        ],
+        "http:\/\/drupal.org\/rest\/relation\/node\/main_slider\/field_main_slider_image": [
+            {
+                "href": "http:\/\/default\/sites\/default\/files\/devices.png"
+            }
+        ]
+    },
+    "nid": [
+        {
+            "value": "81"
+        }
+    ],
+    "uuid": [
+        {
+            "value": "03139ffc-277a-4be5-8054-e8e416e16d4b"
+        }
+    ],
+    "vid": [
+        {
+            "value": "81"
+        }
+    ],
+    "langcode": [
+        {
+            "value": "und",
+            "lang": "und"
+        }
+    ],
+    "type": [
+        {
+            "target_id": "main_slider"
+        }
+    ],
+    "title": [
+        {
+            "value": "The 'New World Order'",
+            "lang": "und"
+        }
+    ],
+    "_embedded": {
+        "http:\/\/drupal.org\/rest\/relation\/node\/main_slider\/uid": [
+            {
+                "_links": {
+                    "self": {
+                        "href": "http:\/\/default\/user\/0?_format=hal_json"
+                    },
+                    "type": {
+                        "href": "http:\/\/drupal.org\/rest\/type\/user\/user"
+                    }
+                },
+                "uuid": [
+                    {
+                        "value": "cdddbba5-497d-4ff1-92f9-e0fb2de3e96e"
+                    }
+                ],
+                "lang": "und"
+            }
+        ],
+        "http:\/\/drupal.org\/rest\/relation\/node\/main_slider\/revision_uid": [
+            {
+                "_links": {
+                    "self": {
+                        "href": "http:\/\/default\/user\/0?_format=hal_json"
+                    },
+                    "type": {
+                        "href": "http:\/\/drupal.org\/rest\/type\/user\/user"
+                    }
+                },
+                "uuid": [
+                    {
+                        "value": "cdddbba5-497d-4ff1-92f9-e0fb2de3e96e"
+                    }
+                ]
+            }
+        ],
+        "http:\/\/drupal.org\/rest\/relation\/node\/main_slider\/field_background_image": [
+            {
+                "_links": {
+                    "self": {
+                        "href": "http:\/\/default\/sites\/default\/files\/Layer-16.jpg"
+                    },
+                    "type": {
+                        "href": "http:\/\/drupal.org\/rest\/type\/file\/image"
+                    }
+                },
+                "uuid": [
+                    {
+                        "value": "79825a2a-8ee5-4889-86b4-b3c0f500e240"
+                    }
+                ],
+                "uri": [
+                    {
+                        "value": "http:\/\/default\/sites\/default\/files\/Layer-16.jpg"
+                    }
+                ]
+            }
+        ],
+        "http:\/\/drupal.org\/rest\/relation\/node\/main_slider\/field_main_slider_image": [
+            {
+                "_links": {
+                    "self": {
+                        "href": "http:\/\/default\/sites\/default\/files\/devices.png"
+                    },
+                    "type": {
+                        "href": "http:\/\/drupal.org\/rest\/type\/file\/file"
+                    }
+                },
+                "uuid": [
+                    {
+                        "value": "3a0b1da6-6d50-4acf-823c-87533f5d8ab5"
+                    }
+                ],
+                "uri": [
+                    {
+                        "value": "http:\/\/default\/sites\/default\/files\/devices.png"
+                    }
+                ]
+            }
+        ]
+    },
+    "status": [
+        {
+            "value": "1",
+            "lang": "und"
+        }
+    ],
+    "created": [
+        {
+            "value": "1463461258",
+            "lang": "und"
+        }
+    ],
+    "changed": [
+        {
+            "value": "1464592216",
+            "lang": "und"
+        }
+    ],
+    "promote": [
+        {
+            "value": "0",
+            "lang": "und"
+        }
+    ],
+    "sticky": [
+        {
+            "value": "0",
+            "lang": "und"
+        }
+    ],
+    "revision_timestamp": [
+        {
+            "value": "1463461258"
+        }
+    ],
+    "revision_translation_affected": [
+        {
+            "value": "1",
+            "lang": "und"
+        }
+    ],
+    "default_langcode": [
+        {
+            "value": "1",
+            "lang": "und"
+        }
+    ],
+    "body": [
+        {
+            "value": "<p>The humankind is&nbsp;dominated&nbsp;by the very rich and powerful people who want to get even richer or die trying. By using occult Secret Societies along with the power of Lucifer&nbsp;the Illuminati&nbsp;will bring all of the nations of this world together as one in order to end this world the way we know it!<\/p>\r\n",
+            "format": "full_html",
+            "summary": ""
+        }
+    ],
+    "comment_node_main_slider": [
+        {
+            "status": "1",
+            "cid": "0",
+            "last_comment_timestamp": "1463461258",
+            "last_comment_name": null,
+            "last_comment_uid": "0",
+            "comment_count": "0",
+            "lang": "und"
+        }
+    ]
+}

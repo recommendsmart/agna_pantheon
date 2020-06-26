@@ -24,11 +24,6 @@ class LanguageUrlRewritingTest extends BrowserTestBase {
   public static $modules = ['language', 'language_test'];
 
   /**
-   * {@inheritdoc}
-   */
-  protected $defaultTheme = 'stark';
-
-  /**
    * An user with permissions to administer languages.
    *
    * @var \Drupal\user\UserInterface
@@ -66,7 +61,7 @@ class LanguageUrlRewritingTest extends BrowserTestBase {
 
     // Check that URL rewriting is not applied to subrequests.
     $this->drupalGet('language_test/subrequest');
-    $this->assertText($this->webUser->getAccountName(), 'Page correctly retrieved');
+    $this->assertText($this->webUser->getUsername(), 'Page correctly retrieved');
   }
 
   /**
@@ -86,14 +81,14 @@ class LanguageUrlRewritingTest extends BrowserTestBase {
   private function checkUrl(LanguageInterface $language, $message1, $message2) {
     $options = ['language' => $language, 'script' => ''];
     $base_path = trim(base_path(), '/');
-    $rewritten_path = trim(str_replace($base_path, '', Url::fromRoute('<front>', [], $options)->toString()), '/');
+    $rewritten_path = trim(str_replace($base_path, '', \Drupal::url('<front>', [], $options)), '/');
     $segments = explode('/', $rewritten_path, 2);
     $prefix = $segments[0];
     $path = isset($segments[1]) ? $segments[1] : $prefix;
 
     // If the rewritten URL has not a language prefix we pick a random prefix so
     // we can always check the prefixed URL.
-    $prefixes = $this->config('language.negotiation')->get('url.prefixes');
+    $prefixes = language_negotiation_url_prefixes();
     $stored_prefix = isset($prefixes[$language->getId()]) ? $prefixes[$language->getId()] : $this->randomMachineName();
     $this->assertNotEqual($stored_prefix, $prefix, $message1);
     $prefix = $stored_prefix;
@@ -130,7 +125,7 @@ class LanguageUrlRewritingTest extends BrowserTestBase {
 
     // In case index.php is part of the URLs, we need to adapt the asserted
     // URLs as well.
-    $index_php = strpos(Url::fromRoute('<front>', [], ['absolute' => TRUE])->toString(), 'index.php') !== FALSE;
+    $index_php = strpos(\Drupal::url('<front>', [], ['absolute' => TRUE]), 'index.php') !== FALSE;
 
     $request = Request::createFromGlobals();
     $server = $request->server->all();

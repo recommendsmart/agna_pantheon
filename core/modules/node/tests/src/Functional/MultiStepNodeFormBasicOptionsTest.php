@@ -13,11 +13,6 @@ use Drupal\field\Entity\FieldStorageConfig;
 class MultiStepNodeFormBasicOptionsTest extends NodeTestBase {
 
   /**
-   * {@inheritdoc}
-   */
-  protected $defaultTheme = 'stark';
-
-  /**
    * The field name to create.
    *
    * @var string
@@ -48,8 +43,7 @@ class MultiStepNodeFormBasicOptionsTest extends NodeTestBase {
       'bundle' => 'page',
       'label' => $this->randomMachineName() . '_label',
     ])->save();
-    \Drupal::service('entity_display.repository')
-      ->getFormDisplay('node', 'page')
+    entity_get_form_display('node', 'page', 'default')
       ->setComponent($this->fieldName, [
         'type' => 'text_textfield',
       ])

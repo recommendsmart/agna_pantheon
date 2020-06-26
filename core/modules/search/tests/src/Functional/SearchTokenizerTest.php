@@ -17,11 +17,6 @@ class SearchTokenizerTest extends BrowserTestBase {
   protected static $modules = ['search'];
 
   /**
-   * {@inheritdoc}
-   */
-  protected $defaultTheme = 'stark';
-
-  /**
    * Verifies that strings of CJK characters are tokenized.
    *
    * The search_simplify() function does special things with numbers, symbols,

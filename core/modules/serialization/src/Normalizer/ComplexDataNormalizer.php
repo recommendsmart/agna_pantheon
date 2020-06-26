@@ -18,9 +18,11 @@ use Drupal\Core\TypedData\TypedDataInternalPropertiesHelper;
 class ComplexDataNormalizer extends NormalizerBase {
 
   /**
-   * {@inheritdoc}
+   * The interface or class that this Normalizer supports.
+   *
+   * @var string
    */
-  protected $supportedInterfaceOrClass = ComplexDataInterface::class;
+  protected $supportedInterfaceOrClass = 'Drupal\Core\TypedData\ComplexDataInterface';
 
   /**
    * {@inheritdoc}

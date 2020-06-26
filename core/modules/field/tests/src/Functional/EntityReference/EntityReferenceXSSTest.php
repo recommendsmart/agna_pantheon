@@ -24,11 +24,6 @@ class EntityReferenceXSSTest extends BrowserTestBase {
   protected static $modules = ['node'];
 
   /**
-   * {@inheritdoc}
-   */
-  protected $defaultTheme = 'stark';
-
-  /**
    * Tests markup is escaped in the entity reference select and label formatter.
    */
   public function testEntityReferenceXSS() {

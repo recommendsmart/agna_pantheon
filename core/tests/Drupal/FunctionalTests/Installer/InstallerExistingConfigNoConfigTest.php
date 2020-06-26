@@ -9,11 +9,6 @@ namespace Drupal\FunctionalTests\Installer;
  */
 class InstallerExistingConfigNoConfigTest extends InstallerExistingConfigTestBase {
 
-  /**
-   * {@inheritdoc}
-   */
-  protected $defaultTheme = 'stark';
-
   protected $profile = 'no_config_profile';
 
   /**

@@ -2,11 +2,9 @@
 
 namespace Drupal\Tests\rdf\Functional;
 
-use Drupal\Core\Url;
 use Drupal\comment\CommentInterface;
 use Drupal\comment\CommentManagerInterface;
 use Drupal\Tests\comment\Functional\CommentTestBase;
-use Drupal\Tests\rdf\Traits\RdfParsingTrait;
 use Drupal\user\RoleInterface;
 use Drupal\comment\Entity\Comment;
 
@@ -17,19 +15,12 @@ use Drupal\comment\Entity\Comment;
  */
 class CommentAttributesTest extends CommentTestBase {
 
-  use RdfParsingTrait;
-
   /**
    * Modules to enable.
    *
    * @var array
    */
   public static $modules = ['views', 'node', 'comment', 'rdf'];
-
-  /**
-   * {@inheritdoc}
-   */
-  protected $defaultTheme = 'stark';
 
   /**
    * URI of the front page of the Drupal site.
@@ -55,15 +46,15 @@ class CommentAttributesTest extends CommentTestBase {
       'skip comment approval' => TRUE,
     ]);
     // Allows anonymous to leave their contact information.
-    $this->setCommentAnonymous(CommentInterface::ANONYMOUS_MAY_CONTACT);
+    $this->setCommentAnonymous(COMMENT_ANONYMOUS_MAY_CONTACT);
     $this->setCommentPreview(DRUPAL_OPTIONAL);
     $this->setCommentForm(TRUE);
     $this->setCommentSubject(TRUE);
     $this->setCommentSettings('comment_default_mode', CommentManagerInterface::COMMENT_MODE_THREADED, 'Comment paging changed.');
 
     // Prepares commonly used URIs.
-    $this->baseUri = Url::fromRoute('<front>', [], ['absolute' => TRUE])->toString();
-    $this->nodeUri = $this->node->toUrl('canonical', ['absolute' => TRUE])->toString();
+    $this->baseUri = \Drupal::url('<front>', [], ['absolute' => TRUE]);
+    $this->nodeUri = $this->node->url('canonical', ['absolute' => TRUE]);
 
     // Set relation between node and comment.
     $article_mapping = rdf_get_mapping('node', 'article');
@@ -130,7 +121,9 @@ class CommentAttributesTest extends CommentTestBase {
 
     // Tests number of comments in teaser view.
     $this->drupalLogin($this->webUser);
-    $this->drupalGet('node');
+    $parser = new \EasyRdf_Parser_Rdfa();
+    $graph = new \EasyRdf_Graph();
+    $parser->parse($graph, $this->drupalGet('node'), 'rdfa', $this->baseUri);
 
     // Number of comments.
     $expected_value = [
@@ -138,10 +131,13 @@ class CommentAttributesTest extends CommentTestBase {
       'value' => 2,
       'datatype' => 'http://www.w3.org/2001/XMLSchema#integer',
     ];
-    $this->assertTrue($this->hasRdfProperty($this->getSession()->getPage()->getContent(), $this->baseUri, $this->nodeUri, 'http://rdfs.org/sioc/ns#num_replies', $expected_value), 'Number of comments found in RDF output of teaser view (sioc:num_replies).');
+    $this->assertTrue($graph->hasProperty($this->nodeUri, 'http://rdfs.org/sioc/ns#num_replies', $expected_value), 'Number of comments found in RDF output of teaser view (sioc:num_replies).');
 
-    $this->drupalGet($this->node->toUrl());
-    $this->assertTrue($this->hasRdfProperty($this->getSession()->getPage()->getContent(), $this->baseUri, $this->nodeUri, 'http://rdfs.org/sioc/ns#num_replies', $expected_value), 'Number of comments found in RDF output of full node view mode (sioc:num_replies).');
+    // Tests number of comments in full node view, expected value is the same.
+    $parser = new \EasyRdf_Parser_Rdfa();
+    $graph = new \EasyRdf_Graph();
+    $parser->parse($graph, $this->drupalGet('node/' . $this->node->id()), 'rdfa', $this->baseUri);
+    $this->assertTrue($graph->hasProperty($this->nodeUri, 'http://rdfs.org/sioc/ns#num_replies', $expected_value), 'Number of comments found in RDF output of full node view mode (sioc:num_replies).');
   }
 
   /**
@@ -158,7 +154,7 @@ class CommentAttributesTest extends CommentTestBase {
     // Ensure that the author link still works properly after the author output
     // is modified by the RDF module.
     $this->drupalGet('node/' . $this->node->id());
-    $this->assertLink($this->webUser->getAccountName());
+    $this->assertLink($this->webUser->getUsername());
     $this->assertLinkByHref('user/' . $this->webUser->id());
   }
 
@@ -174,11 +170,17 @@ class CommentAttributesTest extends CommentTestBase {
 
     // Tests comment #1 with access to the user profile.
     $this->drupalLogin($this->webUser);
-    $this->_testBasicCommentRdfaMarkup($comment1);
+    $parser = new \EasyRdf_Parser_Rdfa();
+    $graph = new \EasyRdf_Graph();
+    $parser->parse($graph, $this->drupalGet('node/' . $this->node->id()), 'rdfa', $this->baseUri);
+    $this->_testBasicCommentRdfaMarkup($graph, $comment1);
 
     // Tests comment #1 with no access to the user profile (as anonymous user).
     $this->drupalLogout();
-    $this->_testBasicCommentRdfaMarkup($comment1);
+    $parser = new \EasyRdf_Parser_Rdfa();
+    $graph = new \EasyRdf_Graph();
+    $parser->parse($graph, $this->drupalGet('node/' . $this->node->id()), 'rdfa', $this->baseUri);
+    $this->_testBasicCommentRdfaMarkup($graph, $comment1);
 
     // Posts comment #2 as anonymous user.
     $anonymous_user = [];
@@ -188,11 +190,17 @@ class CommentAttributesTest extends CommentTestBase {
     $comment2 = $this->saveComment($this->node->id(), 0, $anonymous_user);
 
     // Tests comment #2 as anonymous user.
-    $this->_testBasicCommentRdfaMarkup($comment2, $anonymous_user);
+    $parser = new \EasyRdf_Parser_Rdfa();
+    $graph = new \EasyRdf_Graph();
+    $parser->parse($graph, $this->drupalGet('node/' . $this->node->id()), 'rdfa', $this->baseUri);
+    $this->_testBasicCommentRdfaMarkup($graph, $comment2, $anonymous_user);
 
     // Tests comment #2 as logged in user.
     $this->drupalLogin($this->webUser);
-    $this->_testBasicCommentRdfaMarkup($comment2, $anonymous_user);
+    $parser = new \EasyRdf_Parser_Rdfa();
+    $graph = new \EasyRdf_Graph();
+    $parser->parse($graph, $this->drupalGet('node/' . $this->node->id()), 'rdfa', $this->baseUri);
+    $this->_testBasicCommentRdfaMarkup($graph, $comment2, $anonymous_user);
   }
 
   /**
@@ -203,31 +211,34 @@ class CommentAttributesTest extends CommentTestBase {
     $this->drupalLogin($this->webUser);
     $comment_1 = $this->saveComment($this->node->id(), $this->webUser->id());
 
-    $comment_1_uri = $comment_1->toUrl('canonical', ['absolute' => TRUE])->toString();
+    $comment_1_uri = $comment_1->url('canonical', ['absolute' => TRUE]);
 
     // Posts a reply to the first comment.
     $comment_2 = $this->saveComment($this->node->id(), $this->webUser->id(), NULL, $comment_1->id());
-    $comment_2_uri = $comment_2->toUrl('canonical', ['absolute' => TRUE])->toString();
+    $comment_2_uri = $comment_2->url('canonical', ['absolute' => TRUE]);
+
+    $parser = new \EasyRdf_Parser_Rdfa();
+    $graph = new \EasyRdf_Graph();
+    $parser->parse($graph, $this->drupalGet('node/' . $this->node->id()), 'rdfa', $this->baseUri);
 
     // Tests the reply_of relationship of a first level comment.
-    $this->drupalGet($this->node->toUrl());
     $expected_value = [
       'type' => 'uri',
       'value' => $this->nodeUri,
     ];
-    $this->assertTrue($this->hasRdfProperty($this->getSession()->getPage()->getContent(), $this->baseUri, $comment_1_uri, 'http://rdfs.org/sioc/ns#reply_of', $expected_value), 'Comment relation to its node found in RDF output (sioc:reply_of).');
+    $this->assertTrue($graph->hasProperty($comment_1_uri, 'http://rdfs.org/sioc/ns#reply_of', $expected_value), 'Comment relation to its node found in RDF output (sioc:reply_of).');
 
     // Tests the reply_of relationship of a second level comment.
     $expected_value = [
       'type' => 'uri',
       'value' => $this->nodeUri,
     ];
-    $this->assertTrue($this->hasRdfProperty($this->getSession()->getPage()->getContent(), $this->baseUri, $comment_2_uri, 'http://rdfs.org/sioc/ns#reply_of', $expected_value), 'Comment relation to its node found in RDF output (sioc:reply_of).');
+    $this->assertTrue($graph->hasProperty($comment_2_uri, 'http://rdfs.org/sioc/ns#reply_of', $expected_value), 'Comment relation to its node found in RDF output (sioc:reply_of).');
     $expected_value = [
       'type' => 'uri',
       'value' => $comment_1_uri,
     ];
-    $this->assertTrue($this->hasRdfProperty($this->getSession()->getPage()->getContent(), $this->baseUri, $comment_2_uri, 'http://rdfs.org/sioc/ns#reply_of', $expected_value), 'Comment relation to its parent comment found in RDF output (sioc:reply_of).');
+    $this->assertTrue($graph->hasProperty($comment_2_uri, 'http://rdfs.org/sioc/ns#reply_of', $expected_value), 'Comment relation to its parent comment found in RDF output (sioc:reply_of).');
   }
 
   /**
@@ -240,22 +251,21 @@ class CommentAttributesTest extends CommentTestBase {
    * @param $account
    *   An array containing information about an anonymous user.
    */
-  public function _testBasicCommentRdfaMarkup(CommentInterface $comment, $account = []) {
-    $this->drupalGet($this->node->toUrl());
-    $comment_uri = $comment->toUrl('canonical', ['absolute' => TRUE])->toString();
+  public function _testBasicCommentRdfaMarkup($graph, CommentInterface $comment, $account = []) {
+    $comment_uri = $comment->url('canonical', ['absolute' => TRUE]);
 
     // Comment type.
     $expected_value = [
       'type' => 'uri',
       'value' => 'http://rdfs.org/sioc/types#Comment',
     ];
-    $this->assertTrue($this->hasRdfProperty($this->getSession()->getPage()->getContent(), $this->baseUri, $comment_uri, 'http://www.w3.org/1999/02/22-rdf-syntax-ns#type', $expected_value), 'Comment type found in RDF output (sioct:Comment).');
+    $this->assertTrue($graph->hasProperty($comment_uri, 'http://www.w3.org/1999/02/22-rdf-syntax-ns#type', $expected_value), 'Comment type found in RDF output (sioct:Comment).');
     // Comment type.
     $expected_value = [
       'type' => 'uri',
       'value' => 'http://rdfs.org/sioc/ns#Post',
     ];
-    $this->assertTrue($this->hasRdfProperty($this->getSession()->getPage()->getContent(), $this->baseUri, $comment_uri, 'http://www.w3.org/1999/02/22-rdf-syntax-ns#type', $expected_value), 'Comment type found in RDF output (sioc:Post).');
+    $this->assertTrue($graph->hasProperty($comment_uri, 'http://www.w3.org/1999/02/22-rdf-syntax-ns#type', $expected_value), 'Comment type found in RDF output (sioc:Post).');
 
     // Comment title.
     $expected_value = [
@@ -263,22 +273,22 @@ class CommentAttributesTest extends CommentTestBase {
       'value' => $comment->getSubject(),
       'lang' => 'en',
     ];
-    $this->assertTrue($this->hasRdfProperty($this->getSession()->getPage()->getContent(), $this->baseUri, $comment_uri, 'http://purl.org/dc/terms/title', $expected_value), 'Comment subject found in RDF output (dc:title).');
+    $this->assertTrue($graph->hasProperty($comment_uri, 'http://purl.org/dc/terms/title', $expected_value), 'Comment subject found in RDF output (dc:title).');
 
     // Comment date.
     $expected_value = [
       'type' => 'literal',
-      'value' => $this->container->get('date.formatter')->format($comment->getCreatedTime(), 'custom', 'c', 'UTC'),
+      'value' => format_date($comment->getCreatedTime(), 'custom', 'c', 'UTC'),
       'datatype' => 'http://www.w3.org/2001/XMLSchema#dateTime',
     ];
-    $this->assertTrue($this->hasRdfProperty($this->getSession()->getPage()->getContent(), $this->baseUri, $comment_uri, 'http://purl.org/dc/terms/date', $expected_value), 'Comment date found in RDF output (dc:date).');
+    $this->assertTrue($graph->hasProperty($comment_uri, 'http://purl.org/dc/terms/date', $expected_value), 'Comment date found in RDF output (dc:date).');
     // Comment date.
     $expected_value = [
       'type' => 'literal',
-      'value' => $this->container->get('date.formatter')->format($comment->getCreatedTime(), 'custom', 'c', 'UTC'),
+      'value' => format_date($comment->getCreatedTime(), 'custom', 'c', 'UTC'),
       'datatype' => 'http://www.w3.org/2001/XMLSchema#dateTime',
     ];
-    $this->assertTrue($this->hasRdfProperty($this->getSession()->getPage()->getContent(), $this->baseUri, $comment_uri, 'http://purl.org/dc/terms/created', $expected_value), 'Comment date found in RDF output (dc:created).');
+    $this->assertTrue($graph->hasProperty($comment_uri, 'http://purl.org/dc/terms/created', $expected_value), 'Comment date found in RDF output (dc:created).');
 
     // Comment body.
     $expected_value = [
@@ -286,29 +296,36 @@ class CommentAttributesTest extends CommentTestBase {
       'value' => $comment->comment_body->value . "\n",
       'lang' => 'en',
     ];
-    $this->assertTrue($this->hasRdfProperty($this->getSession()->getPage()->getContent(), $this->baseUri, $comment_uri, 'http://purl.org/rss/1.0/modules/content/encoded', $expected_value), 'Comment body found in RDF output (content:encoded).');
+    $this->assertTrue($graph->hasProperty($comment_uri, 'http://purl.org/rss/1.0/modules/content/encoded', $expected_value), 'Comment body found in RDF output (content:encoded).');
 
     // The comment author can be a registered user or an anonymous user.
     if ($comment->getOwnerId() > 0) {
+      $author_uri = \Drupal::url('entity.user.canonical', ['user' => $comment->getOwnerId()], ['absolute' => TRUE]);
       // Comment relation to author.
       $expected_value = [
         'type' => 'uri',
-        'value' => Url::fromRoute('entity.user.canonical', ['user' => $comment->getOwnerId()], ['absolute' => TRUE])->toString(),
+        'value' => $author_uri,
       ];
-      $this->assertTrue($this->hasRdfProperty($this->getSession()->getPage()->getContent(), $this->baseUri, $comment_uri, 'http://rdfs.org/sioc/ns#has_creator', $expected_value), 'Comment relation to author found in RDF output (sioc:has_creator).');
+      $this->assertTrue($graph->hasProperty($comment_uri, 'http://rdfs.org/sioc/ns#has_creator', $expected_value), 'Comment relation to author found in RDF output (sioc:has_creator).');
     }
     else {
       // The author is expected to be a blank node.
-      $this->assertTrue($this->rdfElementIsBlankNode($this->getSession()->getPage()->getContent(), $this->baseUri, $comment_uri, '<http://rdfs.org/sioc/ns#has_creator>'));
+      $author_uri = $graph->get($comment_uri, '<http://rdfs.org/sioc/ns#has_creator>');
+      if ($author_uri instanceof \EasyRdf_Resource) {
+        $this->assertTrue($author_uri->isBnode(), 'Comment relation to author found in RDF output (sioc:has_creator) and author is blank node.');
+      }
+      else {
+        $this->fail('Comment relation to author found in RDF output (sioc:has_creator).');
+      }
     }
 
     // Author name.
-    $name = empty($account["name"]) ? $this->webUser->getAccountName() : $account["name"] . " (not verified)";
+    $name = empty($account["name"]) ? $this->webUser->getUsername() : $account["name"] . " (not verified)";
     $expected_value = [
       'type' => 'literal',
       'value' => $name,
     ];
-    $this->assertTrue($this->hasRdfChildProperty($this->getSession()->getPage()->getContent(), $this->baseUri, $comment_uri, '<http://rdfs.org/sioc/ns#has_creator>', 'http://xmlns.com/foaf/0.1/name', $expected_value), 'Comment author name found in RDF output (foaf:name).');
+    $this->assertTrue($graph->hasProperty($author_uri, 'http://xmlns.com/foaf/0.1/name', $expected_value), 'Comment author name found in RDF output (foaf:name).');
 
     // Comment author homepage (only for anonymous authors).
     if ($comment->getOwnerId() == 0) {
@@ -316,7 +333,7 @@ class CommentAttributesTest extends CommentTestBase {
         'type' => 'uri',
         'value' => 'http://example.org/',
       ];
-      $this->assertTrue($this->hasRdfChildProperty($this->getSession()->getPage()->getContent(), $this->baseUri, $comment_uri, '<http://rdfs.org/sioc/ns#has_creator>', 'http://xmlns.com/foaf/0.1/page', $expected_value), 'Comment author link found in RDF output (foaf:page).');
+      $this->assertTrue($graph->hasProperty($author_uri, 'http://xmlns.com/foaf/0.1/page', $expected_value), 'Comment author link found in RDF output (foaf:page).');
     }
   }
 

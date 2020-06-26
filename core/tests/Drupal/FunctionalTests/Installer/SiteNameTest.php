@@ -21,11 +21,6 @@ class SiteNameTest extends BrowserTestBase {
   /**
    * {@inheritdoc}
    */
-  protected $defaultTheme = 'stark';
-
-  /**
-   * {@inheritdoc}
-   */
   protected function installParameters() {
     $this->siteName = $this->randomMachineName();
     $parameters = parent::installParameters();

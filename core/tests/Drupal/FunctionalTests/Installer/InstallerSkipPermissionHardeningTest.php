@@ -12,11 +12,6 @@ class InstallerSkipPermissionHardeningTest extends InstallerTestBase {
   /**
    * {@inheritdoc}
    */
-  protected $defaultTheme = 'stark';
-
-  /**
-   * {@inheritdoc}
-   */
   protected function prepareEnvironment() {
     parent::prepareEnvironment();
     $this->settings['settings']['skip_permissions_hardening'] = (object) ['value' => TRUE, 'required' => TRUE];

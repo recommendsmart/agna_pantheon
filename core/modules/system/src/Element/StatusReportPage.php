@@ -86,8 +86,8 @@ class StatusReportPage extends RenderElement {
       ],
       'checked' => [
         'amount' => 0,
-        'text' => t('Checked', [], ['context' => 'Examined']),
-        'text_plural' => t('Checked', [], ['context' => 'Examined']),
+        'text' => t('Checked'),
+        'text_plural' => t('Checked'),
       ],
     ];
 

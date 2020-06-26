@@ -31,11 +31,6 @@ class UserXmlCookieTest extends UserResourceTestBase {
   /**
    * {@inheritdoc}
    */
-  protected $defaultTheme = 'stark';
-
-  /**
-   * {@inheritdoc}
-   */
   public function testPatchDxForSecuritySensitiveBaseFields() {
     // Deserialization of the XML format is not supported.
     $this->markTestSkipped();

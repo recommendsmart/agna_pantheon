@@ -2,8 +2,7 @@
 
 namespace Drupal\Tests\system\Functional\Update;
 
-use Drupal\Tests\BrowserTestBase;
-use Drupal\Tests\UpdatePathTestTrait;
+use Drupal\FunctionalTests\Update\UpdatePathTestBase;
 
 /**
  * Tests the presence of JavaScript at update.php.
@@ -11,20 +10,15 @@ use Drupal\Tests\UpdatePathTestTrait;
  * @group Update
  * @group legacy
  */
-class UpdatePathTestJavaScriptTest extends BrowserTestBase {
-  use UpdatePathTestTrait;
+class UpdatePathTestJavaScriptTest extends UpdatePathTestBase {
 
   /**
    * {@inheritdoc}
    */
-  protected $defaultTheme = 'stark';
-
-  /**
-   * {@inheritdoc}
-   */
-  protected function setUp() {
-    parent::setUp();
-    $this->ensureUpdatesToRun();
+  protected function setDatabaseDumpFiles() {
+    $this->databaseDumpFiles = [
+      __DIR__ . '/../../../../tests/fixtures/update/drupal-8.bare.standard.php.gz',
+    ];
   }
 
   /**

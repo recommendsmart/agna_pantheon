@@ -26,9 +26,4 @@ class MenuLinkContentJsonCookieTest extends MenuLinkContentResourceTestBase {
    */
   protected static $auth = 'cookie';
 
-  /**
-   * {@inheritdoc}
-   */
-  protected $defaultTheme = 'stark';
-
 }

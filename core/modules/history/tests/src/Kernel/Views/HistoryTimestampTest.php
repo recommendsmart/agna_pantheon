@@ -2,7 +2,6 @@
 
 namespace Drupal\Tests\history\Kernel\Views;
 
-use Drupal\Core\Database\Database;
 use Drupal\node\Entity\Node;
 use Drupal\Tests\views\Kernel\ViewsKernelTestBase;
 use Drupal\user\Entity\User;
@@ -42,7 +41,7 @@ class HistoryTimestampTest extends ViewsKernelTestBase {
     $this->installSchema('history', ['history']);
     // Use classy theme because its marker is wrapped in a span so it can be
     // easily targeted with xpath.
-    \Drupal::service('theme_installer')->install(['classy']);
+    \Drupal::service('theme_handler')->install(['classy']);
     \Drupal::theme()->setActiveTheme(\Drupal::service('theme.initialization')->initTheme('classy'));
   }
 
@@ -68,15 +67,14 @@ class HistoryTimestampTest extends ViewsKernelTestBase {
     $account->save();
     \Drupal::currentUser()->setAccount($account);
 
-    $connection = Database::getConnection();
-    $connection->insert('history')
+    db_insert('history')
       ->fields([
         'uid' => $account->id(),
         'nid' => $nodes[0]->id(),
         'timestamp' => REQUEST_TIME - 100,
       ])->execute();
 
-    $connection->insert('history')
+    db_insert('history')
       ->fields([
         'uid' => $account->id(),
         'nid' => $nodes[1]->id(),

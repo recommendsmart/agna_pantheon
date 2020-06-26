@@ -25,11 +25,6 @@ class TelephoneFieldTest extends BrowserTestBase {
   ];
 
   /**
-   * {@inheritdoc}
-   */
-  protected $defaultTheme = 'stark';
-
-  /**
    * A user with permission to create articles.
    *
    * @var \Drupal\user\UserInterface
@@ -59,9 +54,7 @@ class TelephoneFieldTest extends BrowserTestBase {
       'bundle' => 'article',
     ])->save();
 
-    /** @var \Drupal\Core\Entity\EntityDisplayRepositoryInterface $display_repository */
-    $display_repository = \Drupal::service('entity_display.repository');
-    $display_repository->getFormDisplay('node', 'article')
+    entity_get_form_display('node', 'article', 'default')
       ->setComponent('field_telephone', [
         'type' => 'telephone_default',
         'settings' => [
@@ -70,7 +63,7 @@ class TelephoneFieldTest extends BrowserTestBase {
       ])
       ->save();
 
-    $display_repository->getViewDisplay('node', 'article')
+    entity_get_display('node', 'article', 'default')
       ->setComponent('field_telephone', [
         'type' => 'telephone_link',
         'weight' => 1,

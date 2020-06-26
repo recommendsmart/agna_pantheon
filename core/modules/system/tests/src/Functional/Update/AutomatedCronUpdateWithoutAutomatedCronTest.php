@@ -15,11 +15,6 @@ class AutomatedCronUpdateWithoutAutomatedCronTest extends UpdatePathTestBase {
   /**
    * {@inheritdoc}
    */
-  protected $defaultTheme = 'stark';
-
-  /**
-   * {@inheritdoc}
-   */
   protected function setDatabaseDumpFiles() {
     $this->databaseDumpFiles = [
       __DIR__ . '/../../../../tests/fixtures/update/drupal-8.bare.standard.php.gz',

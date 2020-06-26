@@ -20,11 +20,6 @@ class PlaceholderMessageTest extends BrowserTestBase {
   public static $modules = ['render_placeholder_message_test'];
 
   /**
-   * {@inheritdoc}
-   */
-  protected $defaultTheme = 'stark';
-
-  /**
    * Test rendering of message placeholder.
    */
   public function testMessagePlaceholder() {

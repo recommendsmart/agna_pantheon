@@ -19,11 +19,6 @@ class BlockRenderOrderTest extends BrowserTestBase {
    */
   public static $modules = ['node', 'block'];
 
-  /**
-   * {@inheritdoc}
-   */
-  protected $defaultTheme = 'stark';
-
   protected function setUp() {
     parent::setUp();
     // Create a test user.

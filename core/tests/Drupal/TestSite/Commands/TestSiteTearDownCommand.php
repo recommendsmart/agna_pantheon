@@ -63,8 +63,6 @@ class TestSiteTearDownCommand extends Command {
     }
 
     $output->writeln("<info>Successfully uninstalled $db_prefix test site</info>");
-
-    return 0;
   }
 
   /**
@@ -110,7 +108,7 @@ class TestSiteTearDownCommand extends Command {
    *   TRUE for success or if path does not exist, FALSE in the event of an
    *   error.
    *
-   * @see \Drupal\Core\File\FileSystemInterface::deleteRecursive()
+   * @see file_unmanaged_delete_recursive()
    */
   protected function fileUnmanagedDeleteRecursive($path, $callback = NULL) {
     if (isset($callback)) {

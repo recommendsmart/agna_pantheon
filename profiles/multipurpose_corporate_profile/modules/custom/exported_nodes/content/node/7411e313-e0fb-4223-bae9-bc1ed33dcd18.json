@@ -1,0 +1,143 @@
+{
+    "_links": {
+        "self": {
+            "href": "http:\/\/default\/about-us?_format=hal_json"
+        },
+        "type": {
+            "href": "http:\/\/drupal.org\/rest\/type\/node\/page"
+        },
+        "http:\/\/drupal.org\/rest\/relation\/node\/page\/uid": [
+            {
+                "href": "http:\/\/default\/user\/0?_format=hal_json",
+                "lang": "und"
+            }
+        ],
+        "http:\/\/drupal.org\/rest\/relation\/node\/page\/revision_uid": [
+            {
+                "href": "http:\/\/default\/users\/admin?_format=hal_json"
+            }
+        ]
+    },
+    "nid": [
+        {
+            "value": "3"
+        }
+    ],
+    "uuid": [
+        {
+            "value": "7411e313-e0fb-4223-bae9-bc1ed33dcd18"
+        }
+    ],
+    "vid": [
+        {
+            "value": "3"
+        }
+    ],
+    "langcode": [
+        {
+            "value": "und",
+            "lang": "und"
+        }
+    ],
+    "type": [
+        {
+            "target_id": "page"
+        }
+    ],
+    "title": [
+        {
+            "value": "About us",
+            "lang": "und"
+        }
+    ],
+    "_embedded": {
+        "http:\/\/drupal.org\/rest\/relation\/node\/page\/uid": [
+            {
+                "_links": {
+                    "self": {
+                        "href": "http:\/\/default\/user\/0?_format=hal_json"
+                    },
+                    "type": {
+                        "href": "http:\/\/drupal.org\/rest\/type\/user\/user"
+                    }
+                },
+                "uuid": [
+                    {
+                        "value": "cdddbba5-497d-4ff1-92f9-e0fb2de3e96e"
+                    }
+                ],
+                "lang": "und"
+            }
+        ],
+        "http:\/\/drupal.org\/rest\/relation\/node\/page\/revision_uid": [
+            {
+                "_links": {
+                    "self": {
+                        "href": "http:\/\/default\/users\/admin?_format=hal_json"
+                    },
+                    "type": {
+                        "href": "http:\/\/drupal.org\/rest\/type\/user\/user"
+                    }
+                },
+                "uuid": [
+                    {
+                        "value": "7edac145-49a7-4eb3-86da-758606161db9"
+                    }
+                ]
+            }
+        ]
+    },
+    "status": [
+        {
+            "value": "1",
+            "lang": "und"
+        }
+    ],
+    "created": [
+        {
+            "value": "1463460917",
+            "lang": "und"
+        }
+    ],
+    "changed": [
+        {
+            "value": "1464756191",
+            "lang": "und"
+        }
+    ],
+    "promote": [
+        {
+            "value": "0"
+        }
+    ],
+    "sticky": [
+        {
+            "value": "0",
+            "lang": "und"
+        }
+    ],
+    "revision_timestamp": [
+        {
+            "value": "1463461419"
+        }
+    ],
+    "revision_translation_affected": [
+        {
+            "value": "1",
+            "lang": "und"
+        }
+    ],
+    "default_langcode": [
+        {
+            "value": "1",
+            "lang": "und"
+        }
+    ],
+    "body": [
+        {
+            "value": "<div class=\"about-us-img\"><img alt=\"\" data-entity-type=\"\" data-entity-uuid=\"\" src=\"\/sites\/default\/files\/img.jpg\" \/><\/div>\r\n\r\n<div class=\"about-us-info\">\r\n<div class=\"block-text-wrap\">\r\n<h2 class=\"block-title\">Welcome to Tin Foil Hat&nbsp;Solutions! We\u2019re glad to present you our new nice website.<\/h2>\r\n\r\n<div class=\"block-text\">\r\n<p>A youthful team of hopeful enthusiasts who wish to free the world of conspiring tyranny. &nbsp;As determent as Rocky and as powerful as Rambo, we follow any means that can help us bring truth and justice to this mad, mad and conspired world. Don\u2019t contacts us as we will contact you first.<\/p>\r\n<\/div>\r\n<\/div>\r\n<\/div>\r\n",
+            "format": "full_html",
+            "summary": ""
+        }
+    ]
+}

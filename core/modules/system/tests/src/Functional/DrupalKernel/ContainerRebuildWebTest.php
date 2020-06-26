@@ -17,11 +17,6 @@ class ContainerRebuildWebTest extends BrowserTestBase {
   public static $modules = ['service_provider_test'];
 
   /**
-   * {@inheritdoc}
-   */
-  protected $defaultTheme = 'stark';
-
-  /**
    * Sets a different deployment identifier.
    */
   public function testSetContainerRebuildWithDifferentDeploymentIdentifier() {

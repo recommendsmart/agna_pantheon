@@ -13,11 +13,6 @@ class CommentHalJsonAnonTest extends CommentHalJsonTestBase {
 
   /**
    * {@inheritdoc}
-   */
-  protected $defaultTheme = 'stark';
-
-  /**
-   * {@inheritdoc}
    *
    * Anonymous users cannot edit their own comments.
    *

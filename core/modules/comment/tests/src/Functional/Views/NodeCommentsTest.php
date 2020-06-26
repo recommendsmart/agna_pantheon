@@ -17,11 +17,6 @@ class NodeCommentsTest extends CommentTestBase {
   public static $modules = ['history'];
 
   /**
-   * {@inheritdoc}
-   */
-  protected $defaultTheme = 'stark';
-
-  /**
    * Views used by this test.
    *
    * @var array

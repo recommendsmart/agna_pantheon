@@ -31,7 +31,6 @@ trait AjaxFormHelperTrait {
         '#type' => 'status_messages',
         '#weight' => -1000,
       ];
-      $form['#sorted'] = FALSE;
       $response = new AjaxResponse();
       $response->addCommand(new ReplaceCommand('[data-drupal-selector="' . $form['#attributes']['data-drupal-selector'] . '"]', $form));
     }

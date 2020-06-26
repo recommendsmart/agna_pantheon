@@ -12,18 +12,11 @@ use Drupal\Tests\BrowserTestBase;
 class RetrieveFileTest extends BrowserTestBase {
 
   /**
-   * {@inheritdoc}
-   */
-  protected $defaultTheme = 'stark';
-
-  /**
    * Invokes system_retrieve_file() in several scenarios.
    */
   public function testFileRetrieving() {
     // Test 404 handling by trying to fetch a randomly named file.
-    /** @var \Drupal\Core\File\FileSystemInterface $file_system */
-    $file_system = \Drupal::service('file_system');
-    $file_system->mkdir($sourcedir = 'public://' . $this->randomMachineName());
+    drupal_mkdir($sourcedir = 'public://' . $this->randomMachineName());
     $filename = 'Файл для тестирования ' . $this->randomMachineName();
     $url = file_create_url($sourcedir . '/' . $filename);
     $retrieved_file = system_retrieve_file($url);
@@ -40,20 +33,18 @@ class RetrieveFileTest extends BrowserTestBase {
     $this->assertEqual($retrieved_file, 'public://' . $encoded_filename, 'Sane path for downloaded file returned (public:// scheme).');
     $this->assertTrue(is_file($retrieved_file), 'Downloaded file does exist (public:// scheme).');
     $this->assertEqual(filesize($retrieved_file), 7, 'File size of downloaded file is correct (public:// scheme).');
-    /** @var \Drupal\Core\File\FileSystemInterface $file_system */
-    $file_system = \Drupal::service('file_system');
-    $file_system->delete($retrieved_file);
+    file_unmanaged_delete($retrieved_file);
 
     // Test downloading file to a different location.
-    $file_system->mkdir($targetdir = 'temporary://' . $this->randomMachineName());
+    drupal_mkdir($targetdir = 'temporary://' . $this->randomMachineName());
     $retrieved_file = system_retrieve_file($url, $targetdir);
     $this->assertEqual($retrieved_file, "$targetdir/$encoded_filename", 'Sane path for downloaded file returned (temporary:// scheme).');
     $this->assertTrue(is_file($retrieved_file), 'Downloaded file does exist (temporary:// scheme).');
     $this->assertEqual(filesize($retrieved_file), 7, 'File size of downloaded file is correct (temporary:// scheme).');
-    $file_system->delete($retrieved_file);
+    file_unmanaged_delete($retrieved_file);
 
-    $file_system->deleteRecursive($sourcedir);
-    $file_system->deleteRecursive($targetdir);
+    file_unmanaged_delete_recursive($sourcedir);
+    file_unmanaged_delete_recursive($targetdir);
   }
 
 }

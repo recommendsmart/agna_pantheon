@@ -1,0 +1,4 @@
+.threecol-4-6-2 .arc--2 .l-r:last-child { float: right; margin-right: 0; }
+.threecol-4-6-2 .arc--3 .l-r:first-child { width: 32.20339%; float: left; margin-right: 1.69492%; }
+.threecol-4-6-2 .arc--3 .l-r:last-child { width: 15.25424%; float: right; margin-right: 0; }
+.threecol-4-6-2 .arc--2 .l-r, .threecol-4-6-2 .arc--3 .l-r:nth-child(2) { width: 49.15254%; float: left; margin-right: 1.69492%; }

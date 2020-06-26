@@ -58,17 +58,17 @@ abstract class AbstractNormalizer extends SerializerAwareNormalizer implements N
     /**
      * @var array
      */
-    protected $callbacks = [];
+    protected $callbacks = array();
 
     /**
      * @var array
      */
-    protected $ignoredAttributes = [];
+    protected $ignoredAttributes = array();
 
     /**
      * @var array
      */
-    protected $camelizedAttributes = [];
+    protected $camelizedAttributes = array();
 
     /**
      * Sets the {@link ClassMetadataFactoryInterface} to use.
@@ -96,6 +96,8 @@ abstract class AbstractNormalizer extends SerializerAwareNormalizer implements N
     /**
      * Set circular reference handler.
      *
+     * @param callable $circularReferenceHandler
+     *
      * @return self
      */
     public function setCircularReferenceHandler(callable $circularReferenceHandler)
@@ -118,7 +120,10 @@ abstract class AbstractNormalizer extends SerializerAwareNormalizer implements N
     {
         foreach ($callbacks as $attribute => $callback) {
             if (!\is_callable($callback)) {
-                throw new InvalidArgumentException(sprintf('The given callback for attribute "%s" is not callable.', $attribute));
+                throw new InvalidArgumentException(sprintf(
+                    'The given callback for attribute "%s" is not callable.',
+                    $attribute
+                ));
             }
         }
         $this->callbacks = $callbacks;
@@ -192,6 +197,7 @@ abstract class AbstractNormalizer extends SerializerAwareNormalizer implements N
      * Gets attributes to normalize using groups.
      *
      * @param string|object $classOrObject
+     * @param array         $context
      * @param bool          $attributesAsString If false, return an array of {@link AttributeMetadataInterface}
      *
      * @throws LogicException if the 'allow_extra_attributes' context variable is false and no class metadata factory is provided
@@ -215,7 +221,7 @@ abstract class AbstractNormalizer extends SerializerAwareNormalizer implements N
             return false;
         }
 
-        $allowedAttributes = [];
+        $allowedAttributes = array();
         foreach ($this->classMetadataFactory->getMetadataFor($classOrObject)->getAttributesMetadata() as $attributeMetadata) {
             $name = $attributeMetadata->getName();
 
@@ -236,10 +242,11 @@ abstract class AbstractNormalizer extends SerializerAwareNormalizer implements N
      * @param object|string $classOrObject
      * @param string        $attribute
      * @param string|null   $format
+     * @param array         $context
      *
      * @return bool
      */
-    protected function isAllowedAttribute($classOrObject, $attribute, $format = null, array $context = [])
+    protected function isAllowedAttribute($classOrObject, $attribute, $format = null, array $context = array())
     {
         if (\in_array($attribute, $this->ignoredAttributes)) {
             return false;
@@ -274,8 +281,11 @@ abstract class AbstractNormalizer extends SerializerAwareNormalizer implements N
      * Returns the method to use to construct an object. This method must be either
      * the object constructor or static.
      *
-     * @param string     $class
-     * @param array|bool $allowedAttributes
+     * @param array            $data
+     * @param string           $class
+     * @param array            $context
+     * @param \ReflectionClass $reflectionClass
+     * @param array|bool       $allowedAttributes
      *
      * @return \ReflectionMethod|null
      */
@@ -292,8 +302,12 @@ abstract class AbstractNormalizer extends SerializerAwareNormalizer implements N
      * is removed from the context before being returned to avoid side effects
      * when recursively normalizing an object graph.
      *
-     * @param string     $class
-     * @param array|bool $allowedAttributes
+     * @param array            $data
+     * @param string           $class
+     * @param array            $context
+     * @param \ReflectionClass $reflectionClass
+     * @param array|bool       $allowedAttributes
+     * @param string|null      $format
      *
      * @return object
      *
@@ -302,7 +316,7 @@ abstract class AbstractNormalizer extends SerializerAwareNormalizer implements N
     protected function instantiateObject(array &$data, $class, array &$context, \ReflectionClass $reflectionClass, $allowedAttributes/*, string $format = null*/)
     {
         if (\func_num_args() >= 6) {
-            $format = func_get_arg(5);
+            $format = \func_get_arg(5);
         } else {
             if (__CLASS__ !== \get_class($this)) {
                 $r = new \ReflectionMethod($this, __FUNCTION__);
@@ -319,18 +333,12 @@ abstract class AbstractNormalizer extends SerializerAwareNormalizer implements N
 
             return $object;
         }
-        // clean up even if no match
-        unset($context[static::OBJECT_TO_POPULATE]);
 
         $constructor = $this->getConstructor($data, $class, $context, $reflectionClass, $allowedAttributes);
         if ($constructor) {
-            if (true !== $constructor->isPublic()) {
-                return $reflectionClass->newInstanceWithoutConstructor();
-            }
-
             $constructorParameters = $constructor->getParameters();
 
-            $params = [];
+            $params = array();
             foreach ($constructorParameters as $constructorParameter) {
                 $paramName = $constructorParameter->name;
                 $key = $this->nameConverter ? $this->nameConverter->normalize($paramName) : $paramName;
@@ -338,20 +346,14 @@ abstract class AbstractNormalizer extends SerializerAwareNormalizer implements N
                 $allowed = false === $allowedAttributes || \in_array($paramName, $allowedAttributes);
                 $ignored = !$this->isAllowedAttribute($class, $paramName, $format, $context);
                 if (method_exists($constructorParameter, 'isVariadic') && $constructorParameter->isVariadic()) {
-                    if ($allowed && !$ignored && (isset($data[$key]) || \array_key_exists($key, $data))) {
+                    if ($allowed && !$ignored && (isset($data[$key]) || array_key_exists($key, $data))) {
                         if (!\is_array($data[$paramName])) {
                             throw new RuntimeException(sprintf('Cannot create an instance of %s from serialized data because the variadic parameter %s can only accept an array.', $class, $constructorParameter->name));
                         }
 
-                        $variadicParameters = [];
-                        foreach ($data[$paramName] as $parameterData) {
-                            $variadicParameters[] = $this->denormalizeParameter($reflectionClass, $constructorParameter, $paramName, $parameterData, $context, $format);
-                        }
-
-                        $params = array_merge($params, $variadicParameters);
-                        unset($data[$key]);
+                        $params = array_merge($params, $data[$paramName]);
                     }
-                } elseif ($allowed && !$ignored && (isset($data[$key]) || \array_key_exists($key, $data))) {
+                } elseif ($allowed && !$ignored && (isset($data[$key]) || array_key_exists($key, $data))) {
                     $parameterData = $data[$key];
                     if (null === $parameterData && $constructorParameter->allowsNull()) {
                         $params[] = null;
@@ -359,14 +361,31 @@ abstract class AbstractNormalizer extends SerializerAwareNormalizer implements N
                         unset($data[$key]);
                         continue;
                     }
+                    try {
+                        if (null !== $constructorParameter->getClass()) {
+                            if (!$this->serializer instanceof DenormalizerInterface) {
+                                throw new LogicException(sprintf('Cannot create an instance of %s from serialized data because the serializer inject in "%s" is not a denormalizer', $constructorParameter->getClass(), static::class));
+                            }
+                            $parameterClass = $constructorParameter->getClass()->getName();
+                            $parameterData = $this->serializer->denormalize($parameterData, $parameterClass, $format, $this->createChildContext($context, $paramName));
+                        }
+                    } catch (\ReflectionException $e) {
+                        throw new RuntimeException(sprintf('Could not determine the class of the parameter "%s".', $key), 0, $e);
+                    }
 
                     // Don't run set for a parameter passed to the constructor
-                    $params[] = $this->denormalizeParameter($reflectionClass, $constructorParameter, $paramName, $parameterData, $context, $format);
+                    $params[] = $parameterData;
                     unset($data[$key]);
                 } elseif ($constructorParameter->isDefaultValueAvailable()) {
                     $params[] = $constructorParameter->getDefaultValue();
                 } else {
-                    throw new RuntimeException(sprintf('Cannot create an instance of %s from serialized data because its constructor requires parameter "%s" to be present.', $class, $constructorParameter->name));
+                    throw new RuntimeException(
+                        sprintf(
+                            'Cannot create an instance of %s from serialized data because its constructor requires parameter "%s" to be present.',
+                            $class,
+                            $constructorParameter->name
+                        )
+                    );
                 }
             }
 
@@ -381,34 +400,14 @@ abstract class AbstractNormalizer extends SerializerAwareNormalizer implements N
     }
 
     /**
-     * @internal
-     */
-    protected function denormalizeParameter(\ReflectionClass $class, \ReflectionParameter $parameter, $parameterName, $parameterData, array $context, $format = null)
-    {
-        try {
-            if (null !== $parameter->getClass()) {
-                if (!$this->serializer instanceof DenormalizerInterface) {
-                    throw new LogicException(sprintf('Cannot create an instance of %s from serialized data because the serializer inject in "%s" is not a denormalizer', $parameter->getClass(), static::class));
-                }
-                $parameterClass = $parameter->getClass()->getName();
-
-                return $this->serializer->denormalize($parameterData, $parameterClass, $format, $this->createChildContext($context, $parameterName, $format));
-            }
-
-            return $parameterData;
-        } catch (\ReflectionException $e) {
-            throw new RuntimeException(sprintf('Could not determine the class of the parameter "%s".', $parameterName), 0, $e);
-        }
-    }
-
-    /**
-     * @param string $attribute Attribute name
+     * @param array  $parentContext
+     * @param string $attribute
      *
      * @return array
      *
      * @internal
      */
-    protected function createChildContext(array $parentContext, $attribute/*, string $format = null */)
+    protected function createChildContext(array $parentContext, $attribute)
     {
         if (isset($parentContext[self::ATTRIBUTES][$attribute])) {
             $parentContext[self::ATTRIBUTES] = $parentContext[self::ATTRIBUTES][$attribute];

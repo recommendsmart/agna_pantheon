@@ -20,11 +20,6 @@ class BlockLanguageCacheTest extends BrowserTestBase {
   public static $modules = ['block', 'language', 'menu_ui'];
 
   /**
-   * {@inheritdoc}
-   */
-  protected $defaultTheme = 'stark';
-
-  /**
    * List of langcodes.
    *
    * @var array

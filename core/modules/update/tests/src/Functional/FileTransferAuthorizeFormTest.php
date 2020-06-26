@@ -16,11 +16,6 @@ class FileTransferAuthorizeFormTest extends UpdateTestBase {
    */
   public static $modules = ['update', 'update_test'];
 
-  /**
-   * {@inheritdoc}
-   */
-  protected $defaultTheme = 'stark';
-
   protected function setUp() {
     parent::setUp();
     $admin_user = $this->drupalCreateUser(['administer modules', 'administer software updates', 'administer site configuration']);
@@ -28,21 +23,14 @@ class FileTransferAuthorizeFormTest extends UpdateTestBase {
 
     // Create a local cache so the module is not downloaded from drupal.org.
     $cache_directory = _update_manager_cache_directory(TRUE);
-    foreach (['.tar.gz', '.zip'] as $extension) {
-      $filename = 'update_test_new_module' . $extension;
-      copy(
-        __DIR__ . '/../../update_test_new_module/8.x-1.0/' . $filename,
-        $cache_directory . '/' . $filename
-      );
-    }
+    $validArchiveFile = __DIR__ . '/../../update_test_new_module/8.x-1.0/update_test_new_module.tar.gz';
+    copy($validArchiveFile, $cache_directory . '/update_test_new_module.tar.gz');
   }
 
   /**
    * Tests the Update Manager module upload via authorize.php functionality.
-   *
-   * @dataProvider archiveFileUrlProvider
    */
-  public function testViaAuthorize($url) {
+  public function testViaAuthorize() {
     // Ensure the that we can select which file transfer backend to use.
     \Drupal::state()->set('test_uploaders_via_prompt', TRUE);
 
@@ -51,7 +39,8 @@ class FileTransferAuthorizeFormTest extends UpdateTestBase {
     $this->assertNoText('Update test new module');
 
     $edit = [
-      'project_url' => $url,
+      // This project has been cached in the test's setUp() method.
+      'project_url' => 'https://ftp.drupal.org/files/projects/update_test_new_module.tar.gz',
     ];
     $this->drupalPostForm('admin/modules/install', $edit, t('Install'));
     $edit = [
@@ -64,22 +53,6 @@ class FileTransferAuthorizeFormTest extends UpdateTestBase {
     // Ensure the module is available to install.
     $this->drupalGet('admin/modules');
     $this->assertText('Update test new module');
-  }
-
-  /**
-   * Data provider method for testViaAuthorize().
-   *
-   * Each of these release URLs has been cached in the setUp() method.
-   */
-  public function archiveFileUrlProvider() {
-    return [
-      'tar.gz' => [
-        'url' => 'https://ftp.drupal.org/files/projects/update_test_new_module.tar.gz',
-      ],
-      'zip' => [
-        'url' => 'https://ftp.drupal.org/files/projects/update_test_new_module.zip',
-      ],
-    ];
   }
 
 }

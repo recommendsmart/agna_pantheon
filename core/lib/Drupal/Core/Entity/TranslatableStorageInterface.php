@@ -5,7 +5,7 @@ namespace Drupal\Core\Entity;
 /**
  * A storage that supports translatable entity types.
  */
-interface TranslatableStorageInterface extends EntityStorageInterface {
+interface TranslatableStorageInterface {
 
   /**
    * Constructs a new entity translation object, without permanently saving it.

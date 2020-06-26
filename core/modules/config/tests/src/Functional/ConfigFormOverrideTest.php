@@ -13,11 +13,6 @@ use Drupal\Tests\BrowserTestBase;
 class ConfigFormOverrideTest extends BrowserTestBase {
 
   /**
-   * {@inheritdoc}
-   */
-  protected $defaultTheme = 'stark';
-
-  /**
    * Tests that overrides do not affect forms.
    */
   public function testFormsWithOverrides() {

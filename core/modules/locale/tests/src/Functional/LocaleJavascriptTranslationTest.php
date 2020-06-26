@@ -2,7 +2,6 @@
 
 namespace Drupal\Tests\locale\Functional;
 
-use Drupal\Component\Gettext\PoItem;
 use Drupal\Core\Language\LanguageInterface;
 use Drupal\Tests\BrowserTestBase;
 use Drupal\Component\Render\FormattableMarkup;
@@ -20,11 +19,6 @@ class LocaleJavascriptTranslationTest extends BrowserTestBase {
    * @var array
    */
   public static $modules = ['locale', 'locale_test'];
-
-  /**
-   * {@inheritdoc}
-   */
-  protected $defaultTheme = 'stark';
 
   public function testFileParsing() {
 
@@ -57,7 +51,7 @@ class LocaleJavascriptTranslationTest extends BrowserTestBase {
         $source_strings[$string->source] = $string->context;
       }
 
-      $etx = PoItem::DELIMITER;
+      $etx = LOCALE_PLURAL_DELIMITER;
       // List of all strings that should be in the file.
       $test_strings = [
         'Standard Call t' => '',
@@ -91,8 +85,6 @@ class LocaleJavascriptTranslationTest extends BrowserTestBase {
         "Context Unquoted plural{$etx}Context Unquoted @count plural" => 'Context string unquoted',
         "Context Single Quoted plural{$etx}Context Single Quoted @count plural" => 'Context string single quoted',
         "Context Double Quoted plural{$etx}Context Double Quoted @count plural" => 'Context string double quoted',
-
-        "No count argument plural - singular{$etx}No count argument plural - plural" => '',
       ];
 
       // Assert that all strings were found properly.
@@ -152,7 +144,7 @@ class LocaleJavascriptTranslationTest extends BrowserTestBase {
     $string = $strings[0];
 
     $this->drupalPostForm(NULL, ['string' => 'Show description'], t('Filter'));
-    $edit = ['strings[' . $string->lid . '][translations][0]' => 'Mostrar descripcion'];
+    $edit = ['strings[' . $string->lid . '][translations][0]' => $this->randomString(16)];
     $this->drupalPostForm(NULL, $edit, t('Save translations'));
 
     // Calculate the filename of the JS including the translations.
@@ -160,8 +152,6 @@ class LocaleJavascriptTranslationTest extends BrowserTestBase {
     $js_filename = $prefix . '_' . $js_translation_files[$prefix] . '.js';
 
     $content = $this->getSession()->getPage()->getContent();
-    $this->assertRaw('core/misc/drupal.js');
-    $this->assertRaw($js_filename);
     // Assert translations JS is included before drupal.js.
     $this->assertTrue(strpos($content, $js_filename) < strpos($content, 'core/misc/drupal.js'), 'Translations are included before Drupal.t.');
   }

@@ -1,0 +1,86 @@
+{
+    "_links": {
+        "self": {
+            "href": "http:\/\/default\/admin\/structure\/menu\/item\/232\/edit?_format=hal_json"
+        },
+        "type": {
+            "href": "http:\/\/drupal.org\/rest\/type\/menu_link_content\/menu_link_content"
+        }
+    },
+    "id": [
+        {
+            "value": "232"
+        }
+    ],
+    "uuid": [
+        {
+            "value": "f86ab592-df6b-41e2-8f80-1234b0786e16"
+        }
+    ],
+    "bundle": [
+        {
+            "value": "menu_link_content"
+        }
+    ],
+    "title": [
+        {
+            "value": "Find content",
+            "lang": "en"
+        }
+    ],
+    "menu_name": [
+        {
+            "value": "tools"
+        }
+    ],
+    "link": [
+        {
+            "uri": "internal:\/admin\/content",
+            "title": null,
+            "options": []
+        }
+    ],
+    "external": [
+        {
+            "value": "0"
+        }
+    ],
+    "rediscover": [
+        {
+            "value": "1"
+        }
+    ],
+    "weight": [
+        {
+            "value": "-19"
+        }
+    ],
+    "expanded": [
+        {
+            "value": "0"
+        }
+    ],
+    "enabled": [
+        {
+            "value": "1"
+        }
+    ],
+    "langcode": [
+        {
+            "value": "en",
+            "lang": "en"
+        }
+    ],
+    "changed": [
+        {
+            "value": "1464076532",
+            "lang": "en"
+        }
+    ],
+    "default_langcode": [
+        {
+            "value": "1",
+            "lang": "en"
+        }
+    ]
+}

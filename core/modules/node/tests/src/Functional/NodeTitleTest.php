@@ -22,11 +22,6 @@ class NodeTitleTest extends NodeTestBase {
   public static $modules = ['comment', 'views', 'block'];
 
   /**
-   * {@inheritdoc}
-   */
-  protected $defaultTheme = 'classy';
-
-  /**
    * A user with permission to bypass access content.
    *
    * @var \Drupal\user\UserInterface

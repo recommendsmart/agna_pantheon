@@ -2,7 +2,6 @@
 
 namespace Drupal\Tests\file\Functional;
 
-use Drupal\Component\Render\FormattableMarkup;
 use Drupal\Core\Field\FieldStorageDefinitionInterface;
 use Drupal\file\Entity\File;
 use Drupal\node\Entity\Node;
@@ -13,11 +12,6 @@ use Drupal\node\Entity\Node;
  * @group file
  */
 class FileFieldDisplayTest extends FileFieldTestBase {
-
-  /**
-   * {@inheritdoc}
-   */
-  protected $defaultTheme = 'stark';
 
   /**
    * Tests normal formatter display on node display.
@@ -56,7 +50,7 @@ class FileFieldDisplayTest extends FileFieldTestBase {
       }
       $this->drupalPostForm("admin/structure/types/manage/$type_name/display", $edit, t('Save'));
       $this->drupalGet('node/' . $node->id());
-      $this->assertNoText($field_name, new FormattableMarkup('Field label is hidden when no file attached for formatter %formatter', ['%formatter' => $formatter]));
+      $this->assertNoText($field_name, format_string('Field label is hidden when no file attached for formatter %formatter', ['%formatter' => $formatter]));
     }
 
     $this->generateFile('escaped-&-text', 64, 10, 'text');
@@ -70,7 +64,7 @@ class FileFieldDisplayTest extends FileFieldTestBase {
     $nid = $this->uploadNodeFile($test_file, $field_name, $type_name);
 
     // Check that the default formatter is displaying with the file name.
-    $node_storage = $this->container->get('entity_type.manager')->getStorage('node');
+    $node_storage = $this->container->get('entity.manager')->getStorage('node');
     $node_storage->resetCache([$nid]);
     $node = $node_storage->load($nid);
     $node_file = File::load($node->{$field_name}->target_id);
@@ -113,9 +107,6 @@ class FileFieldDisplayTest extends FileFieldTestBase {
     $this->assertRaw($field_name . '[0][display]', 'First file appears as expected.');
     $this->assertRaw($field_name . '[1][display]', 'Second file appears as expected.');
     $this->assertSession()->responseContains($field_name . '[1][description]', 'Description of second file appears as expected.');
-
-    // Check that the file fields don't contain duplicate HTML IDs.
-    $this->assertNoDuplicateIds();
   }
 
   /**
@@ -216,7 +207,7 @@ class FileFieldDisplayTest extends FileFieldTestBase {
 
     // Test default formatter.
     $this->drupalGet('node/' . $nid);
-    $this->assertFieldByXPath('//a[@href="' . $node->{$field_name}->entity->createFileUrl(FALSE) . '"]', $description);
+    $this->assertFieldByXPath('//a[@href="' . $node->{$field_name}->entity->url() . '"]', $description);
 
     // Change formatter to "Table of files".
     $display = \Drupal::entityTypeManager()->getStorage('entity_view_display')->load('node.' . $type_name . '.default');
@@ -226,35 +217,7 @@ class FileFieldDisplayTest extends FileFieldTestBase {
     ])->save();
 
     $this->drupalGet('node/' . $nid);
-    $this->assertFieldByXPath('//a[@href="' . $node->{$field_name}->entity->createFileUrl(FALSE) . '"]', $description);
-  }
-
-  /**
-   * Asserts that each HTML ID is used for just a single element on the page.
-   *
-   * @param string $message
-   *   (optional) A message to display with the assertion.
-   */
-  protected function assertNoDuplicateIds($message = '') {
-    $args = ['@url' => $this->getUrl()];
-
-    if (!$elements = $this->xpath('//*[@id]')) {
-      $this->fail(new FormattableMarkup('The page @url contains no HTML IDs.', $args));
-      return;
-    }
-
-    $message = $message ?: new FormattableMarkup('The page @url does not contain duplicate HTML IDs', $args);
-
-    $seen_ids = [];
-    foreach ($elements as $element) {
-      $id = $element->getAttribute('id');
-      if (isset($seen_ids[$id])) {
-        $this->fail($message);
-        return;
-      }
-      $seen_ids[$id] = TRUE;
-    }
-    $this->assertTrue(TRUE, $message);
+    $this->assertFieldByXPath('//a[@href="' . $node->{$field_name}->entity->url() . '"]', $description);
   }
 
 }

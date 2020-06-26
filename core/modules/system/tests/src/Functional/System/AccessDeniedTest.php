@@ -23,11 +23,6 @@ class AccessDeniedTest extends BrowserTestBase {
    */
   public static $modules = ['block', 'node', 'system_test'];
 
-  /**
-   * {@inheritdoc}
-   */
-  protected $defaultTheme = 'stark';
-
   protected $adminUser;
 
   protected function setUp() {
@@ -80,7 +75,7 @@ class AccessDeniedTest extends BrowserTestBase {
     // Log out and check that the user login block is shown on custom 403 pages.
     $this->drupalLogout();
     $this->drupalGet('admin');
-    $this->assertText($this->adminUser->getAccountName(), 'Found the custom 403 page');
+    $this->assertText($this->adminUser->getUsername(), 'Found the custom 403 page');
     $this->assertText(t('Username'), 'Blocks are shown on the custom 403 page');
 
     // Log back in and remove the custom 403 page.
@@ -105,7 +100,7 @@ class AccessDeniedTest extends BrowserTestBase {
     // Check that we can log in from the 403 page.
     $this->drupalLogout();
     $edit = [
-      'name' => $this->adminUser->getAccountName(),
+      'name' => $this->adminUser->getUsername(),
       'pass' => $this->adminUser->pass_raw,
     ];
     $this->drupalPostForm('admin/config/system/site-information', $edit, t('Log in'));

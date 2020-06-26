@@ -20,11 +20,6 @@ class SearchPageOverrideTest extends BrowserTestBase {
   protected static $modules = ['search', 'search_extra_type'];
 
   /**
-   * {@inheritdoc}
-   */
-  protected $defaultTheme = 'stark';
-
-  /**
    * A user with permission to administer search.
    *
    * @var \Drupal\user\UserInterface

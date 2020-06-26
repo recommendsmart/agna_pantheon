@@ -17,11 +17,6 @@ class TermContextualLinksTest extends TaxonomyTestBase {
   ];
 
   /**
-   * {@inheritdoc}
-   */
-  protected $defaultTheme = 'stark';
-
-  /**
    * Tests contextual links.
    */
   public function testTermContextualLinks() {

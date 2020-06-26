@@ -20,11 +20,6 @@ class CommentStatisticsTest extends CommentTestBase {
    */
   protected $webUser2;
 
-  /**
-   * {@inheritdoc}
-   */
-  protected $defaultTheme = 'stark';
-
   protected function setUp() {
     parent::setUp();
 
@@ -44,7 +39,7 @@ class CommentStatisticsTest extends CommentTestBase {
    * Tests the node comment statistics.
    */
   public function testCommentNodeCommentStatistics() {
-    $node_storage = $this->container->get('entity_type.manager')->getStorage('node');
+    $node_storage = $this->container->get('entity.manager')->getStorage('node');
     // Set comments to have subject and preview disabled.
     $this->drupalLogin($this->adminUser);
     $this->setCommentPreview(DRUPAL_DISABLED);
