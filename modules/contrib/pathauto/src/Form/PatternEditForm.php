@@ -72,7 +72,7 @@ class PatternEditForm extends EntityForm {
    * @param \Drupal\Core\Language\LanguageManagerInterface $language_manager
    *   The language manager service.
    */
-  public function __construct(AliasTypeManager $manager, EntityTypeBundleInfoInterface $entity_type_bundle_info, EntityTypeManagerInterface $entity_type_manager, LanguageManagerInterface $language_manager) {
+  function __construct(AliasTypeManager $manager, EntityTypeBundleInfoInterface $entity_type_bundle_info, EntityTypeManagerInterface $entity_type_manager, LanguageManagerInterface $language_manager) {
     $this->manager = $manager;
     $this->entityTypeBundleInfo = $entity_type_bundle_info;
     $this->entityTypeManager = $entity_type_manager;
@@ -94,14 +94,14 @@ class PatternEditForm extends EntityForm {
       '#default_value' => $this->entity->getType(),
       '#options' => $options,
       '#required' => TRUE,
-      '#limit_validation_errors' => [['type']],
-      '#submit' => ['::submitSelectType'],
+      '#limit_validation_errors' => array(array('type')),
+      '#submit' => array('::submitSelectType'),
       '#executes_submit_callback' => TRUE,
-      '#ajax' => [
+      '#ajax' => array(
         'callback' => '::ajaxReplacePatternForm',
         'wrapper' => 'pathauto-pattern',
         'method' => 'replace',
-      ],
+      ),
     ];
 
     $form['pattern_container'] = [
@@ -115,31 +115,31 @@ class PatternEditForm extends EntityForm {
 
       $alias_type = $this->entity->getAliasType();
 
-      $form['pattern_container']['pattern'] = [
+      $form['pattern_container']['pattern'] = array(
         '#type' => 'textfield',
-        '#title' => $this->t('Path pattern'),
+        '#title' => 'Path pattern',
         '#default_value' => $this->entity->getPattern(),
         '#size' => 65,
         '#maxlength' => 1280,
-        '#element_validate' => ['token_element_validate', 'pathauto_pattern_validate'],
-        '#after_build' => ['token_element_validate'],
+        '#element_validate' => array('token_element_validate', 'pathauto_pattern_validate'),
+        '#after_build' => array('token_element_validate'),
         '#token_types' => $alias_type->getTokenTypes(),
         '#min_tokens' => 1,
         '#required' => TRUE,
-      ];
+      );
 
       // Show the token help relevant to this pattern type.
-      $form['pattern_container']['token_help'] = [
+      $form['pattern_container']['token_help'] = array(
         '#theme' => 'token_tree_link',
         '#token_types' => $alias_type->getTokenTypes(),
-      ];
+      );
 
       // Expose bundle and language conditions.
       if ($alias_type->getDerivativeId() && $entity_type = $this->entityTypeManager->getDefinition($alias_type->getDerivativeId())) {
 
         $default_bundles = [];
         $default_languages = [];
-        foreach ($this->entity->getSelectionConditions() as $condition) {
+        foreach ($this->entity->getSelectionConditions() as $condition_id => $condition) {
           if (in_array($condition->getPluginId(), ['entity_bundle:' . $entity_type->id(), 'node_type'])) {
             $default_bundles = $condition->getConfiguration()['bundles'];
           }
@@ -153,13 +153,13 @@ class PatternEditForm extends EntityForm {
           foreach ($bundles as $id => $info) {
             $bundle_options[$id] = $info['label'];
           }
-          $form['pattern_container']['bundles'] = [
+          $form['pattern_container']['bundles'] = array(
             '#title' => $entity_type->getBundleLabel(),
             '#type' => 'checkboxes',
             '#options' => $bundle_options,
             '#default_value' => $default_bundles,
             '#description' => $this->t('Check to which types this pattern should be applied. Leave empty to allow any.'),
-          ];
+          );
         }
 
         if ($this->languageManager->isMultilingual() && $entity_type->isTranslatable()) {
@@ -167,37 +167,37 @@ class PatternEditForm extends EntityForm {
           foreach ($this->languageManager->getLanguages() as $id => $language) {
             $language_options[$id] = $language->getName();
           }
-          $form['pattern_container']['languages'] = [
+          $form['pattern_container']['languages'] = array(
             '#title' => $this->t('Languages'),
             '#type' => 'checkboxes',
             '#options' => $language_options,
             '#default_value' => $default_languages,
             '#description' => $this->t('Check to which languages this pattern should be applied. Leave empty to allow any.'),
-          ];
+          );
         }
       }
     }
 
-    $form['label'] = [
+    $form['label'] = array(
       '#type' => 'textfield',
       '#title' => $this->t('Label'),
       '#maxlength' => 255,
       '#default_value' => $this->entity->label(),
       '#required' => TRUE,
       '#description' => $this->t('A short name to help you identify this pattern in the patterns list.'),
-    ];
+    );
 
-    $form['id'] = [
+    $form['id'] = array(
       '#type' => 'machine_name',
       '#title' => $this->t('ID'),
       '#maxlength' => 255,
       '#default_value' => $this->entity->id(),
       '#required' => TRUE,
       '#disabled' => !$this->entity->isNew(),
-      '#machine_name' => [
+      '#machine_name' => array(
         'exists' => 'Drupal\pathauto\Entity\PathautoPattern::load',
-      ],
-    ];
+      ),
+    );
 
     $form['status'] = [
       '#title' => $this->t('Enabled'),
@@ -256,7 +256,7 @@ class PatternEditForm extends EntityForm {
             ]
           ]
         );
-        $entity->addRelationship($language_mapping, $this->t('Language'));
+        $entity->addRelationship($language_mapping, t('Language'));
       }
 
     }

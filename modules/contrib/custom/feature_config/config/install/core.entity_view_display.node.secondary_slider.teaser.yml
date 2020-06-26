@@ -1,0 +1,29 @@
+langcode: en
+status: true
+dependencies:
+  config:
+    - core.entity_view_mode.node.teaser
+    - field.field.node.secondary_slider.body
+    - field.field.node.secondary_slider.comment_node_secondary_slider
+    - field.field.node.secondary_slider.field_image
+    - node.type.secondary_slider
+  module:
+    - text
+    - user
+id: node.secondary_slider.teaser
+targetEntityType: node
+bundle: secondary_slider
+mode: teaser
+content:
+  body:
+    label: hidden
+    weight: 0
+    type: text_summary_or_trimmed
+    settings:
+      trim_length: 600
+    third_party_settings: {  }
+  links:
+    weight: 100
+hidden:
+  comment_node_secondary_slider: true
+  field_image: true

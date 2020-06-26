@@ -1,0 +1,13 @@
+langcode: en
+status: true
+dependencies: {  }
+name: portfolio2columns
+label: 'Portfolio 2 columns'
+effects:
+  e6c9b71d-6797-4f4e-a4e6-10dc21ea95bf:
+    uuid: e6c9b71d-6797-4f4e-a4e6-10dc21ea95bf
+    id: image_scale_and_crop
+    weight: 1
+    data:
+      width: 580
+      height: 415

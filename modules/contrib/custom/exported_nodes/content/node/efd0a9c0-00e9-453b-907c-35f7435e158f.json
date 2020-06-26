@@ -1,0 +1,143 @@
+{
+    "_links": {
+        "self": {
+            "href": "http:\/\/default\/pricing-tables?_format=hal_json"
+        },
+        "type": {
+            "href": "http:\/\/drupal.org\/rest\/type\/node\/page"
+        },
+        "http:\/\/drupal.org\/rest\/relation\/node\/page\/uid": [
+            {
+                "href": "http:\/\/default\/user\/0?_format=hal_json",
+                "lang": "und"
+            }
+        ],
+        "http:\/\/drupal.org\/rest\/relation\/node\/page\/revision_uid": [
+            {
+                "href": "http:\/\/default\/user\/0?_format=hal_json"
+            }
+        ]
+    },
+    "nid": [
+        {
+            "value": "51"
+        }
+    ],
+    "uuid": [
+        {
+            "value": "efd0a9c0-00e9-453b-907c-35f7435e158f"
+        }
+    ],
+    "vid": [
+        {
+            "value": "51"
+        }
+    ],
+    "langcode": [
+        {
+            "value": "und",
+            "lang": "und"
+        }
+    ],
+    "type": [
+        {
+            "target_id": "page"
+        }
+    ],
+    "title": [
+        {
+            "value": "Pricing Tables",
+            "lang": "und"
+        }
+    ],
+    "_embedded": {
+        "http:\/\/drupal.org\/rest\/relation\/node\/page\/uid": [
+            {
+                "_links": {
+                    "self": {
+                        "href": "http:\/\/default\/user\/0?_format=hal_json"
+                    },
+                    "type": {
+                        "href": "http:\/\/drupal.org\/rest\/type\/user\/user"
+                    }
+                },
+                "uuid": [
+                    {
+                        "value": "cdddbba5-497d-4ff1-92f9-e0fb2de3e96e"
+                    }
+                ],
+                "lang": "und"
+            }
+        ],
+        "http:\/\/drupal.org\/rest\/relation\/node\/page\/revision_uid": [
+            {
+                "_links": {
+                    "self": {
+                        "href": "http:\/\/default\/user\/0?_format=hal_json"
+                    },
+                    "type": {
+                        "href": "http:\/\/drupal.org\/rest\/type\/user\/user"
+                    }
+                },
+                "uuid": [
+                    {
+                        "value": "cdddbba5-497d-4ff1-92f9-e0fb2de3e96e"
+                    }
+                ]
+            }
+        ]
+    },
+    "status": [
+        {
+            "value": "1",
+            "lang": "und"
+        }
+    ],
+    "created": [
+        {
+            "value": "1463461258",
+            "lang": "und"
+        }
+    ],
+    "changed": [
+        {
+            "value": "1464343231",
+            "lang": "und"
+        }
+    ],
+    "promote": [
+        {
+            "value": "0"
+        }
+    ],
+    "sticky": [
+        {
+            "value": "0",
+            "lang": "und"
+        }
+    ],
+    "revision_timestamp": [
+        {
+            "value": "1463461258"
+        }
+    ],
+    "revision_translation_affected": [
+        {
+            "value": "1",
+            "lang": "und"
+        }
+    ],
+    "default_langcode": [
+        {
+            "value": "1",
+            "lang": "und"
+        }
+    ],
+    "body": [
+        {
+            "value": "<p>We offer you three different types of tin foil hats that differ from one another in form,&nbsp;functionality and price.<\/p>\r\n\r\n<div class=\"pricing-tables\">\r\n<div class=\"row\">\r\n<div class=\"col col-4 col-md-6 col-xs-12\">\r\n<div class=\"pricing-table standard\">\r\n<h2 class=\"price-plan\">Ordinary<\/h2>\r\n\r\n<div class=\"price-block\">\r\n<div class=\"price\">Our first model is the very hat Buddha used to wear to get enlightened. It's a perfect solution for those who have just stepped on the path of awakening.<\/div>\r\n\r\n<div class=\"price\">&nbsp;<\/div>\r\n\r\n<div class=\"price\"><span class=\"price-value\">$29.99<\/span><\/div>\r\n\r\n<div class=\"price-period\">&nbsp;<\/div>\r\n\r\n<div class=\"price-period\">Smart price<\/div>\r\n<\/div>\r\n\r\n<div class=\"price-options\">\r\n<p>Perfect for beginners<\/p>\r\n\r\n<p>Protects from most of the known threats<\/p>\r\n\r\n<p><a class=\"btn\" href=\"#\">Learn more<\/a><\/p>\r\n<\/div>\r\n<\/div>\r\n<\/div>\r\n\r\n<div class=\"col col-4 col-md-6 col-xs-12\">\r\n<div class=\"pricing-table professional\">\r\n<h2 class=\"price-plan\">Extraordinary<\/h2>\r\n\r\n<div class=\"price-block\">\r\n<div class=\"price\">A delicious tool that can guide you beyond what an eye can meet. Increases your intuitive sense with little side effects.<\/div>\r\n\r\n<div class=\"price\">&nbsp;<\/div>\r\n\r\n<div class=\"price\"><span class=\"price-value\">$49.99<\/span><\/div>\r\n\r\n<div class=\"price-period\">&nbsp;<\/div>\r\n\r\n<div class=\"price-period\">Combines intellectual and spiritual effects<\/div>\r\n<\/div>\r\n\r\n<div class=\"price-options\">\r\n<p>Suitable for advanced mystery solvers<\/p>\r\n\r\n<p>Can be worn 24\/7<\/p>\r\n\r\n<p><a class=\"btn\" href=\"#\">Learn more<\/a><\/p>\r\n<\/div>\r\n<\/div>\r\n<\/div>\r\n\r\n<div class=\"col col-4 col-md-6 col-xs-12\">\r\n<div class=\"pricing-table ultimate\">\r\n<h2 class=\"price-plan\">Supreme<\/h2>\r\n\r\n<div class=\"price-block\">\r\n<div class=\"price\">A posh accessory designed in the Soho labs by the incognito master. As fashionable as effective the hat helps you to foster your mind to a state where it no longer need a hat to protect itself.<\/div>\r\n\r\n<div class=\"price\">&nbsp;<\/div>\r\n\r\n<div class=\"price\"><span class=\"price-value\">$119.99<\/span><\/div>\r\n\r\n<div class=\"price-period\">&nbsp;<\/div>\r\n\r\n<div class=\"price-period\">The most stylish choice<\/div>\r\n<\/div>\r\n\r\n<div class=\"price-options\">\r\n<p>Broadens perceptive skills<\/p>\r\n\r\n<p>Tunes you into the vibes of the Cosmos effortlessly<\/p>\r\n\r\n<p><a class=\"btn\" href=\"#\">Learn more<\/a><\/p>\r\n<\/div>\r\n<\/div>\r\n<\/div>\r\n<\/div>\r\n<\/div>\r\n",
+            "format": "full_html",
+            "summary": ""
+        }
+    ]
+}

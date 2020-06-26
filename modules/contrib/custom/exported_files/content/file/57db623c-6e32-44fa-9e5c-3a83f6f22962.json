@@ -1,0 +1,94 @@
+{
+    "_links": {
+        "self": {
+            "href": "http:\/\/default\/file\/53?_format=hal_json"
+        },
+        "type": {
+            "href": "http:\/\/drupal.org\/rest\/type\/file\/image"
+        },
+        "http:\/\/drupal.org\/rest\/relation\/file\/image\/uid": [
+            {
+                "href": "http:\/\/default\/users\/admin?_format=hal_json"
+            }
+        ]
+    },
+    "fid": [
+        {
+            "value": "53"
+        }
+    ],
+    "uuid": [
+        {
+            "value": "57db623c-6e32-44fa-9e5c-3a83f6f22962"
+        }
+    ],
+    "langcode": [
+        {
+            "value": "en"
+        }
+    ],
+    "_embedded": {
+        "http:\/\/drupal.org\/rest\/relation\/file\/image\/uid": [
+            {
+                "_links": {
+                    "self": {
+                        "href": "http:\/\/default\/users\/admin?_format=hal_json"
+                    },
+                    "type": {
+                        "href": "http:\/\/drupal.org\/rest\/type\/user\/user"
+                    }
+                },
+                "uuid": [
+                    {
+                        "value": "7edac145-49a7-4eb3-86da-758606161db9"
+                    }
+                ]
+            }
+        ]
+    },
+    "filename": [
+        {
+            "value": "favicon.ico"
+        }
+    ],
+    "uri": [
+        {
+            "value": "temporary:\/\/favicon.ico"
+        }
+    ],
+    "filemime": [
+        {
+            "value": "image\/vnd.microsoft.icon"
+        }
+    ],
+    "filesize": [
+        {
+            "value": "358"
+        }
+    ],
+    "status": [
+        {
+            "value": "0"
+        }
+    ],
+    "created": [
+        {
+            "value": "1465372165"
+        }
+    ],
+    "changed": [
+        {
+            "value": "1465372165"
+        }
+    ],
+    "type": [
+        {
+            "target_id": "image"
+        }
+    ],
+    "data": [
+        {
+            "value": ""
+        }
+    ]
+}

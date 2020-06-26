@@ -1,0 +1,11 @@
+excluded:
+  - block.block.block_views_recent_news_block
+  - block.block.views_block__dignities_block_1
+  - block.block.views_block__gmap_block_block_1
+  - block.block.views_block__our_amazing_team_block_1
+  - block.block.views_block__our_amazing_team_block_2
+  - block.block.views_block__our_clients_block_1
+  - block.block.views_block__popular_tags_block_1
+  - block.block.views_block__popular_tags_block_1_2
+  - block.block.views_block__secondary_slider_block_1
+required: true

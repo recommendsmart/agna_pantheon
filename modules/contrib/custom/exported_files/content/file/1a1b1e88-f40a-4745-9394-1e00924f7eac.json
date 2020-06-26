@@ -1,0 +1,94 @@
+{
+    "_links": {
+        "self": {
+            "href": "http:\/\/default\/file\/19?_format=hal_json"
+        },
+        "type": {
+            "href": "http:\/\/drupal.org\/rest\/type\/file\/image"
+        },
+        "http:\/\/drupal.org\/rest\/relation\/file\/image\/uid": [
+            {
+                "href": "http:\/\/default\/users\/admin?_format=hal_json"
+            }
+        ]
+    },
+    "fid": [
+        {
+            "value": "19"
+        }
+    ],
+    "uuid": [
+        {
+            "value": "1a1b1e88-f40a-4745-9394-1e00924f7eac"
+        }
+    ],
+    "langcode": [
+        {
+            "value": "en"
+        }
+    ],
+    "_embedded": {
+        "http:\/\/drupal.org\/rest\/relation\/file\/image\/uid": [
+            {
+                "_links": {
+                    "self": {
+                        "href": "http:\/\/default\/users\/admin?_format=hal_json"
+                    },
+                    "type": {
+                        "href": "http:\/\/drupal.org\/rest\/type\/user\/user"
+                    }
+                },
+                "uuid": [
+                    {
+                        "value": "7edac145-49a7-4eb3-86da-758606161db9"
+                    }
+                ]
+            }
+        ]
+    },
+    "filename": [
+        {
+            "value": "13.png"
+        }
+    ],
+    "uri": [
+        {
+            "value": "public:\/\/13.png"
+        }
+    ],
+    "filemime": [
+        {
+            "value": "image\/png"
+        }
+    ],
+    "filesize": [
+        {
+            "value": "816"
+        }
+    ],
+    "status": [
+        {
+            "value": "1"
+        }
+    ],
+    "created": [
+        {
+            "value": "1464593453"
+        }
+    ],
+    "changed": [
+        {
+            "value": "1464593459"
+        }
+    ],
+    "type": [
+        {
+            "target_id": "image"
+        }
+    ],
+    "data": [
+        {
+            "value": "iVBORw0KGgoAAAANSUhEUgAAAFMAAABTCAMAAADUbMsyAAAABGdBTUEAALGPC\/xhBQAAACBjSFJNAAB6JgAAgIQAAPoAAACA6AAAdTAAAOpgAAA6mAAAF3CculE8AAAAM1BMVEUAAAA\/mug\/mug\/mug\/mug\/mug\/mug\/mug\/mug\/mug\/mug\/mug\/mug\/mug\/mug\/muj\/\/\/+UgU4vAAAAD3RSTlMAEXfu3TO7qkRVIsxmmYhoreUgAAAAAWJLR0QQlbINLAAAAfJJREFUWMPt2N22hRAQAGC\/FcL7v+2RtdsZRp0yZ61zkbsdvhiM1mbsKJydl6t6rIjBeqzIi4EojY5eTPPS62KiOSVtxAbKXUxl7fTx0VcvqaYeXY\/soVzFavKK171tj8RQK6Zc48TRzRaxsOv8qdc42aKfHluZv3XiiMUyy73erTiJjJQbnx77tZiui7IMrk\/sVNZXJBpTB9eAp1Zgj3jwjpbEUAH3ypoahfKBgfviS0rtu6iNIP5biBUc+IqT2xR66AR+5TbwLbxDnqAgeiY3AdHQXbJAu2dx367NhuyRBzqhoA4KrKby5ppkeh9EO4C8DZsi59VekHs335hp1g4xXdC\/JKVlWOHFSc0REqDdOYmm2M+qf0KQJl0l6sdkKku7l0bJdJNsrSwpmTecoyXzQQq0ZM51GieLHHiL3BKT6pDR8WdkeXdU5Be9S4I7rsnqGb1NwnzaXBQJfUCi+bJAlwckOyWLpPWS6fb+g1F6Q04yGchJU51liuUJdc4ZJXXITcH9Okba6XgsOAnJ9stWhYulv7vVA\/K9P0imrxtHTV7vzydn3Gtyki30JP3EX\/IlX\/IlX\/Il\/xl5\/IlDRzJJT56Yj8nta4ya7K7RANlDh0gcHSQxdJhsUQKyRklIiBKRJUpGHighuaOkZEJTipooyB+f8XhqAoUw0AAAACV0RVh0ZGF0ZTpjcmVhdGUAMjAxNS0wNC0xN1QwNToxNDo1OCswMDowMAyCGnEAAAAldEVYdGRhdGU6bW9kaWZ5ADIwMTUtMDQtMTdUMDU6MTQ6NTgrMDA6MDB936LNAAAAAElFTkSuQmCC"
+        }
+    ]
+}

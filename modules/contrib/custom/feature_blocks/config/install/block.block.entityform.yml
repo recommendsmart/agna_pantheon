@@ -1,0 +1,27 @@
+langcode: en
+status: true
+dependencies:
+  module:
+    - entityform_block
+    - system
+  theme:
+    - multipurpose_corporate_theme
+id: entityform
+theme: multipurpose_corporate_theme
+region: content
+weight: -16
+provider: null
+plugin: entityform_block
+settings:
+  id: entityform_block
+  label: 'Contact us'
+  provider: entityform_block
+  label_display: '0'
+  entity_type: contact_message
+  bundle: contact_us_form
+visibility:
+  request_path:
+    id: request_path
+    pages: /contact-us
+    negate: false
+    context_mapping: {  }

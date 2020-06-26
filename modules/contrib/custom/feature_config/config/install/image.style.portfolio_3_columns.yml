@@ -1,0 +1,13 @@
+langcode: en
+status: true
+dependencies: {  }
+name: portfolio_3_columns
+label: 'Portfolio 3 columns'
+effects:
+  0009335b-3032-4d03-beb9-2e557b595c65:
+    uuid: 0009335b-3032-4d03-beb9-2e557b595c65
+    id: image_scale_and_crop
+    weight: 1
+    data:
+      width: 386
+      height: 276

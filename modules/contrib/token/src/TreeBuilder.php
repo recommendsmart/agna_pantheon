@@ -6,11 +6,8 @@ use Drupal\Core\Cache\Cache;
 use Drupal\Core\Cache\CacheBackendInterface;
 use Drupal\Core\Language\LanguageManagerInterface;
 use Drupal\Core\Render\BubbleableMetadata;
-use Drupal\Core\StringTranslation\StringTranslationTrait;
 
 class TreeBuilder implements TreeBuilderInterface {
-
-  use StringTranslationTrait;
 
   /**
    * @var \Drupal\token\Token
@@ -100,7 +97,7 @@ class TreeBuilder implements TreeBuilderInterface {
       '#show_nested' => $options['show_nested'],
       '#click_insert' => $options['click_insert'],
       '#columns' => ['name', 'token', 'description'],
-      '#empty' => $this->t('No tokens available'),
+      '#empty' => t('No tokens available'),
     ];
 
     return $element;

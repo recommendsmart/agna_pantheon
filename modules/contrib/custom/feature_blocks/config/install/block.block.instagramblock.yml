@@ -1,0 +1,28 @@
+langcode: en
+status: true
+dependencies:
+  module:
+    - instagram_block
+    - system
+  theme:
+    - multipurpose_corporate_theme
+id: instagramblock
+theme: multipurpose_corporate_theme
+region: tertiary
+weight: -14
+provider: null
+plugin: instagram_block_block
+settings:
+  id: instagram_block_block
+  label: Photos
+  provider: instagram_block
+  label_display: visible
+  count: '9'
+  width: '70'
+  height: '70'
+visibility:
+  request_path:
+    id: request_path
+    pages: ''
+    negate: true
+    context_mapping: {  }

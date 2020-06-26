@@ -1,0 +1,40 @@
+langcode: en
+status: true
+dependencies:
+  config:
+    - contact.form.contact_us_form
+    - field.field.contact_message.contact_us_form.field_subje
+    - field.field.contact_message.contact_us_form.field_your_email
+    - field.field.contact_message.contact_us_form.field_your_name_
+id: contact_message.contact_us_form.default
+targetEntityType: contact_message
+bundle: contact_us_form
+mode: default
+content:
+  field_subje:
+    weight: 2
+    label: above
+    settings:
+      link_to_entity: false
+    third_party_settings: {  }
+    type: string
+  field_your_email:
+    weight: 1
+    label: above
+    settings: {  }
+    third_party_settings: {  }
+    type: basic_string
+  field_your_name_:
+    weight: 0
+    label: above
+    settings:
+      link_to_entity: false
+    third_party_settings: {  }
+    type: string
+  message:
+    type: basic_string
+    weight: 3
+    label: above
+    settings: {  }
+    third_party_settings: {  }
+hidden: {  }

@@ -1,0 +1,222 @@
+{
+    "_links": {
+        "self": {
+            "href": "http:\/\/default\/content\/reptiloid-abused-zookeeper-escapes-sidney-terrarium-0?_format=hal_json"
+        },
+        "type": {
+            "href": "http:\/\/drupal.org\/rest\/type\/node\/news"
+        },
+        "http:\/\/drupal.org\/rest\/relation\/node\/news\/uid": [
+            {
+                "href": "http:\/\/default\/user\/0?_format=hal_json",
+                "lang": "und"
+            }
+        ],
+        "http:\/\/drupal.org\/rest\/relation\/node\/news\/revision_uid": [
+            {
+                "href": "http:\/\/default\/user\/0?_format=hal_json"
+            }
+        ],
+        "http:\/\/drupal.org\/rest\/relation\/node\/news\/field_news_image": [
+            {
+                "href": "http:\/\/default\/sites\/default\/files\/img_0.jpg"
+            }
+        ],
+        "http:\/\/drupal.org\/rest\/relation\/node\/news\/field_tags": [
+            {
+                "href": "http:\/\/default\/tags\/mind-control?_format=hal_json"
+            },
+            {
+                "href": "http:\/\/default\/portfolioterms\/aliens?_format=hal_json"
+            }
+        ]
+    },
+    "nid": [
+        {
+            "value": "82"
+        }
+    ],
+    "uuid": [
+        {
+            "value": "ff69cf91-3e1a-4bdf-884b-02fab6e82ff5"
+        }
+    ],
+    "vid": [
+        {
+            "value": "82"
+        }
+    ],
+    "langcode": [
+        {
+            "value": "und",
+            "lang": "und"
+        }
+    ],
+    "type": [
+        {
+            "target_id": "news"
+        }
+    ],
+    "title": [
+        {
+            "value": "Reptiloid abused by zookeeper escapes Sidney terrarium.",
+            "lang": "und"
+        }
+    ],
+    "_embedded": {
+        "http:\/\/drupal.org\/rest\/relation\/node\/news\/uid": [
+            {
+                "_links": {
+                    "self": {
+                        "href": "http:\/\/default\/user\/0?_format=hal_json"
+                    },
+                    "type": {
+                        "href": "http:\/\/drupal.org\/rest\/type\/user\/user"
+                    }
+                },
+                "uuid": [
+                    {
+                        "value": "cdddbba5-497d-4ff1-92f9-e0fb2de3e96e"
+                    }
+                ],
+                "lang": "und"
+            }
+        ],
+        "http:\/\/drupal.org\/rest\/relation\/node\/news\/revision_uid": [
+            {
+                "_links": {
+                    "self": {
+                        "href": "http:\/\/default\/user\/0?_format=hal_json"
+                    },
+                    "type": {
+                        "href": "http:\/\/drupal.org\/rest\/type\/user\/user"
+                    }
+                },
+                "uuid": [
+                    {
+                        "value": "cdddbba5-497d-4ff1-92f9-e0fb2de3e96e"
+                    }
+                ]
+            }
+        ],
+        "http:\/\/drupal.org\/rest\/relation\/node\/news\/field_news_image": [
+            {
+                "_links": {
+                    "self": {
+                        "href": "http:\/\/default\/sites\/default\/files\/img_0.jpg"
+                    },
+                    "type": {
+                        "href": "http:\/\/drupal.org\/rest\/type\/file\/image"
+                    }
+                },
+                "uuid": [
+                    {
+                        "value": "ca80c688-bcfa-49b1-a36b-939f84abc255"
+                    }
+                ],
+                "uri": [
+                    {
+                        "value": "http:\/\/default\/sites\/default\/files\/img_0.jpg"
+                    }
+                ]
+            }
+        ],
+        "http:\/\/drupal.org\/rest\/relation\/node\/news\/field_tags": [
+            {
+                "_links": {
+                    "self": {
+                        "href": "http:\/\/default\/tags\/mind-control?_format=hal_json"
+                    },
+                    "type": {
+                        "href": "http:\/\/drupal.org\/rest\/type\/taxonomy_term\/tags"
+                    }
+                },
+                "uuid": [
+                    {
+                        "value": "5233e217-4a25-4810-80dd-576bca16bf55"
+                    }
+                ]
+            },
+            {
+                "_links": {
+                    "self": {
+                        "href": "http:\/\/default\/portfolioterms\/aliens?_format=hal_json"
+                    },
+                    "type": {
+                        "href": "http:\/\/drupal.org\/rest\/type\/taxonomy_term\/portfolio_terms"
+                    }
+                },
+                "uuid": [
+                    {
+                        "value": "f7124243-ffac-4e1a-8b6b-1cd3aa684f51"
+                    }
+                ]
+            }
+        ]
+    },
+    "status": [
+        {
+            "value": "1",
+            "lang": "und"
+        }
+    ],
+    "created": [
+        {
+            "value": "1463461258",
+            "lang": "und"
+        }
+    ],
+    "changed": [
+        {
+            "value": "1464748791",
+            "lang": "und"
+        }
+    ],
+    "promote": [
+        {
+            "value": "0",
+            "lang": "und"
+        }
+    ],
+    "sticky": [
+        {
+            "value": "0",
+            "lang": "und"
+        }
+    ],
+    "revision_timestamp": [
+        {
+            "value": "1463461258"
+        }
+    ],
+    "revision_translation_affected": [
+        {
+            "value": "1",
+            "lang": "und"
+        }
+    ],
+    "default_langcode": [
+        {
+            "value": "1",
+            "lang": "und"
+        }
+    ],
+    "body": [
+        {
+            "value": "<p>Sydney, July 29 \u00ad\u2013 An unemployed alien reptiloid that resided in Sydney terrarium for 5 years claims to be physically abused by elderly zookeeper. According to the alien, the&nbsp;creature that appeared&nbsp;in the zoo is a clear example of \u201cspeciesism\u201d, a discrimination based on the species attribute. While the police tries&nbsp;to keep the case down, the outraged reptiloid threatens to sue the hell out of the city. One of the world\u2019s richiest lawyers John Branca&nbsp;will represent the reptilod in the court, free of any charge. Coincidence, ha?<\/p>\r\n",
+            "format": "filtered_html",
+            "summary": ""
+        }
+    ],
+    "comment_node_news": [
+        {
+            "status": "1",
+            "cid": "0",
+            "last_comment_timestamp": "1463461258",
+            "last_comment_name": null,
+            "last_comment_uid": "0",
+            "comment_count": "0",
+            "lang": "und"
+        }
+    ]
+}

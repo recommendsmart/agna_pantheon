@@ -1,0 +1,204 @@
+{
+    "_links": {
+        "self": {
+            "href": "http:\/\/default\/blog\/reptilian-elite-0?_format=hal_json"
+        },
+        "type": {
+            "href": "http:\/\/drupal.org\/rest\/type\/node\/blog_entry"
+        },
+        "http:\/\/drupal.org\/rest\/relation\/node\/blog_entry\/uid": [
+            {
+                "href": "http:\/\/default\/user\/0?_format=hal_json",
+                "lang": "und"
+            }
+        ],
+        "http:\/\/drupal.org\/rest\/relation\/node\/blog_entry\/revision_uid": [
+            {
+                "href": "http:\/\/default\/user\/0?_format=hal_json"
+            }
+        ],
+        "http:\/\/drupal.org\/rest\/relation\/node\/blog_entry\/field_blog_image": [
+            {
+                "href": "http:\/\/default\/sites\/default\/files\/reptilian_211.jpg"
+            }
+        ],
+        "http:\/\/drupal.org\/rest\/relation\/node\/blog_entry\/field_tags": [
+            {
+                "href": "http:\/\/default\/tags\/mind-control?_format=hal_json"
+            }
+        ]
+    },
+    "nid": [
+        {
+            "value": "66"
+        }
+    ],
+    "uuid": [
+        {
+            "value": "5943407c-c842-4e39-9214-4e630b87cdab"
+        }
+    ],
+    "vid": [
+        {
+            "value": "66"
+        }
+    ],
+    "langcode": [
+        {
+            "value": "und",
+            "lang": "und"
+        }
+    ],
+    "type": [
+        {
+            "target_id": "blog_entry"
+        }
+    ],
+    "title": [
+        {
+            "value": "The Reptilian Elite",
+            "lang": "und"
+        }
+    ],
+    "_embedded": {
+        "http:\/\/drupal.org\/rest\/relation\/node\/blog_entry\/uid": [
+            {
+                "_links": {
+                    "self": {
+                        "href": "http:\/\/default\/user\/0?_format=hal_json"
+                    },
+                    "type": {
+                        "href": "http:\/\/drupal.org\/rest\/type\/user\/user"
+                    }
+                },
+                "uuid": [
+                    {
+                        "value": "cdddbba5-497d-4ff1-92f9-e0fb2de3e96e"
+                    }
+                ],
+                "lang": "und"
+            }
+        ],
+        "http:\/\/drupal.org\/rest\/relation\/node\/blog_entry\/revision_uid": [
+            {
+                "_links": {
+                    "self": {
+                        "href": "http:\/\/default\/user\/0?_format=hal_json"
+                    },
+                    "type": {
+                        "href": "http:\/\/drupal.org\/rest\/type\/user\/user"
+                    }
+                },
+                "uuid": [
+                    {
+                        "value": "cdddbba5-497d-4ff1-92f9-e0fb2de3e96e"
+                    }
+                ]
+            }
+        ],
+        "http:\/\/drupal.org\/rest\/relation\/node\/blog_entry\/field_blog_image": [
+            {
+                "_links": {
+                    "self": {
+                        "href": "http:\/\/default\/sites\/default\/files\/reptilian_211.jpg"
+                    },
+                    "type": {
+                        "href": "http:\/\/drupal.org\/rest\/type\/file\/image"
+                    }
+                },
+                "uuid": [
+                    {
+                        "value": "91cbc0f8-8db5-44d9-bb42-1a4e4fd09135"
+                    }
+                ],
+                "uri": [
+                    {
+                        "value": "http:\/\/default\/sites\/default\/files\/reptilian_211.jpg"
+                    }
+                ]
+            }
+        ],
+        "http:\/\/drupal.org\/rest\/relation\/node\/blog_entry\/field_tags": [
+            {
+                "_links": {
+                    "self": {
+                        "href": "http:\/\/default\/tags\/mind-control?_format=hal_json"
+                    },
+                    "type": {
+                        "href": "http:\/\/drupal.org\/rest\/type\/taxonomy_term\/tags"
+                    }
+                },
+                "uuid": [
+                    {
+                        "value": "5233e217-4a25-4810-80dd-576bca16bf55"
+                    }
+                ]
+            }
+        ]
+    },
+    "status": [
+        {
+            "value": "1",
+            "lang": "und"
+        }
+    ],
+    "created": [
+        {
+            "value": "1463461258",
+            "lang": "und"
+        }
+    ],
+    "changed": [
+        {
+            "value": "1464144797",
+            "lang": "und"
+        }
+    ],
+    "promote": [
+        {
+            "value": "0",
+            "lang": "und"
+        }
+    ],
+    "sticky": [
+        {
+            "value": "0",
+            "lang": "und"
+        }
+    ],
+    "revision_timestamp": [
+        {
+            "value": "1463461258"
+        }
+    ],
+    "revision_translation_affected": [
+        {
+            "value": "1",
+            "lang": "und"
+        }
+    ],
+    "default_langcode": [
+        {
+            "value": "1",
+            "lang": "und"
+        }
+    ],
+    "body": [
+        {
+            "value": "<p>They are among us. Blood-drinking, flesh-eating, shape-shifting extraterrestrial reptilian humanoids with only one objective in their cold-blooded little heads: to enslave the human race. They are our leaders, our corporate executives, our beloved Oscar-winning actors and Grammy-winning singers!<\/p>\r\n\r\n<p>The conspiracy theorist and New Age philosopher, who wore only turquoise for a time and insisted on being called Son of God-Head, says these \"Annunaki\" (the reptiles) have controlled humankind since ancient times; they count among their number some royal figures, presidents of big countries and their assistants.&nbsp;Encroaching on other conspiracy theorists' territory, Son of God-Head&nbsp;even claims that the lizards are behind secret societies like the Freemasons and the Illuminati.<\/p>\r\n",
+            "format": "filtered_html",
+            "summary": ""
+        }
+    ],
+    "comment_node_blog_entry": [
+        {
+            "status": "1",
+            "cid": "0",
+            "last_comment_timestamp": "1463461258",
+            "last_comment_name": null,
+            "last_comment_uid": "0",
+            "comment_count": "0",
+            "lang": "und"
+        }
+    ]
+}

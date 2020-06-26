@@ -1,0 +1,25 @@
+langcode: en
+status: true
+dependencies:
+  module:
+    - addtoany
+    - system
+  theme:
+    - multipurpose_corporate_theme
+id: addtoanybuttons_2
+theme: multipurpose_corporate_theme
+region: sidebar_second
+weight: -15
+provider: null
+plugin: addtoany_block
+settings:
+  id: addtoany_block
+  label: Share
+  provider: addtoany
+  label_display: visible
+visibility:
+  request_path:
+    id: request_path
+    pages: '/blog/*'
+    negate: false
+    context_mapping: {  }

@@ -1,0 +1,23 @@
+features:
+  node_user_picture: 1
+  comment_user_picture: 1
+  comment_user_verification: 1
+  favicon: 1
+logo:
+  use_default: 1
+  path: ''
+favicon:
+  use_default: 1
+  path: ''
+generate:
+  generate_friendly_name: 'example theme'
+  generate_machine_name: example_theme
+  generate_type: standard
+  generate_clone_source: mltpp_crpt_thm
+  options:
+    generate_templates: 0
+    generate_uikit: 0
+    generate_color: 0
+    generate_themesettingsfile: 0
+    generate_description: ''
+    generate_version: ''

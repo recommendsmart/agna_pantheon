@@ -1,0 +1,18 @@
+langcode: en
+status: true
+dependencies:
+  config:
+    - contact.form.contact_us_form
+    - field.storage.contact_message.field_subje
+id: contact_message.contact_us_form.field_subje
+field_name: field_subje
+entity_type: contact_message
+bundle: contact_us_form
+label: Subject
+description: ''
+required: true
+translatable: false
+default_value: {  }
+default_value_callback: ''
+settings: {  }
+field_type: string

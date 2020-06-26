@@ -1,0 +1,18 @@
+langcode: en
+status: true
+dependencies:
+  config:
+    - eform.type.contact_us
+    - field.storage.eform_submission.field_email_address
+id: eform_submission.contact_us.field_email_address
+field_name: field_email_address
+entity_type: eform_submission
+bundle: contact_us
+label: 'Your Email Address'
+description: ''
+required: true
+translatable: false
+default_value: {  }
+default_value_callback: ''
+settings: {  }
+field_type: email

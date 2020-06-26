@@ -1,0 +1,31 @@
+langcode: en
+status: true
+dependencies:
+  config:
+    - core.entity_view_mode.node.teaser
+    - field.field.node.main_slider.body
+    - field.field.node.main_slider.comment_node_main_slider
+    - field.field.node.main_slider.field_background_image
+    - field.field.node.main_slider.field_main_slider_image
+    - node.type.main_slider
+  module:
+    - text
+    - user
+id: node.main_slider.teaser
+targetEntityType: node
+bundle: main_slider
+mode: teaser
+content:
+  body:
+    label: hidden
+    weight: 0
+    type: text_summary_or_trimmed
+    settings:
+      trim_length: 600
+    third_party_settings: {  }
+  links:
+    weight: 100
+hidden:
+  comment_node_main_slider: true
+  field_background_image: true
+  field_main_slider_image: true

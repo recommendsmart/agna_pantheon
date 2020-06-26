@@ -1,0 +1,30 @@
+langcode: en
+status: true
+dependencies:
+  content:
+    - 'block_content:basic:29ed1665-bd76-4b0e-a2a3-739ce965f4e2'
+  module:
+    - block_content
+    - system
+  theme:
+    - multipurpose_corporate_theme
+id: contactusblocktext
+theme: multipurpose_corporate_theme
+region: content
+weight: -13
+provider: null
+plugin: 'block_content:29ed1665-bd76-4b0e-a2a3-739ce965f4e2'
+settings:
+  id: 'block_content:29ed1665-bd76-4b0e-a2a3-739ce965f4e2'
+  label: 'Contact us block text'
+  provider: block_content
+  label_display: '0'
+  status: true
+  info: ''
+  view_mode: full
+visibility:
+  request_path:
+    id: request_path
+    pages: "/contact-us\r\n/node/6"
+    negate: false
+    context_mapping: {  }

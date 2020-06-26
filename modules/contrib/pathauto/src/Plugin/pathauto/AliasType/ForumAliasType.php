@@ -19,7 +19,7 @@ use Symfony\Component\DependencyInjection\ContainerInterface;
  *   label = @Translation("Forum"),
  *   types = {"term"},
  *   provider = "forum",
- *   context_definitions = {
+ *   context = {
  *     "taxonomy_term" = @ContextDefinition("entity:taxonomy_term")
  *   }
  * )
@@ -98,7 +98,7 @@ class ForumAliasType extends EntityAliasTypeBase implements ContainerFactoryPlug
     if (parent::applies($object)) {
       /** @var \Drupal\taxonomy\TermInterface $object */
       $vid = $this->configFactory->get('forum.settings')->get('vocabulary');
-      return $object->bundle() == $vid;
+      return $object->getVocabularyId() == $vid;
     }
     return FALSE;
   }

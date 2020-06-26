@@ -1,0 +1,68 @@
+{
+    "_links": {
+        "self": {
+            "href": "http:\/\/default\/block\/3?_format=hal_json"
+        },
+        "type": {
+            "href": "http:\/\/drupal.org\/rest\/type\/block_content\/basic"
+        }
+    },
+    "id": [
+        {
+            "value": "3"
+        }
+    ],
+    "uuid": [
+        {
+            "value": "d7af02d2-9779-4be9-ba24-7193a594e6d0"
+        }
+    ],
+    "revision_id": [
+        {
+            "value": "3"
+        }
+    ],
+    "langcode": [
+        {
+            "value": "en",
+            "lang": "en"
+        }
+    ],
+    "info": [
+        {
+            "value": "Social icons",
+            "lang": "en"
+        }
+    ],
+    "type": [
+        {
+            "target_id": "basic"
+        }
+    ],
+    "changed": [
+        {
+            "value": "1464076314",
+            "lang": "en"
+        }
+    ],
+    "revision_translation_affected": [
+        {
+            "value": "1",
+            "lang": "en"
+        }
+    ],
+    "default_langcode": [
+        {
+            "value": "1",
+            "lang": "en"
+        }
+    ],
+    "body": [
+        {
+            "value": "<a href=\"#\"><span class=\"fa fa-rss\"> <\/span><\/a><a href=\"#\"><span class=\"fa fa-facebook\"> <\/span><\/a><a href=\"#\"><span class=\"fa fa-twitter\"> <\/span><\/a><a href=\"#\"><span class=\"fa fa-linkedin\"> <\/span><\/a><a href=\"#\"><span class=\"fa fa-google-plus\"> <\/span><\/a><a href=\"#\"><span class=\"fa fa-vk\"> <\/span><\/a><a href=\"#\"><span class=\"fa fa-instagram\"> <\/span><\/a><a href=\"#\"><span class=\"fa fa-vimeo-square\"> <\/span><\/a>",
+            "format": "full_html",
+            "summary": null,
+            "lang": "en"
+        }
+    ]
+}

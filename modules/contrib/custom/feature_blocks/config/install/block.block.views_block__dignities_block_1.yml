@@ -1,0 +1,25 @@
+langcode: en
+status: true
+dependencies:
+  module:
+    - system
+    - views
+id: views_block__dignities_block_1
+theme: multipurpose_corporate_theme
+region: content
+weight: -12
+provider: null
+plugin: 'views_block:dignities-block_1'
+settings:
+  id: 'views_block:dignities-block_1'
+  label: ''
+  provider: views
+  label_display: '0'
+  views_label: ''
+  items_per_page: none
+visibility:
+  request_path:
+    id: request_path
+    pages: '<front>'
+    negate: false
+    context_mapping: {  }

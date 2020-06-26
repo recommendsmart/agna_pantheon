@@ -1,0 +1,19 @@
+langcode: en
+status: false
+dependencies:
+  module:
+    - search
+  theme:
+    - multipurpose_corporate_theme
+id: multipurpose_corporate_theme_search
+theme: multipurpose_corporate_theme
+region: '-1'
+weight: -11
+provider: null
+plugin: search_form_block
+settings:
+  id: search_form_block
+  label: Search
+  provider: search
+  label_display: '0'
+visibility: {  }

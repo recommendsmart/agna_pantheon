@@ -1,0 +1,13 @@
+langcode: en
+status: true
+dependencies: {  }
+name: portfolio_4_columns
+label: 'Portfolio 4 columns'
+effects:
+  8e7cbe06-0d74-48bf-877d-588222a80bf3:
+    uuid: 8e7cbe06-0d74-48bf-877d-588222a80bf3
+    id: image_scale_and_crop
+    weight: 1
+    data:
+      width: 290
+      height: 207

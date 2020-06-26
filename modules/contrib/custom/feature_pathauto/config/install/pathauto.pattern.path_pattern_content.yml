@@ -1,0 +1,27 @@
+langcode: en
+status: true
+dependencies:
+  module:
+    - node
+id: path_pattern_content
+label: path_pattern_content
+type: 'canonical_entities:node'
+pattern: 'content/[node:title]'
+selection_criteria:
+  dc549f48-2581-48d4-b2a2-6dd873aede6e:
+    id: node_type
+    bundles:
+      blog_entry: blog_entry
+      clients: clients
+      dignities: dignities
+      news: news
+      portfolio: portfolio
+      team_member: team_member
+      secondary_slider: secondary_slider
+    negate: false
+    context_mapping:
+      node: node
+    uuid: dc549f48-2581-48d4-b2a2-6dd873aede6e
+selection_logic: and
+weight: -5
+relationships: {  }

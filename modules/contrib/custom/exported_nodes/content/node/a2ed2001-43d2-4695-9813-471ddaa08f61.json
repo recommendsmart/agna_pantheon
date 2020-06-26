@@ -1,0 +1,204 @@
+{
+    "_links": {
+        "self": {
+            "href": "http:\/\/default\/blog\/flat-earth-theory?_format=hal_json"
+        },
+        "type": {
+            "href": "http:\/\/drupal.org\/rest\/type\/node\/blog_entry"
+        },
+        "http:\/\/drupal.org\/rest\/relation\/node\/blog_entry\/uid": [
+            {
+                "href": "http:\/\/default\/user\/0?_format=hal_json",
+                "lang": "und"
+            }
+        ],
+        "http:\/\/drupal.org\/rest\/relation\/node\/blog_entry\/revision_uid": [
+            {
+                "href": "http:\/\/default\/user\/0?_format=hal_json"
+            }
+        ],
+        "http:\/\/drupal.org\/rest\/relation\/node\/blog_entry\/field_blog_image": [
+            {
+                "href": "http:\/\/default\/sites\/default\/files\/o-FLAT-EARTH-facebook.jpg"
+            }
+        ],
+        "http:\/\/drupal.org\/rest\/relation\/node\/blog_entry\/field_tags": [
+            {
+                "href": "http:\/\/default\/tags\/tin-foil-hat-solutions?_format=hal_json"
+            }
+        ]
+    },
+    "nid": [
+        {
+            "value": "17"
+        }
+    ],
+    "uuid": [
+        {
+            "value": "a2ed2001-43d2-4695-9813-471ddaa08f61"
+        }
+    ],
+    "vid": [
+        {
+            "value": "17"
+        }
+    ],
+    "langcode": [
+        {
+            "value": "und",
+            "lang": "und"
+        }
+    ],
+    "type": [
+        {
+            "target_id": "blog_entry"
+        }
+    ],
+    "title": [
+        {
+            "value": "The Flat Earth Theory",
+            "lang": "und"
+        }
+    ],
+    "_embedded": {
+        "http:\/\/drupal.org\/rest\/relation\/node\/blog_entry\/uid": [
+            {
+                "_links": {
+                    "self": {
+                        "href": "http:\/\/default\/user\/0?_format=hal_json"
+                    },
+                    "type": {
+                        "href": "http:\/\/drupal.org\/rest\/type\/user\/user"
+                    }
+                },
+                "uuid": [
+                    {
+                        "value": "cdddbba5-497d-4ff1-92f9-e0fb2de3e96e"
+                    }
+                ],
+                "lang": "und"
+            }
+        ],
+        "http:\/\/drupal.org\/rest\/relation\/node\/blog_entry\/revision_uid": [
+            {
+                "_links": {
+                    "self": {
+                        "href": "http:\/\/default\/user\/0?_format=hal_json"
+                    },
+                    "type": {
+                        "href": "http:\/\/drupal.org\/rest\/type\/user\/user"
+                    }
+                },
+                "uuid": [
+                    {
+                        "value": "cdddbba5-497d-4ff1-92f9-e0fb2de3e96e"
+                    }
+                ]
+            }
+        ],
+        "http:\/\/drupal.org\/rest\/relation\/node\/blog_entry\/field_blog_image": [
+            {
+                "_links": {
+                    "self": {
+                        "href": "http:\/\/default\/sites\/default\/files\/o-FLAT-EARTH-facebook.jpg"
+                    },
+                    "type": {
+                        "href": "http:\/\/drupal.org\/rest\/type\/file\/image"
+                    }
+                },
+                "uuid": [
+                    {
+                        "value": "8e222187-45d7-4ff7-96a5-08922eb6ff47"
+                    }
+                ],
+                "uri": [
+                    {
+                        "value": "http:\/\/default\/sites\/default\/files\/o-FLAT-EARTH-facebook.jpg"
+                    }
+                ]
+            }
+        ],
+        "http:\/\/drupal.org\/rest\/relation\/node\/blog_entry\/field_tags": [
+            {
+                "_links": {
+                    "self": {
+                        "href": "http:\/\/default\/tags\/tin-foil-hat-solutions?_format=hal_json"
+                    },
+                    "type": {
+                        "href": "http:\/\/drupal.org\/rest\/type\/taxonomy_term\/tags"
+                    }
+                },
+                "uuid": [
+                    {
+                        "value": "30a309ba-b5b1-4a54-8a98-802777de6d32"
+                    }
+                ]
+            }
+        ]
+    },
+    "status": [
+        {
+            "value": "1",
+            "lang": "und"
+        }
+    ],
+    "created": [
+        {
+            "value": "1463461002",
+            "lang": "und"
+        }
+    ],
+    "changed": [
+        {
+            "value": "1464144857",
+            "lang": "und"
+        }
+    ],
+    "promote": [
+        {
+            "value": "0",
+            "lang": "und"
+        }
+    ],
+    "sticky": [
+        {
+            "value": "0",
+            "lang": "und"
+        }
+    ],
+    "revision_timestamp": [
+        {
+            "value": "1463461002"
+        }
+    ],
+    "revision_translation_affected": [
+        {
+            "value": "1",
+            "lang": "und"
+        }
+    ],
+    "default_langcode": [
+        {
+            "value": "1",
+            "lang": "und"
+        }
+    ],
+    "body": [
+        {
+            "value": "<p><br \/>\r\nHow does a plane flying from New York to London end up having the same times either way they fly? Whether flying east or west, the plane takes the same time to get there?! The plane takes the same time to get to it's destination whether flying from New York to London, or from London back to New York! Right there, this proves that there is no ball earth spinning at a 1000mph eastward as the scientific elite tell us!<\/p>\r\n\r\n<p>&nbsp;Why can a boat see a lighthouse from the sea 80 miles away? The curvature of the earth wouldn't allow a lighthouse to be seen that far away, but it can be seen on a flat earth. Every mile away an object is it would go lower and lower, to the amount of about a half a mile below the curved horizon from 80 miles away, but the lighthouse is only around 200 ft high! Explain that one.&nbsp;<\/p>\r\n\r\n<p>&nbsp;Let me just start talking to you here: NASA is a satanic organization created by the Nazi's that came over after WW2, Freemasons run NASA and are the astronauts, there are no planets spinning around the sun \u2013 they are &nbsp;close in stars and lights, the sun and the moon are circling around the top of the flat earth from only about 3,000 miles away and they are the same size, there are no satellites, there is no real pictures of the earth that are not manipulated- and only one that is used in all the books from Apollo missions window!, Antarctica surrounds the disc shaped earth's edges, the Bible talks about the earth being fixed and unmovable, the Bible calls the earth a circle (not a ball), the horizon is always eye level no matter how far you go up into the air (20,000 ft. a non-government camera has been), ancient cultures all thought the earth was flat until 500 years ago when Jesuit Priest said otherwise (Jesuits!), Antarctica is off limits to private industry although it has vast resources, no private explorer can explore the North Pole or Antarctica, and on and on....<\/p>\r\n\r\n<p>&nbsp;There is so much evidence that the earth is actually flat it's unbelievable. I learned about the hollow earth theory before a couple years ago, and I actually thought there was something to that, but it didn't resonate with my soul like this Flat Earth thought has. Spiritually, this reality of a flat earth settles in my soul and being with the up-most peace and reality. It's as if I knew it all along. I mean, flying around on a spinning earth in some vast universe just never clicked with me. From all observance, we are stationary and the earth is flat, not spinning and I don't care what some Jesuit says about some un-provable theories they made up about gravity and the solar system \u2013 it's all a lie!<\/p>\r\n\r\n<p>&nbsp;Now, I've brought up some points, but as I said you are going to have to research this more on your own. I know you'll have some questions as I did, but as far as I'm concerned, those questions can be answered much better than the questions you'll start to have about this earth being a ball that is flying around the sun.<\/p>\r\n",
+            "format": "filtered_html",
+            "summary": ""
+        }
+    ],
+    "comment_node_blog_entry": [
+        {
+            "status": "1",
+            "cid": "0",
+            "last_comment_timestamp": "1463461002",
+            "last_comment_name": null,
+            "last_comment_uid": "0",
+            "comment_count": "0",
+            "lang": "und"
+        }
+    ]
+}

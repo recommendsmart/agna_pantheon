@@ -1,0 +1,54 @@
+{
+    "_links": {
+        "self": {
+            "href": "http:\/\/default\/portfolioterms\/illuminati?_format=hal_json"
+        },
+        "type": {
+            "href": "http:\/\/drupal.org\/rest\/type\/taxonomy_term\/portfolio_terms"
+        }
+    },
+    "tid": [
+        {
+            "value": "6"
+        }
+    ],
+    "uuid": [
+        {
+            "value": "14d8185b-68d0-4abe-8f07-86f0c101ad96"
+        }
+    ],
+    "vid": [
+        {
+            "target_id": "portfolio_terms"
+        }
+    ],
+    "langcode": [
+        {
+            "value": "en",
+            "lang": "en"
+        }
+    ],
+    "name": [
+        {
+            "value": "Illuminati",
+            "lang": "en"
+        }
+    ],
+    "weight": [
+        {
+            "value": "2"
+        }
+    ],
+    "changed": [
+        {
+            "value": "1464076307",
+            "lang": "en"
+        }
+    ],
+    "default_langcode": [
+        {
+            "value": "1",
+            "lang": "en"
+        }
+    ]
+}

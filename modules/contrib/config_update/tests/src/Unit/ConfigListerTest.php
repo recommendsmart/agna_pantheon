@@ -24,21 +24,15 @@ class ConfigListerTest extends ConfigUpdateUnitTestBase {
    * List of configuration by provider in the mocks.
    *
    * This is an array whose keys are provider names, and whose values are
-   * each an array containing the provider type, an array of config items
-   * mocked to be in config/install, and the same for config/optional. In
-   * all cases, the first item in the array of config items should be tested
-   * to be provided by that provider, and any others should not be there.
+   * each an array containing the provider type, the name of one config item
+   * mocked to be in config/install, and one in config/optional.
    *
    * @var array
    */
   protected $configProviderList = [
-    'foo_module' => [
-      'module',
-      ['foo.barbaz.one', 'baz.bar.one'],
-      ['foo.barbaz.two'],
-    ],
-    'foo_theme' => ['theme', ['foo.bar.one'], ['foo.bar.two']],
-    'standard' => ['profile', ['baz.bar.one'], ['baz.bar.two']],
+    'foo_module' => ['module', 'foo.barbaz.one', 'foo.barbaz.two'],
+    'foo_theme' => ['theme', 'foo.bar.one', 'foo.bar.two'],
+    'standard' => ['profile', 'baz.bar.one', 'baz.bar.two'],
   ];
 
   /**
@@ -62,10 +56,10 @@ class ConfigListerTest extends ConfigUpdateUnitTestBase {
 
     $map = [];
     foreach ($this->configProviderList as $provider => $info) {
-      // Info has: [type, install storage items, optional storage items].
+      // Info has: [type, install storage item, optional storage item].
       // Map needs: [type, provider name, isOptional, [config items]].
-      $map[] = [$info[0], $provider, FALSE, $info[1]];
-      $map[] = [$info[0], $provider, TRUE, $info[2]];
+      $map[] = [$info[0], $provider, FALSE, [$info[1]]];
+      $map[] = [$info[0], $provider, TRUE, [$info[2]]];
     }
     $lister->method('listProvidedItems')
       ->will($this->returnValueMap($map));
@@ -154,7 +148,7 @@ class ConfigListerTest extends ConfigUpdateUnitTestBase {
             'something.else',
             'another.one',
           ],
-          ['foo.barbaz.one', 'baz.bar.one'],
+          ['foo.barbaz.one'],
           ['foo.barbaz.two'],
         ],
       ],
@@ -239,12 +233,10 @@ class ConfigListerTest extends ConfigUpdateUnitTestBase {
     $return = $this->configLister->listProviders();
     $expected = [];
     foreach ($this->configProviderList as $provider => $info) {
-      // Info has: [type, install storage items, optional storage items], with
-      // only the first item in each list that should be present in
-      // listProviders().
+      // Info has: [type, install storage item, optional storage item].
       // Expected needs: key is item name, value is [type, provider name].
-      $expected[$info[1][0]] = [$info[0], $provider];
-      $expected[$info[2][0]] = [$info[0], $provider];
+      $expected[$info[1]] = [$info[0], $provider];
+      $expected[$info[2]] = [$info[0], $provider];
     }
     ksort($return);
     ksort($expected);
@@ -265,12 +257,10 @@ class ConfigListerTest extends ConfigUpdateUnitTestBase {
   public function getConfigProviderProvider() {
     $values = [];
     foreach ($this->configProviderList as $provider => $info) {
-      // Info has: [type, install storage items, optional storage items], with
-      // the first item in each list that should be OK to test with
-      // getConfigProvider().
+      // Info has: [type, install storage item, optional storage item].
       // Values needs: [item, [type, provider name]].
-      $values[] = [$info[1][0], [$info[0], $provider]];
-      $values[] = [$info[2][0], [$info[0], $provider]];
+      $values[] = [$info[1], [$info[0], $provider]];
+      $values[] = [$info[2], [$info[0], $provider]];
     }
     $values[] = ['not.a.config.item', NULL];
     return $values;
@@ -290,7 +280,7 @@ class ConfigListerTest extends ConfigUpdateUnitTestBase {
   public function providerHasConfigProvider() {
     $values = [];
     foreach ($this->configProviderList as $provider => $info) {
-      // Info has: [type, install storage items, optional storage items].
+      // Info has: [type, install storage item, optional storage item].
       // Values needs: [type, provider name, TRUE] for valid providers,
       // change the last to FALSE for invalid providers.
       $values[] = [$info[0], $provider, TRUE];

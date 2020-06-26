@@ -7,15 +7,11 @@ use Drupal\Core\Language\LanguageInterface;
 
 /**
  * Provides helper methods for accessing alias storage.
- *
- * @internal This interface is internal to pathauto, it abstracts direct alias
- *   storage access as well as backwards-compatibility for 8.7 and will be
- *   refactored.
  */
 interface AliasStorageHelperInterface {
 
   /**
-   * Fetch the maximum length of the {path_alias}.alias field from the schema.
+   * Fetch the maximum length of the {url_alias}.alias field from the schema.
    *
    * @return int
    *   An integer of the maximum URL alias length allowed by the database.
@@ -71,7 +67,7 @@ interface AliasStorageHelperInterface {
   public function deleteBySourcePrefix($source);
 
   /**
-   * Delete all aliases (truncate the path alias entity tables).
+   * Delete all aliases (truncate the url_alias table).
    */
   public function deleteAll();
 
@@ -117,16 +113,5 @@ interface AliasStorageHelperInterface {
    *   Total number of aliases.
    */
   public function countAll();
-
-  /**
-   * Delete multiple URL aliases.
-   *
-   * Intent of this is to abstract a potential path_delete_multiple() function
-   * for Drupal 7 or 8.
-   *
-   * @param int[] $pids
-   *   An array of path IDs to delete.
-   */
-  public function deleteMultiple($pids);
 
 }

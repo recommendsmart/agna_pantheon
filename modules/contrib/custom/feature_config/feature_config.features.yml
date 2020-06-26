@@ -1,0 +1,8 @@
+excluded:
+  - block.block.mainmenu
+  - block.block.mainnavigation
+  - block.block.multipurpose_corporate_theme_account_menu
+  - block.block.multipurpose_corporate_theme_footer
+  - block.block.multipurpose_corporate_theme_main_menu
+  - block.block.multipurpose_corporate_theme_tools
+required: true
