@@ -20,13 +20,6 @@ class UserCancelForm extends ContentEntityConfirmFormBase {
   protected $cancelMethods;
 
   /**
-   * Whether allowed to select cancellation method.
-   *
-   * @var bool
-   */
-  protected $selectCancel;
-
-  /**
    * The user being cancelled.
    *
    * @var \Drupal\user\UserInterface
@@ -47,7 +40,7 @@ class UserCancelForm extends ContentEntityConfirmFormBase {
    * {@inheritdoc}
    */
   public function getCancelUrl() {
-    return $this->entity->toUrl();
+    return $this->entity->urlInfo();
   }
 
   /**
@@ -56,18 +49,13 @@ class UserCancelForm extends ContentEntityConfirmFormBase {
   public function getDescription() {
     $description = '';
     $default_method = $this->config('user.settings')->get('cancel_method');
-    $own_account = $this->entity->id() == $this->currentUser()->id();
-    if ($this->selectCancel) {
+    if ($this->currentUser()->hasPermission('administer users') || $this->currentUser()->hasPermission('select account cancellation method')) {
       $description = $this->t('Select the method to cancel the account above.');
     }
     // Options supplied via user_cancel_methods() can have a custom
     // #confirm_description property for the confirmation form description.
-    // This text refers to "Your account" so only user it if cancelling own account.
-    elseif ($own_account && isset($this->cancelMethods[$default_method]['#confirm_description'])) {
+    elseif (isset($this->cancelMethods[$default_method]['#confirm_description'])) {
       $description = $this->cancelMethods[$default_method]['#confirm_description'];
-    }
-    else {
-      $description = $this->cancelMethods['#options'][$default_method];
     }
     return $description . ' ' . $this->t('This action cannot be undone.');
   }
@@ -87,19 +75,18 @@ class UserCancelForm extends ContentEntityConfirmFormBase {
     $this->cancelMethods = user_cancel_methods();
 
     // Display account cancellation method selection, if allowed.
-    $own_account = $this->entity->id() == $user->id();
-    $this->selectCancel = $user->hasPermission('administer users') || $user->hasPermission('select account cancellation method');
-
+    $admin_access = $user->hasPermission('administer users');
     $form['user_cancel_method'] = [
       '#type' => 'radios',
-      '#title' => $own_account ? $this->t('When cancelling your account') : $this->t('When cancelling the account'),
-      '#access' => $this->selectCancel,
+      '#title' => ($this->entity->id() == $user->id() ? $this->t('When cancelling your account') : $this->t('When cancelling the account')),
+      '#access' => $admin_access || $user->hasPermission('select account cancellation method'),
     ];
     $form['user_cancel_method'] += $this->cancelMethods;
 
-    // When managing another user, can skip the account cancellation
-    // confirmation mail (by default).
-    $override_access = !$own_account;
+    // Allow user administrators to skip the account cancellation confirmation
+    // mail (by default), as long as they do not attempt to cancel their own
+    // account.
+    $override_access = $admin_access && ($this->entity->id() != $user->id());
     $form['user_cancel_confirm'] = [
       '#type' => 'checkbox',
       '#title' => $this->t('Require email confirmation to cancel account'),
@@ -124,7 +111,7 @@ class UserCancelForm extends ContentEntityConfirmFormBase {
     // if desired.
     $form['access'] = [
       '#type' => 'value',
-      '#value' => !$own_account,
+      '#value' => $user->hasPermission('administer users'),
     ];
 
     $form = parent::buildForm($form, $form_state);
@@ -142,7 +129,7 @@ class UserCancelForm extends ContentEntityConfirmFormBase {
     if (!$form_state->isValueEmpty('access') && $form_state->isValueEmpty('user_cancel_confirm') && $this->entity->id() != $this->currentUser()->id()) {
       user_cancel($form_state->getValues(), $this->entity->id(), $form_state->getValue('user_cancel_method'));
 
-      $form_state->setRedirectUrl($this->entity->toUrl('collection'));
+      $form_state->setRedirectUrl($this->entity->urlInfo('collection'));
     }
     else {
       // Store cancelling method and whether to notify the user in

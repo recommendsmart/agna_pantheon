@@ -47,7 +47,6 @@ class LayoutBuilderEnableUpdatePathTest extends UpdatePathTestBase {
               'weight' => 0,
             ],
           ],
-          'third_party_settings' => [],
         ],
       ],
     ];

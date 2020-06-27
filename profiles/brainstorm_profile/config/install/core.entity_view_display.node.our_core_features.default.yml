@@ -1,0 +1,33 @@
+langcode: en
+status: true
+dependencies:
+  config:
+    - field.field.node.our_core_features.body
+    - field.field.node.our_core_features.field_icon_features
+    - node.type.our_core_features
+  module:
+    - image
+    - text
+    - user
+id: node.our_core_features.default
+targetEntityType: node
+bundle: our_core_features
+mode: default
+content:
+  body:
+    label: hidden
+    type: text_default
+    weight: 101
+    settings: {  }
+    third_party_settings: {  }
+  field_icon_features:
+    weight: 102
+    label: above
+    settings:
+      image_style: ''
+      image_link: ''
+    third_party_settings: {  }
+    type: image
+  links:
+    weight: 100
+hidden: {  }

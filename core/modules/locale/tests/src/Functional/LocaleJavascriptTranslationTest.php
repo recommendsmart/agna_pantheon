@@ -2,7 +2,6 @@
 
 namespace Drupal\Tests\locale\Functional;
 
-use Drupal\Component\Gettext\PoItem;
 use Drupal\Core\Language\LanguageInterface;
 use Drupal\Tests\BrowserTestBase;
 use Drupal\Component\Render\FormattableMarkup;
@@ -52,7 +51,7 @@ class LocaleJavascriptTranslationTest extends BrowserTestBase {
         $source_strings[$string->source] = $string->context;
       }
 
-      $etx = PoItem::DELIMITER;
+      $etx = LOCALE_PLURAL_DELIMITER;
       // List of all strings that should be in the file.
       $test_strings = [
         'Standard Call t' => '',
@@ -86,8 +85,6 @@ class LocaleJavascriptTranslationTest extends BrowserTestBase {
         "Context Unquoted plural{$etx}Context Unquoted @count plural" => 'Context string unquoted',
         "Context Single Quoted plural{$etx}Context Single Quoted @count plural" => 'Context string single quoted',
         "Context Double Quoted plural{$etx}Context Double Quoted @count plural" => 'Context string double quoted',
-
-        "No count argument plural - singular{$etx}No count argument plural - plural" => '',
       ];
 
       // Assert that all strings were found properly.

@@ -1,0 +1,20 @@
+name: 'Default comments'
+description: 'Provides Default comments comment type and related configuration. Allows commenting on content'
+type: module
+# core: 8.x
+dependencies:
+  - brainstorm_comment_blog
+  - comment
+  - field
+  - image
+  - node
+  - path
+  - rdf
+  - text
+  - user
+
+# Information added by Drupal.org packaging script on 2019-03-26
+version: '8.x-1.1'
+core: '8.x'
+project: 'brainstorm_profile'
+datestamp: 1553589345

@@ -22,7 +22,7 @@ class DatabaseBackendFactory implements CacheFactoryInterface {
   protected $checksumProvider;
 
   /**
-   * The site settings.
+   * The settings array.
    *
    * @var \Drupal\Core\Site\Settings
    */
@@ -36,7 +36,7 @@ class DatabaseBackendFactory implements CacheFactoryInterface {
    * @param \Drupal\Core\Cache\CacheTagsChecksumInterface $checksum_provider
    *   The cache tags checksum provider.
    * @param \Drupal\Core\Site\Settings $settings
-   *   (optional) The site settings.
+   *   (optional) The settings array.
    *
    * @throws \BadMethodCallException
    */

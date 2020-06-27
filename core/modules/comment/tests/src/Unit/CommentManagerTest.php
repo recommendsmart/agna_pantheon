@@ -3,10 +3,7 @@
 namespace Drupal\Tests\comment\Unit;
 
 use Drupal\comment\CommentManager;
-use Drupal\Core\Entity\EntityFieldManagerInterface;
-use Drupal\Core\Entity\EntityTypeManagerInterface;
 use Drupal\Core\Entity\FieldableEntityInterface;
-use Drupal\Core\Session\AccountInterface;
 use Drupal\Tests\UnitTestCase;
 
 /**
@@ -31,10 +28,9 @@ class CommentManagerTest extends UnitTestCase {
       ->with(FieldableEntityInterface::class)
       ->will($this->returnValue(TRUE));
 
-    $entity_field_manager = $this->createMock(EntityFieldManagerInterface::class);
-    $entity_type_manager = $this->createMock(EntityTypeManagerInterface::class);
+    $entity_manager = $this->getMock('Drupal\Core\Entity\EntityManagerInterface');
 
-    $entity_field_manager->expects($this->once())
+    $entity_manager->expects($this->once())
       ->method('getFieldMapByFieldType')
       ->will($this->returnValue([
         'node' => [
@@ -44,17 +40,17 @@ class CommentManagerTest extends UnitTestCase {
         ],
       ]));
 
-    $entity_type_manager->expects($this->any())
+    $entity_manager->expects($this->any())
       ->method('getDefinition')
       ->will($this->returnValue($entity_type));
 
     $comment_manager = new CommentManager(
-      $entity_type_manager,
+      $entity_manager,
       $this->getMock('Drupal\Core\Config\ConfigFactoryInterface'),
       $this->getMock('Drupal\Core\StringTranslation\TranslationInterface'),
+      $this->getMock('Drupal\Core\Routing\UrlGeneratorInterface'),
       $this->getMock('Drupal\Core\Extension\ModuleHandlerInterface'),
-      $this->createMock(AccountInterface::class),
-      $entity_field_manager
+      $this->getMock('Drupal\Core\Session\AccountInterface')
     );
     $comment_fields = $comment_manager->getFields('node');
     $this->assertArrayHasKey('field_foobar', $comment_fields);

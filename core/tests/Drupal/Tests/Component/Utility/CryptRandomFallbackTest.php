@@ -16,7 +16,7 @@ use PHPUnit\Framework\TestCase;
  */
 class CryptRandomFallbackTest extends TestCase {
 
-  protected static $functionCalled = 0;
+  static protected $functionCalled = 0;
 
   /**
    * Allows the test to confirm that the namespaced random_bytes() was called.

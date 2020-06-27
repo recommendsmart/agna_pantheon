@@ -49,7 +49,7 @@ class StableLibraryOverrideTest extends KernelTestBase {
   /**
    * {@inheritdoc}
    */
-  public static $modules = ['system', 'user'];
+  public static $modules = ['system'];
 
   /**
    * {@inheritdoc}
@@ -71,7 +71,6 @@ class StableLibraryOverrideTest extends KernelTestBase {
     });
     $this->allModules = array_keys($all_modules);
     $this->allModules[] = 'system';
-    $this->allModules[] = 'user';
     sort($this->allModules);
     $this->container->get('module_installer')->install($this->allModules);
 

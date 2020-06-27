@@ -19,9 +19,11 @@ namespace Symfony\Component\Validator;
  * element in the validation graph and the root element that was originally
  * passed to the validator. For example, take the following graph:
  *
- *     (Person)---(firstName: string)
- *          \
- *       (address: Address)---(street: string)
+ * <pre>
+ * (Person)---(firstName: string)
+ *      \
+ *   (address: Address)---(street: string)
+ * </pre>
  *
  * If the <tt>Person</tt> object is validated and validation fails for the
  * "firstName" property, the generated violation has the <tt>Person</tt>
@@ -36,7 +38,7 @@ interface ConstraintViolationInterface
     /**
      * Returns the violation message.
      *
-     * @return string|\Stringable The violation message as a string or a stringable object
+     * @return string The violation message
      */
     public function getMessage();
 

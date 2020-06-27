@@ -1,0 +1,27 @@
+name: Blog
+description: 'Provides Blog content type and related configuration. '
+type: module
+# core: 8.x
+dependencies:
+  - block
+  - brainstorm_comment
+  - brainstorm_comment_blog
+  - brainstorm_team
+  - comment
+  - field
+  - file
+  - image
+  - menu_ui
+  - node
+  - path
+  - pathauto
+  - system
+  - text
+  - user
+  - views
+
+# Information added by Drupal.org packaging script on 2019-03-26
+version: '8.x-1.1'
+core: '8.x'
+project: 'brainstorm_profile'
+datestamp: 1553589345

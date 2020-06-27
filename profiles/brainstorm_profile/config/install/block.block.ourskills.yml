@@ -1,0 +1,30 @@
+langcode: en
+status: true
+dependencies:
+  content:
+    - 'block_content:basic:2df2096b-a296-4588-89ea-bead7a05f4ab'
+  module:
+    - block_content
+    - system
+  theme:
+    - brainstorm_theme
+id: ourskills
+theme: brainstorm_theme
+region: content
+weight: -13
+provider: null
+plugin: 'block_content:2df2096b-a296-4588-89ea-bead7a05f4ab'
+settings:
+  id: 'block_content:2df2096b-a296-4588-89ea-bead7a05f4ab'
+  label: 'Our skills'
+  provider: block_content
+  label_display: '0'
+  status: true
+  info: ''
+  view_mode: full
+visibility:
+  request_path:
+    id: request_path
+    pages: '<front>'
+    negate: false
+    context_mapping: {  }

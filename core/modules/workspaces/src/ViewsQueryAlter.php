@@ -6,7 +6,6 @@ use Drupal\Core\DependencyInjection\ContainerInjectionInterface;
 use Drupal\Core\Entity\EntityFieldManagerInterface;
 use Drupal\Core\Entity\EntityTypeInterface;
 use Drupal\Core\Entity\EntityTypeManagerInterface;
-use Drupal\Core\Language\LanguageManagerInterface;
 use Drupal\views\Plugin\views\query\QueryPluginBase;
 use Drupal\views\Plugin\views\query\Sql;
 use Drupal\views\Plugin\ViewsHandlerManager;
@@ -57,13 +56,6 @@ class ViewsQueryAlter implements ContainerInjectionInterface {
   protected $viewsJoinPluginManager;
 
   /**
-   * The language manager.
-   *
-   * @var \Drupal\Core\Language\LanguageManagerInterface
-   */
-  protected $languageManager;
-
-  /**
    * Constructs a new ViewsQueryAlter instance.
    *
    * @param \Drupal\Core\Entity\EntityTypeManagerInterface $entity_type_manager
@@ -76,16 +68,13 @@ class ViewsQueryAlter implements ContainerInjectionInterface {
    *   The views data.
    * @param \Drupal\views\Plugin\ViewsHandlerManager $views_join_plugin_manager
    *   The views join plugin manager.
-   * @param \Drupal\Core\Language\LanguageManagerInterface $language_manager
-   *   The language manager.
    */
-  public function __construct(EntityTypeManagerInterface $entity_type_manager, EntityFieldManagerInterface $entity_field_manager, WorkspaceManagerInterface $workspace_manager, ViewsData $views_data, ViewsHandlerManager $views_join_plugin_manager, LanguageManagerInterface $language_manager) {
+  public function __construct(EntityTypeManagerInterface $entity_type_manager, EntityFieldManagerInterface $entity_field_manager, WorkspaceManagerInterface $workspace_manager, ViewsData $views_data, ViewsHandlerManager $views_join_plugin_manager) {
     $this->entityTypeManager = $entity_type_manager;
     $this->entityFieldManager = $entity_field_manager;
     $this->workspaceManager = $workspace_manager;
     $this->viewsData = $views_data;
     $this->viewsJoinPluginManager = $views_join_plugin_manager;
-    $this->languageManager = $language_manager;
   }
 
   /**
@@ -97,8 +86,7 @@ class ViewsQueryAlter implements ContainerInjectionInterface {
       $container->get('entity_field.manager'),
       $container->get('workspaces.manager'),
       $container->get('views.views_data'),
-      $container->get('plugin.manager.views.join'),
-      $container->get('language_manager')
+      $container->get('plugin.manager.views.join')
     );
   }
 
@@ -347,7 +335,7 @@ class ViewsQueryAlter implements ContainerInjectionInterface {
         // to modify the join and make sure that 'workspace_association' comes
         // first.
         if (empty($table_queue[$alias]['join']->workspace_adjusted)) {
-          $table_queue[$alias]['join'] = $this->getRevisionTableJoin($relationship, $base_revision_table, $revision_field, $workspace_association_table, $entity_type);
+          $table_queue[$alias]['join'] = $this->getRevisionTableJoin($relationship, $base_revision_table, $revision_field, $workspace_association_table);
           // We also have to ensure that our 'workspace_association' comes before
           // this.
           $this->moveEntityTable($query, $workspace_association_table, $alias);
@@ -358,7 +346,7 @@ class ViewsQueryAlter implements ContainerInjectionInterface {
     }
 
     // Construct a new join.
-    $join = $this->getRevisionTableJoin($relationship, $base_revision_table, $revision_field, $workspace_association_table, $entity_type);
+    $join = $this->getRevisionTableJoin($relationship, $base_revision_table, $revision_field, $workspace_association_table);
     return $query->queueTable($base_revision_table, $relationship, $join);
   }
 
@@ -374,26 +362,18 @@ class ViewsQueryAlter implements ContainerInjectionInterface {
    * @param string $workspace_association_table
    *   The alias of the 'workspace_association' table joined to the main entity
    *   table.
-   * @param \Drupal\Core\Entity\EntityTypeInterface $entity_type
-   *   The entity type that is being queried.
    *
    * @return \Drupal\views\Plugin\views\join\JoinPluginInterface
    *   An adjusted views join object to add to the query.
-   * @throws \Drupal\Component\Plugin\Exception\PluginException
    */
-  protected function getRevisionTableJoin($relationship, $table, $field, $workspace_association_table, EntityTypeInterface $entity_type) {
+  protected function getRevisionTableJoin($relationship, $table, $field, $workspace_association_table) {
     $definition = [
       'table' => $table,
       'field' => $field,
-      // Making this explicitly NULL allows the left table to be a formula.
+      // Making this explicitly null allows the left table to be a formula.
       'left_table' => NULL,
       'left_field' => "COALESCE($workspace_association_table.target_entity_revision_id, $relationship.$field)",
     ];
-
-    if ($entity_type->isTranslatable() && $this->languageManager->isMultilingual()) {
-      $langcode_field = $entity_type->getKey('langcode');
-      $definition['extra'] = "$table.$langcode_field = $relationship.$langcode_field";
-    }
 
     /** @var \Drupal\views\Plugin\views\join\JoinPluginInterface $join */
     $join = $this->viewsJoinPluginManager->createInstance('standard', $definition);

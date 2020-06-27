@@ -50,8 +50,7 @@ class None extends PagerPluginBase {
   public function buildOptionsForm(&$form, FormStateInterface $form_state) {
     parent::buildOptionsForm($form, $form_state);
     $form['offset'] = [
-      '#type' => 'number',
-      '#min' => 0,
+      '#type' => 'textfield',
       '#title' => $this->t('Offset (number of items to skip)'),
       '#description' => $this->t('For example, set this to 3 and the first 3 items will not be displayed.'),
       '#default_value' => $this->options['offset'],

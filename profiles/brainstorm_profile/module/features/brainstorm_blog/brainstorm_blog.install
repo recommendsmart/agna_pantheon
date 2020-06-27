@@ -1,0 +1,99 @@
+<?php
+/**
+ * @file
+ */
+
+use \Drupal\node\Entity\Node;
+
+/**
+ * Implements hook_install().
+ */
+function brainstorm_blog_install() {
+  $blog_titles = array(
+    'Solving the Puzzles of Mimicry in Nature',
+    'H.A.N.D coffee set par TOAST Living',
+    'Relaxation as a Way to Improve Your Workflow',
+    'Could This Be the next Large Social Network',
+    'Single post with image',
+    'New and Exciting Trends in Graphic Design',
+    'A Guide to Amazing Social Marketing',
+    'Five Great Tips for Productive Meetings',
+    'Syncing up with Your Coworkers',
+    'Study Finds Millennials Prefer Instagram to Museums',
+    '\'The First Monday in May\' Goes Behind the Scenes at Met',
+    'Andy Warhol and the \'Most Famous Ass in the World\'',
+    'Glasgow Inter national Kicks Off 7th Performance',
+    'Lidy Prati Made 1970s Art',
+    'Jorge Macchi Brings Venice to Buenos Aires',
+    'Olafur Eliass on Shines a Green Light for Refugees',
+    'After Struggling to Reopen, Townhouse Gallery Site',
+    'David Ebony\'s Top 10 New York Gallery Shows for April',
+    'Bringing Shakes peare to West minster stage',
+    'Entertainment live Entertainment Live: 15 Apr',
+    'Avatar movie to get fifth instalment 26 minutes ago',
+    'What does it take to succeed in the fashion industry?',
+    'James Levine Met Opera director to retire after 40 years',
+    'Fellowes : I\'m plotting Downton film great',
+    'Loach and Penn to compete at Cannes',
+    'Designs for life',
+    'Mirren: Women should chase male roles',
+  );
+  $body = "<p>Lorem ipsum dolor sit amet, consectetuer ux adipiscing eli, 
+    sed diam nonummy nibh and euismod tincidunt ut enim ad minimveniam quis 
+    nostrud exercitation ullamcorper suscipit lobortis. Duis autem veleum 
+    iriure dolor in hendrerit in vulputate velit essemolestie consequat, 
+    veldolore eu feugiat nulla facilisis at vero eros et accumsan et isto 
+    odio.</p>
+    <blockquote>
+      <p>Sed ut perspiciatis, unde omnis iste natus error sit voluptatem 
+      accusantium doloremque laudantium, totam remaperiam eaque ipsa, 
+      quae ab illo inventore veritatis et quasiarchitecto beatae vitae dicta 
+      sunt, explicabo.</p>
+    </blockquote>
+    <p>Nemo enim ipsam voluptatem, quia voluptas sit, aspernatur aut odit aut 
+    fugit, sed quia consequuntur magnidolores eos, quirationevoluptatem 
+    sequinesciunt, neque porro quisquam est, quidolorem ipsum, quia dolor sit,
+    amet, consectetur, adipiscivelit, sed quianon numquam eius moditempora 
+    incidunt, ut labore et dolore magnam aliquam quaerat voluptatem. Ut enim ad 
+    minima veniam, quis nostrum exercitationem ullam corporis suscipit 
+    laboriosam, nisiut aliquid ex ea commodiconsequatr?</p>
+    <p>Quis autem veleum iure reprehenderit, quiin ea voluptate velit esse, 
+    quam nihilmolestiae consequatur, velillum, quidolorem eumfugiat, 
+    quo voluptas nulla pariatur? At vero eos et acusamus et iusto odio 
+    dignisimos ducimus, quiblanditiis praesentiumvoluptatum delenitiatque 
+    corrupti, quos dolores et quas molestias excepturisint, obcaecaticupiditate 
+    non provident,similique suntin culpa, quiofficia deserunt molitia animi, 
+    id est laborum et dolorum fuga. Et harum quidem rerum facilis est et
+    expedita distinctio. Nam libero tempore, cum soluta nobis est eligendiptio,
+    cumque nihilimpedit,quo minus id, quod maxime placeat, facer possimus, 
+    omnis voluptas assumenda est, omnis dolor repellendus. Temporibus autem 
+    quibusdam et aut officiis debitis aut rerumnecessitatibus saepe eveniet,
+    ut et voluptates repudiandae sint et molstiae non recusandae. Itaue earum 
+    rerum hic tenetur asapiente delectus, ut aut riciendis voluptatibus maiores 
+    alias consequatur aut perferndis doloribus asperiores repellat.</p>";
+  $count = 0;
+  foreach ($blog_titles as $title) {
+    $count++;
+    $node = Node::create(array(
+      'type' => 'blog',
+      'title' => $title,
+      'uid' => '1',
+      'status' => 1,
+      'path' => '/blog/' . _brainstorm_profile_clean_alias($title),
+    ));
+    $node->field_authors->generateSampleItems();
+    $file_name = 'post_' . $count . '.jpg';
+    $output = file_get_contents(drupal_get_path('profile', 'brainstorm_profile') . '/images/' . $file_name);
+    $file = file_save_data($output, 'public://brainstorm-placeholder/' . $file_name, FILE_EXISTS_REPLACE);
+    $node->field_blog_image->setValue($file->id());
+    $file_name = 'blog_' . $count . '.jpg';
+    $output = file_get_contents(drupal_get_path('profile', 'brainstorm_profile') . '/images/' . $file_name);
+    $file = file_save_data($output, 'public://brainstorm-placeholder/' . $file_name, FILE_EXISTS_REPLACE);
+    $node->field_blog_image_fuul->setValue($file->id());
+    $node->body->value = $body;
+    $node->body->format = 'full_html';
+    $node->field_comment_blog->generateSampleItems(3);
+    $node->save();
+  }
+}
+

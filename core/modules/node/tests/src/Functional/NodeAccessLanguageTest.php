@@ -2,7 +2,6 @@
 
 namespace Drupal\Tests\node\Functional;
 
-use Drupal\Core\Database\Database;
 use Drupal\Core\Language\LanguageInterface;
 use Drupal\language\Entity\ConfigurableLanguage;
 use Drupal\node\Entity\NodeType;
@@ -202,10 +201,9 @@ class NodeAccessLanguageTest extends NodeTestBase {
     ]);
     $this->assertTrue($node_no_language->language()->getId() == LanguageInterface::LANGCODE_NOT_SPECIFIED, 'Node created with not specified language.');
 
-    $connection = Database::getConnection();
     // Query the nodes table as the web user with the node access tag and no
     // specific langcode.
-    $select = $connection->select('node', 'n')
+    $select = db_select('node', 'n')
       ->fields('n', ['nid'])
       ->addMetaData('account', $web_user)
       ->addTag('node_access');
@@ -219,7 +217,7 @@ class NodeAccessLanguageTest extends NodeTestBase {
 
     // Query the nodes table as the web user with the node access tag and
     // langcode de.
-    $select = $connection->select('node', 'n')
+    $select = db_select('node', 'n')
       ->fields('n', ['nid'])
       ->addMetaData('account', $web_user)
       ->addMetaData('langcode', 'de')
@@ -231,7 +229,7 @@ class NodeAccessLanguageTest extends NodeTestBase {
 
     // Query the nodes table as admin user (full access) with the node access
     // tag and no specific langcode.
-    $select = $connection->select('node', 'n')
+    $select = db_select('node', 'n')
       ->fields('n', ['nid'])
       ->addMetaData('account', $admin_user)
       ->addTag('node_access');
@@ -242,7 +240,7 @@ class NodeAccessLanguageTest extends NodeTestBase {
 
     // Query the nodes table as admin user (full access) with the node access
     // tag and langcode de.
-    $select = $connection->select('node', 'n')
+    $select = db_select('node', 'n')
       ->fields('n', ['nid'])
       ->addMetaData('account', $admin_user)
       ->addMetaData('langcode', 'de')

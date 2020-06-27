@@ -1,0 +1,39 @@
+<?php
+/**
+ * @file
+ */
+
+use \Drupal\node\Entity\Node;
+
+/**
+ * Implements hook_install().
+ */
+function brainstorm_our_core_features_install() {
+  $feature_titles = array(
+    'Premium Slider',
+    'Extensive Documentation',
+    'Pixel - Perfect Design',
+    'Responsive',
+    'Code quality',
+    'Free Plugins Included',
+  );
+  $body = "Aenean massa. Cum sociis natoque penatibus etmagnis dis parturient montes, nascetur ridiculusus. Lorem ipsum dolor sit amet";
+  $count = 0;
+  foreach ($feature_titles as $title) {
+    $count++;
+    $node = Node::create(array(
+      'type' => 'our_core_features',
+      'title' => $title,
+      'uid' => '1',
+      'status' => 1,
+      'path' => '/' . _brainstorm_profile_clean_alias($title),
+    ));
+    $file_name = 'features_' . $count . '.png';
+    $output = file_get_contents(drupal_get_path('profile', 'brainstorm_profile') . '/images/' . $file_name);
+    $file = file_save_data($output, 'public://brainstorm-placeholder/' . $file_name, FILE_EXISTS_REPLACE);
+    $node->field_icon_features->setValue($file->id());
+    $node->body->value = $body;
+    $node->save();
+  }
+}
+

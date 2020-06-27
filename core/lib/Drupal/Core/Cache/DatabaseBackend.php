@@ -5,7 +5,7 @@ namespace Drupal\Core\Cache;
 use Drupal\Component\Assertion\Inspector;
 use Drupal\Component\Utility\Crypt;
 use Drupal\Core\Database\Connection;
-use Drupal\Core\Database\DatabaseException;
+use Drupal\Core\Database\SchemaObjectExistsException;
 
 /**
  * Defines a default cache implementation.
@@ -135,7 +135,7 @@ class DatabaseBackend implements CacheBackendInterface {
    * data as appropriate.
    *
    * @param object $cache
-   *   An item loaded from self::get() or self::getMultiple().
+   *   An item loaded from cache_get() or cache_get_multiple().
    * @param bool $allow_invalid
    *   If FALSE, the method returns FALSE if the cache item is not valid.
    *
@@ -410,7 +410,7 @@ class DatabaseBackend implements CacheBackendInterface {
     // If another process has already created the cache table, attempting to
     // recreate it will throw an exception. In this case just catch the
     // exception and do nothing.
-    catch (DatabaseException $e) {
+    catch (SchemaObjectExistsException $e) {
       return TRUE;
     }
     return FALSE;

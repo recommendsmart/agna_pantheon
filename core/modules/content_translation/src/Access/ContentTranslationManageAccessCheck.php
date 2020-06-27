@@ -3,9 +3,8 @@
 namespace Drupal\content_translation\Access;
 
 use Drupal\Core\Access\AccessResult;
-use Drupal\Core\DependencyInjection\DeprecatedServicePropertyTrait;
 use Drupal\Core\Entity\ContentEntityInterface;
-use Drupal\Core\Entity\EntityTypeManagerInterface;
+use Drupal\Core\Entity\EntityManagerInterface;
 use Drupal\Core\Language\LanguageInterface;
 use Drupal\Core\Language\LanguageManagerInterface;
 use Drupal\Core\Routing\Access\AccessInterface;
@@ -17,19 +16,13 @@ use Symfony\Component\Routing\Route;
  * Access check for entity translation CRUD operation.
  */
 class ContentTranslationManageAccessCheck implements AccessInterface {
-  use DeprecatedServicePropertyTrait;
-
-  /**
-   * {@inheritdoc}
-   */
-  protected $deprecatedProperties = ['entityManager' => 'entity.manager'];
 
   /**
    * The entity type manager.
    *
-   * @var \Drupal\Core\Entity\EntityTypeManagerInterface
+   * @var \Drupal\Core\Entity\EntityManagerInterface
    */
-  protected $entityTypeManager;
+  protected $entityManager;
 
   /**
    * The language manager.
@@ -41,13 +34,13 @@ class ContentTranslationManageAccessCheck implements AccessInterface {
   /**
    * Constructs a ContentTranslationManageAccessCheck object.
    *
-   * @param \Drupal\Core\Entity\EntityTypeManagerInterface $entity_type_manager
+   * @param \Drupal\Core\Entity\EntityManagerInterface $manager
    *   The entity type manager.
    * @param \Drupal\Core\Language\LanguageManagerInterface $language_manager
    *   The language manager.
    */
-  public function __construct(EntityTypeManagerInterface $entity_type_manager, LanguageManagerInterface $language_manager) {
-    $this->entityTypeManager = $entity_type_manager;
+  public function __construct(EntityManagerInterface $manager, LanguageManagerInterface $language_manager) {
+    $this->entityManager = $manager;
     $this->languageManager = $language_manager;
   }
 
@@ -78,7 +71,7 @@ class ContentTranslationManageAccessCheck implements AccessInterface {
     if ($entity = $route_match->getParameter($entity_type_id)) {
       $operation = $route->getRequirement('_access_content_translation_manage');
       $language = $this->languageManager->getLanguage($language) ?: $this->languageManager->getCurrentLanguage(LanguageInterface::TYPE_CONTENT);
-      $entity_type = $this->entityTypeManager->getDefinition($entity_type_id);
+      $entity_type = $this->entityManager->getDefinition($entity_type_id);
 
       if (in_array($operation, ['update', 'delete'])) {
         // Translation operations cannot be performed on the default
@@ -101,7 +94,7 @@ class ContentTranslationManageAccessCheck implements AccessInterface {
       switch ($operation) {
         case 'create':
           /* @var \Drupal\content_translation\ContentTranslationHandlerInterface $handler */
-          $handler = $this->entityTypeManager->getHandler($entity->getEntityTypeId(), 'translation');
+          $handler = $this->entityManager->getHandler($entity->getEntityTypeId(), 'translation');
           $translations = $entity->getTranslationLanguages();
           $languages = $this->languageManager->getLanguages();
           $source_language = $this->languageManager->getLanguage($source) ?: $entity->language();
@@ -145,7 +138,7 @@ class ContentTranslationManageAccessCheck implements AccessInterface {
    */
   protected function checkAccess(ContentEntityInterface $entity, LanguageInterface $language, $operation) {
     /* @var \Drupal\content_translation\ContentTranslationHandlerInterface $handler */
-    $handler = $this->entityTypeManager->getHandler($entity->getEntityTypeId(), 'translation');
+    $handler = $this->entityManager->getHandler($entity->getEntityTypeId(), 'translation');
     $translations = $entity->getTranslationLanguages();
     $languages = $this->languageManager->getLanguages();
     $has_translation = isset($languages[$language->getId()])

@@ -34,26 +34,14 @@ interface ConfigManagerInterface {
    *
    * @return \Drupal\Core\Entity\EntityManagerInterface
    *   The entity manager.
-   *
-   * @deprecated in Drupal 8.7.x, will be removed before Drupal 9.0.0. Use
-   *   \Drupal\Core\Config\ConfigManagerInterface::getEntityTypeManager()
-   *   instead.
    */
   public function getEntityManager();
-
-  /**
-   * Gets the entity type manager.
-   *
-   * @return \Drupal\Core\Entity\EntityTypeManagerInterface
-   *   The entity type manager.
-   */
-  public function getEntityTypeManager();
 
   /**
    * Gets the config factory.
    *
    * @return \Drupal\Core\Config\ConfigFactoryInterface
-   *   The config factory.
+   *   The entity manager.
    */
   public function getConfigFactory();
 

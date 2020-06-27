@@ -9,12 +9,6 @@ use Drupal\Core\StringTranslation\StringTranslationTrait;
 
 /**
  * Provides a list of available modules.
- *
- * @internal
- *   This class is not yet stable and therefore there are no guarantees that the
- *   internal implementations including constructor signature and protected
- *   properties / methods will not change over time. This will be reviewed after
- *   https://www.drupal.org/project/drupal/issues/2940481
  */
 class ModuleExtensionList extends ExtensionList {
 
@@ -220,7 +214,7 @@ class ModuleExtensionList extends ExtensionList {
   protected function ensureRequiredDependencies(Extension $module, array $modules = []) {
     if (!empty($module->info['required'])) {
       foreach ($module->info['dependencies'] as $dependency) {
-        $dependency_name = Dependency::createFromString($dependency)->getName();
+        $dependency_name = ModuleHandler::parseDependency($dependency)['name'];
         if (!isset($modules[$dependency_name]->info['required'])) {
           $modules[$dependency_name]->info['required'] = TRUE;
           $modules[$dependency_name]->info['explanation'] = $this->t('Dependency of required module @module', ['@module' => $module->info['name']]);

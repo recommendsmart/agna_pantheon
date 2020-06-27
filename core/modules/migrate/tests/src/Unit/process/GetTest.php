@@ -16,7 +16,7 @@ class GetTest extends MigrateProcessTestCase {
    */
   public function testTransformSourceString() {
     $this->row->expects($this->once())
-      ->method('get')
+      ->method('getSourceProperty')
       ->with('test')
       ->will($this->returnValue('source_value'));
     $this->plugin = new Get(['source' => 'test'], '', []);
@@ -34,7 +34,7 @@ class GetTest extends MigrateProcessTestCase {
     ];
     $this->plugin = new Get(['source' => ['test1', 'test2']], '', []);
     $this->row->expects($this->exactly(2))
-      ->method('get')
+      ->method('getSourceProperty')
       ->will($this->returnCallback(function ($argument) use ($map) {
         return $map[$argument];
       }));
@@ -47,8 +47,8 @@ class GetTest extends MigrateProcessTestCase {
    */
   public function testTransformSourceStringAt() {
     $this->row->expects($this->once())
-      ->method('get')
-      ->with('@@test')
+      ->method('getSourceProperty')
+      ->with('@test')
       ->will($this->returnValue('source_value'));
     $this->plugin = new Get(['source' => '@@test'], '', []);
     $value = $this->plugin->transform(NULL, $this->migrateExecutable, $this->row, 'destinationproperty');
@@ -61,13 +61,13 @@ class GetTest extends MigrateProcessTestCase {
   public function testTransformSourceArrayAt() {
     $map = [
       'test1' => 'source_value1',
-      '@@test2' => 'source_value2',
-      '@@test3' => 'source_value3',
+      '@test2' => 'source_value2',
+      '@test3' => 'source_value3',
       'test4' => 'source_value4',
     ];
     $this->plugin = new Get(['source' => ['test1', '@@test2', '@@test3', 'test4']], '', []);
     $this->row->expects($this->exactly(4))
-      ->method('get')
+      ->method('getSourceProperty')
       ->will($this->returnCallback(function ($argument) use ($map) {
         return $map[$argument];
       }));
@@ -82,7 +82,7 @@ class GetTest extends MigrateProcessTestCase {
    */
   public function testIntegerValues($source, $expected_value) {
     $this->row->expects($this->atMost(2))
-      ->method('get')
+      ->method('getSourceProperty')
       ->willReturnOnConsecutiveCalls('val1', 'val2');
 
     $this->plugin = new Get(['source' => $source], '', []);

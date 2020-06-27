@@ -7,7 +7,6 @@
  * This file handles tokens for the global 'site' and 'date' tokens.
  */
 
-use Drupal\Core\Url;
 use Drupal\Core\Datetime\Entity\DateFormat;
 use Drupal\Core\Render\BubbleableMetadata;
 
@@ -50,21 +49,18 @@ function system_token_info() {
     'description' => t("The URL of the site's login page."),
   ];
 
-  /** @var \Drupal\Core\Datetime\DateFormatterInterface $date_formatter */
-  $date_formatter = \Drupal::service('date.formatter');
-
   // Date related tokens.
   $date['short'] = [
     'name' => t("Short format"),
-    'description' => t("A date in 'short' format. (%date)", ['%date' => $date_formatter->format(REQUEST_TIME, 'short')]),
+    'description' => t("A date in 'short' format. (%date)", ['%date' => format_date(REQUEST_TIME, 'short')]),
   ];
   $date['medium'] = [
     'name' => t("Medium format"),
-    'description' => t("A date in 'medium' format. (%date)", ['%date' => $date_formatter->format(REQUEST_TIME, 'medium')]),
+    'description' => t("A date in 'medium' format. (%date)", ['%date' => format_date(REQUEST_TIME, 'medium')]),
   ];
   $date['long'] = [
     'name' => t("Long format"),
-    'description' => t("A date in 'long' format. (%date)", ['%date' => $date_formatter->format(REQUEST_TIME, 'long')]),
+    'description' => t("A date in 'long' format. (%date)", ['%date' => format_date(REQUEST_TIME, 'long')]),
   ];
   $date['custom'] = [
     'name' => t("Custom format"),
@@ -72,7 +68,7 @@ function system_token_info() {
   ];
   $date['since'] = [
     'name' => t("Time-since"),
-    'description' => t("A date in 'time-since' format. (%date)", ['%date' => $date_formatter->formatTimeDiffSince(REQUEST_TIME - 360)]),
+    'description' => t("A date in 'time-since' format. (%date)", ['%date' => \Drupal::service('date.formatter')->formatTimeDiffSince(REQUEST_TIME - 360)]),
   ];
   $date['raw'] = [
     'name' => t("Raw timestamp"),
@@ -133,21 +129,21 @@ function system_tokens($type, $tokens, array $data, array $options, BubbleableMe
 
         case 'url':
           /** @var \Drupal\Core\GeneratedUrl $result */
-          $result = Url::fromRoute('<front>', [], $url_options)->toString(TRUE);
+          $result = \Drupal::url('<front>', [], $url_options, TRUE);
           $bubbleable_metadata->addCacheableDependency($result);
           $replacements[$original] = $result->getGeneratedUrl();
           break;
 
         case 'url-brief':
           /** @var \Drupal\Core\GeneratedUrl $result */
-          $result = Url::fromRoute('<front>', [], $url_options)->toString(TRUE);
+          $result = \Drupal::url('<front>', [], $url_options, TRUE);
           $bubbleable_metadata->addCacheableDependency($result);
           $replacements[$original] = preg_replace(['!^https?://!', '!/$!'], '', $result->getGeneratedUrl());
           break;
 
         case 'login-url':
           /** @var \Drupal\Core\GeneratedUrl $result */
-          $result = Url::fromRoute('user.page', [], $url_options)->toString(TRUE);
+          $result = \Drupal::url('user.page', [], $url_options, TRUE);
           $bubbleable_metadata->addCacheableDependency($result);
           $replacements[$original] = $result->getGeneratedUrl();
           break;
@@ -173,7 +169,7 @@ function system_tokens($type, $tokens, array $data, array $options, BubbleableMe
         case 'long':
           $date_format = DateFormat::load($name);
           $bubbleable_metadata->addCacheableDependency($date_format);
-          $replacements[$original] = \Drupal::service('date.formatter')->format($date, $name, '', NULL, $langcode);
+          $replacements[$original] = format_date($date, $name, '', NULL, $langcode);
           break;
 
         case 'since':
@@ -189,7 +185,7 @@ function system_tokens($type, $tokens, array $data, array $options, BubbleableMe
 
     if ($created_tokens = $token_service->findWithPrefix($tokens, 'custom')) {
       foreach ($created_tokens as $name => $original) {
-        $replacements[$original] = \Drupal::service('date.formatter')->format($date, 'custom', $name, NULL, $langcode);
+        $replacements[$original] = format_date($date, 'custom', $name, NULL, $langcode);
       }
     }
   }

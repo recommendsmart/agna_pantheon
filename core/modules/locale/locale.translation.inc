@@ -271,7 +271,7 @@ function locale_translation_source_build($project, $langcode, $filename = NULL) 
       'version' => $project->version,
       'type' => LOCALE_TRANSLATION_LOCAL,
       'filename' => locale_translation_build_server_pattern($source, basename($source->server_pattern)),
-      'directory' => locale_translation_build_server_pattern($source, \Drupal::service('file_system')->dirname($source->server_pattern)),
+      'directory' => locale_translation_build_server_pattern($source, drupal_dirname($source->server_pattern)),
     ];
     $files[LOCALE_TRANSLATION_LOCAL]->uri = $files[LOCALE_TRANSLATION_LOCAL]->directory . '/' . $files[LOCALE_TRANSLATION_LOCAL]->filename;
   }
@@ -332,8 +332,7 @@ function locale_cron_fill_queue() {
   $projects = array_filter($projects, function ($project) {
     return $project['status'] == 1;
   });
-  $connection = \Drupal::database();
-  $files = $connection->select('locale_file', 'f')
+  $files = db_select('locale_file', 'f')
     ->condition('f.project', array_keys($projects), 'IN')
     ->condition('f.last_checked', $last, '<')
     ->fields('f', ['project', 'langcode'])
@@ -343,7 +342,7 @@ function locale_cron_fill_queue() {
 
     // Update the last_checked timestamp of the project+language that will
     // be checked for updates.
-    $connection->update('locale_file')
+    db_update('locale_file')
       ->fields(['last_checked' => REQUEST_TIME])
       ->condition('project', $file->project)
       ->condition('langcode', $file->langcode)

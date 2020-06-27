@@ -10,7 +10,6 @@ use Drupal\Core\Database\Database;
 use Drupal\Core\DependencyInjection\ContainerBuilder;
 use Drupal\Core\Language\Language;
 use Drupal\Core\Url;
-use Drupal\Tests\RequirementsPageTrait;
 use Drupal\user\Entity\User;
 use Symfony\Component\DependencyInjection\Reference;
 use Symfony\Component\HttpFoundation\Request;
@@ -43,7 +42,6 @@ use Symfony\Component\HttpFoundation\Request;
 abstract class UpdatePathTestBase extends BrowserTestBase {
 
   use SchemaCheckTestTrait;
-  use RequirementsPageTrait;
 
   /**
    * Modules to enable after the database is loaded.
@@ -162,10 +160,8 @@ abstract class UpdatePathTestBase extends BrowserTestBase {
 
     // Set the update url. This must be set here rather than in
     // self::__construct() or the old URL generator will leak additional test
-    // sites. Additionally, we need to prevent the path alias processor from
-    // running because we might not have a working alias system before running
-    // the updates.
-    $this->updateUrl = Url::fromRoute('system.db_update', [], ['path_processing' => FALSE]);
+    // sites.
+    $this->updateUrl = Url::fromRoute('system.db_update');
 
     $this->setupBaseUrl();
 
@@ -268,12 +264,6 @@ abstract class UpdatePathTestBase extends BrowserTestBase {
       'required' => TRUE,
     ];
 
-    // Force every update hook to only run one entity per batch.
-    $settings['entity_update_batch_size'] = (object) [
-      'value' => 1,
-      'required' => TRUE,
-    ];
-
     $this->writeSettings($settings);
   }
 
@@ -297,7 +287,6 @@ abstract class UpdatePathTestBase extends BrowserTestBase {
     ]);
 
     $this->drupalGet($this->updateUrl);
-    $this->updateRequirementsProblem();
     $this->clickLink(t('Continue'));
 
     $this->doSelectionTest();
@@ -367,17 +356,9 @@ abstract class UpdatePathTestBase extends BrowserTestBase {
       // executed. But once the update has been completed, it needs to be valid
       // again. Assert the schema of all configuration objects now.
       $names = $this->container->get('config.storage')->listAll();
-
-      // Allow tests to opt out of checking specific configuration.
-      $exclude = $this->getConfigSchemaExclusions();
       /** @var \Drupal\Core\Config\TypedConfigManagerInterface $typed_config */
       $typed_config = $this->container->get('config.typed');
       foreach ($names as $name) {
-        if (in_array($name, $exclude, TRUE)) {
-          // Skip checking schema if the config is listed in the
-          // $configSchemaCheckerExclusions property.
-          continue;
-        }
         $config = $this->config($name);
         $this->assertConfigSchema($typed_config, $name, $config->get());
       }
@@ -432,7 +413,7 @@ abstract class UpdatePathTestBase extends BrowserTestBase {
     $account = User::load(1);
     $account->setPassword($this->rootUser->pass_raw);
     $account->setEmail($this->rootUser->getEmail());
-    $account->setUsername($this->rootUser->getAccountName());
+    $account->setUsername($this->rootUser->getUsername());
     $account->save();
   }
 

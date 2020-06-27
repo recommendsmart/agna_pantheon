@@ -49,7 +49,8 @@ class StableThemeTest extends KernelTestBase {
     $this->themeHandler->install(['test_stable']);
     $this->config('system.theme')->set('default', 'test_stable')->save();
     $theme = $this->themeManager->getActiveTheme();
-    $base_themes = $theme->getBaseThemeExtensions();
+    /** @var \Drupal\Core\Theme\ActiveTheme $base_theme */
+    $base_themes = $theme->getBaseThemes();
     $base_theme = reset($base_themes);
     $this->assertTrue($base_theme->getName() == 'stable', "Stable theme is the base theme if a theme hasn't decided to opt out.");
   }
@@ -62,7 +63,7 @@ class StableThemeTest extends KernelTestBase {
     $this->config('system.theme')->set('default', 'test_wild_west')->save();
     $theme = $this->themeManager->getActiveTheme();
     /** @var \Drupal\Core\Theme\ActiveTheme $base_theme */
-    $base_themes = $theme->getBaseThemeExtensions();
+    $base_themes = $theme->getBaseThemes();
     $this->assertTrue(empty($base_themes), 'No base theme is set when a theme has opted out of using Stable.');
   }
 

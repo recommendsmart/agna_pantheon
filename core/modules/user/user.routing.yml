@@ -43,7 +43,7 @@ user.admin_create:
     _entity_form: 'user.register'
     _title: 'Add user'
   requirements:
-    _entity_create_access: 'user'
+    _permission: 'administer users'
 
 user.admin_permissions:
   path: '/admin/people/permissions'

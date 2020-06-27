@@ -25,10 +25,8 @@ use Drupal\Core\Field\BaseFieldDefinition;
  *     },
  *   },
  *   base_table = "entity_test_with_bundle",
- *   data_table = "entity_test_with_bundle_field_data",
  *   admin_permission = "administer entity_test_with_bundle content",
  *   persistent_cache = FALSE,
- *   translatable = TRUE,
  *   entity_keys = {
  *     "id" = "id",
  *     "uuid" = "uuid",

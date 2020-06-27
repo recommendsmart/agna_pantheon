@@ -4,7 +4,7 @@ namespace Drupal\Core\Path;
 
 use Drupal\Core\Cache\Cache;
 use Drupal\Core\Database\Connection;
-use Drupal\Core\Database\DatabaseException;
+use Drupal\Core\Database\SchemaObjectExistsException;
 use Drupal\Core\Extension\ModuleHandlerInterface;
 use Drupal\Core\Language\LanguageInterface;
 use Drupal\Core\Database\Query\Condition;
@@ -380,7 +380,7 @@ class AliasStorage implements AliasStorageInterface {
     // If another process has already created the table, attempting to recreate
     // it will throw an exception. In this case just catch the exception and do
     // nothing.
-    catch (DatabaseException $e) {
+    catch (SchemaObjectExistsException $e) {
       return TRUE;
     }
     return FALSE;

@@ -3,7 +3,6 @@
 namespace Drupal\Tests\views\Functional\Plugin;
 
 use Drupal\Component\Gettext\PoHeader;
-use Drupal\Component\Gettext\PoItem;
 use Drupal\file\Entity\File;
 use Drupal\Tests\views\Functional\ViewTestBase;
 
@@ -46,7 +45,7 @@ class NumericFormatPluralTest extends ViewTestBase {
     $config = $this->config('views.view.numeric_test');
     $field_config_prefix = 'display.default.display_options.fields.count.';
     $this->assertEqual($config->get($field_config_prefix . 'format_plural'), TRUE);
-    $this->assertEqual($config->get($field_config_prefix . 'format_plural_string'), '1' . PoItem::DELIMITER . '@count');
+    $this->assertEqual($config->get($field_config_prefix . 'format_plural_string'), '1' . LOCALE_PLURAL_DELIMITER . '@count');
 
     // Assert that the value is displayed.
     $this->drupalGet('numeric-test');
@@ -65,7 +64,7 @@ class NumericFormatPluralTest extends ViewTestBase {
     $config = $this->config('views.view.numeric_test');
     $field_config_prefix = 'display.default.display_options.fields.count.';
     $this->assertEqual($config->get($field_config_prefix . 'format_plural'), TRUE);
-    $this->assertEqual($config->get($field_config_prefix . 'format_plural_string'), '1 time' . PoItem::DELIMITER . '@count times');
+    $this->assertEqual($config->get($field_config_prefix . 'format_plural_string'), '1 time' . LOCALE_PLURAL_DELIMITER . '@count times');
 
     // Assert that the value is displayed with some sample values.
     $numbers = [0, 1, 2, 3, 4, 42];
@@ -108,7 +107,7 @@ class NumericFormatPluralTest extends ViewTestBase {
     $config = $this->config('views.view.numeric_test');
     $field_config_prefix = 'display.default.display_options.fields.count.';
     $this->assertEqual($config->get($field_config_prefix . 'format_plural'), TRUE);
-    $this->assertEqual($config->get($field_config_prefix . 'format_plural_string'), implode(PoItem::DELIMITER, array_values($edit)));
+    $this->assertEqual($config->get($field_config_prefix . 'format_plural_string'), implode(LOCALE_PLURAL_DELIMITER, array_values($edit)));
 
     // The view should now use the new plural configuration.
     $this->drupalGet('sl/numeric-test');
@@ -121,7 +120,7 @@ class NumericFormatPluralTest extends ViewTestBase {
 
     // Add an English configuration translation with English plurals.
     $english = \Drupal::languageManager()->getLanguageConfigOverride('en', 'views.view.numeric_test');
-    $english->set('display.default.display_options.fields.count.format_plural_string', '1 time' . PoItem::DELIMITER . '@count times')->save();
+    $english->set('display.default.display_options.fields.count.format_plural_string', '1 time' . LOCALE_PLURAL_DELIMITER . '@count times')->save();
 
     // The view displayed in English should use the English translation.
     $this->drupalGet('numeric-test');

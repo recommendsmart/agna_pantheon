@@ -7,8 +7,7 @@
 
 namespace Drupal\Tests\Core\Plugin;
 
-use Drupal\Component\Plugin\ConfigurableInterface;
-use Drupal\Component\Plugin\DependentPluginInterface;
+use Drupal\Component\Plugin\ConfigurablePluginInterface;
 use Drupal\Component\Plugin\Definition\ContextAwarePluginDefinitionInterface;
 use Drupal\Component\Plugin\Definition\ContextAwarePluginDefinitionTrait;
 use Drupal\Component\Plugin\Definition\PluginDefinition;
@@ -21,6 +20,8 @@ use Drupal\Core\Extension\ModuleHandlerInterface;
 use Drupal\Core\Plugin\Context\ContextDefinition;
 use Drupal\Core\Plugin\Context\ContextHandler;
 use Drupal\Core\Plugin\ContextAwarePluginInterface;
+use Drupal\Core\TypedData\DataDefinition;
+use Drupal\Core\TypedData\Plugin\DataType\StringData;
 use Drupal\Core\TypedData\TypedDataManager;
 use Drupal\Core\Validation\ConstraintManager;
 use Drupal\Tests\UnitTestCase;
@@ -219,7 +220,7 @@ class ContextHandlerTest extends UnitTestCase {
     $data[] = [FALSE, $plugins, $plugins];
 
     $plugins = [
-      'expected_array_plugin' => ['context_definitions' => []],
+      'expected_array_plugin' => ['context' => []],
       'expected_object_plugin' => new ContextAwarePluginDefinition(),
     ];
     // No context, all plugins available.
@@ -227,7 +228,7 @@ class ContextHandlerTest extends UnitTestCase {
 
     $plugins = [
       'expected_array_plugin' => [
-        'context_definitions' => ['context1' => new ContextDefinition('string')],
+        'context' => ['context1' => new ContextDefinition('string')],
       ],
       'expected_object_plugin' => (new ContextAwarePluginDefinition())
         ->addContextDefinition('context1', new ContextDefinition('string')),
@@ -240,7 +241,7 @@ class ContextHandlerTest extends UnitTestCase {
     $mismatched_context_definition = (new ContextDefinition('expected_data_type'))->setConstraints(['mismatched_constraint_name' => 'mismatched_constraint_value']);
     $plugins = [
       'expected_array_plugin' => [
-        'context_definitions' => ['context1' => $mismatched_context_definition],
+        'context' => ['context1' => $mismatched_context_definition],
       ],
       'expected_object_plugin' => (new ContextAwarePluginDefinition())
         ->addContextDefinition('context1', $mismatched_context_definition),
@@ -252,7 +253,7 @@ class ContextHandlerTest extends UnitTestCase {
     $optional_mismatched_context_definition->setRequired(FALSE);
     $plugins = [
       'expected_array_plugin' => [
-        'context_definitions' => ['context1' => $optional_mismatched_context_definition],
+        'context' => ['context1' => $optional_mismatched_context_definition],
       ],
       'expected_object_plugin' => (new ContextAwarePluginDefinition())
         ->addContextDefinition('context1', $optional_mismatched_context_definition),
@@ -263,7 +264,7 @@ class ContextHandlerTest extends UnitTestCase {
     $expected_context_definition = (new ContextDefinition('string'))->setConstraints(['Blank' => []]);
     $plugins = [
       'expected_array_plugin' => [
-        'context_definitions' => ['context1' => $expected_context_definition],
+        'context' => ['context1' => $expected_context_definition],
       ],
       'expected_object_plugin' => (new ContextAwarePluginDefinition())
         ->addContextDefinition('context1', $expected_context_definition),
@@ -275,7 +276,7 @@ class ContextHandlerTest extends UnitTestCase {
     $optional_expected_context_definition->setRequired(FALSE);
     $plugins = [
       'expected_array_plugin' => [
-        'context_definitions' => ['context1' => $optional_expected_context_definition],
+        'context' => ['context1' => $optional_expected_context_definition],
       ],
       'expected_object_plugin' => (new ContextAwarePluginDefinition())
         ->addContextDefinition('context1', $optional_expected_context_definition),
@@ -286,10 +287,10 @@ class ContextHandlerTest extends UnitTestCase {
     $unexpected_context_definition = (new ContextDefinition('unexpected_data_type'))->setConstraints(['mismatched_constraint_name' => 'mismatched_constraint_value']);
     $plugins = [
       'unexpected_array_plugin' => [
-        'context_definitions' => ['context1' => $unexpected_context_definition],
+        'context' => ['context1' => $unexpected_context_definition],
       ],
       'expected_array_plugin' => [
-        'context_definitions' => ['context2' => new ContextDefinition('string')],
+        'context' => ['context2' => new ContextDefinition('string')],
       ],
       'unexpected_object_plugin' => (new ContextAwarePluginDefinition())
         ->addContextDefinition('context1', $unexpected_context_definition),
@@ -313,11 +314,20 @@ class ContextHandlerTest extends UnitTestCase {
    * @covers ::applyContextMapping
    */
   public function testApplyContextMapping() {
+    $context_hit_data = StringData::createInstance(DataDefinition::create('string'));
+    $context_hit_data->setValue('foo');
     $context_hit = $this->getMock('Drupal\Core\Plugin\Context\ContextInterface');
+    $context_hit->expects($this->atLeastOnce())
+      ->method('getContextData')
+      ->will($this->returnValue($context_hit_data));
+    $context_miss_data = StringData::createInstance(DataDefinition::create('string'));
+    $context_miss_data->setValue('bar');
     $context_hit->expects($this->atLeastOnce())
       ->method('hasContextValue')
       ->willReturn(TRUE);
     $context_miss = $this->getMock('Drupal\Core\Plugin\Context\ContextInterface');
+    $context_miss->expects($this->never())
+      ->method('getContextData');
 
     $contexts = [
       'hit' => $context_hit,
@@ -334,8 +344,8 @@ class ContextHandlerTest extends UnitTestCase {
       ->method('getContextDefinitions')
       ->will($this->returnValue(['hit' => $context_definition]));
     $plugin->expects($this->once())
-      ->method('setContext')
-      ->with('hit', $context_hit);
+      ->method('setContextValue')
+      ->with('hit', $context_hit_data);
 
     // Make sure that the cacheability metadata is passed to the plugin context.
     $plugin_context = $this->getMock('Drupal\Core\Plugin\Context\ContextInterface');
@@ -375,12 +385,11 @@ class ContextHandlerTest extends UnitTestCase {
       ->method('getContextDefinitions')
       ->will($this->returnValue(['hit' => $context_definition]));
     $plugin->expects($this->never())
-      ->method('setContext');
+      ->method('setContextValue');
 
     // No context, so no cacheability metadata can be passed along.
-    $plugin->expects($this->any())
-      ->method('getContext')
-      ->willThrowException(new ContextException());
+    $plugin->expects($this->never())
+      ->method('getContext');
 
     $this->setExpectedException(MissingValueContextException::class, 'Required contexts without a value: hit');
     $this->contextHandler->applyContextMapping($plugin, $contexts);
@@ -411,12 +420,11 @@ class ContextHandlerTest extends UnitTestCase {
       ->method('getContextDefinitions')
       ->will($this->returnValue(['optional' => $context_definition]));
     $plugin->expects($this->never())
-      ->method('setContext');
+      ->method('setContextValue');
 
     // No context, so no cacheability metadata can be passed along.
-    $plugin->expects($this->any())
-      ->method('getContext')
-      ->willThrowException(new ContextException());
+    $plugin->expects($this->never())
+      ->method('getContext');
 
     $this->contextHandler->applyContextMapping($plugin, $contexts);
   }
@@ -449,7 +457,7 @@ class ContextHandlerTest extends UnitTestCase {
       ->method('getContextDefinitions')
       ->will($this->returnValue(['hit' => $context_definition]));
     $plugin->expects($this->never())
-      ->method('setContext');
+      ->method('setContextValue');
 
     $this->setExpectedException(MissingValueContextException::class, 'Required contexts without a value: hit');
     $this->contextHandler->applyContextMapping($plugin, $contexts);
@@ -483,7 +491,7 @@ class ContextHandlerTest extends UnitTestCase {
       ->method('getContextDefinitions')
       ->will($this->returnValue(['hit' => $context_definition]));
     $plugin->expects($this->never())
-      ->method('setContext');
+      ->method('setContextValue');
 
     $this->contextHandler->applyContextMapping($plugin, $contexts);
   }
@@ -492,7 +500,12 @@ class ContextHandlerTest extends UnitTestCase {
    * @covers ::applyContextMapping
    */
   public function testApplyContextMappingConfigurableAssigned() {
+    $context_data = StringData::createInstance(DataDefinition::create('string'));
+    $context_data->setValue('foo');
     $context = $this->getMock('Drupal\Core\Plugin\Context\ContextInterface');
+    $context->expects($this->atLeastOnce())
+      ->method('getContextData')
+      ->will($this->returnValue($context_data));
     $context->expects($this->atLeastOnce())
       ->method('hasContextValue')
       ->willReturn(TRUE);
@@ -511,8 +524,8 @@ class ContextHandlerTest extends UnitTestCase {
       ->method('getContextDefinitions')
       ->will($this->returnValue(['hit' => $context_definition]));
     $plugin->expects($this->once())
-      ->method('setContext')
-      ->with('hit', $context);
+      ->method('setContextValue')
+      ->with('hit', $context_data);
 
     // Make sure that the cacheability metadata is passed to the plugin context.
     $plugin_context = $this->getMock('Drupal\Core\Plugin\Context\ContextInterface');
@@ -549,7 +562,7 @@ class ContextHandlerTest extends UnitTestCase {
       ->method('getContextDefinitions')
       ->will($this->returnValue(['hit' => $context_definition]));
     $plugin->expects($this->never())
-      ->method('setContext');
+      ->method('setContextValue');
 
     $this->setExpectedException(ContextException::class, 'Assigned contexts were not satisfied: miss');
     $this->contextHandler->applyContextMapping($plugin, $contexts, ['miss' => 'name']);
@@ -557,7 +570,7 @@ class ContextHandlerTest extends UnitTestCase {
 
 }
 
-interface TestConfigurableContextAwarePluginInterface extends ContextAwarePluginInterface, ConfigurableInterface, DependentPluginInterface {
+interface TestConfigurableContextAwarePluginInterface extends ContextAwarePluginInterface, ConfigurablePluginInterface {
 
 }
 

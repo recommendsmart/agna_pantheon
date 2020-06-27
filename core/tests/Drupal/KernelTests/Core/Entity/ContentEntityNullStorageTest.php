@@ -52,7 +52,8 @@ class ContentEntityNullStorageTest extends KernelTestBase {
     // Set up the ConfigImporter object for testing.
     $storage_comparer = new StorageComparer(
       $this->container->get('config.storage.sync'),
-      $this->container->get('config.storage')
+      $this->container->get('config.storage'),
+      $this->container->get('config.manager')
     );
     $config_importer = new ConfigImporter(
       $storage_comparer->createChangelist(),

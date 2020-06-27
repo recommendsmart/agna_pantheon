@@ -72,7 +72,6 @@ class TranslationTest extends FieldKernelTestBase {
   protected function setUp() {
     parent::setUp();
 
-    $this->installEntitySchema('node');
     $this->installConfig(['language']);
 
     $this->fieldName = mb_strtolower($this->randomMachineName());

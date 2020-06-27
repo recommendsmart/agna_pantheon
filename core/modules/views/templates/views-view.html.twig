@@ -51,11 +51,8 @@
   {{ exposed }}
   {{ attachment_before }}
 
-  {% if rows -%}
-    {{ rows }}
-  {% elseif empty -%}
-    {{ empty }}
-  {% endif %}
+  {{ rows }}
+  {{ empty }}
   {{ pager }}
 
   {{ attachment_after }}

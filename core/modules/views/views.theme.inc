@@ -9,7 +9,6 @@ use Drupal\Component\Utility\Html;
 use Drupal\Component\Utility\Xss;
 use Drupal\Core\Template\Attribute;
 use Drupal\Core\Url;
-use Drupal\Core\Utility\TableSort;
 
 /**
  * Prepares variables for view templates.
@@ -261,11 +260,11 @@ function template_preprocess_views_view_summary(&$variables) {
 
   $active_urls = [
     // Force system path.
-    Url::fromRoute('<current>', [], ['alias' => TRUE])->toString(),
+    \Drupal::url('<current>', [], ['alias' => TRUE]),
     // Force system path.
     Url::fromRouteMatch(\Drupal::routeMatch())->setOption('alias', TRUE)->toString(),
     // Could be an alias.
-    Url::fromRoute('<current>')->toString(),
+    \Drupal::url('<current>'),
     // Could be an alias.
     Url::fromRouteMatch(\Drupal::routeMatch())->toString(),
   ];
@@ -350,9 +349,9 @@ function template_preprocess_views_view_summary_unformatted(&$variables) {
   $count = 0;
   $active_urls = [
     // Force system path.
-    Url::fromRoute('<current>', [], ['alias' => TRUE])->toString(),
+    \Drupal::url('<current>', [], ['alias' => TRUE]),
     // Could be an alias.
-    Url::fromRoute('<current>')->toString(),
+    \Drupal::url('<current>'),
   ];
   $active_urls = array_combine($active_urls, $active_urls);
 
@@ -450,7 +449,7 @@ function template_preprocess_views_view_table(&$variables) {
   // working URLs.
   $route_name = !empty($view->live_preview) ? '<current>' : '<none>';
 
-  $query = TableSort::getQueryParameters(\Drupal::request());
+  $query = tablesort_get_query_parameters();
   if (isset($view->exposed_raw_input)) {
     $query += $view->exposed_raw_input;
   }
@@ -1038,7 +1037,7 @@ function template_preprocess_views_mini_pager(&$variables) {
     $options = [
       'query' => pager_query_add_page($parameters, $element, $pager_page_array[$element] - 1),
     ];
-    $variables['items']['previous']['href'] = Url::fromRoute('<current>', [], $options)->toString();
+    $variables['items']['previous']['href'] = \Drupal::url('<current>', [], $options);
     if (isset($tags[1])) {
       $variables['items']['previous']['text'] = $tags[1];
     }
@@ -1049,7 +1048,7 @@ function template_preprocess_views_mini_pager(&$variables) {
     $options = [
       'query' => pager_query_add_page($parameters, $element, $pager_page_array[$element] + 1),
     ];
-    $variables['items']['next']['href'] = Url::fromRoute('<current>', [], $options)->toString();
+    $variables['items']['next']['href'] = \Drupal::url('<current>', [], $options);
     if (isset($tags[3])) {
       $variables['items']['next']['text'] = $tags[3];
     }

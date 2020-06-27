@@ -14,7 +14,6 @@ core: '8'
 display:
   default:
     display_options:
-      title: 'Test Exposed Block'
       access:
         type: none
       cache:

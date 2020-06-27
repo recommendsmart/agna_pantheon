@@ -2,17 +2,17 @@
 
 namespace Drupal\serialization\Normalizer;
 
-use Drupal\Core\Config\Entity\ConfigEntityInterface;
-
 /**
  * Normalizes/denormalizes Drupal config entity objects into an array structure.
  */
 class ConfigEntityNormalizer extends EntityNormalizer {
 
   /**
-   * {@inheritdoc}
+   * The interface or class that this Normalizer supports.
+   *
+   * @var array
    */
-  protected $supportedInterfaceOrClass = ConfigEntityInterface::class;
+  protected $supportedInterfaceOrClass = ['Drupal\Core\Config\Entity\ConfigEntityInterface'];
 
   /**
    * {@inheritdoc}

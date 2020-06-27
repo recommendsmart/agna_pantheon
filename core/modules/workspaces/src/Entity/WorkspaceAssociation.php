@@ -50,7 +50,8 @@ class WorkspaceAssociation extends ContentEntityBase {
       ->setDescription(new TranslatableMarkup('The workspace of the referenced content.'))
       ->setSetting('target_type', 'workspace')
       ->setRequired(TRUE)
-      ->setRevisionable(TRUE);
+      ->setRevisionable(TRUE)
+      ->addConstraint('workspace', []);
 
     $fields['target_entity_type_id'] = BaseFieldDefinition::create('string')
       ->setLabel(new TranslatableMarkup('Content entity type ID'))

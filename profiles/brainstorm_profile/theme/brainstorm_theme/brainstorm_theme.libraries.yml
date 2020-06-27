@@ -1,0 +1,15 @@
+global-css:
+  css:
+    base:
+      css/global.styles.css: {}
+      css/global.base.css: {}
+      css/responsive.custom.css: {}
+      css/lt-ie9.css: { browsers: {'IE': 'lt IE 9', '!IE':false}}
+global-js:
+  js:
+    scripts/main.js: {}
+    scripts/jquery.waterfall.js: {}
+  dependencies:
+   - core/jquery
+   - core/drupal
+   - core/drupalSettings

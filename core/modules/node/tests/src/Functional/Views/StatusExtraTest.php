@@ -13,11 +13,6 @@ use Drupal\node\NodeInterface;
 class StatusExtraTest extends NodeTestBase {
 
   /**
-   * {@inheritdoc}
-   */
-  public static $modules = ['node_test_views', 'content_moderation'];
-
-  /**
    * Views used by this test.
    *
    * @var array
@@ -31,7 +26,6 @@ class StatusExtraTest extends NodeTestBase {
     $node_author = $this->drupalCreateUser(['view own unpublished content']);
     $node_author_not_unpublished = $this->drupalCreateUser();
     $normal_user = $this->drupalCreateUser();
-    $privileged_user = $this->drupalCreateUser(['view any unpublished content']);
     $admin_user = $this->drupalCreateUser(['bypass node access']);
 
     // Create one published and one unpublished node by the admin.
@@ -47,14 +41,6 @@ class StatusExtraTest extends NodeTestBase {
 
     // The administrator should simply see all nodes.
     $this->drupalLogin($admin_user);
-    $this->drupalGet('test_status_extra');
-    $this->assertText($node_published->label());
-    $this->assertText($node_unpublished->label());
-    $this->assertText($node_unpublished2->label());
-    $this->assertText($node_unpublished3->label());
-
-    // The privileged user should simply see all nodes.
-    $this->drupalLogin($privileged_user);
     $this->drupalGet('test_status_extra');
     $this->assertText($node_published->label());
     $this->assertText($node_unpublished->label());

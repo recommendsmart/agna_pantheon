@@ -2,8 +2,6 @@
 
 namespace Drupal\locale;
 
-use Drupal\Component\Gettext\PoItem;
-
 /**
  * Defines the locale string base class.
  *
@@ -97,14 +95,14 @@ abstract class StringBase implements StringInterface {
    * {@inheritdoc}
    */
   public function getPlurals() {
-    return explode(PoItem::DELIMITER, $this->getString());
+    return explode(LOCALE_PLURAL_DELIMITER, $this->getString());
   }
 
   /**
    * {@inheritdoc}
    */
   public function setPlurals($plurals) {
-    $this->setString(implode(PoItem::DELIMITER, $plurals));
+    $this->setString(implode(LOCALE_PLURAL_DELIMITER, $plurals));
     return $this;
   }
 

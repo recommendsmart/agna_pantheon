@@ -4,11 +4,9 @@ namespace Drupal\file\Plugin\rest\resource;
 
 use Drupal\Component\Utility\Bytes;
 use Drupal\Component\Utility\Crypt;
-use Drupal\Component\Utility\Environment;
 use Drupal\Core\Config\Config;
 use Drupal\Core\Entity\EntityTypeManagerInterface;
 use Drupal\Core\Field\FieldDefinitionInterface;
-use Drupal\Core\File\Exception\FileException;
 use Drupal\Core\File\FileSystemInterface;
 use Drupal\Core\Lock\LockBackendInterface;
 use Drupal\Core\Session\AccountInterface;
@@ -75,7 +73,7 @@ class FileUploadResource extends ResourceBase {
   /**
    * The file system service.
    *
-   * @var \Drupal\Core\File\FileSystem
+   * @var \Drupal\Core\File\FileSystemInterface
    */
   protected $fileSystem;
 
@@ -228,7 +226,7 @@ class FileUploadResource extends ResourceBase {
     $destination = $this->getUploadLocation($field_definition->getSettings());
 
     // Check the destination file path is writable.
-    if (!$this->fileSystem->prepareDirectory($destination, FileSystemInterface::CREATE_DIRECTORY)) {
+    if (!file_prepare_directory($destination, FILE_CREATE_DIRECTORY)) {
       throw new HttpException(500, 'Destination file path is not writable');
     }
 
@@ -241,7 +239,8 @@ class FileUploadResource extends ResourceBase {
 
     $temp_file_path = $this->streamUploadData();
 
-    $file_uri = $this->fileSystem->getDestinationFilename($file_uri, FileSystemInterface::EXISTS_RENAME);
+    // This will take care of altering $file_uri if a file already exists.
+    file_unmanaged_prepare($temp_file_path, $file_uri);
 
     // Lock based on the prepared file URI.
     $lock_id = $this->generateLockIdFromFileUri($file_uri);
@@ -266,11 +265,8 @@ class FileUploadResource extends ResourceBase {
 
     // Move the file to the correct location after validation. Use
     // FILE_EXISTS_ERROR as the file location has already been determined above
-    // in FileSystem::getDestinationFilename().
-    try {
-      $this->fileSystem->move($temp_file_path, $file_uri, FileSystemInterface::EXISTS_ERROR);
-    }
-    catch (FileException $e) {
+    // in file_unmanaged_prepare().
+    if (!file_unmanaged_move($temp_file_path, $file_uri, FILE_EXISTS_ERROR)) {
       throw new HttpException(500, 'Temporary file could not be moved to file location');
     }
 
@@ -528,7 +524,7 @@ class FileUploadResource extends ResourceBase {
     $settings = $field_definition->getSettings();
 
     // Cap the upload size according to the PHP limit.
-    $max_filesize = Bytes::toInt(Environment::getUploadMaxSize());
+    $max_filesize = Bytes::toInt(file_upload_max_size());
     if (!empty($settings['max_filesize'])) {
       $max_filesize = min($max_filesize, Bytes::toInt($settings['max_filesize']));
     }

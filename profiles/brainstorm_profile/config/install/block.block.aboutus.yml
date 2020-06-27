@@ -1,0 +1,30 @@
+langcode: en
+status: true
+dependencies:
+  content:
+    - 'block_content:basic:9d65bc41-a8ec-4a23-9443-1a4bbce52397'
+  module:
+    - block_content
+    - system
+  theme:
+    - brainstorm_theme
+id: aboutus
+theme: brainstorm_theme
+region: sidebar_second
+weight: -14
+provider: null
+plugin: 'block_content:9d65bc41-a8ec-4a23-9443-1a4bbce52397'
+settings:
+  id: 'block_content:9d65bc41-a8ec-4a23-9443-1a4bbce52397'
+  label: 'About us'
+  provider: block_content
+  label_display: visible
+  status: true
+  info: ''
+  view_mode: full
+visibility:
+  request_path:
+    id: request_path
+    pages: '/blog/*'
+    negate: false
+    context_mapping: {  }

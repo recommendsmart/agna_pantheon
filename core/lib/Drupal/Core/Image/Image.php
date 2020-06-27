@@ -128,7 +128,8 @@ class Image implements ImageInterface {
       $this->fileSize = filesize($destination);
       $this->source = $destination;
 
-      if (\Drupal::service('file_system')->chmod($destination)) {
+      // @todo Use File utility when https://www.drupal.org/node/2050759 is in.
+      if ($this->chmod($destination)) {
         return $return;
       }
     }
@@ -207,18 +208,15 @@ class Image implements ImageInterface {
    *   Integer value for the permissions. Consult PHP chmod() documentation for
    *   more information.
    *
+   * @see drupal_chmod()
+   *
+   * @todo Remove when https://www.drupal.org/node/2050759 is in.
+   *
    * @return bool
    *   TRUE for success, FALSE in the event of an error.
-   *
-   * @deprecated in Drupal 8.0.0, will be removed before Drupal 9.0.0.
-   *   Use \Drupal\Core\File\FileSystem::chmod().
-   *
-   * @see \Drupal\Core\File\FileSystemInterface::chmod()
-   * @see https://www.drupal.org/node/2418133
    */
   protected function chmod($uri, $mode = NULL) {
-    @trigger_error('chmod() is deprecated in Drupal 8.0.0 and will be removed before Drupal 9.0.0. Use \Drupal\Core\File\FileSystemInterface::chmod(). See https://www.drupal.org/node/2418133.', E_USER_DEPRECATED);
-    return \Drupal::service('file_system')->chmod($uri, $mode);
+    return drupal_chmod($uri, $mode);
   }
 
 }

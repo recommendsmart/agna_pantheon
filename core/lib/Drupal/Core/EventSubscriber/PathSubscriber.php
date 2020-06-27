@@ -4,6 +4,7 @@ namespace Drupal\Core\EventSubscriber;
 
 use Drupal\Core\Path\AliasManagerInterface;
 use Drupal\Core\Path\CurrentPathStack;
+use Symfony\Component\HttpKernel\HttpKernelInterface;
 use Symfony\Component\HttpKernel\KernelEvents;
 use Symfony\Component\HttpKernel\Event\FilterControllerEvent;
 use Symfony\Component\HttpKernel\Event\PostResponseEvent;
@@ -51,7 +52,7 @@ class PathSubscriber implements EventSubscriberInterface {
    */
   public function onKernelController(FilterControllerEvent $event) {
     // Set the cache key on the alias manager cache decorator.
-    if ($event->isMasterRequest()) {
+    if ($event->getRequestType() == HttpKernelInterface::MASTER_REQUEST) {
       $this->aliasManager->setCacheKey(rtrim($this->currentPath->getPath($event->getRequest()), '/'));
     }
   }

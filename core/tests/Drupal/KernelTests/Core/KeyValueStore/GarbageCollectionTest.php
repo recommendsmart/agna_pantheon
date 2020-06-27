@@ -33,8 +33,7 @@ class GarbageCollectionTest extends KernelTestBase {
    */
   public function testGarbageCollection() {
     $collection = $this->randomMachineName();
-    $connection = Database::getConnection();
-    $store = new DatabaseStorageExpirable($collection, new PhpSerialize(), $connection);
+    $store = new DatabaseStorageExpirable($collection, new PhpSerialize(), Database::getConnection());
 
     // Insert some items and confirm that they're set.
     for ($i = 0; $i <= 3; $i++) {
@@ -44,7 +43,7 @@ class GarbageCollectionTest extends KernelTestBase {
 
     // Manually expire the data.
     for ($i = 0; $i <= 3; $i++) {
-      $connection->merge('key_value_expire')
+      db_merge('key_value_expire')
         ->keys([
             'name' => 'key_' . $i,
             'collection' => $collection,

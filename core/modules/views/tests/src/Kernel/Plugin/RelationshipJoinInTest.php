@@ -2,7 +2,7 @@
 
 namespace Drupal\Tests\views\Kernel\Plugin;
 
-use Drupal\Tests\user\Traits\UserCreationTrait;
+use Drupal\simpletest\UserCreationTrait;
 use Drupal\views\Views;
 
 /**

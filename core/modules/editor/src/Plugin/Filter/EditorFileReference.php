@@ -3,10 +3,8 @@
 namespace Drupal\editor\Plugin\Filter;
 
 use Drupal\Component\Utility\Html;
-use Drupal\Core\DependencyInjection\DeprecatedServicePropertyTrait;
-use Drupal\Core\Entity\EntityRepositoryInterface;
+use Drupal\Core\Entity\EntityManagerInterface;
 use Drupal\Core\Plugin\ContainerFactoryPluginInterface;
-use Drupal\file\FileInterface;
 use Drupal\filter\FilterProcessResult;
 use Drupal\filter\Plugin\FilterBase;
 use Symfony\Component\DependencyInjection\ContainerInterface;
@@ -24,19 +22,13 @@ use Symfony\Component\DependencyInjection\ContainerInterface;
  * )
  */
 class EditorFileReference extends FilterBase implements ContainerFactoryPluginInterface {
-  use DeprecatedServicePropertyTrait;
 
   /**
-   * {@inheritdoc}
-   */
-  protected $deprecatedProperties = ['entityManager' => 'entity.manager'];
-
-  /**
-   * The entity repository.
+   * An entity manager object.
    *
-   * @var \Drupal\Core\Entity\EntityRepositoryInterface
+   * @var \Drupal\Core\Entity\EntityManagerInterface
    */
-  protected $entityRepository;
+  protected $entityManager;
 
   /**
    * Constructs a \Drupal\editor\Plugin\Filter\EditorFileReference object.
@@ -47,11 +39,11 @@ class EditorFileReference extends FilterBase implements ContainerFactoryPluginIn
    *   The plugin_id for the plugin instance.
    * @param mixed $plugin_definition
    *   The plugin implementation definition.
-   * @param \Drupal\Core\Entity\EntityRepositoryInterface $entity_repository
-   *   The entity repository.
+   * @param \Drupal\Core\Entity\EntityManagerInterface $entity_manager
+   *   An entity manager object.
    */
-  public function __construct(array $configuration, $plugin_id, $plugin_definition, EntityRepositoryInterface $entity_repository) {
-    $this->entityRepository = $entity_repository;
+  public function __construct(array $configuration, $plugin_id, $plugin_definition, EntityManagerInterface $entity_manager) {
+    $this->entityManager = $entity_manager;
     parent::__construct($configuration, $plugin_id, $plugin_definition);
   }
 
@@ -63,7 +55,7 @@ class EditorFileReference extends FilterBase implements ContainerFactoryPluginIn
       $configuration,
       $plugin_id,
       $plugin_definition,
-      $container->get('entity.repository')
+      $container->get('entity.manager')
     );
   }
 
@@ -83,9 +75,9 @@ class EditorFileReference extends FilterBase implements ContainerFactoryPluginIn
         // If there is a 'src' attribute, set it to the file entity's current
         // URL. This ensures the URL works even after the file location changes.
         if ($node->hasAttribute('src')) {
-          $file = $this->entityRepository->loadEntityByUuid('file', $uuid);
-          if ($file instanceof FileInterface) {
-            $node->setAttribute('src', $file->createFileUrl());
+          $file = $this->entityManager->loadEntityByUuid('file', $uuid);
+          if ($file) {
+            $node->setAttribute('src', file_url_transform_relative(file_create_url($file->getFileUri())));
           }
         }
 
@@ -93,8 +85,8 @@ class EditorFileReference extends FilterBase implements ContainerFactoryPluginIn
         if (!isset($processed_uuids[$uuid])) {
           $processed_uuids[$uuid] = TRUE;
 
-          $file = $this->entityRepository->loadEntityByUuid('file', $uuid);
-          if ($file instanceof FileInterface) {
+          $file = $this->entityManager->loadEntityByUuid('file', $uuid);
+          if ($file) {
             $result->addCacheTags($file->getCacheTags());
           }
         }

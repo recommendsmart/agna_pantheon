@@ -36,7 +36,7 @@ class ResponsiveImageStyleListBuilder extends ConfigEntityListBuilder {
     $operations['duplicate'] = [
       'title' => t('Duplicate'),
       'weight' => 15,
-      'url' => $entity->toUrl('duplicate-form'),
+      'url' => $entity->urlInfo('duplicate-form'),
     ];
     return $operations;
   }

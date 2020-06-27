@@ -2,7 +2,6 @@ drupal.ckeditor:
   version: VERSION
   js:
     js/ckeditor.js: {}
-    js/ckeditor.off-canvas-css-reset.js: {}
   css:
     state:
       css/ckeditor.css: {}

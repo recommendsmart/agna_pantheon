@@ -121,7 +121,8 @@ class EntityResource extends ResourceBase implements DependentPluginInterface {
    *
    * @throws \Symfony\Component\HttpKernel\Exception\HttpException
    */
-  public function get(EntityInterface $entity, Request $request) {
+  public function get(EntityInterface $entity) {
+    $request = \Drupal::request();
     $response = new ResourceResponse($entity, 200);
     // @todo Either remove the line below or remove this todo in https://www.drupal.org/project/drupal/issues/2973356
     $response->addCacheableDependency($request->attributes->get(AccessAwareRouterInterface::ACCESS_RESULT));
@@ -189,7 +190,7 @@ class EntityResource extends ResourceBase implements DependentPluginInterface {
       // metadata here.
       $headers = [];
       if (in_array('canonical', $entity->uriRelationships(), TRUE)) {
-        $url = $entity->toUrl('canonical', ['absolute' => TRUE])->toString(TRUE);
+        $url = $entity->urlInfo('canonical', ['absolute' => TRUE])->toString(TRUE);
         $headers['Location'] = $url->getGeneratedUrl();
       }
       return new ModifiedResourceResponse($entity, 201, $headers);

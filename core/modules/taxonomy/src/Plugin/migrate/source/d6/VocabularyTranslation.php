@@ -2,7 +2,6 @@
 
 namespace Drupal\taxonomy\Plugin\migrate\source\d6;
 
-use Drupal\migrate\Row;
 use Drupal\migrate_drupal\Plugin\migrate\source\DrupalSqlBase;
 
 /**
@@ -20,12 +19,11 @@ class VocabularyTranslation extends DrupalSqlBase {
    */
   public function query() {
     $query = $this->select('vocabulary', 'v')
-      ->fields('v')
+      ->fields('v', ['vid', 'name', 'description'])
       ->fields('i18n', ['lid', 'type', 'property', 'objectid'])
       ->fields('lt', ['lid', 'translation'])
-      ->condition('i18n.type', 'vocabulary')
-      ->isNotNull('lt.language');
-    $query->addField('lt', 'language', 'lt.language');
+      ->condition('i18n.type', 'vocabulary');
+    $query->addField('lt', 'language', 'language');
     // The i18n_strings table has two columns containing the object ID, objectid
     // and objectindex. The objectid column is a text field. Therefore, for the
     // join to work in PostgreSQL, use the objectindex field as this is numeric
@@ -33,7 +31,6 @@ class VocabularyTranslation extends DrupalSqlBase {
     $query->join('i18n_strings', 'i18n', 'v.vid = i18n.objectindex');
     $query->leftJoin('locales_target', 'lt', 'lt.lid = i18n.lid');
 
-    $a = $query->execute()->fetchAll();
     return $query;
   }
 
@@ -52,20 +49,8 @@ class VocabularyTranslation extends DrupalSqlBase {
   /**
    * {@inheritdoc}
    */
-  public function prepareRow(Row $row) {
-    // For ease of reading the migration use 'language' as the property name for
-    // the language.
-    $language = $row->getSourceProperty('ltlanguage');
-    $row->setSourceProperty('language', $language);
-  }
-
-  /**
-   * {@inheritdoc}
-   */
   public function getIds() {
     $ids['vid']['type'] = 'integer';
-    $ids['language']['type'] = 'string';
-    $ids['language']['alias'] = 'lt';
     return $ids;
   }
 

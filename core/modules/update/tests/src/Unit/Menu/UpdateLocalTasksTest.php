@@ -47,6 +47,7 @@ class UpdateLocalTasksTest extends LocalTaskIntegrationTestBase {
     $this->assertLocalTasks($route, [
       0 => ['update.module_update'],
     ]);
+    ;
   }
 
   /**
@@ -67,6 +68,7 @@ class UpdateLocalTasksTest extends LocalTaskIntegrationTestBase {
     $this->assertLocalTasks($route, [
       0 => ['update.theme_update'],
     ]);
+    ;
   }
 
   /**

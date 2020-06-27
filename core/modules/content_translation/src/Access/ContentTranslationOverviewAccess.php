@@ -3,8 +3,7 @@
 namespace Drupal\content_translation\Access;
 
 use Drupal\Core\Access\AccessResult;
-use Drupal\Core\DependencyInjection\DeprecatedServicePropertyTrait;
-use Drupal\Core\Entity\EntityTypeManagerInterface;
+use Drupal\Core\Entity\EntityManagerInterface;
 use Drupal\Core\Routing\Access\AccessInterface;
 use Drupal\Core\Routing\RouteMatchInterface;
 use Drupal\Core\Session\AccountInterface;
@@ -13,28 +12,22 @@ use Drupal\Core\Session\AccountInterface;
  * Access check for entity translation overview.
  */
 class ContentTranslationOverviewAccess implements AccessInterface {
-  use DeprecatedServicePropertyTrait;
 
   /**
-   * {@inheritdoc}
-   */
-  protected $deprecatedProperties = ['entityManager' => 'entity.manager'];
-
-  /**
-   * The entity type manager service.
+   * The entity type manager.
    *
-   * @var \Drupal\Core\Entity\EntityTypeManagerInterface
+   * @var \Drupal\Core\Entity\EntityManagerInterface
    */
-  protected $entityTypeManager;
+  protected $entityManager;
 
   /**
    * Constructs a ContentTranslationOverviewAccess object.
    *
-   * @param \Drupal\Core\Entity\EntityTypeManagerInterface $entity_type_manager
-   *   The entity type manager service.
+   * @param \Drupal\Core\Entity\EntityManagerInterface $manager
+   *   The entity type manager.
    */
-  public function __construct(EntityTypeManagerInterface $entity_type_manager) {
-    $this->entityTypeManager = $entity_type_manager;
+  public function __construct(EntityManagerInterface $manager) {
+    $this->entityManager = $manager;
   }
 
   /**
@@ -58,7 +51,7 @@ class ContentTranslationOverviewAccess implements AccessInterface {
       $bundle = $entity->bundle();
 
       // Get entity access callback.
-      $definition = $this->entityTypeManager->getDefinition($entity_type_id);
+      $definition = $this->entityManager->getDefinition($entity_type_id);
       $translation = $definition->get('translation');
       $access_callback = $translation['content_translation']['access_callback'];
       $access = call_user_func($access_callback, $entity);

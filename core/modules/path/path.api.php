@@ -20,7 +20,7 @@
  * @see \Drupal\Core\Path\AliasStorageInterface::save()
  */
 function hook_path_insert($path) {
-  \Drupal::database()->insert('mytable')
+  db_insert('mytable')
     ->fields([
       'alias' => $path['alias'],
       'pid' => $path['pid'],
@@ -39,7 +39,7 @@ function hook_path_insert($path) {
  */
 function hook_path_update($path) {
   if ($path['alias'] != $path['original']['alias']) {
-    \Drupal::database()->update('mytable')
+    db_update('mytable')
       ->fields(['alias' => $path['alias']])
       ->condition('pid', $path['pid'])
       ->execute();
@@ -56,7 +56,7 @@ function hook_path_update($path) {
  * @see \Drupal\Core\Path\AliasStorageInterface::delete()
  */
 function hook_path_delete($path) {
-  \Drupal::database()->delete('mytable')
+  db_delete('mytable')
     ->condition('pid', $path['pid'])
     ->execute();
 }

@@ -66,12 +66,12 @@ function workspaces_field_info_alter(&$definitions) {
 }
 
 /**
- * Implements hook_entity_preload().
+ * Implements hook_entity_load().
  */
-function workspaces_entity_preload(array $ids, $entity_type_id) {
+function workspaces_entity_load(array &$entities, $entity_type_id) {
   return \Drupal::service('class_resolver')
     ->getInstanceFromDefinition(EntityOperations::class)
-    ->entityPreload($ids, $entity_type_id);
+    ->entityLoad($entities, $entity_type_id);
 }
 
 /**
@@ -152,6 +152,7 @@ function workspaces_cron() {
  * Implements hook_toolbar().
  */
 function workspaces_toolbar() {
+  $items = [];
   $items['workspace'] = [
     '#cache' => [
       'contexts' => [
@@ -159,6 +160,7 @@ function workspaces_toolbar() {
       ],
     ],
   ];
+
   $current_user = \Drupal::currentUser();
   if (!$current_user->hasPermission('administer workspaces')
     && !$current_user->hasPermission('view own workspace')
@@ -174,7 +176,7 @@ function workspaces_toolbar() {
     'tab' => [
       '#type' => 'link',
       '#title' => $active_workspace->label(),
-      '#url' => $active_workspace->toUrl('collection', ['query' => \Drupal::destination()->getAsArray()]),
+      '#url' => $active_workspace->toUrl('collection'),
       '#attributes' => [
         'title' => t('Switch workspace'),
         'class' => ['use-ajax', 'toolbar-icon', 'toolbar-icon-workspace'],

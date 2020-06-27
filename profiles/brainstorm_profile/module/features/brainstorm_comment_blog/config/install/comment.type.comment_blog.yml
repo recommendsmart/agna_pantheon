@@ -1,0 +1,7 @@
+langcode: en
+status: true
+dependencies: {  }
+id: comment_blog
+label: 'Comment blog'
+target_entity_type_id: node
+description: ''

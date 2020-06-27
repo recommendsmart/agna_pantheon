@@ -61,15 +61,6 @@ class MigrationPluginListTest extends KernelTestBase {
   ];
 
   /**
-   * {@inheritdoc}
-   */
-  protected function setUp() {
-    parent::setUp();
-
-    $this->installEntitySchema('user');
-  }
-
-  /**
    * @covers ::getDefinitions
    */
   public function testGetDefinitions() {

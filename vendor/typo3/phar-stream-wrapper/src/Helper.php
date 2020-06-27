@@ -11,13 +11,6 @@ namespace TYPO3\PharStreamWrapper;
  * The TYPO3 project - inspiring people to share!
  */
 
-/**
- * Helper provides low-level tools on file name resolving. However it does not
- * (and should not) maintain any runtime state information. In order to resolve
- * Phar archive paths according resolvers have to be used.
- *
- * @see \TYPO3\PharStreamWrapper\Resolvable::resolve()
- */
 class Helper
 {
     /*
@@ -31,9 +24,9 @@ class Helper
         if (function_exists('opcache_reset')
             && function_exists('opcache_get_status')
         ) {
-            $status = @opcache_get_status();
+            $status = opcache_get_status();
             if (!empty($status['opcache_enabled'])) {
-                @opcache_reset();
+                opcache_reset();
             }
         }
     }
@@ -52,7 +45,7 @@ class Helper
 
         while (count($parts)) {
             $currentPath = implode('/', $parts);
-            if (@is_file($currentPath) && realpath($currentPath) !== false) {
+            if (@is_file($currentPath)) {
                 return $currentPath;
             }
             array_pop($parts);
@@ -63,21 +56,12 @@ class Helper
 
     /**
      * @param string $path
-     * @return bool
-     */
-    public static function hasPharPrefix($path)
-    {
-        return stripos($path, 'phar://') === 0;
-    }
-
-    /**
-     * @param string $path
      * @return string
      */
     public static function removePharPrefix($path)
     {
         $path = trim($path);
-        if (!static::hasPharPrefix($path)) {
+        if (stripos($path, 'phar://') !== 0) {
             return $path;
         }
         return substr($path, 7);
@@ -93,7 +77,7 @@ class Helper
     public static function normalizePath($path)
     {
         return rtrim(
-            static::normalizeWindowsPath(
+            static::getCanonicalPath(
                 static::removePharPrefix($path)
             ),
             '/'
@@ -106,7 +90,7 @@ class Helper
      * @param string $path File path to process
      * @return string
      */
-    public static function normalizeWindowsPath($path)
+    private static function normalizeWindowsPath($path)
     {
         return str_replace('\\', '/', $path);
     }

@@ -156,7 +156,7 @@ class Tasks extends InstallTasks {
 
         // Close the database connection so that the configuration parameter
         // is applied to the current connection.
-        Database::closeConnection();
+        db_close();
 
         // Recheck, if it fails, finally just rely on the end user to do the
         // right thing.

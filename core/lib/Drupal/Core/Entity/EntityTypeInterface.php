@@ -651,7 +651,7 @@ interface EntityTypeInterface extends PluginDefinitionInterface {
    * This label should be used to present a human-readable name of the
    * entity type.
    *
-   * @return string|\Drupal\Core\StringTranslation\TranslatableMarkup
+   * @return string
    *   The human-readable name of the entity type.
    */
   public function getLabel();
@@ -674,7 +674,7 @@ interface EntityTypeInterface extends PluginDefinitionInterface {
    * this is the page title of a page devoted to a collection of entities such
    * as "Workflows" (instead of "Workflow entities").
    *
-   * @return string|\Drupal\Core\StringTranslation\TranslatableMarkup
+   * @return string
    *   The collection label.
    */
   public function getCollectionLabel();
@@ -687,7 +687,7 @@ interface EntityTypeInterface extends PluginDefinitionInterface {
    * "opportunities"), "child" (with the plural as "children"), or "content
    * item" (with the plural as "content items").
    *
-   * @return string|\Drupal\Core\StringTranslation\TranslatableMarkup
+   * @return string
    *   The singular label.
    */
   public function getSingularLabel();
@@ -700,7 +700,7 @@ interface EntityTypeInterface extends PluginDefinitionInterface {
    * "opportunity"), "children" (with the singular as "child"), or "content
    * items" (with the singular as "content item").
    *
-   * @return string|\Drupal\Core\StringTranslation\TranslatableMarkup
+   * @return string
    *   The plural label.
    */
   public function getPluralLabel();
@@ -716,7 +716,7 @@ interface EntityTypeInterface extends PluginDefinitionInterface {
    * @param int $count
    *   The item count to display if the plural form was requested.
    *
-   * @return string|\Drupal\Core\StringTranslation\TranslatableMarkup
+   * @return string
    *   The count label.
    */
   public function getCountLabel($count);
@@ -752,8 +752,7 @@ interface EntityTypeInterface extends PluginDefinitionInterface {
   /**
    * Gets the human-readable name of the entity type group.
    *
-   * @return string|\Drupal\Core\StringTranslation\TranslatableMarkup
-   *   The group label.
+   * @return string
    */
   public function getGroupLabel();
 

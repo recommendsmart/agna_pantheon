@@ -24,8 +24,8 @@ use Symfony\Component\DependencyInjection\Definition;
 class ServiceReferenceGraphNode
 {
     private $id;
-    private $inEdges = [];
-    private $outEdges = [];
+    private $inEdges = array();
+    private $outEdges = array();
     private $value;
 
     /**
@@ -81,7 +81,7 @@ class ServiceReferenceGraphNode
     /**
      * Returns the in edges.
      *
-     * @return ServiceReferenceGraphEdge[]
+     * @return array The in ServiceReferenceGraphEdge array
      */
     public function getInEdges()
     {
@@ -91,7 +91,7 @@ class ServiceReferenceGraphNode
     /**
      * Returns the out edges.
      *
-     * @return ServiceReferenceGraphEdge[]
+     * @return array The out ServiceReferenceGraphEdge array
      */
     public function getOutEdges()
     {
@@ -113,6 +113,6 @@ class ServiceReferenceGraphNode
      */
     public function clear()
     {
-        $this->inEdges = $this->outEdges = [];
+        $this->inEdges = $this->outEdges = array();
     }
 }

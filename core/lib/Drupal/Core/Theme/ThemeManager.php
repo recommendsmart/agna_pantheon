@@ -427,7 +427,11 @@ class ThemeManager implements ThemeManagerInterface {
       }
     }
 
-    $theme_keys = array_keys($theme->getBaseThemeExtensions());
+    $theme_keys = [];
+    foreach ($theme->getBaseThemes() as $base) {
+      $theme_keys[] = $base->getName();
+    }
+
     $theme_keys[] = $theme->getName();
     $functions = [];
     foreach ($theme_keys as $theme_key) {

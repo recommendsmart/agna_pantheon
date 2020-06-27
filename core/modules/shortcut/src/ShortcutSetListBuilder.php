@@ -32,7 +32,7 @@ class ShortcutSetListBuilder extends ConfigEntityListBuilder {
 
     $operations['list'] = [
       'title' => t('List links'),
-      'url' => $entity->toUrl('customize-form'),
+      'url' => $entity->urlInfo('customize-form'),
     ];
     return $operations;
   }

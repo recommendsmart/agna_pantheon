@@ -140,12 +140,8 @@ class MultilingualReviewPageTest extends MultilingualReviewPageTestBase {
    */
   protected function getMissingPaths() {
     return [
-      'breakpoints',
       'entity_translation_i18n_menu',
       'entity_translation_upgrade',
-      // Flexslider_picture is a sub module of Picture module. Only the
-      // styles from picture are migrated.
-      'flexslider_picture',
       'i18n',
       'i18n_contact',
       'i18n_field',
@@ -161,7 +157,6 @@ class MultilingualReviewPageTest extends MultilingualReviewPageTestBase {
       'i18n_translation',
       'i18n_user',
       'i18n_variable',
-      'picture',
       'profile',
       'variable',
       'variable_admin',

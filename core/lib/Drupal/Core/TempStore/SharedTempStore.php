@@ -2,7 +2,6 @@
 
 namespace Drupal\Core\TempStore;
 
-use Drupal\Core\DependencyInjection\DependencySerializationTrait;
 use Drupal\Core\KeyValueStore\KeyValueStoreExpirableInterface;
 use Drupal\Core\Lock\LockBackendInterface;
 use Symfony\Component\HttpFoundation\RequestStack;
@@ -37,8 +36,6 @@ use Symfony\Component\HttpFoundation\RequestStack;
  * use \Drupal\Core\TempStore\PrivateTempStore.
  */
 class SharedTempStore {
-
-  use DependencySerializationTrait;
 
   /**
    * The key/value storage object used for this data.
@@ -218,7 +215,7 @@ class SharedTempStore {
    * @param string $key
    *   The key of the data to store.
    *
-   * @return \Drupal\Core\TempStore\Lock|null
+   * @return mixed
    *   An object with the owner and updated time if the key has a value, or
    *   NULL otherwise.
    */
@@ -228,7 +225,7 @@ class SharedTempStore {
     if ($object) {
       // Don't keep the data itself in memory.
       unset($object->data);
-      return new Lock($object->owner, $object->updated);
+      return $object;
     }
   }
 

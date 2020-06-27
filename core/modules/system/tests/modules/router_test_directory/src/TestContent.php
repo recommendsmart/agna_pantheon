@@ -49,13 +49,13 @@ class TestContent extends ControllerBase {
    */
   public function test11() {
     $account = $this->currentUser();
-    return ['#markup' => $account->getAccountName()];
+    return ['#markup' => $account->getUsername()];
   }
 
   public function testAccount(UserInterface $user) {
-    $current_user_name = $this->currentUser()->getAccountName();
+    $current_user_name = $this->currentUser()->getUsername();
     $this->currentUser()->setAccount($user);
-    return ['#markup' => $current_user_name . ':' . $user->getAccountName()];
+    return ['#markup' => $current_user_name . ':' . $user->getUsername()];
   }
 
   /**

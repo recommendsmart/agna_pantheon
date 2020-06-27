@@ -41,7 +41,7 @@ abstract class OffCanvasTestBase extends WebDriverTestBase {
    * @todo Move this function to https://www.drupal.org/node/2821724.
    */
   protected function assertAllContextualLinksLoaded() {
-    $this->assertSession()->assertNoElementAfterWait('css', '[data-contextual-id]:empty');
+    $this->waitForNoElement('[data-contextual-id]:empty');
   }
 
   /**
@@ -81,7 +81,7 @@ abstract class OffCanvasTestBase extends WebDriverTestBase {
    * Waits for off-canvas dialog to close.
    */
   protected function waitForOffCanvasToClose() {
-    $this->assertSession()->assertNoElementAfterWait('css', '#drupal-off-canvas');
+    $this->waitForNoElement('#drupal-off-canvas');
   }
 
   /**
@@ -103,12 +103,25 @@ abstract class OffCanvasTestBase extends WebDriverTestBase {
    * @param int $timeout
    *   (optional) Timeout in milliseconds, defaults to 10000.
    *
-   * @deprecated in Drupal 8.8.x, will be removed before Drupal 9.0.0. Use
-   *   Drupal\FunctionalJavascriptTests\JSWebAssert::assertNoElementAfterWait()
+   * @todo Remove in https://www.drupal.org/node/2892440.
    */
   protected function waitForNoElement($selector, $timeout = 10000) {
-    @trigger_error('::waitForNoElement is deprecated in Drupal 8.8.0 and will be removed before Drupal 9.0.0. Use \Drupal\FunctionalJavascriptTests\JSWebAssert::assertNoElementAfterWait() instead.', E_USER_DEPRECATED);
-    $this->assertSession()->assertNoElementAfterWait('css', $selector, $timeout);
+
+    $start = microtime(TRUE);
+    $end = $start + ($timeout / 1000);
+    $page = $this->getSession()->getPage();
+
+    do {
+      $result = $page->find('css', $selector);
+
+      if (empty($result)) {
+        return;
+      }
+
+      usleep(100000);
+    } while (microtime(TRUE) < $end);
+
+    $this->assertEmpty($result, 'Element was not on the page after wait.');
   }
 
   /**

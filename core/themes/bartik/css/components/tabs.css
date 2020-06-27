@@ -1,28 +1,28 @@
 /* --------------- System Tabs  --------------- */
 
 div.tabs {
-  margin-bottom: 20px;
   font-family: "Helvetica Neue", Helvetica, Arial, sans-serif;
+  margin-bottom: 20px;
 }
 .tabs ul.primary {
   font-family: "Helvetica Neue", Helvetica, Arial, sans-serif;
 }
 .tabs ul.primary li a {
-  display: block;
-  height: 1.8em;
-  padding: 0 10px 3px;
   color: #000;
-  border-width: 1px;
-  border-style: solid solid none solid;
-  border-color: #bbb;
   background-color: #ededed;
-  text-shadow: 0 1px 0 #fff;
-  font-size: 0.929em;
+  border-color: #bbb;
+  border-style: solid solid none solid;
+  border-width: 1px;
+  height: 1.8em;
   line-height: 1.9;
+  display: block;
+  font-size: 0.929em;
+  padding: 0 10px 3px;
+  text-shadow: 0 1px 0 #fff;
 }
 .tabs ul.primary li.is-active a {
-  border: 1px solid #bbb;
   background-color: #fff;
+  border: 1px solid #bbb;
 }
 
 @media screen and (max-width: 37.5em) { /* 600px */
@@ -43,25 +43,25 @@ div.tabs {
 
 @media screen and (min-width: 37.5em) { /* 600px */
   .tabs ul.primary {
-    overflow: hidden;
-    height: auto;
-    margin: 0;
-    padding: 0 3px;
-    white-space: nowrap;
-    border: none;
     border-collapse: collapse;
-    background: transparent url(../../images/tabs-border.png) repeat-x left bottom;
+    height: auto;
     line-height: normal;
+    padding: 0 3px;
+    margin: 0;
+    overflow: hidden;
+    border: none;
+    background: transparent url(../../images/tabs-border.png) repeat-x left bottom;
+    white-space: nowrap;
   }
   .tabs ul.primary li {
     display: block;
     float: left; /* LTR */
-    margin: 0 5px 0 0; /* LTR */
     vertical-align: bottom;
+    margin: 0 5px 0 0; /* LTR */
   }
   [dir="rtl"] .tabs ul.primary li {
-    float: right;
     margin: 0 0 0 5px;
+    float: right;
   }
   .tabs ul.primary li a {
     float: left; /* not LTR */
@@ -73,22 +73,22 @@ div.tabs {
   }
 }
 .tabs ul.secondary {
-  overflow: hidden;
+  border-bottom: none;
   margin: 5px;
   padding: 0.5em 0;
-  border-bottom: none;
+  overflow: hidden;
 }
 .tabs ul.secondary li {
+  border-right: 1px solid #ccc; /* LTR */
   display: block;
   float: left; /* LTR */
   margin: 0;
   padding: 0 1em;
-  border-right: 1px solid #ccc; /* LTR */
 }
 [dir="rtl"] .tabs ul.secondary li {
-  float: right;
-  border-right: none;
   border-left: 1px solid #ccc;
+  border-right: none;
+  float: right;
 }
 .tabs ul.secondary li:last-child {
   border-right: none; /* LTR */
@@ -108,7 +108,7 @@ div.tabs {
   text-decoration: none;
 }
 .tabs ul.secondary li a.is-active {
+  background: #f2f2f2;
   border-bottom: none;
   border-radius: 5px;
-  background: #f2f2f2;
 }

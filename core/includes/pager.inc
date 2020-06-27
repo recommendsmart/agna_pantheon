@@ -5,9 +5,7 @@
  * Functions to aid in presenting database results as a set of pages.
  */
 
-use Drupal\Core\Url;
 use Drupal\Component\Utility\UrlHelper;
-use Drupal\Component\Utility\Html;
 
 /**
  * Returns the current page being requested for display within a pager.
@@ -222,7 +220,7 @@ function template_preprocess_pager(&$variables) {
     $options = [
       'query' => pager_query_add_page($parameters, $element, 0),
     ];
-    $items['first']['href'] = Url::fromRoute($route_name, $route_parameters, $options)->toString();
+    $items['first']['href'] = \Drupal::url($route_name, $route_parameters, $options);
     if (isset($tags[0])) {
       $items['first']['text'] = $tags[0];
     }
@@ -231,7 +229,7 @@ function template_preprocess_pager(&$variables) {
     $options = [
       'query' => pager_query_add_page($parameters, $element, $pager_page_array[$element] - 1),
     ];
-    $items['previous']['href'] = Url::fromRoute($route_name, $route_parameters, $options)->toString();
+    $items['previous']['href'] = \Drupal::url($route_name, $route_parameters, $options);
     if (isset($tags[1])) {
       $items['previous']['text'] = $tags[1];
     }
@@ -247,7 +245,7 @@ function template_preprocess_pager(&$variables) {
       $options = [
         'query' => pager_query_add_page($parameters, $element, $i - 1),
       ];
-      $items['pages'][$i]['href'] = Url::fromRoute($route_name, $route_parameters, $options)->toString();
+      $items['pages'][$i]['href'] = \Drupal::url($route_name, $route_parameters, $options);
       if ($i == $pager_current) {
         $variables['current'] = $i;
       }
@@ -264,7 +262,7 @@ function template_preprocess_pager(&$variables) {
     $options = [
       'query' => pager_query_add_page($parameters, $element, $pager_page_array[$element] + 1),
     ];
-    $items['next']['href'] = Url::fromRoute($route_name, $route_parameters, $options)->toString();
+    $items['next']['href'] = \Drupal::url($route_name, $route_parameters, $options);
     if (isset($tags[3])) {
       $items['next']['text'] = $tags[3];
     }
@@ -273,14 +271,13 @@ function template_preprocess_pager(&$variables) {
     $options = [
       'query' => pager_query_add_page($parameters, $element, $pager_max - 1),
     ];
-    $items['last']['href'] = Url::fromRoute($route_name, $route_parameters, $options)->toString();
+    $items['last']['href'] = \Drupal::url($route_name, $route_parameters, $options);
     if (isset($tags[4])) {
       $items['last']['text'] = $tags[4];
     }
   }
 
   $variables['items'] = $items;
-  $variables['heading_id'] = Html::getUniqueId('pagination-heading');
 
   // The rendered link needs to play well with any other query parameter used
   // on the page, like exposed filters, so for the cacheability all query

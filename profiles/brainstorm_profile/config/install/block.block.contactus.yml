@@ -1,0 +1,30 @@
+langcode: en
+status: true
+dependencies:
+  content:
+    - 'block_content:basic:c5bc1b7c-a7d5-4358-92bd-c552d0cb0a48'
+  module:
+    - block_content
+    - system
+  theme:
+    - brainstorm_theme
+id: contactus
+theme: brainstorm_theme
+region: content
+weight: -4
+provider: null
+plugin: 'block_content:c5bc1b7c-a7d5-4358-92bd-c552d0cb0a48'
+settings:
+  id: 'block_content:c5bc1b7c-a7d5-4358-92bd-c552d0cb0a48'
+  label: 'Contact us'
+  provider: block_content
+  label_display: visible
+  status: true
+  info: ''
+  view_mode: full
+visibility:
+  request_path:
+    id: request_path
+    pages: /contact
+    negate: false
+    context_mapping: {  }

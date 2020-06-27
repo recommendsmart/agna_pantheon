@@ -11,7 +11,7 @@ class SerializationTestNormalizer implements NormalizerInterface {
    *
    * @var string
    */
-  protected static $format = 'serialization_test';
+  static protected $format = 'serialization_test';
 
   /**
    * Normalizes an object into a set of arrays/scalars.

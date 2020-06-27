@@ -2,7 +2,6 @@
 
 namespace Drupal\Tests\image\Functional;
 
-use Drupal\Core\Url;
 use Drupal\Component\Render\FormattableMarkup;
 use Drupal\Core\Entity\Entity\EntityViewDisplay;
 use Drupal\image\Entity\ImageStyle;
@@ -34,7 +33,7 @@ class ImageAdminStylesTest extends ImageFieldTestBase {
     if (!isset($file_path)) {
       $files = $this->drupalGetTestFiles('image');
       $file = reset($files);
-      $file_path = \Drupal::service('file_system')->copy($file->uri, 'public://');
+      $file_path = file_unmanaged_copy($file->uri);
     }
 
     return $style->buildUrl($file_path) ? $file_path : FALSE;
@@ -142,7 +141,7 @@ class ImageAdminStylesTest extends ImageFieldTestBase {
     $this->assertEqual('bar', $style->getThirdPartySetting('image_module_test', 'foo'), 'Third party settings were added to the image style.');
 
     // Ensure that the image style URI matches our expected path.
-    $style_uri_path = $style->toUrl()->toString();
+    $style_uri_path = $style->url();
     $this->assertTrue(strpos($style_uri_path, $style_path) !== FALSE, 'The image style URI is correct.');
 
     // Confirm that all effects on the image style have settings that match
@@ -292,7 +291,7 @@ class ImageAdminStylesTest extends ImageFieldTestBase {
     // Confirm that the empty text is correct on the image styles page.
     $this->drupalGet($admin_path);
     $this->assertRaw(t('There are currently no styles. <a href=":url">Add a new one</a>.', [
-      ':url' => Url::fromRoute('image.style_add')->toString(),
+      ':url' => \Drupal::url('image.style_add'),
     ]));
 
   }

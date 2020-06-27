@@ -2,8 +2,6 @@
 
 namespace Drupal\serialization\Normalizer;
 
-use Drupal\Core\TypedData\ListInterface;
-
 /**
  * Converts list objects to arrays.
  *
@@ -16,9 +14,11 @@ use Drupal\Core\TypedData\ListInterface;
 class ListNormalizer extends NormalizerBase {
 
   /**
-   * {@inheritdoc}
+   * The interface or class that this Normalizer supports.
+   *
+   * @var string
    */
-  protected $supportedInterfaceOrClass = ListInterface::class;
+  protected $supportedInterfaceOrClass = 'Drupal\Core\TypedData\ListInterface';
 
   /**
    * {@inheritdoc}

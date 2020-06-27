@@ -1,0 +1,30 @@
+langcode: en
+status: true
+dependencies:
+  content:
+    - 'block_content:basic:33a160a5-811d-463d-985d-3e043da948c7'
+  module:
+    - block_content
+    - system
+  theme:
+    - brainstorm_theme
+id: companyname
+theme: brainstorm_theme
+region: featured_bottom_first
+weight: -11
+provider: null
+plugin: 'block_content:33a160a5-811d-463d-985d-3e043da948c7'
+settings:
+  id: 'block_content:33a160a5-811d-463d-985d-3e043da948c7'
+  label: 'Company name'
+  provider: block_content
+  label_display: '0'
+  status: true
+  info: ''
+  view_mode: full
+visibility:
+  request_path:
+    id: request_path
+    pages: /about-us
+    negate: false
+    context_mapping: {  }

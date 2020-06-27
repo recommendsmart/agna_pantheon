@@ -47,11 +47,9 @@ class Local extends FileTransfer implements ChmodInterface {
       // Programmer error assertion, not something we expect users to see.
       throw new FileTransferException('removeDirectoryJailed() called with a path (%directory) that is not a directory.', NULL, ['%directory' => $directory]);
     }
-    /** @var \Drupal\Core\File\FileSystemInterface $file_system */
-    $file_system = \Drupal::service('file_system');
     foreach (new \RecursiveIteratorIterator(new \RecursiveDirectoryIterator($directory, \RecursiveDirectoryIterator::SKIP_DOTS), \RecursiveIteratorIterator::CHILD_FIRST) as $filename => $file) {
       if ($file->isDir()) {
-        if (@!$file_system->rmdir($filename)) {
+        if (@!drupal_rmdir($filename)) {
           throw new FileTransferException('Cannot remove directory %directory.', NULL, ['%directory' => $filename]);
         }
       }
@@ -61,7 +59,7 @@ class Local extends FileTransfer implements ChmodInterface {
         }
       }
     }
-    if (@!$file_system->rmdir($directory)) {
+    if (@!drupal_rmdir($directory)) {
       throw new FileTransferException('Cannot remove directory %directory.', NULL, ['%directory' => $directory]);
     }
   }

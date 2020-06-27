@@ -41,15 +41,13 @@ class Some extends PagerPluginBase {
     $pager_text = $this->displayHandler->getPagerText();
     $form['items_per_page'] = [
       '#title' => $pager_text['items per page title'],
-      '#type' => 'number',
-      '#min' => 0,
+      '#type' => 'textfield',
       '#description' => $pager_text['items per page description'],
       '#default_value' => $this->options['items_per_page'],
     ];
 
     $form['offset'] = [
-      '#type' => 'number',
-      '#min' => 0,
+      '#type' => 'textfield',
       '#title' => $this->t('Offset (number of items to skip)'),
       '#description' => $this->t('For example, set this to 3 and the first 3 items will not be displayed.'),
       '#default_value' => $this->options['offset'],

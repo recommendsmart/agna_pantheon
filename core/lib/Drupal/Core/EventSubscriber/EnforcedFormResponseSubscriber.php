@@ -6,6 +6,7 @@ use Drupal\Core\Form\EnforcedResponse;
 use Symfony\Component\EventDispatcher\EventSubscriberInterface;
 use Symfony\Component\HttpKernel\Event\FilterResponseEvent;
 use Symfony\Component\HttpKernel\Event\GetResponseForExceptionEvent;
+use Symfony\Component\HttpKernel\HttpKernelInterface;
 use Symfony\Component\HttpKernel\KernelEvents;
 
 /**
@@ -28,7 +29,7 @@ class EnforcedFormResponseSubscriber implements EventSubscriberInterface {
    */
   public function onKernelResponse(FilterResponseEvent $event) {
     $response = $event->getResponse();
-    if ($response instanceof EnforcedResponse && $event->isMasterRequest()) {
+    if ($response instanceof EnforcedResponse && $event->getRequestType() === HttpKernelInterface::MASTER_REQUEST) {
       $event->setResponse($response->getResponse());
     }
   }

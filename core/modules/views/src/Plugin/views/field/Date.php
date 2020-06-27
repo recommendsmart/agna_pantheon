@@ -171,12 +171,12 @@ class Date extends FieldPluginBase {
 
         case 'custom':
           if ($custom_format == 'r') {
-            return $this->dateFormatter->format($value, $format, $custom_format, $timezone, 'en');
+            return format_date($value, $format, $custom_format, $timezone, 'en');
           }
-          return $this->dateFormatter->format($value, $format, $custom_format, $timezone);
+          return format_date($value, $format, $custom_format, $timezone);
 
         default:
-          return $this->dateFormatter->format($value, $format, '', $timezone);
+          return format_date($value, $format, '', $timezone);
       }
     }
   }

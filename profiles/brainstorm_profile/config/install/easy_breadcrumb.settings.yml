@@ -1,0 +1,10 @@
+include_home_segment: 1
+home_segment_title: Home
+include_title_segment: 1
+_core:
+  default_config_hash: 2QHDzZ5MXwIpnHFjGDKpIt7m2EajgfUHCdaARcxRg2M
+include_invalid_paths: 0
+excluded_paths: ''
+segments_separator: null
+title_segment_as_link: 1
+title_from_page_when_available: 1

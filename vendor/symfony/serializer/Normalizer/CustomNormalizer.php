@@ -22,12 +22,12 @@ class CustomNormalizer implements NormalizerInterface, DenormalizerInterface, Se
     use ObjectToPopulateTrait;
     use SerializerAwareTrait;
 
-    private $cache = [];
+    private $cache = array();
 
     /**
      * {@inheritdoc}
      */
-    public function normalize($object, $format = null, array $context = [])
+    public function normalize($object, $format = null, array $context = array())
     {
         return $object->normalize($this->serializer, $format, $context);
     }
@@ -35,9 +35,9 @@ class CustomNormalizer implements NormalizerInterface, DenormalizerInterface, Se
     /**
      * {@inheritdoc}
      */
-    public function denormalize($data, $type, $format = null, array $context = [])
+    public function denormalize($data, $class, $format = null, array $context = array())
     {
-        $object = $this->extractObjectToPopulate($type, $context) ?: new $type();
+        $object = $this->extractObjectToPopulate($class, $context) ?: new $class();
         $object->denormalize($this->serializer, $data, $format, $context);
 
         return $object;

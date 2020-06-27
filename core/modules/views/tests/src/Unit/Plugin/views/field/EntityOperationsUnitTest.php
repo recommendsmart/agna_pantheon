@@ -2,8 +2,6 @@
 
 namespace Drupal\Tests\views\Unit\Plugin\views\field;
 
-use Drupal\Core\Entity\EntityRepositoryInterface;
-use Drupal\Core\Entity\EntityTypeManagerInterface;
 use Drupal\Tests\UnitTestCase;
 use Drupal\views\Plugin\views\field\EntityOperations;
 use Drupal\views\ResultRow;
@@ -15,18 +13,11 @@ use Drupal\views\ResultRow;
 class EntityOperationsUnitTest extends UnitTestCase {
 
   /**
-   * The entity type manager.
+   * The entity manager.
    *
-   * @var \Drupal\Core\Entity\EntityTypeManagerInterface|\PHPUnit_Framework_MockObject_MockObject
+   * @var \Drupal\Core\Entity\EntityManagerInterface|\PHPUnit_Framework_MockObject_MockObject
    */
-  protected $entityTypeManager;
-
-  /**
-   * The entity repository.
-   *
-   * @var \Drupal\Core\Entity\EntityRepositoryInterface|\PHPUnit_Framework_MockObject_MockObject
-   */
-  protected $entityRepository;
+  protected $entityManager;
 
   /**
    * The language manager.
@@ -48,8 +39,7 @@ class EntityOperationsUnitTest extends UnitTestCase {
    * @covers ::__construct
    */
   protected function setUp() {
-    $this->entityTypeManager = $this->createMock(EntityTypeManagerInterface::class);
-    $this->entityRepository = $this->createMock(EntityRepositoryInterface::class);
+    $this->entityManager = $this->getMock('\Drupal\Core\Entity\EntityManagerInterface');
     $this->languageManager = $this->getMock('\Drupal\Core\Language\LanguageManagerInterface');
 
     $configuration = [];
@@ -57,7 +47,7 @@ class EntityOperationsUnitTest extends UnitTestCase {
     $plugin_definition = [
       'title' => $this->randomMachineName(),
     ];
-    $this->plugin = new EntityOperations($configuration, $plugin_id, $plugin_definition, $this->entityTypeManager, $this->languageManager, $this->entityRepository);
+    $this->plugin = new EntityOperations($configuration, $plugin_id, $plugin_definition, $this->entityManager, $this->languageManager);
 
     $redirect_service = $this->getMock('Drupal\Core\Routing\RedirectDestinationInterface');
     $redirect_service->expects($this->any())
@@ -114,7 +104,7 @@ class EntityOperationsUnitTest extends UnitTestCase {
       ->with($entity)
       ->will($this->returnValue($operations));
 
-    $this->entityTypeManager->expects($this->once())
+    $this->entityManager->expects($this->once())
       ->method('getListBuilder')
       ->with($entity_type_id)
       ->will($this->returnValue($list_builder));
@@ -156,7 +146,7 @@ class EntityOperationsUnitTest extends UnitTestCase {
       ->with($entity)
       ->will($this->returnValue($operations));
 
-    $this->entityTypeManager->expects($this->once())
+    $this->entityManager->expects($this->once())
       ->method('getListBuilder')
       ->with($entity_type_id)
       ->will($this->returnValue($list_builder));

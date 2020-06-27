@@ -48,5 +48,5 @@ ckeditor.plugin.stylescombo:
   label: 'Styles dropdown'
   mapping:
     styles:
-      type: label
+      type: string
       label: 'List of styles'

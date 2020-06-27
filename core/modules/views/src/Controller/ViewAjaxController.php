@@ -2,7 +2,6 @@
 
 namespace Drupal\views\Controller;
 
-use Drupal\Component\Utility\Html;
 use Drupal\Component\Utility\UrlHelper;
 use Drupal\Core\Ajax\ReplaceCommand;
 use Drupal\Core\DependencyInjection\ContainerInjectionInterface;
@@ -114,7 +113,7 @@ class ViewAjaxController implements ContainerInjectionInterface {
     $name = $request->request->get('view_name');
     $display_id = $request->request->get('view_display_id');
     if (isset($name) && isset($display_id)) {
-      $args = Html::decodeEntities($request->request->get('view_args'));
+      $args = $request->request->get('view_args');
       $args = isset($args) && $args !== '' ? explode('/', $args) : [];
 
       // Arguments can be empty, make sure they are passed on as NULL so that

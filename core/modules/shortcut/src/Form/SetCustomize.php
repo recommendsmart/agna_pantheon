@@ -67,11 +67,11 @@ class SetCustomize extends EntityForm {
 
       $links['edit'] = [
         'title' => t('Edit'),
-        'url' => $shortcut->toUrl(),
+        'url' => $shortcut->urlInfo(),
       ];
       $links['delete'] = [
         'title' => t('Delete'),
-        'url' => $shortcut->toUrl('delete-form'),
+        'url' => $shortcut->urlInfo('delete-form'),
       ];
       $form['shortcuts']['links'][$id]['operations'] = [
         '#type' => 'operations',

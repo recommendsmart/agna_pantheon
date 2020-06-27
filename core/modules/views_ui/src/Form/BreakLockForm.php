@@ -2,9 +2,8 @@
 
 namespace Drupal\views_ui\Form;
 
-use Drupal\Core\DependencyInjection\DeprecatedServicePropertyTrait;
 use Drupal\Core\Entity\EntityConfirmFormBase;
-use Drupal\Core\Entity\EntityTypeManagerInterface;
+use Drupal\Core\Entity\EntityManagerInterface;
 use Drupal\Core\Form\FormStateInterface;
 use Drupal\Core\TempStore\SharedTempStoreFactory;
 use Symfony\Component\DependencyInjection\ContainerInterface;
@@ -15,21 +14,13 @@ use Symfony\Component\DependencyInjection\ContainerInterface;
  * @internal
  */
 class BreakLockForm extends EntityConfirmFormBase {
-  use DeprecatedServicePropertyTrait;
 
   /**
-   * {@inheritdoc}
-   */
-  protected $deprecatedProperties = [
-    'entityManager' => 'entity.manager',
-  ];
-
-  /**
-   * Stores the entity type manager.
+   * Stores the Entity manager.
    *
-   * @var \Drupal\Core\Entity\EntityTypeManagerInterface
+   * @var \Drupal\Core\Entity\EntityManagerInterface
    */
-  protected $entityTypeManager;
+  protected $entityManager;
 
   /**
    * Stores the shared tempstore.
@@ -41,13 +32,13 @@ class BreakLockForm extends EntityConfirmFormBase {
   /**
    * Constructs a \Drupal\views_ui\Form\BreakLockForm object.
    *
-   * @param \Drupal\Core\Entity\EntityTypeManagerInterface $entity_type_manager
+   * @param \Drupal\Core\Entity\EntityManagerInterface $entity_manager
    *   The Entity manager.
    * @param \Drupal\Core\TempStore\SharedTempStoreFactory $temp_store_factory
    *   The factory for the temp store object.
    */
-  public function __construct(EntityTypeManagerInterface $entity_type_manager, SharedTempStoreFactory $temp_store_factory) {
-    $this->entityTypeManager = $entity_type_manager;
+  public function __construct(EntityManagerInterface $entity_manager, SharedTempStoreFactory $temp_store_factory) {
+    $this->entityManager = $entity_manager;
     $this->tempStore = $temp_store_factory->get('views');
   }
 
@@ -56,7 +47,7 @@ class BreakLockForm extends EntityConfirmFormBase {
    */
   public static function create(ContainerInterface $container) {
     return new static(
-      $container->get('entity_type.manager'),
+      $container->get('entity.manager'),
       $container->get('tempstore.shared')
     );
   }
@@ -80,7 +71,7 @@ class BreakLockForm extends EntityConfirmFormBase {
    */
   public function getDescription() {
     $locked = $this->tempStore->getMetadata($this->entity->id());
-    $account = $this->entityTypeManager->getStorage('user')->load($locked->getOwnerId());
+    $account = $this->entityManager->getStorage('user')->load($locked->owner);
     $username = [
       '#theme' => 'username',
       '#account' => $account,
@@ -92,7 +83,7 @@ class BreakLockForm extends EntityConfirmFormBase {
    * {@inheritdoc}
    */
   public function getCancelUrl() {
-    return $this->entity->toUrl('edit-form');
+    return $this->entity->urlInfo('edit-form');
   }
 
   /**
@@ -118,7 +109,7 @@ class BreakLockForm extends EntityConfirmFormBase {
    */
   public function submitForm(array &$form, FormStateInterface $form_state) {
     $this->tempStore->delete($this->entity->id());
-    $form_state->setRedirectUrl($this->entity->toUrl('edit-form'));
+    $form_state->setRedirectUrl($this->entity->urlInfo('edit-form'));
     $this->messenger()->addStatus($this->t('The lock has been broken and you may now edit this view.'));
   }
 

@@ -2,6 +2,7 @@
 
 namespace Drupal\KernelTests\Core\Database;
 
+use Drupal\Core\Database\Database;
 use Drupal\Core\Database\TransactionOutOfOrderException;
 use Drupal\Core\Database\TransactionNoActiveException;
 
@@ -51,30 +52,31 @@ class TransactionTest extends DatabaseTestBase {
    *   Whether to execute a DDL statement during the inner transaction.
    */
   protected function transactionOuterLayer($suffix, $rollback = FALSE, $ddl_statement = FALSE) {
-    $depth = $this->connection->transactionDepth();
-    $txn = $this->connection->startTransaction();
+    $connection = Database::getConnection();
+    $depth = $connection->transactionDepth();
+    $txn = db_transaction();
 
     // Insert a single row into the testing table.
-    $this->connection->insert('test')
+    db_insert('test')
       ->fields([
         'name' => 'David' . $suffix,
         'age' => '24',
       ])
       ->execute();
 
-    $this->assertTrue($this->connection->inTransaction(), 'In transaction before calling nested transaction.');
+    $this->assertTrue($connection->inTransaction(), 'In transaction before calling nested transaction.');
 
     // We're already in a transaction, but we call ->transactionInnerLayer
     // to nest another transaction inside the current one.
     $this->transactionInnerLayer($suffix, $rollback, $ddl_statement);
 
-    $this->assertTrue($this->connection->inTransaction(), 'In transaction after calling nested transaction.');
+    $this->assertTrue($connection->inTransaction(), 'In transaction after calling nested transaction.');
 
     if ($rollback) {
       // Roll back the transaction, if requested.
       // This rollback should propagate to the last savepoint.
       $txn->rollBack();
-      $this->assertTrue(($this->connection->transactionDepth() == $depth), 'Transaction has rolled back to the last savepoint after calling rollBack().');
+      $this->assertTrue(($connection->transactionDepth() == $depth), 'Transaction has rolled back to the last savepoint after calling rollBack().');
     }
   }
 
@@ -92,25 +94,27 @@ class TransactionTest extends DatabaseTestBase {
    *   Whether to execute a DDL statement during the transaction.
    */
   protected function transactionInnerLayer($suffix, $rollback = FALSE, $ddl_statement = FALSE) {
-    $depth = $this->connection->transactionDepth();
+    $connection = Database::getConnection();
+
+    $depth = $connection->transactionDepth();
     // Start a transaction. If we're being called from ->transactionOuterLayer,
     // then we're already in a transaction. Normally, that would make starting
     // a transaction here dangerous, but the database API handles this problem
     // for us by tracking the nesting and avoiding the danger.
-    $txn = $this->connection->startTransaction();
+    $txn = db_transaction();
 
-    $depth2 = $this->connection->transactionDepth();
+    $depth2 = $connection->transactionDepth();
     $this->assertTrue($depth < $depth2, 'Transaction depth is has increased with new transaction.');
 
     // Insert a single row into the testing table.
-    $this->connection->insert('test')
+    db_insert('test')
       ->fields([
         'name' => 'Daniel' . $suffix,
         'age' => '19',
       ])
       ->execute();
 
-    $this->assertTrue($this->connection->inTransaction(), 'In transaction inside nested transaction.');
+    $this->assertTrue($connection->inTransaction(), 'In transaction inside nested transaction.');
 
     if ($ddl_statement) {
       $table = [
@@ -123,16 +127,16 @@ class TransactionTest extends DatabaseTestBase {
         ],
         'primary key' => ['id'],
       ];
-      $this->connection->schema()->createTable('database_test_1', $table);
+      db_create_table('database_test_1', $table);
 
-      $this->assertTrue($this->connection->inTransaction(), 'In transaction inside nested transaction.');
+      $this->assertTrue($connection->inTransaction(), 'In transaction inside nested transaction.');
     }
 
     if ($rollback) {
       // Roll back the transaction, if requested.
       // This rollback should propagate to the last savepoint.
       $txn->rollBack();
-      $this->assertTrue(($this->connection->transactionDepth() == $depth), 'Transaction has rolled back to the last savepoint after calling rollBack().');
+      $this->assertTrue(($connection->transactionDepth() == $depth), 'Transaction has rolled back to the last savepoint after calling rollBack().');
     }
   }
 
@@ -144,10 +148,9 @@ class TransactionTest extends DatabaseTestBase {
    */
   public function testTransactionRollBackSupported() {
     // This test won't work right if transactions are not supported.
-    if (!$this->connection->supportsTransactions()) {
-      $this->markTestSkipped("The '{$this->connection->driver()}' database driver does not support transactions.");
+    if (!Database::getConnection()->supportsTransactions()) {
+      return;
     }
-
     try {
       // Create two nested transactions. Roll back from the inner one.
       $this->transactionOuterLayer('B', TRUE);
@@ -171,10 +174,9 @@ class TransactionTest extends DatabaseTestBase {
    */
   public function testTransactionRollBackNotSupported() {
     // This test won't work right if transactions are supported.
-    if ($this->connection->supportsTransactions()) {
-      $this->markTestSkipped("The '{$this->connection->driver()}' database driver supports transactions.");
+    if (Database::getConnection()->supportsTransactions()) {
+      return;
     }
-
     try {
       // Create two nested transactions. Attempt to roll back from the inner one.
       $this->transactionOuterLayer('B', TRUE);
@@ -218,7 +220,7 @@ class TransactionTest extends DatabaseTestBase {
    */
   public function testTransactionWithDdlStatement() {
     // First, test that a commit works normally, even with DDL statements.
-    $transaction = $this->connection->startTransaction();
+    $transaction = db_transaction();
     $this->insertRow('row');
     $this->executeDDLStatement();
     unset($transaction);
@@ -226,7 +228,7 @@ class TransactionTest extends DatabaseTestBase {
 
     // Even in different order.
     $this->cleanUp();
-    $transaction = $this->connection->startTransaction();
+    $transaction = db_transaction();
     $this->executeDDLStatement();
     $this->insertRow('row');
     unset($transaction);
@@ -234,11 +236,11 @@ class TransactionTest extends DatabaseTestBase {
 
     // Even with stacking.
     $this->cleanUp();
-    $transaction = $this->connection->startTransaction();
-    $transaction2 = $this->connection->startTransaction();
+    $transaction = db_transaction();
+    $transaction2 = db_transaction();
     $this->executeDDLStatement();
     unset($transaction2);
-    $transaction3 = $this->connection->startTransaction();
+    $transaction3 = db_transaction();
     $this->insertRow('row');
     unset($transaction3);
     unset($transaction);
@@ -246,11 +248,11 @@ class TransactionTest extends DatabaseTestBase {
 
     // A transaction after a DDL statement should still work the same.
     $this->cleanUp();
-    $transaction = $this->connection->startTransaction();
-    $transaction2 = $this->connection->startTransaction();
+    $transaction = db_transaction();
+    $transaction2 = db_transaction();
     $this->executeDDLStatement();
     unset($transaction2);
-    $transaction3 = $this->connection->startTransaction();
+    $transaction3 = db_transaction();
     $this->insertRow('row');
     $transaction3->rollBack();
     unset($transaction3);
@@ -258,11 +260,11 @@ class TransactionTest extends DatabaseTestBase {
     $this->assertRowAbsent('row');
 
     // The behavior of a rollback depends on the type of database server.
-    if ($this->connection->supportsTransactionalDDL()) {
+    if (Database::getConnection()->supportsTransactionalDDL()) {
       // For database servers that support transactional DDL, a rollback
       // of a transaction including DDL statements should be possible.
       $this->cleanUp();
-      $transaction = $this->connection->startTransaction();
+      $transaction = db_transaction();
       $this->insertRow('row');
       $this->executeDDLStatement();
       $transaction->rollBack();
@@ -271,11 +273,11 @@ class TransactionTest extends DatabaseTestBase {
 
       // Including with stacking.
       $this->cleanUp();
-      $transaction = $this->connection->startTransaction();
-      $transaction2 = $this->connection->startTransaction();
+      $transaction = db_transaction();
+      $transaction2 = db_transaction();
       $this->executeDDLStatement();
       unset($transaction2);
-      $transaction3 = $this->connection->startTransaction();
+      $transaction3 = db_transaction();
       $this->insertRow('row');
       unset($transaction3);
       $transaction->rollBack();
@@ -286,7 +288,7 @@ class TransactionTest extends DatabaseTestBase {
       // For database servers that do not support transactional DDL,
       // the DDL statement should commit the transaction stack.
       $this->cleanUp();
-      $transaction = $this->connection->startTransaction();
+      $transaction = db_transaction();
       $this->insertRow('row');
       $this->executeDDLStatement();
       // Rollback the outer transaction.
@@ -308,7 +310,7 @@ class TransactionTest extends DatabaseTestBase {
    * Inserts a single row into the testing table.
    */
   protected function insertRow($name) {
-    $this->connection->insert('test')
+    db_insert('test')
       ->fields([
         'name' => $name,
       ])
@@ -330,14 +332,14 @@ class TransactionTest extends DatabaseTestBase {
       ],
       'primary key' => ['id'],
     ];
-    $this->connection->schema()->createTable('database_test_' . ++$count, $table);
+    db_create_table('database_test_' . ++$count, $table);
   }
 
   /**
    * Starts over for a new test.
    */
   protected function cleanUp() {
-    $this->connection->truncate('test')
+    db_truncate('test')
       ->execute();
   }
 
@@ -378,72 +380,74 @@ class TransactionTest extends DatabaseTestBase {
    */
   public function testTransactionStacking() {
     // This test won't work right if transactions are not supported.
-    if (!$this->connection->supportsTransactions()) {
-      $this->markTestSkipped("The '{$this->connection->driver()}' database driver does not support transactions.");
+    if (!Database::getConnection()->supportsTransactions()) {
+      return;
     }
 
+    $database = Database::getConnection();
+
     // Standard case: pop the inner transaction before the outer transaction.
-    $transaction = $this->connection->startTransaction();
+    $transaction = db_transaction();
     $this->insertRow('outer');
-    $transaction2 = $this->connection->startTransaction();
+    $transaction2 = db_transaction();
     $this->insertRow('inner');
     // Pop the inner transaction.
     unset($transaction2);
-    $this->assertTrue($this->connection->inTransaction(), 'Still in a transaction after popping the inner transaction');
+    $this->assertTrue($database->inTransaction(), 'Still in a transaction after popping the inner transaction');
     // Pop the outer transaction.
     unset($transaction);
-    $this->assertFalse($this->connection->inTransaction(), 'Transaction closed after popping the outer transaction');
+    $this->assertFalse($database->inTransaction(), 'Transaction closed after popping the outer transaction');
     $this->assertRowPresent('outer');
     $this->assertRowPresent('inner');
 
     // Pop the transaction in a different order they have been pushed.
     $this->cleanUp();
-    $transaction = $this->connection->startTransaction();
+    $transaction = db_transaction();
     $this->insertRow('outer');
-    $transaction2 = $this->connection->startTransaction();
+    $transaction2 = db_transaction();
     $this->insertRow('inner');
     // Pop the outer transaction, nothing should happen.
     unset($transaction);
     $this->insertRow('inner-after-outer-commit');
-    $this->assertTrue($this->connection->inTransaction(), 'Still in a transaction after popping the outer transaction');
+    $this->assertTrue($database->inTransaction(), 'Still in a transaction after popping the outer transaction');
     // Pop the inner transaction, the whole transaction should commit.
     unset($transaction2);
-    $this->assertFalse($this->connection->inTransaction(), 'Transaction closed after popping the inner transaction');
+    $this->assertFalse($database->inTransaction(), 'Transaction closed after popping the inner transaction');
     $this->assertRowPresent('outer');
     $this->assertRowPresent('inner');
     $this->assertRowPresent('inner-after-outer-commit');
 
     // Rollback the inner transaction.
     $this->cleanUp();
-    $transaction = $this->connection->startTransaction();
+    $transaction = db_transaction();
     $this->insertRow('outer');
-    $transaction2 = $this->connection->startTransaction();
+    $transaction2 = db_transaction();
     $this->insertRow('inner');
     // Now rollback the inner transaction.
     $transaction2->rollBack();
     unset($transaction2);
-    $this->assertTrue($this->connection->inTransaction(), 'Still in a transaction after popping the outer transaction');
+    $this->assertTrue($database->inTransaction(), 'Still in a transaction after popping the outer transaction');
     // Pop the outer transaction, it should commit.
     $this->insertRow('outer-after-inner-rollback');
     unset($transaction);
-    $this->assertFalse($this->connection->inTransaction(), 'Transaction closed after popping the inner transaction');
+    $this->assertFalse($database->inTransaction(), 'Transaction closed after popping the inner transaction');
     $this->assertRowPresent('outer');
     $this->assertRowAbsent('inner');
     $this->assertRowPresent('outer-after-inner-rollback');
 
     // Rollback the inner transaction after committing the outer one.
     $this->cleanUp();
-    $transaction = $this->connection->startTransaction();
+    $transaction = db_transaction();
     $this->insertRow('outer');
-    $transaction2 = $this->connection->startTransaction();
+    $transaction2 = db_transaction();
     $this->insertRow('inner');
     // Pop the outer transaction, nothing should happen.
     unset($transaction);
-    $this->assertTrue($this->connection->inTransaction(), 'Still in a transaction after popping the outer transaction');
+    $this->assertTrue($database->inTransaction(), 'Still in a transaction after popping the outer transaction');
     // Now rollback the inner transaction, it should rollback.
     $transaction2->rollBack();
     unset($transaction2);
-    $this->assertFalse($this->connection->inTransaction(), 'Transaction closed after popping the inner transaction');
+    $this->assertFalse($database->inTransaction(), 'Transaction closed after popping the inner transaction');
     $this->assertRowPresent('outer');
     $this->assertRowAbsent('inner');
 
@@ -451,11 +455,11 @@ class TransactionTest extends DatabaseTestBase {
     // In that case, an exception will be triggered because we cannot
     // ensure that the final result will have any meaning.
     $this->cleanUp();
-    $transaction = $this->connection->startTransaction();
+    $transaction = db_transaction();
     $this->insertRow('outer');
-    $transaction2 = $this->connection->startTransaction();
+    $transaction2 = db_transaction();
     $this->insertRow('inner');
-    $transaction3 = $this->connection->startTransaction();
+    $transaction3 = db_transaction();
     $this->insertRow('inner2');
     // Rollback the outer transaction.
     try {
@@ -466,7 +470,7 @@ class TransactionTest extends DatabaseTestBase {
     catch (TransactionOutOfOrderException $e) {
       $this->pass('Rolling back the outer transaction while the inner transaction is active resulted in an exception.');
     }
-    $this->assertFalse($this->connection->inTransaction(), 'No more in a transaction after rolling back the outer transaction');
+    $this->assertFalse($database->inTransaction(), 'No more in a transaction after rolling back the outer transaction');
     // Try to commit one inner transaction.
     unset($transaction3);
     $this->pass('Trying to commit an inner transaction resulted in an exception.');
@@ -488,12 +492,13 @@ class TransactionTest extends DatabaseTestBase {
    * Tests that transactions can continue to be used if a query fails.
    */
   public function testQueryFailureInTransaction() {
-    $transaction = $this->connection->startTransaction('test_transaction');
-    $this->connection->schema()->dropTable('test');
+    $connection = Database::getConnection();
+    $transaction = $connection->startTransaction('test_transaction');
+    $connection->schema()->dropTable('test');
 
     // Test a failed query using the query() method.
     try {
-      $this->connection->query('SELECT age FROM {test} WHERE name = :name', [':name' => 'David'])->fetchField();
+      $connection->query('SELECT age FROM {test} WHERE name = :name', [':name' => 'David'])->fetchField();
       $this->fail('Using the query method failed.');
     }
     catch (\Exception $e) {
@@ -502,7 +507,7 @@ class TransactionTest extends DatabaseTestBase {
 
     // Test a failed select query.
     try {
-      $this->connection->select('test')
+      $connection->select('test')
         ->fields('test', ['name'])
         ->execute();
 
@@ -514,7 +519,7 @@ class TransactionTest extends DatabaseTestBase {
 
     // Test a failed insert query.
     try {
-      $this->connection->insert('test')
+      $connection->insert('test')
         ->fields([
           'name' => 'David',
           'age' => '24',
@@ -529,7 +534,7 @@ class TransactionTest extends DatabaseTestBase {
 
     // Test a failed update query.
     try {
-      $this->connection->update('test')
+      $connection->update('test')
         ->fields(['name' => 'Tiffany'])
         ->condition('id', 1)
         ->execute();
@@ -542,7 +547,7 @@ class TransactionTest extends DatabaseTestBase {
 
     // Test a failed delete query.
     try {
-      $this->connection->delete('test')
+      $connection->delete('test')
         ->condition('id', 1)
         ->execute();
 
@@ -554,7 +559,7 @@ class TransactionTest extends DatabaseTestBase {
 
     // Test a failed merge query.
     try {
-      $this->connection->merge('test')
+      $connection->merge('test')
         ->key('job', 'Presenter')
         ->fields([
           'age' => '31',
@@ -570,7 +575,7 @@ class TransactionTest extends DatabaseTestBase {
 
     // Test a failed upsert query.
     try {
-      $this->connection->upsert('test')
+      $connection->upsert('test')
         ->key('job')
         ->fields(['job', 'age', 'name'])
         ->values([
@@ -588,7 +593,7 @@ class TransactionTest extends DatabaseTestBase {
 
     // Create the missing schema and insert a row.
     $this->installSchema('database_test', ['test']);
-    $this->connection->insert('test')
+    $connection->insert('test')
       ->fields([
         'name' => 'David',
         'age' => '24',
@@ -598,7 +603,7 @@ class TransactionTest extends DatabaseTestBase {
     // Commit the transaction.
     unset($transaction);
 
-    $saved_age = $this->connection->query('SELECT age FROM {test} WHERE name = :name', [':name' => 'David'])->fetchField();
+    $saved_age = $connection->query('SELECT age FROM {test} WHERE name = :name', [':name' => 'David'])->fetchField();
     $this->assertEqual('24', $saved_age);
   }
 

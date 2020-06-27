@@ -100,8 +100,8 @@ class CsrfTokenGenerator {
    *
    * @return string
    *   A 43-character URL-safe token for validation, based on the token seed,
-   *   the hash salt provided by Settings::getHashSalt(), and the site private
-   *   key.
+   *   the hash salt provided by Settings::getHashSalt(), and the
+   *   'drupal_private_key' configuration variable.
    *
    * @see \Drupal\Core\Site\Settings::getHashSalt()
    */

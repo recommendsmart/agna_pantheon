@@ -38,10 +38,8 @@ interface AlterableInterface {
   /**
    * Determines if a given query has all specified tags.
    *
-   * Each tag to check should be supplied as a separate argument.
-   *
-   * @todo Restore PHPDoc of variadic argument in Drupal 8.8, see
-   * https://www.drupal.org/project/drupal/issues/3029729
+   * @param $tags
+   *   A variable number of arguments, one for each tag to check.
    *
    * @return
    *   TRUE if this query has been marked with all specified tags, FALSE
@@ -52,10 +50,8 @@ interface AlterableInterface {
   /**
    * Determines if a given query has any specified tag.
    *
-   * Each tag to check should be supplied as a separate argument.
-   *
-   * @todo Restore PHPDoc of variadic argument in Drupal 8.8, see
-   * https://www.drupal.org/project/drupal/issues/3029729
+   * @param $tags
+   *   A variable number of arguments, one for each tag to check.
    *
    * @return
    *   TRUE if this query has been marked with at least one of the specified

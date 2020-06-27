@@ -34,7 +34,7 @@ class UrlAlterFunctionalTest extends BrowserTestBase {
     $this->drupalLogin($account);
 
     $uid = $account->id();
-    $name = $account->getAccountName();
+    $name = $account->getUsername();
 
     // Test a single altered path.
     $this->drupalGet("user/$name");

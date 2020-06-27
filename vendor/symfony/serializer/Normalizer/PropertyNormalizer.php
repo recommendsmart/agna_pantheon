@@ -30,7 +30,7 @@ namespace Symfony\Component\Serializer\Normalizer;
  */
 class PropertyNormalizer extends AbstractObjectNormalizer
 {
-    private $cache = [];
+    private $cache = array();
 
     /**
      * {@inheritdoc}
@@ -74,7 +74,7 @@ class PropertyNormalizer extends AbstractObjectNormalizer
     /**
      * {@inheritdoc}
      */
-    protected function isAllowedAttribute($classOrObject, $attribute, $format = null, array $context = [])
+    protected function isAllowedAttribute($classOrObject, $attribute, $format = null, array $context = array())
     {
         if (!parent::isAllowedAttribute($classOrObject, $attribute, $format, $context)) {
             return false;
@@ -95,25 +95,14 @@ class PropertyNormalizer extends AbstractObjectNormalizer
     /**
      * {@inheritdoc}
      */
-    protected function extractAttributes($object, $format = null, array $context = [])
+    protected function extractAttributes($object, $format = null, array $context = array())
     {
         $reflectionObject = new \ReflectionObject($object);
-        $attributes = [];
-        $checkPropertyInitialization = \PHP_VERSION_ID >= 70400;
+        $attributes = array();
 
         do {
             foreach ($reflectionObject->getProperties() as $property) {
-                if ($checkPropertyInitialization) {
-                    if (!$property->isPublic()) {
-                        $property->setAccessible(true);
-                    }
-
-                    if (!$property->isInitialized($object)) {
-                        continue;
-                    }
-                }
-
-                if (!$this->isAllowedAttribute($reflectionObject->getName(), $property->name, $format, $context)) {
+                if (!$this->isAllowedAttribute($reflectionObject->getName(), $property->name)) {
                     continue;
                 }
 
@@ -127,12 +116,12 @@ class PropertyNormalizer extends AbstractObjectNormalizer
     /**
      * {@inheritdoc}
      */
-    protected function getAttributeValue($object, $attribute, $format = null, array $context = [])
+    protected function getAttributeValue($object, $attribute, $format = null, array $context = array())
     {
         try {
             $reflectionProperty = $this->getReflectionProperty($object, $attribute);
         } catch (\ReflectionException $reflectionException) {
-            return null;
+            return;
         }
 
         // Override visibility
@@ -146,7 +135,7 @@ class PropertyNormalizer extends AbstractObjectNormalizer
     /**
      * {@inheritdoc}
      */
-    protected function setAttributeValue($object, $attribute, $value, $format = null, array $context = [])
+    protected function setAttributeValue($object, $attribute, $value, $format = null, array $context = array())
     {
         try {
             $reflectionProperty = $this->getReflectionProperty($object, $attribute);

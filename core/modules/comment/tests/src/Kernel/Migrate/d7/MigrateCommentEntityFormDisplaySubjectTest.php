@@ -23,8 +23,11 @@ class MigrateCommentEntityFormDisplaySubjectTest extends MigrateDrupal7TestBase 
    */
   protected function setUp() {
     parent::setUp();
-    $this->migrateCommentTypes();
-    $this->executeMigration('d7_comment_entity_form_display_subject');
+    $this->installConfig(['comment']);
+    $this->executeMigrations([
+      'd7_comment_type',
+      'd7_comment_entity_form_display_subject',
+    ]);
   }
 
   /**

@@ -5,7 +5,6 @@ namespace Drupal\KernelTests\Core\Entity;
 use Drupal\entity_test\Entity\EntityTestAdminRoutes;
 use Drupal\entity_test\Entity\EntityTestMul;
 use Drupal\KernelTests\KernelTestBase;
-use Drupal\Tests\user\Traits\UserCreationTrait;
 use Drupal\user\Entity\Role;
 use Drupal\user\RoleInterface;
 use Symfony\Component\HttpFoundation\Request;
@@ -18,8 +17,6 @@ use Symfony\Component\HttpKernel\HttpKernelInterface;
  */
 class RouteProviderTest extends KernelTestBase {
 
-  use UserCreationTrait;
-
   /**
    * {@inheritdoc}
    */
@@ -31,8 +28,7 @@ class RouteProviderTest extends KernelTestBase {
   protected function setUp() {
     parent::setUp();
 
-    $this->setUpCurrentUser(['uid' => 1]);
-
+    $this->installEntitySchema('user');
     $this->installEntitySchema('entity_test_mul');
     $this->installEntitySchema('entity_test_admin_routes');
 
@@ -83,13 +79,13 @@ class RouteProviderTest extends KernelTestBase {
     ]);
     $entity->save();
 
-    $this->setRawContent($this->httpKernelHandle($entity->toUrl()->toString()));
+    $this->setRawContent($this->httpKernelHandle($entity->url()));
     $this->assertTitle('Test title | ');
 
-    $this->setRawContent($this->httpKernelHandle($entity->toUrl('edit-form')->toString()));
+    $this->setRawContent($this->httpKernelHandle($entity->url('edit-form')));
     $this->assertTitle('Edit Test title | ');
 
-    $this->setRawContent($this->httpKernelHandle($entity->toUrl('delete-form')->toString()));
+    $this->setRawContent($this->httpKernelHandle($entity->url('delete-form')));
     $this->assertTitle('Are you sure you want to delete the test entity - data table Test title? | ');
   }
 
@@ -126,13 +122,13 @@ class RouteProviderTest extends KernelTestBase {
     ]);
     $entity->save();
 
-    $this->setRawContent($this->httpKernelHandle($entity->toUrl()->toString()));
+    $this->setRawContent($this->httpKernelHandle($entity->url()));
     $this->assertTitle('Test title | ');
 
-    $this->setRawContent($this->httpKernelHandle($entity->toUrl('edit-form')->toString()));
+    $this->setRawContent($this->httpKernelHandle($entity->url('edit-form')));
     $this->assertTitle('Edit Test title | ');
 
-    $this->setRawContent($this->httpKernelHandle($entity->toUrl('delete-form')->toString()));
+    $this->setRawContent($this->httpKernelHandle($entity->url('delete-form')));
     $this->assertTitle('Are you sure you want to delete the test entity - admin routes Test title? | ');
   }
 

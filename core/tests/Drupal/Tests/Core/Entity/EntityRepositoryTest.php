@@ -8,7 +8,6 @@ use Drupal\Core\Entity\EntityTypeManagerInterface;
 use Drupal\Core\Language\Language;
 use Drupal\Core\Language\LanguageInterface;
 use Drupal\Core\Language\LanguageManagerInterface;
-use Drupal\Core\Plugin\Context\ContextRepositoryInterface;
 use Drupal\Tests\UnitTestCase;
 use Prophecy\Argument;
 
@@ -33,13 +32,6 @@ class EntityRepositoryTest extends UnitTestCase {
   protected $languageManager;
 
   /**
-   * The context repository.
-   *
-   * @var \Drupal\Core\Plugin\Context\ContextRepositoryInterface|\Prophecy\Prophecy\ProphecyInterface
-   */
-  protected $contextRepository;
-
-  /**
    * The entity repository under test.
    *
    * @var \Drupal\Core\Entity\EntityRepository
@@ -54,9 +46,8 @@ class EntityRepositoryTest extends UnitTestCase {
 
     $this->entityTypeManager = $this->prophesize(EntityTypeManagerInterface::class);
     $this->languageManager = $this->prophesize(LanguageManagerInterface::class);
-    $this->contextRepository = $this->prophesize(ContextRepositoryInterface::class);
 
-    $this->entityRepository = new EntityRepository($this->entityTypeManager->reveal(), $this->languageManager->reveal(), $this->contextRepository->reveal());
+    $this->entityRepository = new EntityRepository($this->entityTypeManager->reveal(), $this->languageManager->reveal());
   }
 
   /**

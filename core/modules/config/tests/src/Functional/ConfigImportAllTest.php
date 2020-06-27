@@ -67,6 +67,7 @@ class ConfigImportAllTest extends ModuleTestBase {
     // Export active config to sync.
     $this->copyConfig($this->container->get('config.storage'), $this->container->get('config.storage.sync'));
 
+    system_list_reset();
     $this->resetAll();
 
     // Delete all entities provided by modules that prevent uninstallation. For
@@ -86,6 +87,7 @@ class ConfigImportAllTest extends ModuleTestBase {
     // Purge the field data.
     field_purge_batch(1000);
 
+    system_list_reset();
     $all_modules = system_rebuild_module_data();
 
     // Ensure that only core required modules and the install profile can not be uninstalled.
@@ -134,7 +136,8 @@ class ConfigImportAllTest extends ModuleTestBase {
     // Ensure that we have no configuration changes to import.
     $storage_comparer = new StorageComparer(
       $this->container->get('config.storage.sync'),
-      $this->container->get('config.storage')
+      $this->container->get('config.storage'),
+      $this->container->get('config.manager')
     );
     $this->assertIdentical($storage_comparer->createChangelist()->getChangelist(), $storage_comparer->getEmptyChangelist());
 

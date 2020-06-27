@@ -4,9 +4,9 @@ namespace Drupal\Tests\views\Kernel\Handler;
 
 use Drupal\Core\Session\AccountInterface;
 use Drupal\entity_test\Entity\EntityTest;
-use Drupal\Tests\user\Traits\UserCreationTrait;
-use Drupal\Tests\views\Kernel\ViewsKernelTestBase;
+use Drupal\simpletest\UserCreationTrait;
 use Drupal\user\Entity\Role;
+use Drupal\Tests\views\Kernel\ViewsKernelTestBase;
 use Drupal\views\Views;
 
 /**
@@ -45,9 +45,7 @@ class FieldEntityLinkTest extends ViewsKernelTestBase {
   protected function setUpFixtures() {
     parent::setUpFixtures();
 
-    // Create the anonymous user account and set it as current user.
-    $this->setUpCurrentUser(['uid' => 0]);
-
+    $this->installEntitySchema('user');
     $this->installEntitySchema('entity_test');
     $this->installConfig(['user']);
 
@@ -137,7 +135,7 @@ class FieldEntityLinkTest extends ViewsKernelTestBase {
       foreach ($expected_results as $template => $expected_result) {
         $expected_link = '';
         if ($expected_result) {
-          $path = $entity->toUrl($info[$template]['relationship'], $info[$template]['options'])->toString();
+          $path = $entity->url($info[$template]['relationship'], $info[$template]['options']);
           $destination = $info[$template]['destination'] ? '?destination=/' : '';
           if ($info[$template]['link']) {
             $expected_link = '<a href="' . $path . $destination . '" hreflang="en">' . $info[$template]['label'] . '</a>';

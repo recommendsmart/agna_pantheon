@@ -5,9 +5,7 @@ namespace Drupal\system\Plugin\Block;
 use Drupal\Core\Block\BlockBase;
 use Drupal\Core\Cache\Cache;
 use Drupal\Core\Form\FormStateInterface;
-use Drupal\Core\Menu\MenuActiveTrailInterface;
 use Drupal\Core\Menu\MenuLinkTreeInterface;
-use Drupal\Core\Menu\MenuTreeParameters;
 use Drupal\Core\Plugin\ContainerFactoryPluginInterface;
 use Symfony\Component\DependencyInjection\ContainerInterface;
 
@@ -34,13 +32,6 @@ class SystemMenuBlock extends BlockBase implements ContainerFactoryPluginInterfa
   protected $menuTree;
 
   /**
-   * The active menu trail service.
-   *
-   * @var \Drupal\Core\Menu\MenuActiveTrailInterface
-   */
-  protected $menuActiveTrail;
-
-  /**
    * Constructs a new SystemMenuBlock.
    *
    * @param array $configuration
@@ -51,17 +42,10 @@ class SystemMenuBlock extends BlockBase implements ContainerFactoryPluginInterfa
    *   The plugin implementation definition.
    * @param \Drupal\Core\Menu\MenuLinkTreeInterface $menu_tree
    *   The menu tree service.
-   * @param \Drupal\Core\Menu\MenuActiveTrailInterface $menu_active_trail
-   *   The active menu trail service.
    */
-  public function __construct(array $configuration, $plugin_id, $plugin_definition, MenuLinkTreeInterface $menu_tree, MenuActiveTrailInterface $menu_active_trail = NULL) {
+  public function __construct(array $configuration, $plugin_id, $plugin_definition, MenuLinkTreeInterface $menu_tree) {
     parent::__construct($configuration, $plugin_id, $plugin_definition);
     $this->menuTree = $menu_tree;
-    if ($menu_active_trail === NULL) {
-      @trigger_error('The menu.active_trail service must be passed to SystemMenuBlock::__construct(), it is required before Drupal 9.0.0. See https://www.drupal.org/node/2669550.', E_USER_DEPRECATED);
-      $menu_active_trail = \Drupal::service('menu.active_trail');
-    }
-    $this->menuActiveTrail = $menu_active_trail;
   }
 
   /**
@@ -72,8 +56,7 @@ class SystemMenuBlock extends BlockBase implements ContainerFactoryPluginInterfa
       $configuration,
       $plugin_id,
       $plugin_definition,
-      $container->get('menu.link_tree'),
-      $container->get('menu.active_trail')
+      $container->get('menu.link_tree')
     );
   }
 
@@ -115,13 +98,6 @@ class SystemMenuBlock extends BlockBase implements ContainerFactoryPluginInterfa
       '#required' => TRUE,
     ];
 
-    $form['menu_levels']['expand_all_items'] = [
-      '#type' => 'checkbox',
-      '#title' => $this->t('Expand all menu items'),
-      '#default_value' => !empty($config['expand_all_items']),
-      '#description' => $this->t('Override the option found on each menu link used for expanding children and instead display the whole menu tree as expanded.'),
-    ];
-
     return $form;
   }
 
@@ -141,7 +117,6 @@ class SystemMenuBlock extends BlockBase implements ContainerFactoryPluginInterfa
   public function blockSubmit($form, FormStateInterface $form_state) {
     $this->configuration['level'] = $form_state->getValue('level');
     $this->configuration['depth'] = $form_state->getValue('depth');
-    $this->configuration['expand_all_items'] = $form_state->getValue('expand_all_items');
   }
 
   /**
@@ -149,14 +124,7 @@ class SystemMenuBlock extends BlockBase implements ContainerFactoryPluginInterfa
    */
   public function build() {
     $menu_name = $this->getDerivativeId();
-    if ($this->configuration['expand_all_items']) {
-      $parameters = new MenuTreeParameters();
-      $active_trail = $this->menuActiveTrail->getActiveTrailIds($menu_name);
-      $parameters->setActiveTrail($active_trail);
-    }
-    else {
-      $parameters = $this->menuTree->getCurrentRouteMenuTreeParameters($menu_name);
-    }
+    $parameters = $this->menuTree->getCurrentRouteMenuTreeParameters($menu_name);
 
     // Adjust the menu tree parameters based on the block's configuration.
     $level = $this->configuration['level'];
@@ -205,7 +173,6 @@ class SystemMenuBlock extends BlockBase implements ContainerFactoryPluginInterfa
     return [
       'level' => 1,
       'depth' => 0,
-      'expand_all_items' => FALSE,
     ];
   }
 

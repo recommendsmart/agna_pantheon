@@ -12,8 +12,8 @@
   background-color: lightgray;
 }
 .password-strength__indicator {
-  width: 0;
   height: 100%;
+  width: 0;
   background-color: gray;
 }
 .password-confirm-match {

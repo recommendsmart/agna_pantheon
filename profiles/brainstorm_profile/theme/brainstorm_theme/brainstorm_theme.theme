@@ -1,0 +1,225 @@
+<?php
+
+/**
+ * @file
+ * Process theme data.
+ *
+ * Use this file to run your theme specific implimentations of theme functions,
+ * such preprocess, process, alters, and theme function overrides.
+ *
+ * Preprocess and process functions are used to modify or create variables for
+ * templates and theme functions. They are a common theming tool in Drupal,
+ * often used as an alternative to directly editing or adding code to templates.
+ * Its worth spending some time to learn more about these functions - they are a
+ * powerful way to easily modify the output of any template variable.
+ *
+ * Preprocess and Process Functions SEE:
+ * http://drupal.org/node/254940#variables-processor
+ * 1. Rename each function and instance of "adaptivetheme_subtheme" to match
+ *    your subthemes name, e.g. if your theme name is "footheme" then the
+ *    function name will be "footheme_preprocess_hook". Tip - you can
+ *    search/replace on "adaptivetheme_subtheme".
+ * 2. Uncomment the required function to use.
+ */
+
+/**
+ * Implements hook_preprocess_HOOK() for node.html.twig.
+ */
+function brainstorm_theme_preprocess_node(&$variables) {
+  // Remove the "Add new comment" link on teasers or when the comment form is
+  // displayed on the page.
+  if ($variables['node']->getType() == 'blog') {
+    if ($variables['content']['field_blog_image_fuul']) {
+      $variables['field_blog_image_fuul'] = $variables['content']['field_blog_image_fuul'];
+      unset($variables['content']['field_blog_image_fuul']);
+    }
+    $variables['comment_count'] = $variables['node']->get('field_comment_blog')->comment_count ?: 0;
+    if (\Drupal::service('module_handler')->moduleExists('addtoany')) {
+      $block_service = \Drupal::service('plugin.manager.block');
+      $addtoany_block = $block_service->createInstance('addtoany_block', []);
+      $variables['addtoany'] = $addtoany_block->build();
+    }
+  }
+  if ($variables['node']->getType() == 'portfolio') {
+    if ($variables['content']['field_portfolio_image']) {
+      $variables['field_portfolio_image'] = $variables['content']['field_portfolio_image'];
+      unset($variables['content']['field_portfolio_image']);
+    }
+  }
+  if ($variables['teaser'] || !empty($variables['content']['comments']['comment_form'])) {
+    unset($variables['content']['links']['comment']['#links']['comment-add']);
+  }
+}
+
+/**
+ * Implements hook_preprocess_HOOK() for page.html.twig.
+ */
+function brainstorm_theme_preprocess_page(&$variables) {
+  if (isset($variables['node'])) {
+    $variables['attributes']['class'][] = "page-title-" . $variables['node']->id();
+    $variables['attributes']['class'][] = "node-type-" . $variables['node']->getType();
+  }
+  $current_path = \Drupal::request()->getRequestUri();
+  $url_fragments = explode('/', $current_path);
+  if (count($url_fragments) < 3) {
+    $variables['page_class'] = 'class=page-info';
+  }
+}
+
+/**
+ * Implements hook_preprocess_HOOK() for node.html.twig.
+ */
+function brainstorm_theme_preprocess_menu(&$variables, $hook) {
+  if ($hook == 'menu') {
+    $current_path = \Drupal::request()->getRequestUri();
+    $items = $variables['items'];
+
+    foreach ($items as $key => $item) {
+      // Set active to dom element if path of menu item matches current path.
+      if ($item['url']->toString() == $current_path) {
+        // Add active link.
+        $variables['items'][$key]['attributes']->addClass('active');
+      }
+      else {
+        // Set active to dom element.
+        $url_fragments = explode('/', $current_path);
+        if (count($url_fragments) > 1 && '/' . $url_fragments[1] == $item['url']->toString()) {
+          $variables['items'][$key]['attributes']->addClass('active');
+        }
+      }
+    }
+  }
+}
+
+/**
+ * Implements hook_preprocess_HOOK().
+ */
+function brainstorm_theme_preprocess_pager(&$variables) {
+  $element = $variables['pager']['#element'];
+  $parameters = $variables['pager']['#parameters'];
+  $quantity = $variables['pager']['#quantity'];
+  $route_name = $variables['pager']['#route_name'];
+  $route_parameters = isset($variables['pager']['#route_parameters']) ? $variables['pager']['#route_parameters'] : [];
+  global $pager_page_array, $pager_total;
+
+  // Nothing to do if there is only one page.
+  if ($pager_total[$element] <= 1) {
+    return;
+  }
+
+  $tags = $variables['pager']['#tags'];
+
+  // Calculate various markers within this pager piece:
+  // Middle is used to "center" pages around the current page.
+  $pager_middle = ceil($quantity / 2);
+  // Current is the page we are currently paged to.
+  $pager_current = $pager_page_array[$element] + 1;
+  // First is the first page listed by this pager piece (re quantity).
+  $pager_first = $pager_current - $pager_middle + 1;
+  // Last is the last page listed by this pager piece (re quantity).
+  $pager_last = $pager_current + $quantity - $pager_middle;
+  // Max is the maximum page number.
+  $pager_max = $pager_total[$element];
+
+  // Prepare for generation loop.
+  $count = $pager_first;
+  if ($pager_last > $pager_max) {
+    // Adjust "center" if at end of query.
+    $count = $count + ($pager_max - $pager_last);
+    $pager_last = $pager_max;
+  }
+  if ($count <= 0) {
+    // Adjust "center" if at start of query.
+    $pager_last = $pager_last + (1 - $count);
+    $count = 1;
+  }
+
+  // Create the "first" and "previous" links if we are not on the first page.
+  if ($pager_page_array[$element] > 0) {
+    $items['first'] = array();
+    $options = array(
+      'query' => pager_query_add_page($parameters, $element, 0),
+    );
+    $items['first']['href'] = \Drupal::url($route_name, $route_parameters, $options);
+    if (isset($tags[0])) {
+      $items['first']['text'] = $tags[0];
+    }
+  }
+
+  if ($count != $pager_max) {
+    // Add an ellipsis if there are further previous pages.
+    if ($count > 1) {
+      $variables['ellipses']['previous'] = TRUE;
+    }
+    // Now generate the actual pager piece.
+    for (; $count <= $pager_last && $count <= $pager_max; $count++) {
+      $options = array(
+        'query' => pager_query_add_page($parameters, $element, $count - 1),
+      );
+      $items['pages'][$count]['href'] = \Drupal::url($route_name, $route_parameters, $options);
+      if ($count == $pager_current) {
+        $variables['current'] = $count;
+      }
+    }
+    // Add an ellipsis if there are further next pages.
+    if ($count < $pager_max + 1) {
+      $variables['ellipses']['next'] = TRUE;
+    }
+  }
+
+  // Create the "next" and "last" links if we are not on the last page.
+  if ($pager_page_array[$element] < ($pager_max - 1)) {
+
+    $items['last'] = array();
+    $options = array(
+      'query' => pager_query_add_page($parameters, $element, $pager_max - 1),
+    );
+    $items['last']['href'] = \Drupal::url($route_name, $route_parameters, $options);
+    if (isset($tags[4])) {
+      $items['last']['text'] = $tags[4];
+    }
+  }
+
+  $variables['items'] = $items;
+
+  // The rendered link needs to play well with any other query parameter used
+  // on the page, like exposed filters, so for the cacheability all query
+  // parameters matter.
+  $variables['#cache']['contexts'][] = 'url.query_args';
+}
+
+/**
+ * Implements hook_form_FORM_ID_alter() for comment_form().
+ */
+function brainstorm_theme_form_comment_form_alter(&$form, $form_state, $form_id) {
+  $user = \Drupal::currentUser();
+  $form['author']['_author']['#type'] = 'hidden';
+  $form['author']['name'] = array(
+    '#weight' => -1,
+    '#type' => 'textfield',
+    '#default_value' => $user->id() != 0 ? $user->getAccountName() : '',
+    '#attributes' => array('placeholder' => t('Your full name')),
+    '#required' => TRUE,
+    '#disabled' => $user->id() != 0 ? TRUE : FALSE,
+  );
+  $form['author']['mail'] = array(
+    '#type' => 'textfield',
+    '#default_value' => $user->id() != 0 ? $user->getEmail() : '',
+    '#attributes' => array('placeholder' => t('E-mail address')),
+    '#required' => TRUE,
+    '#disabled' => $user->id() != 0 ? TRUE : FALSE,
+  );
+  $form['author']['#weight'] = 0;
+  $form['field_comment_blog_body']['#weight'] = -1;
+  $form['field_comment_blog_body']['widget'][0]['value']['#title'] = '';
+  $form['field_comment_blog_body']['widget'][0]['value']['#placeholder'] = t('Write your comment here...');
+  $form['actions']['submit']['#value'] = t('Submit');
+}
+
+/**
+ * Implements hook_preprocess_HOOK() for comment.html.twig.
+ */
+function brainstorm_theme_preprocess_comment(&$variables) {
+  $variables['created'] = date('F d, Y', $variables['elements']['#comment']->created->value);
+  $variables['submitted'] = t('!username  !datetime', array('!username' => $variables['author'], '!datetime' => $variables['created']));
+}

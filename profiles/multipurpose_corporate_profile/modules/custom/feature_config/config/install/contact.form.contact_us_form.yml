@@ -1,9 +1,0 @@
-langcode: en
-status: true
-dependencies: {  }
-id: contact_us_form
-label: 'Contact Us'
-recipients:
-  - example@example.com
-reply: ''
-weight: 0

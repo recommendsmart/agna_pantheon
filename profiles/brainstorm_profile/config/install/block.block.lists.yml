@@ -1,0 +1,30 @@
+langcode: en
+status: true
+dependencies:
+  content:
+    - 'block_content:basic:d75c46db-446f-4f03-bd80-12841c873ced'
+  module:
+    - block_content
+    - system
+  theme:
+    - brainstorm_theme
+id: lists
+theme: brainstorm_theme
+region: sidebar_second
+weight: -16
+provider: null
+plugin: 'block_content:d75c46db-446f-4f03-bd80-12841c873ced'
+settings:
+  id: 'block_content:d75c46db-446f-4f03-bd80-12841c873ced'
+  label: Lists
+  provider: block_content
+  label_display: visible
+  status: true
+  info: ''
+  view_mode: full
+visibility:
+  request_path:
+    id: request_path
+    pages: /typography
+    negate: false
+    context_mapping: {  }

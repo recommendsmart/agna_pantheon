@@ -2,12 +2,8 @@
 
 namespace Drupal\aggregator\Tests;
 
-@trigger_error(__NAMESPACE__ . '\AggregatorTestBase is deprecated for removal before Drupal 9.0.0. Use \Drupal\Tests\aggregator\Functional\AggregatorTestBase instead. See https://www.drupal.org/node/2999939', E_USER_DEPRECATED);
-
-use Drupal\Core\Url;
 use Drupal\aggregator\Entity\Feed;
 use Drupal\Component\Utility\Html;
-use Drupal\node\NodeInterface;
 use Drupal\simpletest\WebTestBase;
 use Drupal\aggregator\FeedInterface;
 
@@ -16,8 +12,6 @@ use Drupal\aggregator\FeedInterface;
  *
  * @deprecated Scheduled for removal in Drupal 9.0.0.
  *   Use \Drupal\Tests\aggregator\Functional\AggregatorTestBase instead.
- *
- * @see https://www.drupal.org/node/2999939
  */
 abstract class AggregatorTestBase extends WebTestBase {
 
@@ -107,10 +101,10 @@ abstract class AggregatorTestBase extends WebTestBase {
   public function getFeedEditArray($feed_url = NULL, array $edit = []) {
     $feed_name = $this->randomMachineName(10);
     if (!$feed_url) {
-      $feed_url = Url::fromRoute('view.frontpage.feed_1', [], [
+      $feed_url = \Drupal::url('view.frontpage.feed_1', [], [
         'query' => ['feed' => $feed_name],
         'absolute' => TRUE,
-      ])->toString();
+      ]);
     }
     $edit += [
       'title[0][value]' => $feed_name,
@@ -135,10 +129,10 @@ abstract class AggregatorTestBase extends WebTestBase {
   public function getFeedEditObject($feed_url = NULL, array $values = []) {
     $feed_name = $this->randomMachineName(10);
     if (!$feed_url) {
-      $feed_url = Url::fromRoute('view.frontpage.feed_1', [
+      $feed_url = \Drupal::url('view.frontpage.feed_1', [
         'query' => ['feed' => $feed_name],
         'absolute' => TRUE,
-      ])->toString();
+      ]);
     }
     $values += [
       'title' => $feed_name,
@@ -155,16 +149,9 @@ abstract class AggregatorTestBase extends WebTestBase {
    *   Number of feed items on default feed created by createFeed().
    */
   public function getDefaultFeedItemCount() {
-    // Our tests are based off of rss.xml, so let's find out how many elements
-    // should be related.
-    $feed_count = \Drupal::entityQuery('node')
-      ->condition('promote', NodeInterface::PROMOTED)
-      ->condition('status', NodeInterface::PUBLISHED)
-      ->accessCheck(FALSE)
-      ->range(0, $this->config('system.rss')->get('items.limit'))
-      ->count()
-      ->execute();
-    return min($feed_count, 10);
+    // Our tests are based off of rss.xml, so let's find out how many elements should be related.
+    $feed_count = db_query_range('SELECT COUNT(DISTINCT nid) FROM {node_field_data} n WHERE n.promote = 1 AND n.status = 1', 0, $this->config('system.rss')->get('items.limit'))->fetchField();
+    return $feed_count > 10 ? 10 : $feed_count;
   }
 
   /**
@@ -289,7 +276,7 @@ EOF;
 
     $path = 'public://valid-opml.xml';
     // Add the UTF-8 byte order mark.
-    return \Drupal::service('file_system')->saveData(chr(239) . chr(187) . chr(191) . $opml, $path);
+    return file_unmanaged_save_data(chr(239) . chr(187) . chr(191) . $opml, $path);
   }
 
   /**
@@ -306,7 +293,7 @@ EOF;
 EOF;
 
     $path = 'public://invalid-opml.xml';
-    return \Drupal::service('file_system')->saveData($opml, $path);
+    return file_unmanaged_save_data($opml, $path);
   }
 
   /**
@@ -328,7 +315,7 @@ EOF;
 EOF;
 
     $path = 'public://empty-opml.xml';
-    return \Drupal::service('file_system')->saveData($opml, $path);
+    return file_unmanaged_save_data($opml, $path);
   }
 
   /**

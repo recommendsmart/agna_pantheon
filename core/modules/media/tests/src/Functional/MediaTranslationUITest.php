@@ -19,12 +19,10 @@ class MediaTranslationUITest extends ContentTranslationUITestBase {
    */
   protected $defaultCacheContexts = [
     'languages:language_interface',
-    'session',
     'theme',
-    'url.path',
-    'url.query_args',
+    'timezone',
+    'url.query_args:_wrapper_format',
     'user.permissions',
-    'user.roles:authenticated',
   ];
 
   /**

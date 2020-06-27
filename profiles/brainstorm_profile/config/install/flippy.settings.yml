@@ -1,0 +1,16 @@
+flippy_portfolio: 1
+flippy_head_portfolio: 0
+flippy_show_empty_portfolio: 0
+flippy_prev_label_portfolio: Previous
+flippy_next_label_portfolio: 'Next project'
+flippy_first_last_portfolio: 0
+flippy_first_label_portfolio: ''
+flippy_last_label_portfolio: ''
+flippy_loop_portfolio: 1
+flippy_random_portfolio: 0
+flippy_random_label_portfolio: ''
+flippy_truncate_portfolio: ''
+flippy_ellipse_portfolio: ...
+flippy_custom_sorting_portfolio: 0
+flippy_sort_portfolio: nid
+flippy_order_portfolio: ASC

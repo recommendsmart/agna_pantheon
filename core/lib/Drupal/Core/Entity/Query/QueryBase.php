@@ -4,7 +4,6 @@ namespace Drupal\Core\Entity\Query;
 
 use Drupal\Core\Database\Query\PagerSelectExtender;
 use Drupal\Core\Entity\EntityTypeInterface;
-use Drupal\Core\Utility\TableSort;
 
 /**
  * The base entity query class.
@@ -330,8 +329,8 @@ abstract class QueryBase implements QueryInterface {
       }
     }
 
-    $order = TableSort::getOrder($headers, \Drupal::request());
-    $direction = TableSort::getSort($headers, \Drupal::request());
+    $order = tablesort_get_order($headers);
+    $direction = tablesort_get_sort($headers);
     foreach ($headers as $header) {
       if (is_array($header) && ($header['data'] == $order['name'])) {
         $this->sort($header['specifier'], $direction, isset($header['langcode']) ? $header['langcode'] : NULL);

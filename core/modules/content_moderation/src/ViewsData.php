@@ -52,7 +52,7 @@ class ViewsData {
     $data = [];
 
     $entity_types_with_moderation = array_filter($this->entityTypeManager->getDefinitions(), function (EntityTypeInterface $type) {
-      return $this->moderationInformation->isModeratedEntityType($type);
+      return $this->moderationInformation->canModerateEntitiesOfEntityType($type);
     });
 
     // Provides a relationship from moderated entity to its moderation state

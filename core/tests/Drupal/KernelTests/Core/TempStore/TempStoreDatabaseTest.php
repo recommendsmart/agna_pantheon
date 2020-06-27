@@ -63,8 +63,7 @@ class TempStoreDatabaseTest extends KernelTestBase {
    */
   public function testSharedTempStore() {
     // Create a key/value collection.
-    $database = Database::getConnection();
-    $factory = new SharedTempStoreFactory(new KeyValueExpirableFactory(\Drupal::getContainer()), new DatabaseLockBackend($database), $this->container->get('request_stack'));
+    $factory = new SharedTempStoreFactory(new KeyValueExpirableFactory(\Drupal::getContainer()), new DatabaseLockBackend(Database::getConnection()), $this->container->get('request_stack'));
     $collection = $this->randomMachineName();
 
     // Create two mock users.
@@ -75,7 +74,6 @@ class TempStoreDatabaseTest extends KernelTestBase {
       // fatal exception, because in that situation garbage collection is not
       // triggered until the test class itself is destructed, after tearDown()
       // has deleted the database tables. Store the objects locally instead.
-      /** @var \Drupal\Core\TempStore\SharedTempStore[] $stores */
       $stores[$i] = $factory->get($collection, $users[$i]);
     }
 
@@ -86,11 +84,11 @@ class TempStoreDatabaseTest extends KernelTestBase {
       // FALSE the second time (when $i is 1).
       $this->assertEqual(!$i, $stores[0]->setIfNotExists($key, $this->objects[$i]));
       $metadata = $stores[0]->getMetadata($key);
-      $this->assertEqual($users[0], $metadata->getOwnerId());
+      $this->assertEqual($users[0], $metadata->owner);
       $this->assertIdenticalObject($this->objects[0], $stores[0]->get($key));
       // Another user should get the same result.
       $metadata = $stores[1]->getMetadata($key);
-      $this->assertEqual($users[0], $metadata->getOwnerId());
+      $this->assertEqual($users[0], $metadata->owner);
       $this->assertIdenticalObject($this->objects[0], $stores[1]->get($key));
     }
 
@@ -116,11 +114,11 @@ class TempStoreDatabaseTest extends KernelTestBase {
     $this->assertIdenticalObject($this->objects[3], $stores[0]->get($key));
     $this->assertIdenticalObject($this->objects[3], $stores[1]->get($key));
     $metadata = $stores[1]->getMetadata($key);
-    $this->assertEqual($users[1], $metadata->getOwnerId());
+    $this->assertEqual($users[1], $metadata->owner);
 
     // The first user should be informed that the second now owns the data.
     $metadata = $stores[0]->getMetadata($key);
-    $this->assertEqual($users[1], $metadata->getOwnerId());
+    $this->assertEqual($users[1], $metadata->owner);
 
     // The first user should no longer be allowed to get, update, delete.
     $this->assertNull($stores[0]->getIfOwner($key));
@@ -129,7 +127,7 @@ class TempStoreDatabaseTest extends KernelTestBase {
 
     // Now manually expire the item (this is not exposed by the API) and then
     // assert it is no longer accessible.
-    $database->update('key_value_expire')
+    db_update('key_value_expire')
       ->fields(['expire' => REQUEST_TIME - 1])
       ->condition('collection', "tempstore.shared.$collection")
       ->condition('name', $key)

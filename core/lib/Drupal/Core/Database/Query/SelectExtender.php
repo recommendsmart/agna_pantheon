@@ -474,14 +474,6 @@ class SelectExtender implements SelectInterface {
   /**
    * {@inheritdoc}
    */
-  public function alwaysFalse() {
-    $this->query->alwaysFalse();
-    return $this;
-  }
-
-  /**
-   * {@inheritdoc}
-   */
   public function __toString() {
     return (string) $this->query;
   }

@@ -7,7 +7,6 @@ use Drupal\Core\Render\Markup;
 use Drupal\Core\Template\Attribute;
 use Drupal\Core\Template\AttributeArray;
 use Drupal\Core\Template\AttributeString;
-use Drupal\Core\Template\Loader\StringLoader;
 use Drupal\Tests\UnitTestCase;
 use Drupal\Component\Render\MarkupInterface;
 
@@ -262,12 +261,14 @@ class AttributeTest extends UnitTestCase {
    *
    * @covers ::removeClass
    * @covers ::addClass
+   *
+   * @group legacy
    */
   public function testTwigAddRemoveClasses($template, $expected, $seed_attributes = []) {
-    $loader = new StringLoader();
+    $loader = new \Twig_Loader_String();
     $twig = new \Twig_Environment($loader);
     $data = ['attributes' => new Attribute($seed_attributes)];
-    $result = $twig->createTemplate($template)->render($data);
+    $result = $twig->render($template, $data);
     $this->assertEquals($expected, $result);
   }
 

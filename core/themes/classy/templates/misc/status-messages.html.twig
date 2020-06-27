@@ -19,7 +19,6 @@
  *   - class: HTML classes.
  */
 #}
-<div data-drupal-messages>
 {% block messages %}
 {% for type, messages in message_list %}
   {%
@@ -52,4 +51,3 @@
   {% set attributes = attributes.removeClass(classes) %}
 {% endfor %}
 {% endblock messages %}
-</div>

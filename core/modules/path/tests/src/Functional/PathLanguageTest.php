@@ -61,6 +61,7 @@ class PathLanguageTest extends PathTestBase {
       'settings[node][page][settings][language][language_alterable]' => 1,
     ];
     $this->drupalPostForm('admin/config/regional/content-language', $edit, t('Save configuration'));
+    \Drupal::entityManager()->clearCachedDefinitions();
 
     $definitions = \Drupal::entityManager()->getFieldDefinitions('node', 'page');
     $this->assertTrue($definitions['path']->isTranslatable(), 'Node path is translatable.');
@@ -117,7 +118,7 @@ class PathLanguageTest extends PathTestBase {
     // many levels, and we need to clear those caches.
     $this->container->get('language_manager')->reset();
     $languages = $this->container->get('language_manager')->getLanguages();
-    $url = $english_node_french_translation->toUrl('canonical', ['language' => $languages['fr']])->toString();
+    $url = $english_node_french_translation->url('canonical', ['language' => $languages['fr']]);
 
     $this->assertTrue(strpos($url, $edit['path[0][alias]']), 'URL contains the path alias.');
 

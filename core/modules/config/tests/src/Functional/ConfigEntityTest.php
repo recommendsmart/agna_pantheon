@@ -60,7 +60,7 @@ class ConfigEntityTest extends BrowserTestBase {
     $this->assertIdentical($empty->getEntityTypeId(), 'config_test');
     // The URI can only be checked after saving.
     try {
-      $empty->toUrl();
+      $empty->urlInfo();
       $this->fail('EntityMalformedException was thrown.');
     }
     catch (EntityMalformedException $e) {
@@ -119,7 +119,7 @@ class ConfigEntityTest extends BrowserTestBase {
     }
 
     // The entity path can only be checked after saving.
-    $this->assertIdentical($config_test->toUrl()->toString(), Url::fromRoute('entity.config_test.edit_form', ['config_test' => $expected['id']])->toString());
+    $this->assertIdentical($config_test->url(), Url::fromRoute('entity.config_test.edit_form', ['config_test' => $expected['id']])->toString());
 
     // Verify that the correct status is returned and properties did not change.
     $this->assertIdentical($status, SAVED_NEW);
@@ -316,8 +316,7 @@ class ConfigEntityTest extends BrowserTestBase {
     $this->assertLinkByHref('admin/structure/config_test/manage/0');
     $this->assertLinkByHref('admin/structure/config_test/manage/0/delete');
     $this->drupalPostForm('admin/structure/config_test/manage/0/delete', [], 'Delete');
-    $storage = \Drupal::entityTypeManager()->getStorage('config_test');
-    $this->assertNull($storage->load(0), 'Test entity deleted');
+    $this->assertFalse(entity_load('config_test', '0'), 'Test entity deleted');
 
     // Create a configuration entity with a property that uses AJAX to show
     // extra form elements. Test this scenario in a non-JS case by using a
@@ -344,7 +343,7 @@ class ConfigEntityTest extends BrowserTestBase {
     $edit += ['size_value' => 'medium'];
     $this->drupalPostForm(NULL, $edit, 'Save');
 
-    $entity = $storage->load($id);
+    $entity = entity_load('config_test', $id);
     $this->assertEqual($entity->get('size'), 'custom');
     $this->assertEqual($entity->get('size_value'), 'medium');
   }

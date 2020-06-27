@@ -3,10 +3,8 @@
 namespace Drupal\Core\Menu;
 
 use Drupal\Core\Cache\CacheableMetadata;
-use Drupal\Component\Utility\Unicode;
-use Drupal\Core\DependencyInjection\DeprecatedServicePropertyTrait;
 use Drupal\Core\Entity\EntityManagerInterface;
-use Drupal\Core\Entity\EntityTypeManagerInterface;
+use Drupal\Component\Utility\Unicode;
 use Drupal\Core\StringTranslation\StringTranslationTrait;
 use Drupal\Core\StringTranslation\TranslationInterface;
 
@@ -17,12 +15,6 @@ use Drupal\Core\StringTranslation\TranslationInterface;
  */
 class MenuParentFormSelector implements MenuParentFormSelectorInterface {
   use StringTranslationTrait;
-  use DeprecatedServicePropertyTrait;
-
-  /**
-   * {@inheritdoc}
-   */
-  protected $deprecatedProperties = ['entityManager' => 'entity.manager'];
 
   /**
    * The menu link tree service.
@@ -32,31 +24,25 @@ class MenuParentFormSelector implements MenuParentFormSelectorInterface {
   protected $menuLinkTree;
 
   /**
-   * The entity type manager service.
+   * The entity manager.
    *
-   * @var \Drupal\Core\Entity\EntityTypeManagerInterface
+   * @var \Drupal\Core\Entity\EntityManagerInterface
    */
-  protected $entityTypeManager;
+  protected $entityManager;
 
   /**
    * Constructs a \Drupal\Core\Menu\MenuParentFormSelector
    *
    * @param \Drupal\Core\Menu\MenuLinkTreeInterface $menu_link_tree
    *   The menu link tree service.
-   * @param \Drupal\Core\Entity\EntityTypeManagerInterface $entity_type_manager
-   *   The entity type manager service.
+   * @param \Drupal\Core\Entity\EntityManagerInterface $entity_manager
+   *   The entity manager.
    * @param \Drupal\Core\StringTranslation\TranslationInterface $string_translation
    *   The string translation service.
    */
-  public function __construct(MenuLinkTreeInterface $menu_link_tree, EntityTypeManagerInterface $entity_type_manager, TranslationInterface $string_translation) {
+  public function __construct(MenuLinkTreeInterface $menu_link_tree, EntityManagerInterface $entity_manager, TranslationInterface $string_translation) {
     $this->menuLinkTree = $menu_link_tree;
-    if ($entity_type_manager instanceof EntityManagerInterface) {
-      @trigger_error('Passing the entity.manager service to MenuParentFormSelector::__construct() is deprecated in Drupal 8.7.0 and will be removed before Drupal 9.0.0. Pass the new dependencies instead. See https://www.drupal.org/node/2549139.', E_USER_DEPRECATED);
-      $this->entityTypeManager = \Drupal::entityTypeManager();
-    }
-    else {
-      $this->entityTypeManager = $entity_type_manager;
-    }
+    $this->entityManager = $entity_manager;
     $this->stringTranslation = $string_translation;
   }
 
@@ -196,7 +182,7 @@ class MenuParentFormSelector implements MenuParentFormSelectorInterface {
    *   Keys are menu names (ids) values are the menu labels.
    */
   protected function getMenuOptions(array $menu_names = NULL) {
-    $menus = $this->entityTypeManager->getStorage('menu')->loadMultiple($menu_names);
+    $menus = $this->entityManager->getStorage('menu')->loadMultiple($menu_names);
     $options = [];
     /** @var \Drupal\system\MenuInterface[] $menus */
     foreach ($menus as $menu) {

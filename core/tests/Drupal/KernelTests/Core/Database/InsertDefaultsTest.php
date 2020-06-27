@@ -15,7 +15,7 @@ class InsertDefaultsTest extends DatabaseTestBase {
    * Tests that we can run a query that uses default values for everything.
    */
   public function testDefaultInsert() {
-    $query = $this->connection->insert('test')->useDefaults(['job']);
+    $query = db_insert('test')->useDefaults(['job']);
     $id = $query->execute();
 
     $schema = drupal_get_module_schema('database_test', 'test');
@@ -31,7 +31,7 @@ class InsertDefaultsTest extends DatabaseTestBase {
     $num_records_before = (int) db_query('SELECT COUNT(*) FROM {test}')->fetchField();
 
     try {
-      $this->connection->insert('test')->execute();
+      db_insert('test')->execute();
       // This is only executed if no exception has been thrown.
       $this->fail('Expected exception NoFieldsException has not been thrown.');
     }
@@ -47,7 +47,7 @@ class InsertDefaultsTest extends DatabaseTestBase {
    * Tests that we can insert fields with values and defaults in the same query.
    */
   public function testDefaultInsertWithFields() {
-    $query = $this->connection->insert('test')
+    $query = db_insert('test')
       ->fields(['name' => 'Bob'])
       ->useDefaults(['job']);
     $id = $query->execute();

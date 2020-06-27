@@ -999,7 +999,12 @@
             'select.views-group-select',
             this.rowObject.element,
           );
-          if (!groupField.is(`.views-group-select-${groupName}`)) {
+          if (
+            $(this.rowObject.element)
+              .prev('tr')
+              .is('.group-message') &&
+            !groupField.is(`.views-group-select-${groupName}`)
+          ) {
             const oldGroupName = groupField
               .attr('class')
               .replace(

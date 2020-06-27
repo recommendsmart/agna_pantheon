@@ -30,13 +30,6 @@ class WorkspaceOperationFactory {
   protected $database;
 
   /**
-   * The workspace manager.
-   *
-   * @var \Drupal\workspaces\WorkspaceManagerInterface
-   */
-  protected $workspaceManager;
-
-  /**
    * Constructs a new WorkspacePublisher.
    *
    * @param \Drupal\Core\Entity\EntityTypeManagerInterface $entity_type_manager
@@ -44,10 +37,9 @@ class WorkspaceOperationFactory {
    * @param \Drupal\Core\Database\Connection $database
    *   Database connection.
    */
-  public function __construct(EntityTypeManagerInterface $entity_type_manager, Connection $database, WorkspaceManagerInterface $workspace_manager) {
+  public function __construct(EntityTypeManagerInterface $entity_type_manager, Connection $database) {
     $this->entityTypeManager = $entity_type_manager;
     $this->database = $database;
-    $this->workspaceManager = $workspace_manager;
   }
 
   /**
@@ -60,7 +52,7 @@ class WorkspaceOperationFactory {
    *   A workspace publisher object.
    */
   public function getPublisher(WorkspaceInterface $source) {
-    return new WorkspacePublisher($this->entityTypeManager, $this->database, $this->workspaceManager, $source);
+    return new WorkspacePublisher($this->entityTypeManager, $this->database, $source);
   }
 
 }

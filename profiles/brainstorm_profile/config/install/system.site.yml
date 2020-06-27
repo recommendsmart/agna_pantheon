@@ -1,0 +1,14 @@
+uuid: d783ed7b-ccf5-412f-8770-34deb3d5695b
+name: Brainstorm
+mail: vagrant@localhost.localdomain
+slogan: ''
+page:
+  403: ''
+  404: ''
+  front: /home
+admin_compact_mode: false
+weight_select_max: 100
+langcode: en
+default_langcode: en
+_core:
+  default_config_hash: yXadRE77Va-G6dxhd2kPYapAvbnSvTF6hO4oXiOEynI

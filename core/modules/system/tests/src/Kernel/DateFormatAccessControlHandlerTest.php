@@ -7,7 +7,7 @@ use Drupal\Core\Cache\Context\CacheContextsManager;
 use Drupal\Core\Datetime\Entity\DateFormat;
 use Drupal\Core\DependencyInjection\ContainerBuilder;
 use Drupal\KernelTests\KernelTestBase;
-use Drupal\Tests\user\Traits\UserCreationTrait;
+use Drupal\simpletest\UserCreationTrait;
 
 /**
  * @coversDefaultClass \Drupal\system\DateFormatAccessControlHandler

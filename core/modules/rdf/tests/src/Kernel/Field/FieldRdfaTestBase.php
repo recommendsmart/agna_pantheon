@@ -135,7 +135,7 @@ abstract class FieldRdfaTestBase extends FieldKernelTestBase {
    *   The absolute URI.
    */
   protected function getAbsoluteUri($entity) {
-    return $entity->toUrl('canonical', ['absolute' => TRUE])->toString();
+    return $entity->url('canonical', ['absolute' => TRUE]);
   }
 
   /**

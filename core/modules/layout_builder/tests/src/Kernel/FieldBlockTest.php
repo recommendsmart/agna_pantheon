@@ -10,7 +10,6 @@ use Drupal\Core\Extension\ModuleHandlerInterface;
 use Drupal\Core\Field\FieldDefinitionInterface;
 use Drupal\Core\Field\FieldItemListInterface;
 use Drupal\Core\Field\FormatterPluginManager;
-use Drupal\Core\Form\EnforcedResponseException;
 use Drupal\Core\Plugin\Context\EntityContextDefinition;
 use Drupal\Core\Session\AccountInterface;
 use Drupal\KernelTests\Core\Entity\EntityKernelTestBase;
@@ -21,7 +20,6 @@ use Prophecy\Promise\ReturnPromise;
 use Prophecy\Promise\ThrowPromise;
 use Prophecy\Prophecy\ProphecyInterface;
 use Psr\Log\LoggerInterface;
-use Symfony\Component\HttpFoundation\Response;
 
 /**
  * @coversDefaultClass \Drupal\layout_builder\Plugin\Block\FieldBlock
@@ -208,7 +206,7 @@ class FieldBlockTest extends EntityKernelTestBase {
       'category' => 'Test',
       'admin_label' => 'Test Block',
       'bundles' => ['entity_test'],
-      'context_definitions' => [
+      'context' => [
         'entity' => EntityContextDefinition::fromEntityTypeId('entity_test')->setLabel('Test'),
       ],
     ];
@@ -285,23 +283,6 @@ class FieldBlockTest extends EntityKernelTestBase {
       ['%field' => 'the_field_name', '%error' => 'The exception message'],
     ];
     return $data;
-  }
-
-  /**
-   * Tests a field block that throws a form exception.
-   *
-   * @todo Remove in https://www.drupal.org/project/drupal/issues/2367555.
-   */
-  public function testBuildWithFormException() {
-    $field = $this->prophesize(FieldItemListInterface::class);
-    $field->view(Argument::type('array'))->willThrow(new EnforcedResponseException(new Response()));
-
-    $entity = $this->prophesize(FieldableEntityInterface::class);
-    $entity->get('the_field_name')->willReturn($field->reveal());
-
-    $block = $this->getTestBlock($entity);
-    $this->setExpectedException(EnforcedResponseException::class);
-    $block->build();
   }
 
 }

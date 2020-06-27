@@ -103,11 +103,11 @@ class QuickEditIntegrationLoadingTest extends BrowserTestBase {
         $message = "The 'access in-place editing' permission is required.";
       }
       else {
-        $message = "The 'edit any article content' permission is required.";
+        $message = '';
       }
 
       $body = Json::decode($response->getBody());
-      $this->assertSame($message, $body['message']);
+      $this->assertIdentical($message, $body['message']);
     }
   }
 

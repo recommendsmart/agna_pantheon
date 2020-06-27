@@ -31,17 +31,17 @@ class ConfigEntityStatusUITest extends BrowserTestBase {
     ];
     $this->drupalPostForm('admin/structure/config_test/add', $edit, 'Save');
 
-    $entity = \Drupal::entityTypeManager()->getStorage('config_test')->load($id);
+    $entity = entity_load('config_test', $id);
 
     // Disable an entity.
-    $disable_url = $entity->toUrl('disable');
+    $disable_url = $entity->urlInfo('disable');
     $this->assertLinkByHref($disable_url->toString());
     $this->drupalGet($disable_url);
     $this->assertResponse(200);
     $this->assertNoLinkByHref($disable_url->toString());
 
     // Enable an entity.
-    $enable_url = $entity->toUrl('enable');
+    $enable_url = $entity->urlInfo('enable');
     $this->assertLinkByHref($enable_url->toString());
     $this->drupalGet($enable_url);
     $this->assertResponse(200);

@@ -3,12 +3,13 @@ type: module
 description: 'Provides default views for views options tests.'
 package: Testing
 # version: VERSION
-core: 8.x
+# core: 8.x
 dependencies:
   - drupal:options
   - drupal:views
 
-# Information added by Drupal.org packaging script on 2019-10-02
-version: '8.7.8'
+# Information added by Drupal.org packaging script on 2019-03-20
+version: '8.6.13'
+core: '8.x'
 project: 'drupal'
-datestamp: 1570044520
+datestamp: 1553100246

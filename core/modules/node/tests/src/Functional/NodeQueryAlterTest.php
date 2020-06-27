@@ -2,8 +2,6 @@
 
 namespace Drupal\Tests\node\Functional;
 
-use Drupal\Core\Database\Database;
-
 /**
  * Tests that node access queries are properly altered by the node module.
  *
@@ -55,7 +53,7 @@ class NodeQueryAlterTest extends NodeTestBase {
   public function testNodeQueryAlterLowLevelWithAccess() {
     // User with access should be able to view 4 nodes.
     try {
-      $query = Database::getConnection()->select('node', 'mytab')
+      $query = db_select('node', 'mytab')
         ->fields('mytab');
       $query->addTag('node_access');
       $query->addMetaData('op', 'view');
@@ -96,7 +94,7 @@ class NodeQueryAlterTest extends NodeTestBase {
   public function testNodeQueryAlterLowLevelNoAccess() {
     // User without access should be able to view 0 nodes.
     try {
-      $query = Database::getConnection()->select('node', 'mytab')
+      $query = db_select('node', 'mytab')
         ->fields('mytab');
       $query->addTag('node_access');
       $query->addMetaData('op', 'view');
@@ -119,7 +117,7 @@ class NodeQueryAlterTest extends NodeTestBase {
   public function testNodeQueryAlterLowLevelEditAccess() {
     // User with view-only access should not be able to edit nodes.
     try {
-      $query = Database::getConnection()->select('node', 'mytab')
+      $query = db_select('node', 'mytab')
         ->fields('mytab');
       $query->addTag('node_access');
       $query->addMetaData('op', 'update');
@@ -153,14 +151,13 @@ class NodeQueryAlterTest extends NodeTestBase {
       'grant_update' => 0,
       'grant_delete' => 0,
     ];
-    $connection = Database::getConnection();
-    $connection->insert('node_access')->fields($record)->execute();
+    db_insert('node_access')->fields($record)->execute();
 
     // Test that the noAccessUser still doesn't have the 'view'
     // privilege after adding the node_access record.
     drupal_static_reset('node_access_view_all_nodes');
     try {
-      $query = $connection->select('node', 'mytab')
+      $query = db_select('node', 'mytab')
         ->fields('mytab');
       $query->addTag('node_access');
       $query->addMetaData('op', 'view');
@@ -182,7 +179,7 @@ class NodeQueryAlterTest extends NodeTestBase {
     \Drupal::state()->set('node_access_test.no_access_uid', $this->noAccessUser->id());
     drupal_static_reset('node_access_view_all_nodes');
     try {
-      $query = $connection->select('node', 'mytab')
+      $query = db_select('node', 'mytab')
         ->fields('mytab');
       $query->addTag('node_access');
       $query->addMetaData('op', 'view');

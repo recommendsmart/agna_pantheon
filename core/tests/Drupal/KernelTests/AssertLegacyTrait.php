@@ -8,19 +8,15 @@ namespace Drupal\KernelTests;
  * Protected methods are custom. Public static methods override methods of
  * \PHPUnit\Framework\Assert.
  *
- * Deprecated Scheduled for removal in Drupal 10.0.0. Use PHPUnit's native
+ * @deprecated Scheduled for removal in Drupal 9.0.0. Use PHPUnit's native
  *   assert methods instead.
- *
- * @todo https://www.drupal.org/project/drupal/issues/3031580 Note that
- *   deprecations in this file do not use the @ symbol in Drupal 8 because this
- *   will be removed in Drupal 10.0.0.
  */
 trait AssertLegacyTrait {
 
   /**
    * @see \Drupal\simpletest\TestBase::assert()
    *
-   * Deprecated Scheduled for removal in Drupal 10.0.0. Use self::assertTrue()
+   * @deprecated Scheduled for removal in Drupal 9.0.0. Use self::assertTrue()
    *   instead.
    */
   protected function assert($actual, $message = '') {
@@ -54,7 +50,7 @@ trait AssertLegacyTrait {
   /**
    * @see \Drupal\simpletest\TestBase::assertEqual()
    *
-   * Deprecated Scheduled for removal in Drupal 10.0.0. Use self::assertEquals()
+   * @deprecated Scheduled for removal in Drupal 9.0.0. Use self::assertEquals()
    *   instead.
    */
   protected function assertEqual($actual, $expected, $message = '') {
@@ -64,7 +60,7 @@ trait AssertLegacyTrait {
   /**
    * @see \Drupal\simpletest\TestBase::assertNotEqual()
    *
-   * Deprecated Scheduled for removal in Drupal 10.0.0. Use
+   * @deprecated Scheduled for removal in Drupal 9.0.0. Use
    *   self::assertNotEquals() instead.
    */
   protected function assertNotEqual($actual, $expected, $message = '') {
@@ -74,7 +70,7 @@ trait AssertLegacyTrait {
   /**
    * @see \Drupal\simpletest\TestBase::assertIdentical()
    *
-   * Deprecated Scheduled for removal in Drupal 10.0.0. Use self::assertSame()
+   * @deprecated Scheduled for removal in Drupal 9.0.0. Use self::assertSame()
    *   instead.
    */
   protected function assertIdentical($actual, $expected, $message = '') {
@@ -84,7 +80,7 @@ trait AssertLegacyTrait {
   /**
    * @see \Drupal\simpletest\TestBase::assertNotIdentical()
    *
-   * Deprecated Scheduled for removal in Drupal 10.0.0. Use
+   * @deprecated Scheduled for removal in Drupal 9.0.0. Use
    *   self::assertNotSame() instead.
    */
   protected function assertNotIdentical($actual, $expected, $message = '') {
@@ -94,7 +90,7 @@ trait AssertLegacyTrait {
   /**
    * @see \Drupal\simpletest\TestBase::assertIdenticalObject()
    *
-   * Deprecated Scheduled for removal in Drupal 10.0.0. Use self::assertEquals()
+   * @deprecated Scheduled for removal in Drupal 9.0.0. Use self::assertEquals()
    *   instead.
    */
   protected function assertIdenticalObject($actual, $expected, $message = '') {
@@ -107,7 +103,7 @@ trait AssertLegacyTrait {
   /**
    * @see \Drupal\simpletest\TestBase::pass()
    *
-   * Deprecated Scheduled for removal in Drupal 10.0.0. Use self::assertTrue()
+   * @deprecated Scheduled for removal in Drupal 9.0.0. Use self::assertTrue()
    *   instead.
    */
   protected function pass($message) {

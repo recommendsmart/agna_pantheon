@@ -39,6 +39,7 @@ class ViewsDataIntegrationTest extends ViewsKernelTestBase {
     $this->installEntitySchema('user');
     $this->installEntitySchema('content_moderation_state');
     $this->installSchema('node', 'node_access');
+    $this->installConfig('content_moderation_test_views');
     $this->installConfig('content_moderation');
 
     $node_type = NodeType::create([
@@ -49,8 +50,6 @@ class ViewsDataIntegrationTest extends ViewsKernelTestBase {
     $workflow->getTypePlugin()->addEntityTypeAndBundle('node', 'page');
     $workflow->getTypePlugin()->addEntityTypeAndBundle('entity_test_mulrevpub', 'entity_test_mulrevpub');
     $workflow->save();
-
-    $this->installConfig('content_moderation_test_views');
   }
 
   /**

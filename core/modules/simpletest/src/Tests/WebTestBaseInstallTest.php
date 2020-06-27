@@ -8,7 +8,6 @@ use Drupal\simpletest\WebTestBase;
  * Tests the test-specifics customisations done in the installation.
  *
  * @group simpletest
- * @group WebTestBase
  */
 class WebTestBaseInstallTest extends WebTestBase {
 

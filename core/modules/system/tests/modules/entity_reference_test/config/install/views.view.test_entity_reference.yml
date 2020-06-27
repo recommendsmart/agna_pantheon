@@ -21,7 +21,7 @@ display:
     position: null
     display_options:
       access:
-        type: none
+        type: perm
       cache:
         type: tag
       query:

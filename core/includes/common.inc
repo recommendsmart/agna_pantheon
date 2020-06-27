@@ -8,20 +8,18 @@
  * a cached page are instead located in bootstrap.inc.
  */
 
-use Drupal\Component\Gettext\PoItem;
 use Drupal\Component\Serialization\Json;
 use Drupal\Component\Utility\Bytes;
-use Drupal\Component\Utility\Environment;
 use Drupal\Component\Utility\Html;
 use Drupal\Component\Utility\SortArray;
 use Drupal\Component\Utility\UrlHelper;
 use Drupal\Core\Cache\Cache;
-use Drupal\Core\Render\BubbleableMetadata;
-use Drupal\Core\Render\Element;
 use Drupal\Core\Render\Element\Link;
-use Drupal\Core\Render\HtmlResponseAttachmentsProcessor;
 use Drupal\Core\Render\Markup;
 use Drupal\Core\StringTranslation\TranslatableMarkup;
+use Drupal\Core\StringTranslation\PluralTranslatableMarkup;
+use Drupal\Core\Render\BubbleableMetadata;
+use Drupal\Core\Render\Element;
 
 /**
  * @defgroup php_wrappers PHP wrapper functions
@@ -128,9 +126,10 @@ const JS_THEME = 100;
  * The delimiter used to split plural strings.
  *
  * @deprecated in Drupal 8.0.x-dev, will be removed before Drupal 9.0.0.
- *   Use Drupal\Component\Gettext\PoItem::DELIMITER instead.
+ *   Use \Drupal\Core\StringTranslation\PluralTranslatableMarkup::DELIMITER
+ *   instead.
  */
-const LOCALE_PLURAL_DELIMITER = PoItem::DELIMITER;
+const LOCALE_PLURAL_DELIMITER = PluralTranslatableMarkup::DELIMITER;
 
 /**
  * Prepares a 'destination' URL query parameter.
@@ -212,7 +211,7 @@ function valid_email_address($mail) {
  *   Drupal\Core\Template\Attribute, call
  *   \Drupal\Component\Utility\UrlHelper::stripDangerousProtocols() instead.
  *
- * @deprecated in Drupal 8.0.0 and will be removed before Drupal 9.0.0.
+ * @deprecated in Drupal 8.0.x-dev, will be removed before Drupal 9.0.0.
  *   Use UrlHelper::stripDangerousProtocols() or UrlHelper::filterBadProtocol()
  *   instead. UrlHelper::stripDangerousProtocols() can be used in conjunction
  *   with \Drupal\Component\Render\FormattableMarkup and an @variable
@@ -226,7 +225,6 @@ function valid_email_address($mail) {
  * @see https://www.drupal.org/node/2560027
  */
 function check_url($uri) {
-  @trigger_error(__FUNCTION__ . '() is deprecated in Drupal 8.0.0 and will be removed before Drupal 9.0.0. Use UrlHelper::stripDangerousProtocols() or UrlHelper::filterBadProtocol() instead. See https://www.drupal.org/node/2560027', E_USER_DEPRECATED);
   return Html::escape(UrlHelper::stripDangerousProtocols($uri));
 }
 
@@ -331,26 +329,19 @@ function format_size($size, $langcode = NULL) {
  * @see https://www.drupal.org/node/1876852
  */
 function format_date($timestamp, $type = 'medium', $format = '', $timezone = NULL, $langcode = NULL) {
-  @trigger_error("format_date() is deprecated in Drupal 8.0.0 and will be removed before Drupal 9.0.0. Use \Drupal::service('date.formatter')->format() instead. See https://www.drupal.org/node/1876852", E_USER_DEPRECATED);
   return \Drupal::service('date.formatter')->format($timestamp, $type, $format, $timezone, $langcode);
 }
 
 /**
  * Returns an ISO8601 formatted date based on the given date.
  *
- * @param string $date
+ * @param $date
  *   A UNIX timestamp.
  *
  * @return string
  *   An ISO8601 formatted date.
- *
- * @deprecated in Drupal 8.7.0 and will be removed before Drupal 9.0.0. Use
- *   date('c', $date) instead.
- *
- * @see https://www.drupal.org/node/2999991
  */
 function date_iso8601($date) {
-  @trigger_error('date_iso8601() is deprecated in Drupal 8.7.0 and will be removed before Drupal 9.0.0. Use date("c", $date) instead. See https://www.drupal.org/node/2999991.', E_USER_DEPRECATED);
   // The DATE_ISO8601 constant cannot be used here because it does not match
   // date('c') and produces invalid RDF markup.
   return date('c', $date);
@@ -363,22 +354,21 @@ function date_iso8601($date) {
 /**
  * Formats an attribute string for an HTTP header.
  *
- * @param array $attributes
+ * @param $attributes
  *   An associative array of attributes such as 'rel'.
  *
- * @return string
+ * @return
  *   A ; separated string ready for insertion in a HTTP header. No escaping is
  *   performed for HTML entities, so this string is not safe to be printed.
- *
- * @deprecated in Drupal 8.7.0 and will be removed before Drupal 9.0.0. Use
- *   \Drupal\Core\Render\HtmlResponseAttachmentsProcessor::formatHttpHeaderAttributes()
- *   instead.
- *
- * @see https://www.drupal.org/node/3000051
  */
 function drupal_http_header_attributes(array $attributes = []) {
-  @trigger_error("drupal_http_header_attributes() is deprecated in Drupal 8.7.0 and will be removed before Drupal 9.0.0. Use \Drupal\Core\Render\HtmlResponseAttachmentsProcessor::formatHttpHeaderAttributes() instead. See https://www.drupal.org/node/3000051", E_USER_DEPRECATED);
-  return HtmlResponseAttachmentsProcessor::formatHttpHeaderAttributes($attributes);
+  foreach ($attributes as $attribute => &$data) {
+    if (is_array($data)) {
+      $data = implode(' ', $data);
+    }
+    $data = $attribute . '="' . $data . '"';
+  }
+  return $attributes ? ' ' . implode('; ', $attributes) : '';
 }
 
 /**
@@ -408,15 +398,15 @@ function drupal_http_header_attributes(array $attributes = []) {
  *   indicates unlimited execution time.
  *
  * @ingroup php_wrappers
- *
- * @deprecated in Drupal 8.7.0 and will be removed before Drupal 9.0.0. Use
- *   \Drupal\Core\Environment::setTimeLimit() instead.
- *
- * @see https://www.drupal.org/node/3000058
  */
 function drupal_set_time_limit($time_limit) {
-  @trigger_error('drupal_set_time_limit() is deprecated in Drupal 8.7.0 and will be removed before Drupal 9.0.0. Use \Drupal\Core\Environment::setTimeLimit() instead. See https://www.drupal.org/node/3000058.', E_USER_DEPRECATED);
-  Environment::setTimeLimit($time_limit);
+  if (function_exists('set_time_limit')) {
+    $current = ini_get('max_execution_time');
+    // Do not set time limit if it is currently unlimited.
+    if ($current != 0) {
+      @set_time_limit($time_limit);
+    }
+  }
 }
 
 /**
@@ -1226,13 +1216,9 @@ function debug($data, $label = NULL, $print_r = TRUE) {
  *   NULL if compatible, otherwise the original dependency version string that
  *   caused the incompatibility.
  *
- * @deprecated in Drupal 8.7.0 and will be removed before Drupal 9.0.0. Use
- *   \Drupal\Core\Extension\Dependency::isCompatible() instead.
- *
- * @see https://www.drupal.org/node/2756875
+ * @see \Drupal\Core\Extension\ModuleHandler::parseDependency()
  */
 function drupal_check_incompatibility($v, $current_version) {
-  @trigger_error(__FUNCTION__ . '() is deprecated. Use \Drupal\Core\Extension\Dependency::isCompatible() instead. See https://www.drupal.org/node/2756875', E_USER_DEPRECATED);
   if (!empty($v['versions'])) {
     foreach ($v['versions'] as $required_version) {
       if ((isset($required_version['op']) && !version_compare($current_version, $required_version['version'], $required_version['op']))) {

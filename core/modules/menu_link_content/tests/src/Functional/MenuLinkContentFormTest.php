@@ -105,7 +105,7 @@ class MenuLinkContentFormTest extends BrowserTestBase {
       ],
       t('Save')
     );
-    $this->assertText(t('Manually entered paths should start with one of the following characters: / ? #'));
+    $this->assertText(t('Manually entered paths should start with /, ? or #.'));
   }
 
 }

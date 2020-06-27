@@ -7,7 +7,6 @@ use Drupal\Core\Form\FormBase;
 use Drupal\Core\Form\FormStateInterface;
 use Drupal\Core\Render\RendererInterface;
 use Drupal\user\UserAuthInterface;
-use Drupal\user\UserInterface;
 use Drupal\user\UserStorageInterface;
 use Symfony\Component\DependencyInjection\ContainerInterface;
 
@@ -95,7 +94,7 @@ class UserLoginForm extends FormBase {
       '#type' => 'textfield',
       '#title' => $this->t('Username'),
       '#size' => 60,
-      '#maxlength' => UserInterface::USERNAME_MAX_LENGTH,
+      '#maxlength' => USERNAME_MAX_LENGTH,
       '#description' => $this->t('Enter your @s username.', ['@s' => $config->get('name')]),
       '#required' => TRUE,
       '#attributes' => [

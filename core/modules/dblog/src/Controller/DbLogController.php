@@ -5,7 +5,6 @@ namespace Drupal\dblog\Controller;
 use Drupal\Component\Utility\Html;
 use Drupal\Component\Utility\Unicode;
 use Drupal\Component\Utility\Xss;
-use Drupal\Component\Utility\UrlHelper;
 use Drupal\Core\Controller\ControllerBase;
 use Drupal\Core\Database\Connection;
 use Drupal\Core\Datetime\DateFormatterInterface;
@@ -15,7 +14,6 @@ use Drupal\Core\Logger\RfcLogLevel;
 use Drupal\Core\Url;
 use Drupal\user\Entity\User;
 use Symfony\Component\DependencyInjection\ContainerInterface;
-use Drupal\Core\Link;
 
 /**
  * Returns responses for dblog routes.
@@ -86,7 +84,7 @@ class DbLogController extends ControllerBase {
     $this->moduleHandler = $module_handler;
     $this->dateFormatter = $date_formatter;
     $this->formBuilder = $form_builder;
-    $this->userStorage = $this->entityTypeManager()->getStorage('user');
+    $this->userStorage = $this->entityManager()->getStorage('user');
   }
 
   /**
@@ -266,11 +264,11 @@ class DbLogController extends ControllerBase {
         ],
         [
           ['data' => $this->t('Location'), 'header' => TRUE],
-          $this->createLink($dblog->location),
+          $this->l($dblog->location, $dblog->location ? Url::fromUri($dblog->location) : Url::fromRoute('<none>')),
         ],
         [
           ['data' => $this->t('Referrer'), 'header' => TRUE],
-          $this->createLink($dblog->referer),
+          $this->l($dblog->referer, $dblog->referer ? Url::fromUri($dblog->referer) : Url::fromRoute('<none>')),
         ],
         [
           ['data' => $this->t('Message'), 'header' => TRUE],
@@ -369,23 +367,6 @@ class DbLogController extends ControllerBase {
       $message = FALSE;
     }
     return $message;
-  }
-
-  /**
-   * Creates a Link object if the provided URI is valid.
-   *
-   * @param string|null $uri
-   *   The uri string to convert into link if valid.
-   *
-   * @return \Drupal\Core\Link|string|null
-   *   Return a Link object if the uri can be converted as a link. In case of
-   *   empty uri or invalid, fallback to the provided $uri.
-   */
-  protected function createLink($uri) {
-    if (UrlHelper::isValid($uri, TRUE)) {
-      return new Link($uri, Url::fromUri($uri));
-    }
-    return $uri;
   }
 
   /**

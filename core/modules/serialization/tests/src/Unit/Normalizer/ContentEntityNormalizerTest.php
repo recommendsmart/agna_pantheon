@@ -2,9 +2,6 @@
 
 namespace Drupal\Tests\serialization\Unit\Normalizer;
 
-use Drupal\Core\Entity\EntityFieldManagerInterface;
-use Drupal\Core\Entity\EntityTypeManagerInterface;
-use Drupal\Core\Entity\EntityTypeRepositoryInterface;
 use Drupal\Core\Session\AccountInterface;
 use Drupal\Core\TypedData\ComplexDataInterface;
 use Drupal\Core\TypedData\DataDefinitionInterface;
@@ -16,6 +13,13 @@ use Drupal\Tests\UnitTestCase;
  * @group serialization
  */
 class ContentEntityNormalizerTest extends UnitTestCase {
+
+  /**
+   * The mock entity manager.
+   *
+   * @var \Drupal\Core\Entity\EntityManagerInterface|\PHPUnit_Framework_MockObject_MockObject
+   */
+  protected $entityManager;
 
   /**
    * The mock serializer.
@@ -35,12 +39,8 @@ class ContentEntityNormalizerTest extends UnitTestCase {
    * {@inheritdoc}
    */
   protected function setUp() {
-    $entity_field_manager = $this->createMock(EntityFieldManagerInterface::class);
-    $entity_type_manager = $this->createMock(EntityTypeManagerInterface::class);
-    $entity_type_repository = $this->createMock(EntityTypeRepositoryInterface::class);
-
-    $this->contentEntityNormalizer = new ContentEntityNormalizer($entity_type_manager, $entity_type_repository, $entity_field_manager);
-
+    $this->entityManager = $this->getMock('Drupal\Core\Entity\EntityManagerInterface');
+    $this->contentEntityNormalizer = new ContentEntityNormalizer($this->entityManager);
     $this->serializer = $this->getMockBuilder('Symfony\Component\Serializer\Serializer')
       ->disableOriginalConstructor()
       ->setMethods(['normalize'])

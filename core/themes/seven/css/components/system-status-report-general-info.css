@@ -9,38 +9,38 @@
 }
 
 .system-status-general-info__header {
-  overflow: hidden;
-  margin: 0;
+  background-color: #f5f5f2;
   padding: 10px;
-  text-transform: uppercase;
+  margin: 0;
+  overflow: hidden;
   border-top-left-radius: 3px;
   border-top-right-radius: 3px;
-  background-color: #f5f5f2;
   font-size: 14px;
+  text-transform: uppercase;
 }
 
 .system-status-general-info__item {
-  overflow-x: auto;
-  box-sizing: border-box;
-  padding: 10px 10px 20px;
-  border-top: 1px solid #ccc;
   background: #fcfcfa;
+  border-top: 1px solid #ccc;
+  padding: 10px 10px 20px;
+  box-sizing: border-box;
+  overflow-x: auto;
 }
 
 .system-status-general-info__item-icon {
   display: inline-block;
-  width: 45px;
   height: 45px;
+  width: 45px;
   vertical-align: top;
 }
 .system-status-general-info__item-icon:before {
-  display: block;
+  content: "";
+  background-size: 35px;
+  background-position: 50% center;
+  background-repeat: no-repeat;
   width: 100%;
   height: 100%;
-  content: "";
-  background-repeat: no-repeat;
-  background-position: 50% center;
-  background-size: 35px;
+  display: block;
 }
 .system-status-general-info__item-icon--d8:before {
   background-image: url(../../images/icons/cccccc/d8-logo.svg);
@@ -61,11 +61,11 @@
 }
 
 .system-status-general-info__item-details {
-  position: relative;
-  display: inline-block;
   box-sizing: border-box;
+  display: inline-block;
   width: calc(100% - 60px);
   padding-left: 10px; /* LTR */
+  position: relative;
 }
 [dir="rtl"] .system-status-general-info__item-details {
   padding-right: 10px;
@@ -94,8 +94,8 @@
 @media screen and (min-width: 48em) {
   .system-status-general-info__items {
     display: flex;
-    overflow-x: hidden;
     flex-wrap: wrap;
+    overflow-x: hidden;
   }
 
   .system-status-general-info__item {
@@ -145,8 +145,8 @@
     margin-top: 0;
   }
   [dir="rtl"] .system-status-general-info__run-cron {
-    right: auto;
     left: 1em;
+    right: auto;
   }
 }
 
@@ -155,7 +155,7 @@
     display: none;
   }
   .system-status-general-info {
-    margin-top: 25px;
     border-top: 0;
+    margin-top: 25px;
   }
 }

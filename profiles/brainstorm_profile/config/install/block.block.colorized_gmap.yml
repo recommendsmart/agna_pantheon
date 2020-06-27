@@ -1,0 +1,170 @@
+langcode: en
+status: true
+dependencies:
+  module:
+    - colorized_gmap
+  theme:
+    - brainstorm_theme
+id: colorized_gmap
+theme: brainstorm_theme
+region: content
+weight: -3
+provider: null
+plugin: colorized_gmap
+settings:
+  id: colorized_gmap
+  label: 'Colorized Map'
+  provider: colorized_gmap
+  label_display: '0'
+  colorized_map_styles:
+    0:
+      featureType: 'administrative.locality'
+      elementType: 'all'
+      stylers:
+        0:
+          color: '#2c2e33'
+        1:
+          visibility: 'on'
+        2:
+          saturation: '7'
+        3:
+          lightness: '19'
+    1:
+      featureType: 'landscape'
+      elementType: 'all'
+      stylers:
+        0:
+          color: "#fff"
+        1:
+          visibility: 'simplified'
+        2:
+          saturation: '-100'
+        3:
+          lightness: '100'
+    2:
+      featureType: 'poi'
+      elementType: 'all'
+      stylers:
+        0:
+          color: "#fff"
+        1:
+          visibility: 'off'
+        2:
+          saturation: '-100'
+        3:
+          lightness: '100'
+    3:
+      featureType: 'road'
+      elementType: 'geometry'
+      stylers:
+        0:
+          color: "#bbc0c4"
+        1:
+          visibility: 'simplified'
+        2:
+          saturation: '-93'
+        3:
+          lightness: '31'
+      lightness: '100'
+    4:
+      featureType: 'road'
+      elementType: 'labels'
+      stylers:
+        0:
+          color: "#404040"
+        1:
+          visibility: 'simplified'
+        2:
+          saturation: '-93'
+        3:
+          lightness: '31'
+    5:
+      featureType: 'road.arterial'
+      elementType: 'labels'
+      stylers:
+        0:
+          color: "#404040"
+        1:
+          visibility: 'simplified'
+        2:
+          saturation: '-93'
+        3:
+          lightness: '31'
+    6:
+      featureType: 'road.local'
+      elementType: 'geometry'
+      stylers:
+        0:
+          color: "#e9ebed"
+        1:
+          visibility: 'simplified'
+        2:
+          saturation: '-90'
+        3:
+          lightness: '-8'
+    7:
+      featureType: 'transit'
+      elementType: 'geometry'
+      stylers:
+        0:
+          color: "#000"
+        1:
+          visibility: 'simplified'
+        2:
+          saturation: '10'
+        3:
+          lightness: '69'
+    8:
+      featureType: 'water'
+      elementType: 'all'
+      stylers:
+        0:
+          color: "#e9ebed"
+        1:
+          visibility: 'simplified'
+        2:
+          saturation: '-78'
+        3:
+          lightness: '67'
+    9:
+      featureType: 'administrative'
+      elementType: 'labels'
+      stylers:
+        0:
+          color: "#000000"
+        1:
+          visibility: 'simplified'
+        2:
+          saturation: '-93'
+        3:
+          lightness: '20'
+    10:
+      featureType: 'transit'
+      elementType: 'labels.icon'
+      stylers:
+        0:
+          color: ""
+        1:
+          visibility: 'off'
+        2:
+          saturation: ''
+        3:
+          lightness: ''
+    11:
+      featureType: 'road'
+      elementType: 'labels.icon'
+      stylers:
+        0:
+          color: ""
+        1:
+          visibility: 'off'
+        2:
+          saturation: ''
+        3:
+          lightness: ''
+visibility:
+  request_path:
+    id: request_path
+    pages: '/contact'
+    negate: false
+    context_mapping: {  }

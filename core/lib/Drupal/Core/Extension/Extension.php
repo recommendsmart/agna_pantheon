@@ -181,7 +181,7 @@ class Extension {
    */
   public function __wakeup() {
     // Get the app root from the container.
-    $this->root = \Drupal::hasService('app.root') ? \Drupal::root() : DRUPAL_ROOT;
+    $this->root = DRUPAL_ROOT;
   }
 
 }

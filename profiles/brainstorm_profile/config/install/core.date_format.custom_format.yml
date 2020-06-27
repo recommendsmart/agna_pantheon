@@ -1,0 +1,7 @@
+langcode: en
+status: true
+dependencies: {  }
+id: custom_format
+label: 'Custom format'
+locked: false
+pattern: 'F d, Y'

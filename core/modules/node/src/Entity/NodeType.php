@@ -198,7 +198,7 @@ class NodeType extends ConfigEntityBundleBase implements NodeTypeInterface {
     if ($update) {
       // Clear the cached field definitions as some settings affect the field
       // definitions.
-      \Drupal::service('entity_field.manager')->clearCachedFieldDefinitions();
+      $this->entityManager()->clearCachedFieldDefinitions();
     }
   }
 

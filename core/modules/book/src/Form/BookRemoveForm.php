@@ -94,7 +94,7 @@ class BookRemoveForm extends ConfirmFormBase {
    * {@inheritdoc}
    */
   public function getCancelUrl() {
-    return $this->node->toUrl();
+    return $this->node->urlInfo();
   }
 
   /**

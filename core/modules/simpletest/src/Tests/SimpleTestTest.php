@@ -12,7 +12,6 @@ use Drupal\simpletest\WebTestBase;
  * internal browser and APIs implicitly.
  *
  * @group simpletest
- * @group WebTestBase
  */
 class SimpleTestTest extends WebTestBase {
 

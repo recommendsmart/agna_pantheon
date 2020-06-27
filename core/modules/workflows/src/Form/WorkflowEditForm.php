@@ -83,6 +83,7 @@ class WorkflowEditForm extends EntityForm {
       '#type' => 'details',
       '#title' => $this->t('States'),
       '#open' => TRUE,
+      '#collapsible' => 'FALSE',
     ];
     $form['states_container']['states'] = [
       '#type' => 'table',

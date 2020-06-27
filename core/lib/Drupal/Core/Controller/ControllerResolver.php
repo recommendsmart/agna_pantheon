@@ -66,7 +66,9 @@ class ControllerResolver extends BaseControllerResolver implements ControllerRes
       if (function_exists($controller)) {
         return $controller;
       }
-      return $this->classResolver->getInstanceFromDefinition($controller);
+      elseif (method_exists($controller, '__invoke')) {
+        return new $controller();
+      }
     }
 
     $callable = $this->createController($controller);

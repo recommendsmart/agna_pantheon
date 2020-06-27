@@ -73,7 +73,7 @@ class LayoutBuilderFieldLayoutCompatibilityTest extends LayoutBuilderCompatibili
     $this->assertNotEmpty($this->cssSelect('.layout--onecol'));
 
     // Removing the layout restores the original rendering of the entity.
-    $field_list->removeAllSections();
+    $field_list->removeSection(0);
     $this->entity->save();
     $this->assertFieldAttributes($this->entity, $expected_fields);
   }

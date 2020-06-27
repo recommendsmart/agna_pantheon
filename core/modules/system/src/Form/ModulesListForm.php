@@ -281,14 +281,10 @@ class ModulesListForm extends FormBase {
     $reasons = [];
 
     // Check the core compatibility.
-    if ($module->info['core_incompatible']) {
+    if ($module->info['core'] != \Drupal::CORE_COMPATIBILITY) {
       $compatible = FALSE;
       $reasons[] = $this->t('This version is not compatible with Drupal @core_version and should be replaced.', [
-        '@core_version' => \Drupal::VERSION,
-      ]);
-      $row['#requires']['core'] = $this->t('Drupal Core (@core_requirement) (<span class="admin-missing">incompatible with</span> version @core_version)', [
-        '@core_requirement' => isset($module->info['core_version_requirement']) ? $module->info['core_version_requirement'] : $module->info['core'],
-        '@core_version' => \Drupal::VERSION,
+        '@core_version' => \Drupal::CORE_COMPATIBILITY,
       ]);
     }
 
@@ -311,8 +307,7 @@ class ModulesListForm extends FormBase {
     }
 
     // If this module requires other modules, add them to the array.
-    /** @var \Drupal\Core\Extension\Dependency $dependency_object */
-    foreach ($module->requires as $dependency => $dependency_object) {
+    foreach ($module->requires as $dependency => $version) {
       if (!isset($modules[$dependency])) {
         $row['#requires'][$dependency] = $this->t('@module (<span class="admin-missing">missing</span>)', ['@module' => Unicode::ucfirst($dependency)]);
         $row['enable']['#disabled'] = TRUE;
@@ -322,17 +317,16 @@ class ModulesListForm extends FormBase {
         $name = $modules[$dependency]->info['name'];
         // Disable the module's checkbox if it is incompatible with the
         // dependency's version.
-        if (!$dependency_object->isCompatible(str_replace(\Drupal::CORE_COMPATIBILITY . '-', '', $modules[$dependency]->info['version']))) {
-          $row['#requires'][$dependency] = $this->t('@module (@constraint) (<span class="admin-missing">incompatible with</span> version @version)', [
-            '@module' => $name,
-            '@constraint' => $dependency_object->getConstraintString(),
+        if ($incompatible_version = drupal_check_incompatibility($version, str_replace(\Drupal::CORE_COMPATIBILITY . '-', '', $modules[$dependency]->info['version']))) {
+          $row['#requires'][$dependency] = $this->t('@module (<span class="admin-missing">incompatible with</span> version @version)', [
+            '@module' => $name . $incompatible_version,
             '@version' => $modules[$dependency]->info['version'],
           ]);
           $row['enable']['#disabled'] = TRUE;
         }
         // Disable the checkbox if the dependency is incompatible with this
         // version of Drupal core.
-        elseif ($modules[$dependency]->info['core_incompatible']) {
+        elseif ($modules[$dependency]->info['core'] != \Drupal::CORE_COMPATIBILITY) {
           $row['#requires'][$dependency] = $this->t('@module (<span class="admin-missing">incompatible with</span> this version of Drupal core)', [
             '@module' => $name,
           ]);

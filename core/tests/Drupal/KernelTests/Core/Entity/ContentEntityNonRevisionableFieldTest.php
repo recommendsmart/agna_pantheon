@@ -5,7 +5,6 @@ namespace Drupal\KernelTests\Core\Entity;
 use Drupal\entity_test\Entity\EntityTestMulRev;
 use Drupal\entity_test\Entity\EntityTestRev;
 use Drupal\language\Entity\ConfigurableLanguage;
-use Drupal\Tests\system\Functional\Entity\Traits\EntityDefinitionTestTrait;
 
 /**
  * Tests non-revisionable fields on revisionable (and translatable) entities.
@@ -13,8 +12,6 @@ use Drupal\Tests\system\Functional\Entity\Traits\EntityDefinitionTestTrait;
  * @group Entity
  */
 class ContentEntityNonRevisionableFieldTest extends EntityKernelTestBase {
-
-  use EntityDefinitionTestTrait;
 
   /**
    * Modules to enable.
@@ -182,7 +179,7 @@ class ContentEntityNonRevisionableFieldTest extends EntityKernelTestBase {
    */
   public function testMultiColumnNonRevisionableBaseField() {
     \Drupal::state()->set('entity_test.multi_column', TRUE);
-    $this->applyEntityUpdates('entity_test_mulrev');
+    \Drupal::entityDefinitionUpdateManager()->applyUpdates();
     // Refresh the storage.
     $this->mulRev = $this->entityManager->getStorage('entity_test_mulrev');
     $user1 = $this->createUser();

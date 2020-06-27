@@ -31,7 +31,6 @@ class ViewsConfigDependenciesIntegrationTest extends ViewsKernelTestBase {
   protected function setUp($import_test_views = TRUE) {
     parent::setUp($import_test_views);
 
-    $this->installEntitySchema('entity_test');
     $this->installEntitySchema('user');
     $this->installSchema('user', ['users_data']);
   }

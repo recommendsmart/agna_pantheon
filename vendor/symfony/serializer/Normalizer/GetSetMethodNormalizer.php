@@ -34,8 +34,8 @@ namespace Symfony\Component\Serializer\Normalizer;
  */
 class GetSetMethodNormalizer extends AbstractObjectNormalizer
 {
-    private static $setterAccessibleCache = [];
-    private $cache = [];
+    private static $setterAccessibleCache = array();
+    private $cache = array();
 
     /**
      * {@inheritdoc}
@@ -96,12 +96,12 @@ class GetSetMethodNormalizer extends AbstractObjectNormalizer
     /**
      * {@inheritdoc}
      */
-    protected function extractAttributes($object, $format = null, array $context = [])
+    protected function extractAttributes($object, $format = null, array $context = array())
     {
         $reflectionObject = new \ReflectionObject($object);
         $reflectionMethods = $reflectionObject->getMethods(\ReflectionMethod::IS_PUBLIC);
 
-        $attributes = [];
+        $attributes = array();
         foreach ($reflectionMethods as $method) {
             if (!$this->isGetMethod($method)) {
                 continue;
@@ -109,7 +109,7 @@ class GetSetMethodNormalizer extends AbstractObjectNormalizer
 
             $attributeName = lcfirst(substr($method->name, 0 === strpos($method->name, 'is') ? 2 : 3));
 
-            if ($this->isAllowedAttribute($object, $attributeName, $format, $context)) {
+            if ($this->isAllowedAttribute($object, $attributeName)) {
                 $attributes[] = $attributeName;
             }
         }
@@ -120,38 +120,36 @@ class GetSetMethodNormalizer extends AbstractObjectNormalizer
     /**
      * {@inheritdoc}
      */
-    protected function getAttributeValue($object, $attribute, $format = null, array $context = [])
+    protected function getAttributeValue($object, $attribute, $format = null, array $context = array())
     {
         $ucfirsted = ucfirst($attribute);
 
         $getter = 'get'.$ucfirsted;
-        if (\is_callable([$object, $getter])) {
+        if (\is_callable(array($object, $getter))) {
             return $object->$getter();
         }
 
         $isser = 'is'.$ucfirsted;
-        if (\is_callable([$object, $isser])) {
+        if (\is_callable(array($object, $isser))) {
             return $object->$isser();
         }
 
         $haser = 'has'.$ucfirsted;
-        if (\is_callable([$object, $haser])) {
+        if (\is_callable(array($object, $haser))) {
             return $object->$haser();
         }
-
-        return null;
     }
 
     /**
      * {@inheritdoc}
      */
-    protected function setAttributeValue($object, $attribute, $value, $format = null, array $context = [])
+    protected function setAttributeValue($object, $attribute, $value, $format = null, array $context = array())
     {
         $setter = 'set'.ucfirst($attribute);
         $key = \get_class($object).':'.$setter;
 
         if (!isset(self::$setterAccessibleCache[$key])) {
-            self::$setterAccessibleCache[$key] = \is_callable([$object, $setter]) && !(new \ReflectionMethod($object, $setter))->isStatic();
+            self::$setterAccessibleCache[$key] = \is_callable(array($object, $setter)) && !(new \ReflectionMethod($object, $setter))->isStatic();
         }
 
         if (self::$setterAccessibleCache[$key]) {

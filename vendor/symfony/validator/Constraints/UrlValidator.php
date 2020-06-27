@@ -23,9 +23,9 @@ class UrlValidator extends ConstraintValidator
 {
     const PATTERN = '~^
             (%s)://                                 # protocol
-            (((?:[\_\.\pL\pN-]|%%[0-9A-Fa-f]{2})+:)?((?:[\_\.\pL\pN-]|%%[0-9A-Fa-f]{2})+)@)?  # basic auth
+            (([\.\pL\pN-]+:)?([\.\pL\pN-]+)@)?      # basic auth
             (
-                ([\pL\pN\pS\-\_\.])+(\.?([\pL\pN]|xn\-\-[\pL\pN-]+)+\.?) # a domain name
+                ([\pL\pN\pS\-\.])+(\.?([\pL\pN]|xn\-\-[\pL\pN-]+)+\.?) # a domain name
                     |                                                 # or
                 \d{1,3}\.\d{1,3}\.\d{1,3}\.\d{1,3}                    # an IP address
                     |                                                 # or
@@ -45,7 +45,7 @@ class UrlValidator extends ConstraintValidator
     public function validate($value, Constraint $constraint)
     {
         if (!$constraint instanceof Url) {
-            throw new UnexpectedTypeException($constraint, Url::class);
+            throw new UnexpectedTypeException($constraint, __NAMESPACE__.'\Url');
         }
 
         if (null === $value || '' === $value) {
@@ -79,7 +79,7 @@ class UrlValidator extends ConstraintValidator
                 @trigger_error(sprintf('Use of the boolean TRUE for the "checkDNS" option in %s is deprecated.  Use Url::CHECK_DNS_TYPE_ANY instead.', Url::class), E_USER_DEPRECATED);
             }
 
-            if (!\in_array($constraint->checkDNS, [
+            if (!\in_array($constraint->checkDNS, array(
                 Url::CHECK_DNS_TYPE_ANY,
                 Url::CHECK_DNS_TYPE_A,
                 Url::CHECK_DNS_TYPE_A6,
@@ -92,8 +92,8 @@ class UrlValidator extends ConstraintValidator
                 Url::CHECK_DNS_TYPE_SOA,
                 Url::CHECK_DNS_TYPE_SRV,
                 Url::CHECK_DNS_TYPE_TXT,
-            ], true)) {
-                throw new InvalidOptionsException(sprintf('Invalid value for option "checkDNS" in constraint "%s".', \get_class($constraint)), ['checkDNS']);
+            ), true)) {
+                throw new InvalidOptionsException(sprintf('Invalid value for option "checkDNS" in constraint %s', \get_class($constraint)), array('checkDNS'));
             }
 
             $host = parse_url($value, PHP_URL_HOST);

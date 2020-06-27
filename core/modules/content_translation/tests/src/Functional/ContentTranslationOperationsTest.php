@@ -49,8 +49,10 @@ class ContentTranslationOperationsTest extends NodeTestBase {
     // Enable translation for the current entity type and ensure the change is
     // picked up.
     \Drupal::service('content_translation.manager')->setEnabled('node', 'article', TRUE);
-
+    drupal_static_reset();
+    \Drupal::entityManager()->clearCachedDefinitions();
     \Drupal::service('router.builder')->rebuild();
+    \Drupal::service('entity.definition_update_manager')->applyUpdates();
 
     $this->baseUser1 = $this->drupalCreateUser(['access content overview']);
     $this->baseUser2 = $this->drupalCreateUser(['access content overview', 'create content translations', 'update content translations', 'delete content translations']);
@@ -84,7 +86,7 @@ class ContentTranslationOperationsTest extends NodeTestBase {
       ]
     );
     $this->drupalLogin($this->baseUser1);
-    $this->drupalGet($node->toUrl('drupal:content-translation-overview'));
+    $this->drupalGet($node->urlInfo('drupal:content-translation-overview'));
     $this->assertResponse(403);
 
     // Ensure that the translation overview is also not accessible when the user
@@ -97,7 +99,7 @@ class ContentTranslationOperationsTest extends NodeTestBase {
       ]
     );
     $node->setUnpublished()->save();
-    $this->drupalGet($node->toUrl('drupal:content-translation-overview'));
+    $this->drupalGet($node->urlInfo('drupal:content-translation-overview'));
     $this->assertResponse(403);
     $this->drupalLogout();
 

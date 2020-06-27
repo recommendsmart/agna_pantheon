@@ -49,7 +49,7 @@ abstract class Constraint
     /**
      * Maps error codes to the names of their constants.
      */
-    protected static $errorNames = [];
+    protected static $errorNames = array();
 
     /**
      * Domain-specific data attached to a constraint.
@@ -70,7 +70,11 @@ abstract class Constraint
     public static function getErrorName($errorCode)
     {
         if (!isset(static::$errorNames[$errorCode])) {
-            throw new InvalidArgumentException(sprintf('The error code "%s" does not exist for constraint of type "%s".', $errorCode, static::class));
+            throw new InvalidArgumentException(sprintf(
+                'The error code "%s" does not exist for constraint of type "%s".',
+                $errorCode,
+                \get_called_class()
+            ));
         }
 
         return static::$errorNames[$errorCode];
@@ -105,29 +109,24 @@ abstract class Constraint
      */
     public function __construct($options = null)
     {
-        $defaultOption = $this->getDefaultOption();
-        $invalidOptions = [];
+        $invalidOptions = array();
         $missingOptions = array_flip((array) $this->getRequiredOptions());
         $knownOptions = get_object_vars($this);
 
         // The "groups" option is added to the object lazily
         $knownOptions['groups'] = true;
 
-        if (\is_array($options) && isset($options['value']) && !property_exists($this, 'value')) {
-            if (null === $defaultOption) {
-                throw new ConstraintDefinitionException(sprintf('No default option is configured for constraint "%s".', static::class));
-            }
-
-            $options[$defaultOption] = $options['value'];
+        if (\is_array($options) && \count($options) >= 1 && isset($options['value']) && !property_exists($this, 'value')) {
+            $options[$this->getDefaultOption()] = $options['value'];
             unset($options['value']);
         }
 
         if (\is_array($options)) {
             reset($options);
         }
-        if ($options && \is_array($options) && \is_string(key($options))) {
+        if (\is_array($options) && \count($options) > 0 && \is_string(key($options))) {
             foreach ($options as $option => $value) {
-                if (\array_key_exists($option, $knownOptions)) {
+                if (array_key_exists($option, $knownOptions)) {
                     $this->$option = $value;
                     unset($missingOptions[$option]);
                 } else {
@@ -135,24 +134,34 @@ abstract class Constraint
                 }
             }
         } elseif (null !== $options && !(\is_array($options) && 0 === \count($options))) {
-            if (null === $defaultOption) {
-                throw new ConstraintDefinitionException(sprintf('No default option is configured for constraint "%s".', static::class));
+            $option = $this->getDefaultOption();
+
+            if (null === $option) {
+                throw new ConstraintDefinitionException(
+                    sprintf('No default option is configured for constraint %s', \get_class($this))
+                );
             }
 
-            if (\array_key_exists($defaultOption, $knownOptions)) {
-                $this->$defaultOption = $options;
-                unset($missingOptions[$defaultOption]);
+            if (array_key_exists($option, $knownOptions)) {
+                $this->$option = $options;
+                unset($missingOptions[$option]);
             } else {
-                $invalidOptions[] = $defaultOption;
+                $invalidOptions[] = $option;
             }
         }
 
         if (\count($invalidOptions) > 0) {
-            throw new InvalidOptionsException(sprintf('The options "%s" do not exist in constraint "%s".', implode('", "', $invalidOptions), static::class), $invalidOptions);
+            throw new InvalidOptionsException(
+                sprintf('The options "%s" do not exist in constraint %s', implode('", "', $invalidOptions), \get_class($this)),
+                $invalidOptions
+            );
         }
 
         if (\count($missingOptions) > 0) {
-            throw new MissingOptionsException(sprintf('The options "%s" must be set for constraint "%s".', implode('", "', array_keys($missingOptions)), static::class), array_keys($missingOptions));
+            throw new MissingOptionsException(
+                sprintf('The options "%s" must be set for constraint %s', implode('", "', array_keys($missingOptions)), \get_class($this)),
+                array_keys($missingOptions)
+            );
         }
     }
 
@@ -176,7 +185,7 @@ abstract class Constraint
             return;
         }
 
-        throw new InvalidOptionsException(sprintf('The option "%s" does not exist in constraint "%s".', $option, static::class), [$option]);
+        throw new InvalidOptionsException(sprintf('The option "%s" does not exist in constraint %s', $option, \get_class($this)), array($option));
     }
 
     /**
@@ -197,12 +206,12 @@ abstract class Constraint
     public function __get($option)
     {
         if ('groups' === $option) {
-            $this->groups = [self::DEFAULT_GROUP];
+            $this->groups = array(self::DEFAULT_GROUP);
 
             return $this->groups;
         }
 
-        throw new InvalidOptionsException(sprintf('The option "%s" does not exist in constraint "%s".', $option, static::class), [$option]);
+        throw new InvalidOptionsException(sprintf('The option "%s" does not exist in constraint %s', $option, \get_class($this)), array($option));
     }
 
     /**
@@ -232,13 +241,12 @@ abstract class Constraint
      *
      * Override this method to define a default option.
      *
-     * @return string|null
+     * @return string
      *
      * @see __construct()
      */
     public function getDefaultOption()
     {
-        return null;
     }
 
     /**
@@ -252,7 +260,7 @@ abstract class Constraint
      */
     public function getRequiredOptions()
     {
-        return [];
+        return array();
     }
 
     /**
@@ -260,13 +268,13 @@ abstract class Constraint
      *
      * By default, this is the fully qualified name of the constraint class
      * suffixed with "Validator". You can override this method to change that
-     * behavior.
+     * behaviour.
      *
      * @return string
      */
     public function validatedBy()
     {
-        return static::class.'Validator';
+        return \get_class($this).'Validator';
     }
 
     /**
@@ -288,7 +296,9 @@ abstract class Constraint
      *
      * @return array The properties to serialize
      *
-     * @internal
+     * @internal This method may be replaced by an implementation of
+     *           {@link \Serializable} in the future. Please don't use or
+     *           overwrite it.
      */
     public function __sleep()
     {

@@ -4,7 +4,6 @@ namespace Drupal\Tests\config\Functional;
 
 use Drupal\Core\Config\PreExistingConfigException;
 use Drupal\Core\Config\StorageInterface;
-use Drupal\Core\File\Exception\FileException;
 use Drupal\language\Entity\ConfigurableLanguage;
 use Drupal\Tests\BrowserTestBase;
 
@@ -191,7 +190,7 @@ class ConfigInstallWebTest extends BrowserTestBase {
     $this->drupalPostForm('admin/modules', ['modules[config_other_module_config_test][enable]' => TRUE], t('Install'));
     $this->drupalPostForm('admin/modules', ['modules[config_install_dependency_test][enable]' => TRUE], t('Install'));
     $this->rebuildContainer();
-    $this->assertTrue(\Drupal::entityTypeManager()->getStorage('config_test')->load('other_module_test_with_dependency'), 'The config_test.dynamic.other_module_test_with_dependency configuration has been created during install.');
+    $this->assertTrue(entity_load('config_test', 'other_module_test_with_dependency'), 'The config_test.dynamic.other_module_test_with_dependency configuration has been created during install.');
   }
 
   /**
@@ -202,12 +201,7 @@ class ConfigInstallWebTest extends BrowserTestBase {
     $this->drupalPostForm('admin/modules', ['modules[config][enable]' => TRUE], t('Install'));
 
     $directory = config_get_config_directory(CONFIG_SYNC_DIRECTORY);
-    try {
-      \Drupal::service('file_system')->deleteRecursive($directory);
-    }
-    catch (FileException $e) {
-      // Ignore failed deletes.
-    }
+    file_unmanaged_delete_recursive($directory);
     $this->drupalGet('/admin/reports/status');
     $this->assertRaw(t('The directory %directory does not exist.', ['%directory' => $directory]));
   }

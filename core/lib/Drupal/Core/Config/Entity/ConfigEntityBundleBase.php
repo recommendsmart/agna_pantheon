@@ -19,13 +19,13 @@ abstract class ConfigEntityBundleBase extends ConfigEntityBase {
   protected function deleteDisplays() {
     // Remove entity displays of the deleted bundle.
     if ($displays = $this->loadDisplays('entity_view_display')) {
-      $storage = $this->entityTypeManager()->getStorage('entity_view_display');
+      $storage = $this->entityManager()->getStorage('entity_view_display');
       $storage->delete($displays);
     }
 
     // Remove entity form displays of the deleted bundle.
     if ($displays = $this->loadDisplays('entity_form_display')) {
-      $storage = $this->entityTypeManager()->getStorage('entity_form_display');
+      $storage = $this->entityManager()->getStorage('entity_form_display');
       $storage->delete($displays);
     }
   }
@@ -36,20 +36,20 @@ abstract class ConfigEntityBundleBase extends ConfigEntityBase {
   public function postSave(EntityStorageInterface $storage, $update = TRUE) {
     parent::postSave($storage, $update);
 
-    $entity_type_manager = $this->entityTypeManager();
+    $entity_manager = $this->entityManager();
     $bundle_of = $this->getEntityType()->getBundleOf();
     if (!$update) {
-      \Drupal::service('entity_bundle.listener')->onBundleCreate($this->id(), $bundle_of);
+      $entity_manager->onBundleCreate($this->id(), $bundle_of);
     }
     else {
       // Invalidate the render cache of entities for which this entity
       // is a bundle.
-      if ($entity_type_manager->hasHandler($bundle_of, 'view_builder')) {
-        $entity_type_manager->getViewBuilder($bundle_of)->resetCache();
+      if ($entity_manager->hasHandler($bundle_of, 'view_builder')) {
+        $entity_manager->getViewBuilder($bundle_of)->resetCache();
       }
       // Entity bundle field definitions may depend on bundle settings.
-      \Drupal::service('entity_field.manager')->clearCachedFieldDefinitions();
-      $this->entityTypeBundleInfo()->clearCachedBundles();
+      $entity_manager->clearCachedFieldDefinitions();
+      $entity_manager->clearCachedBundles();
     }
   }
 
@@ -61,7 +61,7 @@ abstract class ConfigEntityBundleBase extends ConfigEntityBase {
 
     foreach ($entities as $entity) {
       $entity->deleteDisplays();
-      \Drupal::service('entity_bundle.listener')->onBundleDelete($entity->id(), $entity->getEntityType()->getBundleOf());
+      \Drupal::entityManager()->onBundleDelete($entity->id(), $entity->getEntityType()->getBundleOf());
     }
   }
 
@@ -106,7 +106,7 @@ abstract class ConfigEntityBundleBase extends ConfigEntityBase {
       ->condition('id', $this->getEntityType()->getBundleOf() . '.' . $this->getOriginalId() . '.', 'STARTS_WITH')
       ->execute();
     if ($ids) {
-      $storage = $this->entityTypeManager()->getStorage($entity_type_id);
+      $storage = $this->entityManager()->getStorage($entity_type_id);
       return $storage->loadMultiple($ids);
     }
     return [];

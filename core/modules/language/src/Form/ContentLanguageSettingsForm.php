@@ -2,10 +2,8 @@
 
 namespace Drupal\language\Form;
 
-use Drupal\Core\DependencyInjection\DeprecatedServicePropertyTrait;
 use Drupal\Core\Entity\ContentEntityTypeInterface;
-use Drupal\Core\Entity\EntityTypeBundleInfoInterface;
-use Drupal\Core\Entity\EntityTypeManagerInterface;
+use Drupal\Core\Entity\EntityManagerInterface;
 use Drupal\Core\Form\FormBase;
 use Drupal\Core\Form\FormStateInterface;
 use Drupal\language\Entity\ContentLanguageSettings;
@@ -17,49 +15,22 @@ use Symfony\Component\DependencyInjection\ContainerInterface;
  * @internal
  */
 class ContentLanguageSettingsForm extends FormBase {
-  use DeprecatedServicePropertyTrait;
 
   /**
-   * {@inheritdoc}
-   */
-  protected $deprecatedProperties = ['entityManager' => 'entity.manager'];
-
-  /**
-   * The entity type manager.
+   * The entity manager.
    *
-   * @var \Drupal\Core\Entity\EntityTypeManagerInterface
+   * @var \Drupal\Core\Entity\EntityManagerInterface
    */
-  protected $entityTypeManager;
+  protected $entityManager;
 
   /**
-   * The entity bundle info.
+   * Constructs a ContentLanguageSettingsForm object.
    *
-   * @var \Drupal\Core\Entity\EntityTypeBundleInfoInterface
+   * @param \Drupal\Core\Entity\EntityManagerInterface $entity_manager
+   *   The entity manager.
    */
-  protected $entityTypeBundleInfo;
-
-  /**
-   * If this validator can handle multiple arguments.
-   *
-   * @var bool
-   */
-  protected $multipleCapable = TRUE;
-
-  /**
-   * Constructs an \Drupal\views\Plugin\views\argument_validator\Entity object.
-   *
-   * @param \Drupal\Core\Entity\EntityTypeManagerInterface $entity_type_manager
-   *   The entity type manager.
-   * @param \Drupal\Core\Entity\EntityTypeBundleInfoInterface $entity_type_bundle_info
-   *   The entity type bundle info.
-   */
-  public function __construct(EntityTypeManagerInterface $entity_type_manager, EntityTypeBundleInfoInterface $entity_type_bundle_info = NULL) {
-    $this->entityTypeManager = $entity_type_manager;
-    if (!$entity_type_bundle_info) {
-      @trigger_error('Calling ContentLanguageSettingsForm::__construct() with the $entity_type_bundle_info argument is supported in drupal:8.7.0 and will be required before drupal:9.0.0. See https://www.drupal.org/node/2549139.', E_USER_DEPRECATED);
-      $entity_type_bundle_info = \Drupal::service('entity_type.bundle.info');
-    }
-    $this->entityTypeBundleInfo = $entity_type_bundle_info;
+  public function __construct(EntityManagerInterface $entity_manager) {
+    $this->entityManager = $entity_manager;
   }
 
   /**
@@ -67,8 +38,7 @@ class ContentLanguageSettingsForm extends FormBase {
    */
   public static function create(ContainerInterface $container) {
     return new static(
-      $container->get('entity_type.manager'),
-      $container->get('entity_type.bundle.info')
+      $container->get('entity.manager')
     );
   }
 
@@ -83,11 +53,11 @@ class ContentLanguageSettingsForm extends FormBase {
    * {@inheritdoc}
    */
   public function buildForm(array $form, FormStateInterface $form_state) {
-    $entity_types = $this->entityTypeManager->getDefinitions();
+    $entity_types = $this->entityManager->getDefinitions();
     $labels = [];
     $default = [];
 
-    $bundles = $this->entityTypeBundleInfo->getAllBundleInfo();
+    $bundles = $this->entityManager->getAllBundleInfo();
     $language_configuration = [];
     foreach ($entity_types as $entity_type_id => $entity_type) {
       if (!$entity_type instanceof ContentEntityTypeInterface || !$entity_type->hasKey('langcode') || !isset($bundles[$entity_type_id])) {

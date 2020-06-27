@@ -1,0 +1,203 @@
+<?php
+/**
+ * @file
+ */
+
+use \Drupal\node\Entity\Node;
+
+/**
+ * Implements hook_install().
+ */
+function brainstorm_page_install() {
+  $title = 'Typography';
+  $body = "<h1> h1 heading </h1>
+    <div class=\"section-tags\">Et harum quidem rerum facilis</div>
+    <div class=\"italic\"> Sed ut perspiciatis,unde omnis iste natus error
+    sit voluptatem accusantium doloremque laudantium</div>
+    <p> Lorem ipsum dolor sit amet,consectetur adipisicing elit,sed 
+    do eiusmod tempor incididunt ut labore et dolore magnaiqua.Ut enim ad 
+    minim veniam,quis nostrud exercitation ullamco laboris nisiut aliquip ex 
+    ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate 
+    velit esse cillum dolore eu fugiat nulla pariatur</p>
+    <h2> h2 heading </h2>
+    <div class=\"section-tags\">Et harum quidem rerum facilis</div>
+    <div class=\"italic\"> Sed ut perspiciatis,unde omnis iste natus error 
+      sit voluptatem accusantium doloremque laudantium</div>
+    <p> Lorem ipsum dolor sit amet,consectetur adipisicing elit,sed do 
+    eiusmod tempor incididunt ut labore et dolore magnaiqua.Ut enim ad 
+    minim veniam,quis nostrud exercitation ullamco laboris nisiut aliquip 
+    ex ea commodo consequat. Duis aute irure dolor in reprehenderit in 
+    voluptate velit esse cillum dolore eu fugiat nulla pariatur</p>
+    <h3 class=\"left\"> h3 heading </h3>
+    <div class=\"section-tags\">Et harum quidem rerum facilis</div>
+    <div class=\"italic\"> Sed ut perspiciatis,unde omnis iste natus error 
+    sit voluptatem accusantium doloremque laudantium</div>
+    <p> Lorem ipsum dolor sit amet,consectetur adipisicing elit, 
+    sed do eiusmod tempor incididunt ut labore et dolore magnaiqua.Ut 
+    enim ad minim veniam,quis nostrud exercitation ullamco laboris nisiut 
+    aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit 
+    in voluptate velit esse cillum dolore eu fugiat nulla pariatur</p>
+    <h1>Hightlights </h1>
+    <p> Lorem ipsum dolor sit amet,consec<mark>tetur adipis</mark>icing elit, 
+    sed do eiusmod tempor incididunt ut labore et dolore magnaiqua.Ut enim 
+    ad minim veniam,quis nostrud exercitation ullamco laboris nisiut aliquip 
+    ex ea commodo consequat. Duis aute irure dolor in reprehenderit in 
+    voluptate velit esse cillum dolore eu fugiat nulla pariatur</p>
+    <h1>Blockquote</h1>
+    <blockquote>
+    <p>These cases are perfectly simple and easy to distinguish.In a free hour, 
+    when ourpower of choice is untrammelled and when nothing prevents our 
+    being able to dowhat we like best,every pleasure is to be welcomed and 
+    every pain avoided.</p>
+    <footer> Choo web agency <div class='profession'> Founder</div></footer>
+    </blockquote>
+    <h1> Buttons </h1>
+    <div class=\"input\">
+    <input type='submit' value='more about us'><br>
+    <input type='button' value='more about us'>
+    </div>
+    <h1> Hover of tabs </h1>
+    <div class=\"block-local-tasks-block\">
+    <ul >
+    <li class=\"active\"><a href=\"\" class=\"active\">All</a></li>
+    <li><a href=\"\">Branding</a></li>
+    <li><a href=\"\">Web design</a></li>
+    <li><a href=\"\">Photography</a></li>
+    <li><a href=\"\">Illustration</a></li>
+    </ul>
+    </div>
+    <h1> Alerts</h1>
+    <div class=\"messages__wrapper\">
+    <div class=\"messages messages--error\">
+    <h2 class=\"element-invisible\">Error</h2>
+    <div class=\"close\"></div>
+    </div>
+    <div class=\"messages messages--warning\">
+    <h2 class=\"element-invisible\">Warning</h2>
+    <div class=\"close\"></div>
+    </div>
+    <div class=\"messages messages--status\">
+    <h2 class=\"element-invisible\">Status</h2>
+    <div class=\"close\"></div>
+    </div>
+    </div>
+    </div>
+    <h1>Paginator</h1>
+    <h4> If all three pages </h4>
+    <div class=\"item-list\">
+    <p> Selected the first page</p>
+    <ul class=\"pager\">
+    <li class=\"pager__item is-active even first\">
+    <a title=\"Go to page 1\" href=\"\">1</a></li>
+    <li class=\"pager__item odd\">
+    <a title=\"Go to page 2\" href=\"\">2</a></li>
+    <li class=\"pager__item pager-last odd last\">
+    <a title=\"Go to last page\" href=\"\">&gt;</a></li>
+    </ul>
+    </div>
+    <div class=\"item-list\">
+    <p> Selected the last page</p>
+    <ul class=\"pager\">
+    <li class=\"pager__item pager-first even first\">
+    <a title=\"Go to page first\" href=\"\">&lt;</a></li>
+    <li class=\"pager__item odd\">
+    <a title=\"Go to page 2\" href=\"\">2</a></li>
+    <li class=\"pager__item is-active even last\">
+    <a title=\"Go to page 3\" href=\"\">3</a></li>
+    </ul>
+    </div>
+    <h4> If more than three pages </h4>
+    <div class=\"item-list\">
+    <p> Selected the intermediate page</p>
+    <ul class=\"pager\">
+    <li class=\"pager__item pager-first even first\">
+    <a title=\"Go to page first\" href=\"\">&lt;</a></li>
+    <li class=\"pager__item is-active even\">
+    <a title=\"Go to page 2\" href=\"\">2</a></li>
+    <li class=\"pager__item odd\"><a title=\"Go to page 3\" href=\"\">3</a></li>
+    <li class=\"pager__item--ellipsis even\">...</li>
+    <li class=\"pager__item odd\"><a title=\"Go to page 5\" href=\"\">5</a></li>
+    <li class=\"pager__item pager-last odd last\">
+    <a title=\"Go to last page\" href=\"\">&gt;</a></li>
+    </ul>
+    </div>
+    <div class=\"item-list\">
+    <p> Selected the last page</p>
+    <ul class=\"pager\">
+    <li class=\"pager__item pager-first even first\">
+    <a title=\"Go to page first\" href=\"\">&lt;</a></li>
+    <li class=\"pager__item odd\"><a title=\"Go to page 1\" href=\"\">1</a></li>
+    <li class=\"pager__item--ellipsis even\">...</li>
+    <li class=\"pager__item even\"><a title=\"Go to page 4\" href=\"\">4</a></li>
+    <li class=\"pager__item is-active even last\">
+    <a title=\"Go to page 2\" href=\"\">5</a></li>
+    </ul>
+    </div>
+    <h1>Inputs</h1>
+    <div class=\"form-item\"><input type=\"text\" placeholder=\"E-mail address\"></div>
+    <div class=\"form-item\"><textarea rows=\"3\" cols=\"100\" placeholder=\"Write your comment here...\"> </textarea></div>
+    <div class=\"form-item\"><input type=\"text\" placeholder=\"Full name\" class=\"error\"><div class=\"description error\">This field is mondatory</div></div>";
+  $node = Node::create(array(
+    'type' => 'page',
+    'title' => $title,
+    'uid' => '1',
+    'status' => 1,
+    'path' => '/' . _brainstorm_profile_clean_alias($title),
+  ));
+  $node->body->value = $body;
+  $node->body->format = 'full_html';
+  $node->save();
+  $title = 'About us';
+  $body = "<div id='about-us-page'>
+    <h3>Digital agency</h3>
+    <div class=\"first-part two-list\">
+    <div class=\"title\">You ideas come alive with us</div>
+    <p>Lorem ipsum dolor sit amet,consectetuer ux adipiscing elit,sed diam 
+    nonummynibh and euismod tincidunt ut laoreet dolore magna aliquam erat 
+    volutpat</p>
+    <ul>
+      <li><span>Lorem ipsum dolor sit amet</span></li>
+      <li><span>Dolor sit amet</span></li>
+      <li><span>Sit amet psum dolor</span></li>
+      <li><span>Sit amet psum dolor</span></li>
+      <li><span>Lorem ipsum dolor sit amet</span></li>
+      <li><span>Dolor sit amet</span></li>
+    </ul>
+    </div>
+    <div class=\"second-part\">
+    <ul class=\"skills-bar-container\">
+      <p><label>Market Analisys</label>
+      <div class=\"percent\" id=\"pourcent-1\">95%</div></p>
+      <li>
+        <div class=\"progressbar\" id=\"progress-1\"></div>
+      </li>
+      <p><label>Brend Identity</label>
+      <div class=\"percent\" id=\"pourcent-2\">85%</div></p>
+      <li>
+        <div class=\"progressbar\" id=\"progress-2\"></div>
+      </li>
+       <p> <label>Grafic Design</label>
+      <div class=\"percent\" id=\"pourcent-3\">99%</div></p>
+      <li>
+        <div class=\"progressbar\" id=\"progress-3\"></div>
+      </li>
+        <p><label>HTML Coding</label>
+      <div class=\"percent\" id=\"pourcent-4\">80%</div></p>
+        <li>
+          <div class=\"progressbar\" id=\"progress-4\"></div>
+        </li>
+      </ul>
+    </div>
+    </div>";
+  $node = Node::create(array(
+    'type' => 'page',
+    'title' => $title,
+    'uid' => '1',
+    'status' => 1,
+    'path' => '/' . _brainstorm_profile_clean_alias($title),
+  ));
+  $node->body->value = $body;
+  $node->body->format = 'full_html';
+  $node->save();
+}
+

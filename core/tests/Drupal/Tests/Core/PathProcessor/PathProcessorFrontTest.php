@@ -23,17 +23,15 @@ class PathProcessorFrontTest extends UnitTestCase {
    * @covers ::processInbound
    * @dataProvider providerProcessInbound
    */
-  public function testProcessInbound($frontpage_path, $path, $expected, array $expected_query = []) {
+  public function testProcessInbound($path, $expected) {
     $config_factory = $this->prophesize(ConfigFactoryInterface::class);
     $config = $this->prophesize(ImmutableConfig::class);
     $config_factory->get('system.site')
       ->willReturn($config->reveal());
     $config->get('page.front')
-      ->willReturn($frontpage_path);
+      ->willReturn('/node');
     $processor = new PathProcessorFront($config_factory->reveal());
-    $request = new Request();
-    $this->assertEquals($expected, $processor->processInbound($path, $request));
-    $this->assertEquals($expected_query, $request->query->all());
+    $this->assertEquals($expected, $processor->processInbound($path, new Request()));
   }
 
   /**
@@ -41,13 +39,8 @@ class PathProcessorFrontTest extends UnitTestCase {
    */
   public function providerProcessInbound() {
     return [
-      'accessing frontpage' => ['/node', '/', '/node'],
-      'accessing non frontpage' => ['/node', '/user', '/user'],
-      'accessing frontpage with query parameters' => ['/node?example=muh',
-        '/',
-        '/node',
-        ['example' => 'muh'],
-      ],
+      ['/', '/node'],
+      ['/user', '/user'],
     ];
   }
 

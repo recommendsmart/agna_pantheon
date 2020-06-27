@@ -18,7 +18,7 @@ class MergeTest extends DatabaseTestBase {
   public function testMergeInsert() {
     $num_records_before = db_query('SELECT COUNT(*) FROM {test_people}')->fetchField();
 
-    $result = $this->connection->merge('test_people')
+    $result = db_merge('test_people')
       ->key('job', 'Presenter')
       ->fields([
         'age' => 31,
@@ -43,7 +43,7 @@ class MergeTest extends DatabaseTestBase {
   public function testMergeUpdate() {
     $num_records_before = db_query('SELECT COUNT(*) FROM {test_people}')->fetchField();
 
-    $result = $this->connection->merge('test_people')
+    $result = db_merge('test_people')
       ->key('job', 'Speaker')
       ->fields([
         'age' => 31,
@@ -71,7 +71,7 @@ class MergeTest extends DatabaseTestBase {
   public function testMergeUpdateExcept() {
     $num_records_before = db_query('SELECT COUNT(*) FROM {test_people}')->fetchField();
 
-    $this->connection->merge('test_people')
+    db_merge('test_people')
       ->key('job', 'Speaker')
       ->insertFields(['age' => 31])
       ->updateFields(['name' => 'Tiffany'])
@@ -92,7 +92,7 @@ class MergeTest extends DatabaseTestBase {
   public function testMergeUpdateExplicit() {
     $num_records_before = db_query('SELECT COUNT(*) FROM {test_people}')->fetchField();
 
-    $this->connection->merge('test_people')
+    db_merge('test_people')
       ->key('job', 'Speaker')
       ->insertFields([
         'age' => 31,
@@ -125,7 +125,7 @@ class MergeTest extends DatabaseTestBase {
     // Note that we are also double-setting age here, once as a literal and
     // once as an expression. This test will only pass if the expression wins,
     // which is what is supposed to happen.
-    $this->connection->merge('test_people')
+    db_merge('test_people')
       ->key('job', 'Speaker')
       ->fields(['name' => 'Tiffany'])
       ->insertFields(['age' => 31])
@@ -147,7 +147,7 @@ class MergeTest extends DatabaseTestBase {
   public function testMergeInsertWithoutUpdate() {
     $num_records_before = db_query('SELECT COUNT(*) FROM {test_people}')->fetchField();
 
-    $this->connection->merge('test_people')
+    db_merge('test_people')
       ->key('job', 'Presenter')
       ->execute();
 
@@ -166,7 +166,7 @@ class MergeTest extends DatabaseTestBase {
   public function testMergeUpdateWithoutUpdate() {
     $num_records_before = db_query('SELECT COUNT(*) FROM {test_people}')->fetchField();
 
-    $this->connection->merge('test_people')
+    db_merge('test_people')
       ->key('job', 'Speaker')
       ->execute();
 
@@ -178,7 +178,7 @@ class MergeTest extends DatabaseTestBase {
     $this->assertEqual($person->age, 30, 'Age skipped correctly.');
     $this->assertEqual($person->job, 'Speaker', 'Job skipped correctly.');
 
-    $this->connection->merge('test_people')
+    db_merge('test_people')
       ->key('job', 'Speaker')
       ->insertFields(['age' => 31])
       ->execute();
@@ -201,7 +201,7 @@ class MergeTest extends DatabaseTestBase {
       // Normally it would throw an exception but we are suppressing it with
       // the throw_exception option.
       $options['throw_exception'] = FALSE;
-      $this->connection->merge('test_people', $options)
+      db_merge('test_people', $options)
         ->fields([
           'age' => 31,
           'name' => 'Tiffany',
@@ -216,7 +216,7 @@ class MergeTest extends DatabaseTestBase {
 
     try {
       // This query will fail because there is no key field specified.
-      $this->connection->merge('test_people')
+      db_merge('test_people')
         ->fields([
           'age' => 31,
           'name' => 'Tiffany',

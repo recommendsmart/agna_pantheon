@@ -1,0 +1,9 @@
+langcode: en
+status: true
+dependencies: {  }
+id: feedback
+label: 'Contact us'
+recipients:
+  - vagrant@localhost.localdomain
+reply: ''
+weight: 0

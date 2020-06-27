@@ -2,11 +2,10 @@
 
 namespace Drupal\Tests\image\Functional;
 
-use Drupal\Core\Url;
 use Drupal\Core\Field\FieldStorageDefinitionInterface;
 use Drupal\field\Entity\FieldStorageConfig;
 use Drupal\Tests\TestFileCreationTrait;
-use Drupal\Tests\system\Functional\Cache\AssertPageCacheContextsAndTagsTrait;
+use Drupal\system\Tests\Cache\AssertPageCacheContextsAndTagsTrait;
 use Drupal\user\RoleInterface;
 use Drupal\image\Entity\ImageStyle;
 
@@ -64,7 +63,7 @@ class ImageFieldDisplayTest extends ImageFieldTestBase {
 
     // Test for existence of link to image styles configuration.
     $this->drupalPostForm(NULL, [], "{$field_name}_settings_edit");
-    $this->assertLinkByHref(Url::fromRoute('entity.image_style.collection')->toString(), 0, 'Link to image styles configuration is found');
+    $this->assertLinkByHref(\Drupal::url('entity.image_style.collection'), 0, 'Link to image styles configuration is found');
 
     // Remove 'administer image styles' permission from testing admin user.
     $admin_user_roles = $this->adminUser->getRoles(TRUE);
@@ -75,7 +74,7 @@ class ImageFieldDisplayTest extends ImageFieldTestBase {
 
     // Test for absence of link to image styles configuration.
     $this->drupalPostForm(NULL, [], "{$field_name}_settings_edit");
-    $this->assertNoLinkByHref(Url::fromRoute('entity.image_style.collection')->toString(), 'Link to image styles configuration is absent when permissions are insufficient');
+    $this->assertNoLinkByHref(\Drupal::url('entity.image_style.collection'), 'Link to image styles configuration is absent when permissions are insufficient');
 
     // Restore 'administer image styles' permission to testing admin user
     user_role_change_permissions(reset($admin_user_roles), ['administer image styles' => TRUE]);
@@ -170,7 +169,7 @@ class ImageFieldDisplayTest extends ImageFieldTestBase {
     $elements = $this->xpath(
       '//a[@href=:path]/img[@src=:url and @alt=:alt and @width=:width and @height=:height]',
       [
-        ':path' => $node->toUrl()->toString(),
+        ':path' => $node->url(),
         ':url' => file_url_transform_relative(file_create_url($image['#uri'])),
         ':width' => $image['#width'],
         ':height' => $image['#height'],
@@ -278,7 +277,7 @@ class ImageFieldDisplayTest extends ImageFieldTestBase {
     $node = $node_storage->load($nid);
     $file = $node->{$field_name}->entity;
 
-    $url = file_url_transform_relative(ImageStyle::load('medium')->buildUrl($file->getFileUri()));
+    $url = file_url_transform_relative(file_create_url(ImageStyle::load('medium')->buildUrl($file->getFileUri())));
     $this->assertTrue($this->cssSelect('img[width=40][height=20][class=image-style-medium][src="' . $url . '"]'));
 
     // Add alt/title fields to the image and verify that they are displayed.
@@ -359,7 +358,7 @@ class ImageFieldDisplayTest extends ImageFieldTestBase {
     $this->drupalGet('node/' . $node->id());
     // Verify that no image is displayed on the page by checking for the class
     // that would be used on the image field.
-    $this->assertSession()->responseNotMatches('<div class="(.*?)field--name-' . strtr($field_name, '_', '-') . '(.*?)">', 'No image displayed when no image is attached and no default image specified.');
+    $this->assertNoPattern('<div class="(.*?)field--name-' . strtr($field_name, '_', '-') . '(.*?)">', 'No image displayed when no image is attached and no default image specified.');
     $cache_tags_header = $this->drupalGetHeader('X-Drupal-Cache-Tags');
     $this->assertTrue(!preg_match('/ image_style\:/', $cache_tags_header), 'No image style cache tag found.');
 
@@ -378,7 +377,7 @@ class ImageFieldDisplayTest extends ImageFieldTestBase {
     \Drupal::entityManager()->clearCachedFieldDefinitions();
     $field_storage = FieldStorageConfig::loadByName('node', $field_name);
     $default_image = $field_storage->getSetting('default_image');
-    $file = \Drupal::service('entity.repository')->loadEntityByUuid('file', $default_image['uuid']);
+    $file = \Drupal::entityManager()->loadEntityByUuid('file', $default_image['uuid']);
     $this->assertTrue($file->isPermanent(), 'The default image status is permanent.');
     $image = [
       '#theme' => 'image',
@@ -449,7 +448,7 @@ class ImageFieldDisplayTest extends ImageFieldTestBase {
 
     $private_field_storage = FieldStorageConfig::loadByName('node', $private_field_name);
     $default_image = $private_field_storage->getSetting('default_image');
-    $file = \Drupal::service('entity.repository')->loadEntityByUuid('file', $default_image['uuid']);
+    $file = \Drupal::entityManager()->loadEntityByUuid('file', $default_image['uuid']);
     $this->assertEqual('private', file_uri_scheme($file->getFileUri()), 'Default image uses private:// scheme.');
     $this->assertTrue($file->isPermanent(), 'The default image status is permanent.');
     // Create a new node with no image attached and ensure that default private

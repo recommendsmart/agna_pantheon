@@ -153,7 +153,6 @@ class BlockPageVariantTest extends UnitTestCase {
           'messages' => [
             '#weight' => -1000,
             '#type' => 'status_messages',
-            '#include_fallback' => TRUE,
           ],
         ],
       ],
@@ -186,7 +185,6 @@ class BlockPageVariantTest extends UnitTestCase {
           'messages' => [
             '#weight' => -1000,
             '#type' => 'status_messages',
-            '#include_fallback' => TRUE,
           ],
         ],
       ],
@@ -255,7 +253,6 @@ class BlockPageVariantTest extends UnitTestCase {
         'messages' => [
           '#weight' => -1000,
           '#type' => 'status_messages',
-          '#include_fallback' => TRUE,
         ],
       ],
     ];

@@ -5,14 +5,12 @@
 
 .container-inline label:after,
 .container-inline .label:after {
-  content: ":";
+  content: ':';
 }
-.form-type-radios .container-inline label:after,
-.form-type-checkboxes .container-inline label:after {
-  content: "";
+.form-type-radios .container-inline label:after {
+  content: '';
 }
-.form-type-radios .container-inline .form-type-radio,
-.form-type-checkboxes .container-inline .form-type-checkbox {
+.form-type-radios .container-inline .form-type-radio {
   margin: 0 1em;
 }
 .container-inline .form-actions,

@@ -1,0 +1,30 @@
+langcode: en
+status: true
+dependencies:
+  content:
+    - 'block_content:basic:1df14b7f-28e9-4739-a7b7-4fb97762c035'
+  module:
+    - block_content
+    - system
+  theme:
+    - brainstorm_theme
+id: colors
+theme: brainstorm_theme
+region: sidebar_second
+weight: -15
+provider: null
+plugin: 'block_content:1df14b7f-28e9-4739-a7b7-4fb97762c035'
+settings:
+  id: 'block_content:1df14b7f-28e9-4739-a7b7-4fb97762c035'
+  label: Colors
+  provider: block_content
+  label_display: visible
+  status: true
+  info: ''
+  view_mode: full
+visibility:
+  request_path:
+    id: request_path
+    pages: /typography
+    negate: false
+    context_mapping: {  }

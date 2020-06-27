@@ -72,8 +72,7 @@ interface StringInterface {
   /**
    * Sets this string using array of plural values.
    *
-   * Serializes plural variants in one string glued by
-   * \Drupal\Component\Gettext\PoItem::DELIMITER.
+   * Serializes plural variants in one string glued by LOCALE_PLURAL_DELIMITER.
    *
    * @param array $plurals
    *   Array of strings with plural variants.

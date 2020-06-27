@@ -13,7 +13,7 @@ function user_schema() {
     'description' => 'Stores module data as key/value pairs per user.',
     'fields' => [
       'uid' => [
-        'description' => 'The {users}.uid this record affects.',
+        'description' => 'Primary key: {users}.uid for user.',
         'type' => 'int',
         'unsigned' => TRUE,
         'not null' => TRUE,
@@ -53,12 +53,7 @@ function user_schema() {
       'name' => ['name'],
     ],
     'foreign keys' => [
-      'data_user' => [
-        'table' => 'users',
-        'columns' => [
-          'uid' => 'uid',
-        ],
-      ],
+      'uid' => ['users' => 'uid'],
     ],
   ];
 

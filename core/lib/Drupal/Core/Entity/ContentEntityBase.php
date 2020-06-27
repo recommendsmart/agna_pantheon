@@ -17,12 +17,11 @@ use Drupal\Core\TypedData\TypedDataInterface;
  *
  * @ingroup entity_api
  */
-abstract class ContentEntityBase extends EntityBase implements \IteratorAggregate, ContentEntityInterface, TranslationStatusInterface {
+abstract class ContentEntityBase extends Entity implements \IteratorAggregate, ContentEntityInterface, TranslationStatusInterface {
 
   use EntityChangesDetectionTrait {
     getFieldsToSkipFromTranslationChangesCheck as traitGetFieldsToSkipFromTranslationChangesCheck;
   }
-  use SynchronizableEntityTrait;
 
   /**
    * The plain data values of the contained fields.
@@ -429,7 +428,7 @@ abstract class ContentEntityBase extends EntityBase implements \IteratorAggregat
   public function isTranslatable() {
     // Check the bundle is translatable, the entity has a language defined, and
     // the site has more than one language.
-    $bundles = $this->entityTypeBundleInfo()->getBundleInfo($this->entityTypeId);
+    $bundles = $this->entityManager()->getBundleInfo($this->entityTypeId);
     return !empty($bundles[$this->bundle()]['translatable']) && !$this->getUntranslated()->language()->isLocked() && $this->languageManager()->isMultilingual();
   }
 
@@ -679,7 +678,7 @@ abstract class ContentEntityBase extends EntityBase implements \IteratorAggregat
    */
   public function getFieldDefinitions() {
     if (!isset($this->fieldDefinitions)) {
-      $this->fieldDefinitions = \Drupal::service('entity_field.manager')->getFieldDefinitions($this->entityTypeId, $this->bundle());
+      $this->fieldDefinitions = $this->entityManager()->getFieldDefinitions($this->entityTypeId, $this->bundle());
     }
     return $this->fieldDefinitions;
   }
@@ -700,11 +699,11 @@ abstract class ContentEntityBase extends EntityBase implements \IteratorAggregat
    */
   public function access($operation, AccountInterface $account = NULL, $return_as_object = FALSE) {
     if ($operation == 'create') {
-      return $this->entityTypeManager()
+      return $this->entityManager()
         ->getAccessControlHandler($this->entityTypeId)
         ->createAccess($this->bundle(), $account, [], $return_as_object);
     }
-    return $this->entityTypeManager()
+    return $this->entityManager()
       ->getAccessControlHandler($this->entityTypeId)
       ->access($this, $operation, $account, $return_as_object);
   }
@@ -922,7 +921,6 @@ abstract class ContentEntityBase extends EntityBase implements \IteratorAggregat
     $translation->loadedRevisionId = &$this->loadedRevisionId;
     $translation->isDefaultRevision = &$this->isDefaultRevision;
     $translation->enforceRevisionTranslationAffected = &$this->enforceRevisionTranslationAffected;
-    $translation->isSyncing = &$this->isSyncing;
 
     return $translation;
   }
@@ -960,7 +958,7 @@ abstract class ContentEntityBase extends EntityBase implements \IteratorAggregat
 
     // Initialize the translation object.
     /** @var \Drupal\Core\Entity\ContentEntityStorageInterface $storage */
-    $storage = $this->entityTypeManager()->getStorage($this->getEntityTypeId());
+    $storage = $this->entityManager()->getStorage($this->getEntityTypeId());
     $this->translations[$langcode]['status'] = !isset($this->translations[$langcode]['status_existed']) ? static::TRANSLATION_CREATED : static::TRANSLATION_EXISTING;
     return $storage->createTranslation($this, $langcode, $values);
   }
@@ -1221,9 +1219,6 @@ abstract class ContentEntityBase extends EntityBase implements \IteratorAggregat
     $is_revision_translation_affected_enforced = $this->enforceRevisionTranslationAffected;
     $this->enforceRevisionTranslationAffected = &$is_revision_translation_affected_enforced;
 
-    $is_syncing = $this->isSyncing;
-    $this->isSyncing = &$is_syncing;
-
     foreach ($this->fields as $name => $fields_by_langcode) {
       $this->fields[$name] = [];
       // Untranslatable fields may have multiple references for the same field
@@ -1411,7 +1406,7 @@ abstract class ContentEntityBase extends EntityBase implements \IteratorAggregat
 
     if (!$original) {
       $id = $this->getOriginalId() !== NULL ? $this->getOriginalId() : $this->id();
-      $original = $this->entityTypeManager()->getStorage($this->getEntityTypeId())->loadUnchanged($id);
+      $original = $this->entityManager()->getStorage($this->getEntityTypeId())->loadUnchanged($id);
     }
 
     // If the current translation has just been added, we have a change.

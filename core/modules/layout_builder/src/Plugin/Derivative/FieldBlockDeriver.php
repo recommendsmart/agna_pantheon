@@ -18,7 +18,6 @@ use Symfony\Component\DependencyInjection\ContainerInterface;
  * Provides entity field block definitions for every field.
  *
  * @internal
- *   Plugin derivers are internal.
  */
 class FieldBlockDeriver extends DeriverBase implements ContainerDeriverInterface {
 
@@ -121,7 +120,7 @@ class FieldBlockDeriver extends DeriverBase implements ContainerDeriverInterface
 
           $context_definition = EntityContextDefinition::fromEntityTypeId($entity_type_id)->setLabel($entity_type_labels[$entity_type_id]);
           $context_definition->addConstraint('Bundle', [$bundle]);
-          $derivative['context_definitions'] = [
+          $derivative['context'] = [
             'entity' => $context_definition,
           ];
 

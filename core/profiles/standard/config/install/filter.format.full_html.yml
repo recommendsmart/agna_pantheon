@@ -5,7 +5,7 @@ dependencies:
     - editor
 name: 'Full HTML'
 format: full_html
-weight: 2
+weight: 1
 roles:
   - administrator
 filters:

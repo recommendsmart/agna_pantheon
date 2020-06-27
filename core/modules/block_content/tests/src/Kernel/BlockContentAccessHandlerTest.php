@@ -56,6 +56,7 @@ class BlockContentAccessHandlerTest extends KernelTestBase {
    */
   protected function setUp() {
     parent::setUp();
+    $this->installSchema('system', ['sequence']);
     $this->installSchema('system', ['sequences']);
     $this->installSchema('user', ['users_data']);
     $this->installEntitySchema('user');

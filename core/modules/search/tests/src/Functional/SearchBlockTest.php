@@ -2,7 +2,6 @@
 
 namespace Drupal\Tests\search\Functional;
 
-use Drupal\Core\Url;
 use Drupal\Tests\BrowserTestBase;
 
 /**
@@ -73,7 +72,7 @@ class SearchBlockTest extends BrowserTestBase {
     $entity_id = $search_page_repository->getDefaultSearchPage();
     $this->assertEqual(
       $this->getUrl(),
-      Url::fromRoute('search.view_' . $entity_id, [], ['query' => ['keys' => $terms['keys']], 'absolute' => TRUE])->toString(),
+      \Drupal::url('search.view_' . $entity_id, [], ['query' => ['keys' => $terms['keys']], 'absolute' => TRUE]),
       'Submitted to correct URL.'
     );
 
@@ -87,7 +86,7 @@ class SearchBlockTest extends BrowserTestBase {
     // submitted empty.
     $this->assertEqual(
       $this->getUrl(),
-      Url::fromRoute('search.view_' . $entity_id, [], ['query' => ['keys' => ''], 'absolute' => TRUE])->toString(),
+      \Drupal::url('search.view_' . $entity_id, [], ['query' => ['keys' => ''], 'absolute' => TRUE]),
       'Redirected to correct URL.'
     );
 

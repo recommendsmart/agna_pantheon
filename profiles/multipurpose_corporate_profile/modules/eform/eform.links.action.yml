@@ -1,5 +1,0 @@
-eform.type_add:
-  route_name: eform.type_add
-  title: 'Add EForm type'
-  appears_on:
-    - entity.eform_type.collection

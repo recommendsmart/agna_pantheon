@@ -2,8 +2,6 @@
 
 namespace Drupal\Tests\forum\Unit;
 
-use Drupal\Core\Entity\EntityFieldManagerInterface;
-use Drupal\Core\Entity\EntityTypeManagerInterface;
 use Drupal\Tests\UnitTestCase;
 
 /**
@@ -16,8 +14,7 @@ class ForumManagerTest extends UnitTestCase {
    * Tests ForumManager::getIndex().
    */
   public function testGetIndex() {
-    $entity_field_manager = $this->createMock(EntityFieldManagerInterface::class);
-    $entity_type_manager = $this->createMock(EntityTypeManagerInterface::class);
+    $entity_manager = $this->getMock('Drupal\Core\Entity\EntityManagerInterface');
 
     $storage = $this->getMockBuilder('\Drupal\taxonomy\VocabularyStorage')
       ->disableOriginalConstructor()
@@ -37,7 +34,7 @@ class ForumManagerTest extends UnitTestCase {
       ->method('get')
       ->will($this->returnValue('forums'));
 
-    $entity_type_manager->expects($this->once())
+    $entity_manager->expects($this->once())
       ->method('getStorage')
       ->will($this->returnValue($storage));
 
@@ -62,11 +59,10 @@ class ForumManagerTest extends UnitTestCase {
 
     $manager = $this->getMock('\Drupal\forum\ForumManager', ['getChildren'], [
       $config_factory,
-      $entity_type_manager,
+      $entity_manager,
       $connection,
       $translation_manager,
       $comment_manager,
-      $entity_field_manager,
     ]);
 
     $manager->expects($this->once())

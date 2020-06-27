@@ -1,0 +1,353 @@
+<?php
+/**
+ * @file
+ * Install, update and uninstall functions for the spark install profile.
+ */
+
+use \Drupal\menu_link_content\Entity\MenuLinkContent;
+use \Drupal\user\RoleInterface;
+use \Drupal\user\Entity\User;
+use \Drupal\file\Entity\File;
+use \Drupal\block_content\Entity\BlockContent;
+
+
+
+/**
+ * Implements hook_install().
+ *
+ * Perform actions to set up the site for this profile.
+ *
+ * @see system_install()
+ */
+function brainstorm_profile_install() {
+  // First, do everything in standard profile.
+  include_once DRUPAL_ROOT . '/core/profiles/standard/standard.install';
+  standard_install();
+  
+  // Set front page to "node".
+  \Drupal::configFactory()->getEditable('system.site')->set('page.front', '/home')->save(TRUE);
+
+  // Set default user picture.
+  $filename = 'social_270_270.png';
+  $file_uuid = '5a157edd-b16c-402b-89a4-46d99e255964';
+  $output = file_get_contents(drupal_get_path('profile', 'brainstorm_profile') . '/images/' . $filename);
+  file_save_data($output, 'public://brainstorm-placeholder/' . $filename, FILE_EXISTS_REPLACE);
+  $file_id = Drupal::entityQuery('file')->condition('filename', $filename)->execute();
+  File::load(reset($file_id))->set('uuid', $file_uuid)->save();
+
+  // Allow visitor account creation with administrative approval.
+  $user_settings = \Drupal::configFactory()->getEditable('user.settings');
+  $user_settings->set('register', USER_REGISTER_VISITORS_ADMINISTRATIVE_APPROVAL)->save(TRUE);
+
+  // Enable default permissions for system roles.
+  user_role_grant_permissions(RoleInterface::ANONYMOUS_ID, array('search content'));
+  user_role_grant_permissions(RoleInterface::AUTHENTICATED_ID, array('search content'));
+
+  // Assign user 1 the "administrator" role.
+  $user = User::load(1);
+  $user->roles[] = 'administrator';
+  $user->save();
+
+  user_role_grant_permissions(RoleInterface::ANONYMOUS_ID, array('access site-wide contact form'));
+  user_role_grant_permissions(RoleInterface::AUTHENTICATED_ID, array('access site-wide contact form'));
+
+  // Allow authenticated users to use shortcuts.
+  user_role_grant_permissions(RoleInterface::AUTHENTICATED_ID, array('access shortcuts'));
+
+   // Enable the admin theme.
+  \Drupal::configFactory()->getEditable('node.settings')->set('use_admin_theme', TRUE)->save(TRUE);
+
+  
+  // Create into block for About us.
+  $block_content = BlockContent::create(array(
+    'info' => 'About us',
+    'type' => 'basic',
+    'langcode' => 'en',
+    'uuid' => '9d65bc41-a8ec-4a23-9443-1a4bbce52397',
+    'body' => array(
+      'value' => 'Product is the vitales sence of what wedo,and truly great 
+        product is born of meticulous planning ad process.',
+    ),
+  ));
+  $block_content->save();
+
+  // Create into block for Back to portfolio.
+  $block_content = BlockContent::create(array(
+    'info' => 'Back to portfolio',
+    'type' => 'basic',
+    'langcode' => 'en',
+    'uuid' => '8a1a4f97-bc36-44b9-9a88-3059f5aab8ab',
+    'body' => array(
+      'value' => '<div class="back-to"><a href="/portfolio">
+        <input type="button" value="Back to portfolio"></a></div>',
+      'format' => 'full_html',
+    ),
+  ));
+  $block_content->save();
+
+  // Create into block for Colors.
+  $block_content = BlockContent::create(array(
+    'info' => 'Colors',
+    'type' => 'basic',
+    'langcode' => 'en',
+    'uuid' => '1df14b7f-28e9-4739-a7b7-4fb97762c035',
+    'body' => array(
+      'value' => '<div class="colors">
+        <p>FOR ACCENTS</p>
+        <div class="color-1"></div>
+        <p>FOR ACCENTS</p>
+        <div class="color-2"></div>
+        <p>FOR BODY TEXT</p>
+        <div class="color-3"></div>
+        <p>FOR TITLE</p>
+        <div class="color-4"></div>
+        </div>',
+      'format' => 'full_html',
+    ),
+  ));
+  $block_content->save();
+
+  // Create into block for Company name.
+  $block_content = BlockContent::create(array(
+    'info' => 'Company name',
+    'type' => 'basic',
+    'langcode' => 'en',
+    'uuid' => '33a160a5-811d-463d-985d-3e043da948c7',
+    'body' => array(
+      'value' => '<div class="company-name"><div class="first-part picture"></div>
+        <div class="second-part">
+        <h3>Company name</h3>
+        <p>Our company is a complete web design, web development and offshore outsourcing company, which brings ideas and technology for the success of your business. We deliver quality and innovative web design and web development solutions for localand international customers.
+        <a href="/portfolio" class="button">our portfolio</a>
+        </p>',
+      'format' => 'full_html',
+    ),
+  ));
+  $block_content->save();
+
+  // Create into block for Contact us.
+  $block_content = BlockContent::create(array(
+    'info' => 'Contact us',
+    'type' => 'basic',
+    'langcode' => 'en',
+    'uuid' => 'c5bc1b7c-a7d5-4358-92bd-c552d0cb0a48',
+    'body' => array(
+      'value' => 'If you got any questions please do not hesitate to send us a message',
+    ),
+  ));
+  $block_content->save();
+
+  // Create into block for Get in touch with us.
+  $block_content = BlockContent::create(array(
+    'info' => 'Get in touch with us',
+    'type' => 'basic',
+    'langcode' => 'en',
+    'uuid' => '5787f51d-1947-4441-9e8c-93ce8506b652',
+    'body' => array(
+      'value' => '<div class=\'contact-us\'><h3>GET IN TOUCH WITH US!</h3>
+        <div class=\'phone icon\'>
+        <h4>Give Us a Call </h4>
+        <p>(0086) 9647 578924 <br>
+        (048) 587 6459</p>
+        </div>
+        <div class=\'address icon\'>
+        <h4>Where We Are?</h4>
+        <p>86, Orchard, New York, NY 100002<br>
+        United States</p>
+        </div>
+        <div class=\'mail icon\'>
+        <h4>Drop us a Line</h4>
+        <p>support@ctheme.com<br>
+        hello@ctheme.com</p>
+        </div>
+        </div>',
+      'format' => 'full_html',
+    ),
+  ));
+  $block_content->save();
+
+  // Create into block for Lists.
+  $block_content = BlockContent::create(array(
+    'info' => 'Lists',
+    'type' => 'basic',
+    'langcode' => 'en',
+    'uuid' => 'd75c46db-446f-4f03-bd80-12841c873ced',
+    'body' => array(
+      'value' => '<ul>
+        <li><span>Home</span></li>
+        <li><span>About us</span></li>
+        <li><span>Portfolio</span></li>
+        <li><span>Blog</span></li>
+        <li><span>Typography</span></li>
+        </ul>',
+      'format' => 'full_html',
+    ),
+  ));
+  $block_content->save();
+
+  // Create into block for Our skills.
+  $block_content = BlockContent::create(array(
+    'info' => 'Our skills',
+    'type' => 'basic',
+    'langcode' => 'en',
+    'uuid' => '2df2096b-a296-4588-89ea-bead7a05f4ab',
+    'body' => array(
+      'value' => '<div class="our-skills">
+        <div class="first-part"><div class="team"><p>TEAM UP</p></div></div>
+        <div class="second-part">
+        <h2>Our skills</h2>
+        <ul class="skills-bar-container">
+          <p><label>Market Analisys</label>
+          <div class="percent" id="pourcent-1">95%</div></p>
+          <li>
+            <div class="progressbar" id="progress-1"></div>
+          </li>
+          <p><label>Brend Identity</label>
+          <div class="percent" id="pourcent-2">85%</div></p>
+          <li>
+            <div class="progressbar" id="progress-2"></div>
+          </li>
+           <p> <label>Grafic Design</label>
+          <div class="percent" id="pourcent-3">99%</div></p>
+          <li>
+            <div class="progressbar" id="progress-3"></div>
+          </li>
+            <p><label>HTML Coding</label>
+          <div class="percent" id="pourcent-4">80%</div></p>
+            <li>
+              <div class="progressbar" id="progress-4"></div>
+            </li>
+          </ul>
+        </div>
+        </div>',
+      'format' => 'full_html',
+    ),
+  ));
+  $block_content->save();
+
+  // Create into block for Social icons.
+  $block_content = BlockContent::create(array(
+    'info' => 'Social icons',
+    'type' => 'basic',
+    'langcode' => 'en',
+    'uuid' => '902ee977-db6c-4f9f-be36-085c15184461',
+    'body' => array(
+      'value' => '<a class="fa  fa-facebook-official" href="#"></a>
+        <a class="fa fa-twitter" href="#"></a>
+        <a class="fa fa-instagram " href="#"></a>
+        <a class="fa fa-behance" href="#"></a>
+        <a class="fa fa-linkedin-square" href="#"></a>
+        <a class="fa fa-dribbble" href="#"></a>',
+      'format' => 'full_html',
+    ),
+  ));
+  $block_content->save();
+
+  // Create into block for Who we are.
+  $block_content = BlockContent::create(array(
+    'info' => 'Who we are',
+    'type' => 'basic',
+    'langcode' => 'en',
+    'uuid' => '3ca2a2cb-5811-4b72-ac36-c6c76e560710',
+    'body' => array(
+      'value' => '<div class="about-us">
+        <div class="first-part">
+        <h2> Who we are</h2>
+           <div class="text-who"><p>Sed ut perspiciatis, unde omnis iste natus error sit voluptatem accusantium doloremque laudantium, totam rem aperiam eaque ipsa, quae ab illo inventore eriatis et quasi architecto beatae vitae dicta sunt, explicabo. Nemo enim ipsam voluptatm, quia voluptas sit.</p></div>   
+        <a href="/about-us">More about us</a></div>
+        <div class="second-part"></div>
+        </div>',
+      'format' => 'full_html',
+    ),
+  ));
+  $block_content->save();
+
+  // Create link to Home page.
+  MenuLinkContent::create([
+    'title'      => 'Home',
+    'link'       => ['uri' => 'internal:/home'],
+    'menu_name'  => 'footer',
+    'weight'     => '-4',
+  ])->save();
+
+  // Create link to About us page.
+  MenuLinkContent::create([
+    'title'      => 'About us',
+    'link'       => ['uri' => 'internal:/about-us'],
+    'menu_name'  => 'footer',
+    'weight'     => '-3',
+  ])->save();
+
+  // Create link to Portfolio page.
+  MenuLinkContent::create([
+    'title'      => 'Portfolio',
+    'link'       => ['uri' => 'internal:/portfolio'],
+    'menu_name'  => 'footer',
+    'weight'     => '-2',
+  ])->save();
+
+  // Create link to Blog page.
+  MenuLinkContent::create([
+    'title'      => 'Blog',
+    'link'       => ['uri' => 'internal:/blog'],
+    'menu_name'  => 'footer',
+    'weight'     => '-1',
+  ])->save();
+
+  // Create link to Typograph page.
+  MenuLinkContent::create([
+    'title'      => 'Typography',
+    'link'       => ['uri' => 'internal:/typography'],
+    'menu_name'  => 'footer',
+    'weight'     => '1',
+  ])->save();
+
+  // Create link to Home page.
+  MenuLinkContent::create([
+    'title'      => 'Home',
+    'link'       => ['uri' => 'internal:/home'],
+    'menu_name'  => 'main',
+    'weight'     => '-50',
+  ])->save();
+
+  // Create link to About us page.
+  MenuLinkContent::create([
+    'title'      => 'About us',
+    'link'       => ['uri' => 'internal:/about-us'],
+    'menu_name'  => 'main',
+    'weight'     => '-49',
+  ])->save();
+
+  // Create link to Portfolio page.
+  MenuLinkContent::create([
+    'title'      => 'Portfolio',
+    'link'       => ['uri' => 'internal:/portfolio'],
+    'menu_name'  => 'main',
+    'weight'     => '-48',
+  ])->save();
+
+  // Create link to Blog page.
+  MenuLinkContent::create([
+    'title'      => 'Blog',
+    'link'       => ['uri' => 'internal:/blog'],
+    'menu_name'  => 'main',
+    'weight'     => '-47',
+  ])->save();
+
+  // Create link to Contact page.
+  MenuLinkContent::create([
+    'title'      => 'Contact',
+    'link'       => ['uri' => 'internal:/contact'],
+    'menu_name'  => 'main',
+    'weight'     => '-46',
+  ])->save();
+
+  // Create link to Typography page.
+  MenuLinkContent::create([
+    'title'      => 'Typography',
+    'link'       => ['uri' => 'internal:/typography'],
+    'menu_name'  => 'main',
+    'weight'     => '-45',
+  ])->save();
+}
+

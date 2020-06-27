@@ -3,7 +3,6 @@
 namespace Drupal\KernelTests\Core\Render\Element;
 
 use Drupal\Component\Utility\Html;
-use Drupal\Core\Utility\TableSort;
 use Drupal\KernelTests\KernelTestBase;
 use Symfony\Component\HttpFoundation\Request;
 
@@ -15,7 +14,7 @@ use Symfony\Component\HttpFoundation\Request;
 class TableSortExtenderTest extends KernelTestBase {
 
   /**
-   * Tests \Drupal\Core\Utility\TableSort::getContextFromRequest().
+   * Tests tablesort_init().
    */
   public function testTableSortInit() {
 
@@ -33,7 +32,7 @@ class TableSortExtenderTest extends KernelTestBase {
     $request = Request::createFromGlobals();
     $request->query->replace([]);
     \Drupal::getContainer()->get('request_stack')->push($request);
-    $ts = TableSort::getContextFromRequest($headers, $request);
+    $ts = tablesort_init($headers);
     $this->verbose(strtr('$ts: <pre>!ts</pre>', ['!ts' => Html::escape(var_export($ts, TRUE))]));
     $this->assertEqual($ts, $expected_ts, 'Simple table headers sorted correctly.');
 
@@ -46,7 +45,7 @@ class TableSortExtenderTest extends KernelTestBase {
       'order' => 'bar',
     ]);
     \Drupal::getContainer()->get('request_stack')->push($request);
-    $ts = TableSort::getContextFromRequest($headers, $request);
+    $ts = tablesort_init($headers);
     $this->verbose(strtr('$ts: <pre>!ts</pre>', ['!ts' => Html::escape(var_export($ts, TRUE))]));
     $this->assertEqual($ts, $expected_ts, 'Simple table headers plus non-overriding $_GET parameters sorted correctly.');
 
@@ -62,7 +61,7 @@ class TableSortExtenderTest extends KernelTestBase {
     \Drupal::getContainer()->get('request_stack')->push($request);
     $expected_ts['sort'] = 'desc';
     $expected_ts['query'] = ['alpha' => 'beta'];
-    $ts = TableSort::getContextFromRequest($headers, $request);
+    $ts = tablesort_init($headers);
     $this->verbose(strtr('$ts: <pre>!ts</pre>', ['!ts' => Html::escape(var_export($ts, TRUE))]));
     $this->assertEqual($ts, $expected_ts, 'Simple table headers plus $_GET parameters sorted correctly.');
 
@@ -88,7 +87,7 @@ class TableSortExtenderTest extends KernelTestBase {
       'order' => '2',
     ]);
     \Drupal::getContainer()->get('request_stack')->push($request);
-    $ts = TableSort::getContextFromRequest($headers, $request);
+    $ts = tablesort_init($headers);
     $expected_ts = [
       'name' => '2',
       'sql' => 'two',
@@ -107,7 +106,7 @@ class TableSortExtenderTest extends KernelTestBase {
       'order' => 'bar',
     ]);
     \Drupal::getContainer()->get('request_stack')->push($request);
-    $ts = TableSort::getContextFromRequest($headers, $request);
+    $ts = tablesort_init($headers);
     $expected_ts = [
       'name' => '1',
       'sql' => 'one',
@@ -134,7 +133,7 @@ class TableSortExtenderTest extends KernelTestBase {
       'sort' => 'asc',
       'query' => ['alpha' => 'beta'],
     ];
-    $ts = TableSort::getContextFromRequest($headers, $request);
+    $ts = tablesort_init($headers);
     $this->verbose(strtr('$ts: <pre>!ts</pre>', ['!ts' => Html::escape(var_export($ts, TRUE))]));
     $this->assertEqual($ts, $expected_ts, 'Complex table headers plus $_GET parameters sorted correctly.');
   }

@@ -2,7 +2,6 @@
 
 namespace Drupal\Tests\tour\Functional;
 
-use Drupal\Core\Url;
 use Drupal\language\Entity\ConfigurableLanguage;
 use Drupal\tour\Entity\Tour;
 
@@ -67,7 +66,7 @@ class TourTest extends TourTestBasic {
     $elements = $this->xpath('//li[@data-id=:data_id and @class=:classes and ./p//a[@href=:href and contains(., :text)]]', [
       ':classes' => 'tip-module-tour-test tip-type-text tip-tour-test-1',
       ':data_id' => 'tour-test-1',
-      ':href' => Url::fromRoute('<front>', [], ['absolute' => TRUE])->toString(),
+      ':href' => \Drupal::url('<front>', [], ['absolute' => TRUE]),
       ':text' => 'Drupal',
     ]);
     $this->assertEqual(count($elements), 1, 'Found Token replacement.');

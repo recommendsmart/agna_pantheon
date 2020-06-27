@@ -275,7 +275,7 @@ class SharedTempStoreTest extends UnitTestCase {
       ->will($this->returnValue(FALSE));
 
     $metadata = $this->tempStore->getMetadata('test');
-    $this->assertObjectHasAttribute('updated', $metadata);
+    $this->assertObjectHasAttribute('owner', $metadata);
     // Data should get removed.
     $this->assertObjectNotHasAttribute('data', $metadata);
 

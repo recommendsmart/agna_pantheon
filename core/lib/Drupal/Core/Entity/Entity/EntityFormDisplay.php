@@ -65,10 +65,6 @@ class EntityFormDisplay extends EntityDisplayBase implements EntityFormDisplayIn
    *   The entity for which the form is being built.
    * @param string $form_mode
    *   The form mode.
-   * @param bool $default_fallback
-   *   (optional) Whether the default display should be used to initialize the
-   *   form display in case the specified display does not exist. Defaults to
-   *   TRUE.
    *
    * @return \Drupal\Core\Entity\Display\EntityFormDisplayInterface
    *   The display object that should be used to build the entity form.
@@ -76,7 +72,7 @@ class EntityFormDisplay extends EntityDisplayBase implements EntityFormDisplayIn
    * @see entity_get_form_display()
    * @see hook_entity_form_display_alter()
    */
-  public static function collectRenderDisplay(FieldableEntityInterface $entity, $form_mode, $default_fallback = TRUE) {
+  public static function collectRenderDisplay(FieldableEntityInterface $entity, $form_mode) {
     $entity_type = $entity->getEntityTypeId();
     $bundle = $entity->bundle();
 
@@ -86,9 +82,7 @@ class EntityFormDisplay extends EntityDisplayBase implements EntityFormDisplayIn
     if ($form_mode != 'default') {
       $candidate_ids[] = $entity_type . '.' . $bundle . '.' . $form_mode;
     }
-    if ($default_fallback) {
-      $candidate_ids[] = $entity_type . '.' . $bundle . '.default';
-    }
+    $candidate_ids[] = $entity_type . '.' . $bundle . '.default';
     $results = \Drupal::entityQuery('entity_form_display')
       ->condition('id', $candidate_ids)
       ->condition('status', TRUE)
@@ -107,7 +101,7 @@ class EntityFormDisplay extends EntityDisplayBase implements EntityFormDisplayIn
       $display = $storage->create([
         'targetEntityType' => $entity_type,
         'bundle' => $bundle,
-        'mode' => $default_fallback ? $form_mode : static::CUSTOM_MODE,
+        'mode' => $form_mode,
         'status' => TRUE,
       ]);
     }

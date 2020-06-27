@@ -2,8 +2,6 @@
 
 namespace Drupal\forum\Plugin\Block;
 
-use Drupal\Core\Database\Database;
-
 /**
  * Provides an 'Active forum topics' block.
  *
@@ -19,7 +17,7 @@ class ActiveTopicsBlock extends ForumBlockBase {
    * {@inheritdoc}
    */
   protected function buildForumQuery() {
-    return Database::getConnection()->select('forum_index', 'f')
+    return db_select('forum_index', 'f')
       ->fields('f')
       ->addTag('node_access')
       ->addMetaData('base_table', 'forum_index')

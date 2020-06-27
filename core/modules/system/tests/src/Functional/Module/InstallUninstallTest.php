@@ -9,7 +9,6 @@ use Drupal\workspaces\Entity\Workspace;
 /**
  * Install/uninstall core module and confirm table creation/deletion.
  *
- * @group #slow
  * @group Module
  */
 class InstallUninstallTest extends ModuleTestBase {

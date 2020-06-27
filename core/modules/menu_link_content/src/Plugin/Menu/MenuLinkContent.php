@@ -3,9 +3,7 @@
 namespace Drupal\menu_link_content\Plugin\Menu;
 
 use Drupal\Component\Plugin\Exception\PluginException;
-use Drupal\Core\DependencyInjection\DeprecatedServicePropertyTrait;
-use Drupal\Core\Entity\EntityRepositoryInterface;
-use Drupal\Core\Entity\EntityTypeManagerInterface;
+use Drupal\Core\Entity\EntityManagerInterface;
 use Drupal\Core\Language\LanguageManagerInterface;
 use Drupal\Core\Menu\MenuLinkBase;
 use Drupal\Core\Plugin\ContainerFactoryPluginInterface;
@@ -15,12 +13,6 @@ use Symfony\Component\DependencyInjection\ContainerInterface;
  * Provides the menu link plugin for content menu links.
  */
 class MenuLinkContent extends MenuLinkBase implements ContainerFactoryPluginInterface {
-  use DeprecatedServicePropertyTrait;
-
-  /**
-   * {@inheritdoc}
-   */
-  protected $deprecatedProperties = ['entityManager' => 'entity.manager'];
 
   /**
    * Entities IDs to load.
@@ -56,18 +48,11 @@ class MenuLinkContent extends MenuLinkBase implements ContainerFactoryPluginInte
   protected $entity;
 
   /**
-   * The entity type manager.
+   * The entity manager.
    *
-   * @var \Drupal\Core\Entity\EntityTypeManagerInterface
+   * @var \Drupal\Core\Entity\EntityManagerInterface
    */
-  protected $entityTypeManager;
-
-  /**
-   * The entity repository.
-   *
-   * @var \Drupal\Core\Entity\EntityRepositoryInterface
-   */
-  protected $entityRepository;
+  protected $entityManager;
 
   /**
    * The language manager.
@@ -85,14 +70,12 @@ class MenuLinkContent extends MenuLinkBase implements ContainerFactoryPluginInte
    *   The plugin_id for the plugin instance.
    * @param mixed $plugin_definition
    *   The plugin implementation definition.
-   * @param \Drupal\Core\Entity\EntityTypeManagerInterface $entity_type_manager
-   *   The entity type manager.
+   * @param \Drupal\Core\Entity\EntityManagerInterface $entity_manager
+   *   The entity manager.
    * @param \Drupal\Core\Language\LanguageManagerInterface $language_manager
    *   The language manager.
-   * @param \Drupal\Core\Entity\EntityRepositoryInterface $entity_repository
-   *   The entity repository.
    */
-  public function __construct(array $configuration, $plugin_id, $plugin_definition, EntityTypeManagerInterface $entity_type_manager, LanguageManagerInterface $language_manager, EntityRepositoryInterface $entity_repository = NULL) {
+  public function __construct(array $configuration, $plugin_id, $plugin_definition, EntityManagerInterface $entity_manager, LanguageManagerInterface $language_manager) {
     parent::__construct($configuration, $plugin_id, $plugin_definition);
 
     if (!empty($this->pluginDefinition['metadata']['entity_id'])) {
@@ -102,13 +85,8 @@ class MenuLinkContent extends MenuLinkBase implements ContainerFactoryPluginInte
       static::$entityIdsToLoad[$entity_id] = $entity_id;
     }
 
-    $this->entityTypeManager = $entity_type_manager;
+    $this->entityManager = $entity_manager;
     $this->languageManager = $language_manager;
-    if (!$entity_repository) {
-      @trigger_error('Calling MenuLinkContent::__construct() with the $entity_repository argument is supported in drupal:8.7.0 and will be required before drupal:9.0.0. See https://www.drupal.org/node/2549139.', E_USER_DEPRECATED);
-      $entity_repository = \Drupal::service('entity.repository');
-    }
-    $this->entityRepository = $entity_repository;
   }
 
   /**
@@ -119,9 +97,8 @@ class MenuLinkContent extends MenuLinkBase implements ContainerFactoryPluginInte
       $configuration,
       $plugin_id,
       $plugin_definition,
-      $container->get('entity_type.manager'),
-      $container->get('language_manager'),
-      $container->get('entity.repository')
+      $container->get('entity.manager'),
+      $container->get('language_manager')
     );
   }
 
@@ -137,7 +114,7 @@ class MenuLinkContent extends MenuLinkBase implements ContainerFactoryPluginInte
   protected function getEntity() {
     if (empty($this->entity)) {
       $entity = NULL;
-      $storage = $this->entityTypeManager->getStorage('menu_link_content');
+      $storage = $this->entityManager->getStorage('menu_link_content');
       if (!empty($this->pluginDefinition['metadata']['entity_id'])) {
         $entity_id = $this->pluginDefinition['metadata']['entity_id'];
         // Make sure the current ID is in the list, since each plugin empties
@@ -151,14 +128,15 @@ class MenuLinkContent extends MenuLinkBase implements ContainerFactoryPluginInte
       if (!$entity) {
         // Fallback to the loading by the UUID.
         $uuid = $this->getUuid();
-        $entity = $this->entityRepository->loadEntityByUuid('menu_link_content', $uuid);
+        $loaded_entities = $storage->loadByProperties(['uuid' => $uuid]);
+        $entity = reset($loaded_entities);
       }
       if (!$entity) {
         throw new PluginException("Entity not found through the menu link plugin definition and could not fallback on UUID '$uuid'");
       }
       // Clone the entity object to avoid tampering with the static cache.
       $this->entity = clone $entity;
-      $the_entity = $this->entityRepository->getTranslationFromContext($this->entity);
+      $the_entity = $this->entityManager->getTranslationFromContext($this->entity);
       /** @var \Drupal\menu_link_content\MenuLinkContentInterface $the_entity */
       $this->entity = $the_entity;
       $this->entity->setInsidePlugin();
@@ -196,21 +174,21 @@ class MenuLinkContent extends MenuLinkBase implements ContainerFactoryPluginInte
    * {@inheritdoc}
    */
   public function getDeleteRoute() {
-    return $this->getEntity()->toUrl('delete-form');
+    return $this->getEntity()->urlInfo('delete-form');
   }
 
   /**
    * {@inheritdoc}
    */
   public function getEditRoute() {
-    return $this->getEntity()->toUrl();
+    return $this->getEntity()->urlInfo();
   }
 
   /**
    * {@inheritdoc}
    */
   public function getTranslateRoute() {
-    return $this->getEntity()->toUrl('drupal:content-translation-overview');
+    return $this->getEntity()->urlInfo('drupal:content-translation-overview');
   }
 
   /**
@@ -236,7 +214,7 @@ class MenuLinkContent extends MenuLinkBase implements ContainerFactoryPluginInte
       foreach ($overrides as $key => $value) {
         $entity->{$key}->value = $value;
       }
-      $entity->save();
+      $this->entityManager->getStorage('menu_link_content')->save($entity);
     }
 
     return $this->pluginDefinition;

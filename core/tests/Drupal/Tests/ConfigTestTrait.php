@@ -4,15 +4,12 @@ namespace Drupal\Tests;
 
 use Drupal\Core\Config\ConfigImporter;
 use Drupal\Core\Config\StorageComparer;
-use Drupal\Core\Config\StorageCopyTrait;
 use Drupal\Core\Config\StorageInterface;
 
 /**
  * Provides helper methods to deal with config system objects in tests.
  */
 trait ConfigTestTrait {
-
-  use StorageCopyTrait;
 
   /**
    * Returns a ConfigImporter object to import test configuration.
@@ -25,7 +22,8 @@ trait ConfigTestTrait {
       // Set up the ConfigImporter object for testing.
       $storage_comparer = new StorageComparer(
         $this->container->get('config.storage.sync'),
-        $this->container->get('config.storage')
+        $this->container->get('config.storage'),
+        $this->container->get('config.manager')
       );
       $this->configImporter = new ConfigImporter(
         $storage_comparer,
@@ -52,7 +50,10 @@ trait ConfigTestTrait {
    *   The target config storage service.
    */
   protected function copyConfig(StorageInterface $source_storage, StorageInterface $target_storage) {
-    static::replaceStorageContents($source_storage, $target_storage);
+    $target_storage->deleteAll();
+    foreach ($source_storage->listAll() as $name) {
+      $target_storage->write($name, $source_storage->read($name));
+    }
   }
 
 }

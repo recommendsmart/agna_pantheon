@@ -13,7 +13,7 @@ use Drupal\Core\Entity\EntityTypeInterface;
 use Drupal\Core\Field\BaseFieldDefinition;
 use Drupal\field\Entity\FieldStorageConfig;
 use Drupal\user\Entity\User;
-use Drupal\user\EntityOwnerTrait;
+use Drupal\user\UserInterface;
 
 /**
  * Defines the comment entity class.
@@ -52,7 +52,6 @@ use Drupal\user\EntityOwnerTrait;
  *     "langcode" = "langcode",
  *     "uuid" = "uuid",
  *     "published" = "status",
- *     "owner" = "uid",
  *   },
  *   links = {
  *     "canonical" = "/comment/{comment}",
@@ -71,7 +70,6 @@ use Drupal\user\EntityOwnerTrait;
 class Comment extends ContentEntityBase implements CommentInterface {
 
   use EntityChangedTrait;
-  use EntityOwnerTrait;
   use EntityPublishedTrait;
 
   /**
@@ -211,7 +209,7 @@ class Comment extends ContentEntityBase implements CommentInterface {
    * {@inheritdoc}
    */
   public function permalink() {
-    $uri = $this->toUrl();
+    $uri = $this->urlInfo();
     $uri->setOption('fragment', 'comment-' . $this->id());
     return $uri;
   }
@@ -223,7 +221,6 @@ class Comment extends ContentEntityBase implements CommentInterface {
     /** @var \Drupal\Core\Field\BaseFieldDefinition[] $fields */
     $fields = parent::baseFieldDefinitions($entity_type);
     $fields += static::publishedBaseFieldDefinitions($entity_type);
-    $fields += static::ownerBaseFieldDefinitions($entity_type);
 
     $fields['cid']->setLabel(t('Comment ID'))
       ->setDescription(t('The comment ID.'));
@@ -259,8 +256,12 @@ class Comment extends ContentEntityBase implements CommentInterface {
       ])
       ->setDisplayConfigurable('form', TRUE);
 
-    $fields['uid']
-      ->setDescription(t('The user ID of the comment author.'));
+    $fields['uid'] = BaseFieldDefinition::create('entity_reference')
+      ->setLabel(t('User ID'))
+      ->setDescription(t('The user ID of the comment author.'))
+      ->setTranslatable(TRUE)
+      ->setSetting('target_type', 'user')
+      ->setDefaultValue(0);
 
     $fields['name'] = BaseFieldDefinition::create('string')
       ->setLabel(t('Name'))
@@ -306,26 +307,17 @@ class Comment extends ContentEntityBase implements CommentInterface {
 
     $fields['entity_type'] = BaseFieldDefinition::create('string')
       ->setLabel(t('Entity type'))
-      ->setRequired(TRUE)
       ->setDescription(t('The entity type to which this comment is attached.'))
       ->setSetting('is_ascii', TRUE)
       ->setSetting('max_length', EntityTypeInterface::ID_MAX_LENGTH);
 
     $fields['field_name'] = BaseFieldDefinition::create('string')
       ->setLabel(t('Comment field name'))
-      ->setRequired(TRUE)
       ->setDescription(t('The field name through which this comment was added.'))
       ->setSetting('is_ascii', TRUE)
       ->setSetting('max_length', FieldStorageConfig::NAME_MAX_LENGTH);
 
     return $fields;
-  }
-
-  /**
-   * {@inheritdoc}
-   */
-  public static function getDefaultEntityOwner() {
-    return 0;
   }
 
   /**
@@ -533,6 +525,29 @@ class Comment extends ContentEntityBase implements CommentInterface {
   }
 
   /**
+   * {@inheritdoc}
+   */
+  public function getOwnerId() {
+    return $this->get('uid')->target_id;
+  }
+
+  /**
+   * {@inheritdoc}
+   */
+  public function setOwnerId($uid) {
+    $this->set('uid', $uid);
+    return $this;
+  }
+
+  /**
+   * {@inheritdoc}
+   */
+  public function setOwner(UserInterface $account) {
+    $this->set('uid', $account->id());
+    return $this;
+  }
+
+  /**
    * Get the comment type ID for this comment.
    *
    * @return string
@@ -561,10 +576,7 @@ class Comment extends ContentEntityBase implements CommentInterface {
    *   The client host name.
    */
   public static function getDefaultHostname() {
-    if (\Drupal::config('comment.settings')->get('log_ip_addresses')) {
-      return \Drupal::request()->getClientIP();
-    }
-    return '';
+    return \Drupal::request()->getClientIP();
   }
 
 }

@@ -10,7 +10,6 @@ use Drupal\user\Entity\User;
 /**
  * Runs UpdatePathTestBaseTest with a dump filled with content.
  *
- * @group #slow
  * @group Update
  * @group legacy
  */

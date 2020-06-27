@@ -4,7 +4,6 @@ namespace Drupal\Tests\search\Functional;
 
 use Drupal\comment\Plugin\Field\FieldType\CommentItemInterface;
 use Drupal\comment\Tests\CommentTestTrait;
-use Drupal\Core\Database\Database;
 use Drupal\Core\Url;
 use Drupal\filter\Entity\FilterFormat;
 use Drupal\search\Entity\SearchPage;
@@ -105,7 +104,7 @@ class SearchRankingTest extends BrowserTestBase {
     // to the Statistics module. So instead go ahead and manually update the
     // counter for this node.
     $nid = $nodes['views'][1]->id();
-    Database::getConnection()->insert('node_counter')
+    db_insert('node_counter')
       ->fields(['totalcount' => 5, 'daycount' => 5, 'timestamp' => REQUEST_TIME, 'nid' => $nid])
       ->execute();
 

@@ -8,13 +8,13 @@
  */
 .contextual {
   position: absolute;
-  z-index: 500;
-  top: 6px;
   right: 0; /* LTR */
+  top: 6px;
+  z-index: 500;
 }
 [dir="rtl"] .contextual {
-  right: auto;
   left: 0;
+  right: auto;
 }
 
 /**
@@ -29,29 +29,29 @@
  * Contextual trigger.
  */
 .contextual .trigger {
-  position: relative;
-  right: 6px; /* LTR */
-  float: right; /* LTR */
-  overflow: hidden;
-  margin: 0;
-  padding: 0 2px;
-  cursor: pointer;
+  background-attachment: scroll;
+  background-color: #fff;
   border: 1px solid #ccc;
   border-radius: 13px;
-  background-color: #fff;
-  background-attachment: scroll;
+  float: right; /* LTR */
+  margin: 0;
+  overflow: hidden;
+  padding: 0 2px;
+  position: relative;
+  right: 6px; /* LTR */
+  cursor: pointer;
 }
 [dir="rtl"] .contextual .trigger {
+  float: left;
   right: auto;
   left: 6px;
-  float: left;
 }
 .contextual.open .trigger {
-  z-index: 2;
   border: 1px solid #ccc;
   border-bottom-color: transparent;
   border-radius: 13px 13px 0 0;
   box-shadow: none;
+  z-index: 2;
 }
 
 /**
@@ -60,44 +60,44 @@
  * The following selectors are heavy to discourage theme overriding.
  */
 .contextual-region .contextual .contextual-links {
-  position: relative;
-  top: -1px;
-  right: 6px; /* LTR */
-  float: right; /* LTR */
-  clear: both;
-  margin: 0;
-  padding: 0.25em 0;
-  text-align: left; /* LTR */
-  white-space: nowrap;
+  background-color: #fff;
   border: 1px solid #ccc;
   border-radius: 4px 0 4px 4px; /* LTR */
-  background-color: #fff;
+  clear: both;
+  float: right; /* LTR */
+  margin: 0;
+  padding: 0.25em 0;
+  position: relative;
+  right: 6px; /* LTR */
+  text-align: left; /* LTR */
+  top: -1px;
+  white-space: nowrap;
 }
 [dir="rtl"] .contextual-region .contextual .contextual-links {
-  right: auto;
-  left: 6px;
-  float: left;
-  text-align: right;
   border-radius: 0 4px 4px 4px;
+  float: left;
+  left: 6px;
+  right: auto;
+  text-align: right;
 }
 .contextual-region .contextual .contextual-links li {
-  margin: 0;
-  padding: 0;
+  background-color: #fff;
+  border: none;
   list-style: none;
   list-style-image: none;
-  border: none;
-  background-color: #fff;
+  margin: 0;
+  padding: 0;
   line-height: 100%;
 }
 .contextual-region .contextual .contextual-links a {
-  display: block;
-  margin: 0.25em 0;
-  padding: 0.4em 0.6em;
-  color: #333;
   background-color: #fff;
+  color: #333;
+  display: block;
   font-family: sans-serif;
   font-size: small;
   line-height: 0.8em;
+  margin: 0.25em 0;
+  padding: 0.4em 0.6em;
 }
 .touchevents .contextual-region .contextual .contextual-links a {
   font-size: large;

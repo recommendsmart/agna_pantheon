@@ -183,7 +183,7 @@ class ImageFormatter extends ImageFormatterBase implements ContainerFactoryPlugi
     if ($image_link_setting == 'content') {
       $entity = $items->getEntity();
       if (!$entity->isNew()) {
-        $url = $entity->toUrl();
+        $url = $entity->urlInfo();
       }
     }
     elseif ($image_link_setting == 'file') {

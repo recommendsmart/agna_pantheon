@@ -25,12 +25,13 @@ content:
     third_party_settings: {  }
     type: file_generic
     region: content
-  langcode:
-    type: language_select
-    weight: 2
+  name:
+    type: string_textfield
+    weight: -5
     region: content
     settings:
-      include_locked: true
+      size: 60
+      placeholder: ''
     third_party_settings: {  }
   path:
     type: path
@@ -56,4 +57,3 @@ content:
     third_party_settings: {  }
 hidden:
   moderation_state: true
-  name: true

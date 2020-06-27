@@ -1,0 +1,95 @@
+name: Brainstorm profile
+type: profile
+description: 'Created by ADCI Solutions.'
+# core: 8.x
+distribution:
+  name: Brainstorm profile
+
+# Required modules
+dependencies:
+  - automated_cron
+  - block
+  - breakpoint
+  - ckeditor
+  - color
+  - comment
+  - config
+  - contact
+  - contextual
+  - block_content
+  - menu_link_content
+  - dblog
+  - field
+  - field_ui
+  - filter
+  - help
+  - history
+  - dynamic_page_cache
+  - page_cache
+  - menu_ui
+  - node
+  - path
+  - quickedit
+  - rdf
+  - search
+  - shortcut
+  - system
+  - taxonomy
+  - editor
+  - toolbar
+  - tour
+  - update
+  - user
+  - views
+  - views_ui
+  - blazy
+  - ctools
+  - features
+  - features_ui
+  - datetime
+  - file
+  - image
+  - link
+  - options
+  - text
+  - addtoany
+  - config_update
+  - colorized_gmap
+  - easy_breadcrumb
+  - flippy
+  - pathauto
+  - token
+  - slick
+  - slick_ui
+  - slick_views
+  - views_filter_autosubmit
+  - brainstorm_site
+  - brainstorm_blog
+  - brainstorm_client
+  - brainstorm_comment
+  - brainstorm_comment_blog
+  - brainstorm_core
+  - brainstorm_file
+  - brainstorm_main_slider
+  - brainstorm_our_core_features
+  - brainstorm_page
+  - brainstorm_portfolio
+  - brainstorm_team
+  - brainstorm_testimonials
+  - brainstorm_user
+themes:
+  - brainstorm_theme
+  - seven
+  
+
+# Information added by Drupal.org packaging script on 2018-02-13
+# version: '8.x-1.0-beta3+2-dev'
+# core: '8.x'
+# project: 'brainstorm_profile'
+# datestamp: 1518494289
+
+# Information added by Drupal.org packaging script on 2019-03-26
+version: '8.x-1.1'
+core: '8.x'
+project: 'brainstorm_profile'
+datestamp: 1553589345

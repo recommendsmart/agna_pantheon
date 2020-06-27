@@ -1,11 +1,12 @@
 name: 'Test media source'
 type: module
 description: 'Provides test media source to test configuration forms.'
-core: 8.x
+# core: 8.x
 package: Testing
 # version: VERSION
 
-# Information added by Drupal.org packaging script on 2019-10-02
-version: '8.7.8'
+# Information added by Drupal.org packaging script on 2019-03-20
+version: '8.6.13'
+core: '8.x'
 project: 'drupal'
-datestamp: 1570044520
+datestamp: 1553100246

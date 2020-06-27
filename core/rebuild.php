@@ -54,4 +54,4 @@ if (Settings::get('rebuild_access', FALSE) ||
   \Drupal::messenger()->addStatus('Cache rebuild complete.');
 }
 $base_path = dirname(dirname($request->getBaseUrl()));
-header('Location: ' . $request->getSchemeAndHttpHost() . $base_path);
+header('Location: ' . $base_path);

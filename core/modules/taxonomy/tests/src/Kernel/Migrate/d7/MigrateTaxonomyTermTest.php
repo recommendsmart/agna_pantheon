@@ -17,6 +17,7 @@ class MigrateTaxonomyTermTest extends MigrateDrupal7TestBase {
     'comment',
     'content_translation',
     'datetime',
+    'forum',
     'image',
     'language',
     'link',
@@ -42,13 +43,20 @@ class MigrateTaxonomyTermTest extends MigrateDrupal7TestBase {
   protected function setUp() {
     parent::setUp();
     $this->installEntitySchema('comment');
-    $this->installEntitySchema('file');
+    $this->installEntitySchema('node');
+    $this->installEntitySchema('taxonomy_term');
+    $this->installConfig(static::$modules);
 
-    $this->migrateTaxonomyTerms();
     $this->executeMigrations([
       'language',
       'd7_user_role',
       'd7_user',
+      'd7_node_type',
+      'd7_comment_type',
+      'd7_field',
+      'd7_taxonomy_vocabulary',
+      'd7_field_instance',
+      'd7_taxonomy_term',
       'd7_entity_translation_settings',
       'd7_taxonomy_term_entity_translation',
     ]);
@@ -125,7 +133,7 @@ class MigrateTaxonomyTermTest extends MigrateDrupal7TestBase {
 
     // Reset the forums tree data so this new term is included in the tree.
     unset($this->treeData['forums']);
-    $this->assertEntity(25, 'Forum Container', 'forums', '', NULL, 0, [], NULL, NULL, 1);
+    $this->assertEntity(19, 'Forum Container', 'forums', '', NULL, 0, [], NULL, NULL, 1);
   }
 
   /**

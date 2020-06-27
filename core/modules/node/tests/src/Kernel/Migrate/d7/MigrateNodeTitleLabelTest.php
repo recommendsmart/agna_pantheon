@@ -19,8 +19,9 @@ class MigrateNodeTitleLabelTest extends MigrateDrupal7TestBase {
    */
   protected function setUp() {
     parent::setUp();
-    $this->migrateContentTypes();
-    $this->executeMigration('d7_node_title_label');
+    $this->installConfig(static::$modules);
+    $this->installEntitySchema('node');
+    $this->executeMigrations(['d7_node_type', 'd7_node_title_label']);
   }
 
   /**

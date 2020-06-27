@@ -4,8 +4,7 @@ namespace Drupal\system\Form;
 
 use Drupal\Core\Config\ConfigManagerInterface;
 use Drupal\Core\Config\Entity\ConfigDependencyDeleteFormTrait;
-use Drupal\Core\DependencyInjection\DeprecatedServicePropertyTrait;
-use Drupal\Core\Entity\EntityTypeManagerInterface;
+use Drupal\Core\Entity\EntityManagerInterface;
 use Drupal\Core\Extension\ModuleInstallerInterface;
 use Drupal\Core\Form\ConfirmFormBase;
 use Drupal\Core\Form\FormStateInterface;
@@ -20,14 +19,6 @@ use Drupal\Core\KeyValueStore\KeyValueStoreExpirableInterface;
  */
 class ModulesUninstallConfirmForm extends ConfirmFormBase {
   use ConfigDependencyDeleteFormTrait;
-  use DeprecatedServicePropertyTrait;
-
-  /**
-   * {@inheritdoc}
-   */
-  protected $deprecatedProperties = [
-    'entityManager' => 'entity.manager',
-  ];
 
   /**
    * The module installer service.
@@ -51,11 +42,11 @@ class ModulesUninstallConfirmForm extends ConfirmFormBase {
   protected $configManager;
 
   /**
-   * The entity type manager.
+   * The entity manager.
    *
-   * @var \Drupal\Core\Entity\EntityTypeManagerInterface
+   * @var \Drupal\Core\Entity\EntityManagerInterface
    */
-  protected $entityTypeManager;
+  protected $entityManager;
 
   /**
    * An array of modules to uninstall.
@@ -73,14 +64,14 @@ class ModulesUninstallConfirmForm extends ConfirmFormBase {
    *   The key value expirable factory.
    * @param \Drupal\Core\Config\ConfigManagerInterface $config_manager
    *   The configuration manager.
-   * @param \Drupal\Core\Entity\EntityTypeManagerInterface $entity_type_manager
-   *   The entity type manager.
+   * @param \Drupal\Core\Entity\EntityManagerInterface $entity_manager
+   *   The entity manager.
    */
-  public function __construct(ModuleInstallerInterface $module_installer, KeyValueStoreExpirableInterface $key_value_expirable, ConfigManagerInterface $config_manager, EntityTypeManagerInterface $entity_type_manager) {
+  public function __construct(ModuleInstallerInterface $module_installer, KeyValueStoreExpirableInterface $key_value_expirable, ConfigManagerInterface $config_manager, EntityManagerInterface $entity_manager) {
     $this->moduleInstaller = $module_installer;
     $this->keyValueExpirable = $key_value_expirable;
     $this->configManager = $config_manager;
-    $this->entityTypeManager = $entity_type_manager;
+    $this->entityManager = $entity_manager;
   }
 
   /**
@@ -91,7 +82,7 @@ class ModulesUninstallConfirmForm extends ConfirmFormBase {
       $container->get('module_installer'),
       $container->get('keyvalue.expirable')->get('modules_uninstall'),
       $container->get('config.manager'),
-      $container->get('entity_type.manager')
+      $container->get('entity.manager')
     );
   }
 
@@ -154,7 +145,7 @@ class ModulesUninstallConfirmForm extends ConfirmFormBase {
     ];
 
     // List the dependent entities.
-    $this->addDependencyListsToForm($form, 'module', $this->modules, $this->configManager, $this->entityTypeManager);
+    $this->addDependencyListsToForm($form, 'module', $this->modules, $this->configManager, $this->entityManager);
 
     return parent::buildForm($form, $form_state);
   }

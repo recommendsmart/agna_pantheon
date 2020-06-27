@@ -31,7 +31,7 @@ class Translator implements TranslatorInterface, TranslatorBagInterface
     /**
      * @var MessageCatalogueInterface[]
      */
-    protected $catalogues = [];
+    protected $catalogues = array();
 
     /**
      * @var string
@@ -41,17 +41,17 @@ class Translator implements TranslatorInterface, TranslatorBagInterface
     /**
      * @var array
      */
-    private $fallbackLocales = [];
+    private $fallbackLocales = array();
 
     /**
      * @var LoaderInterface[]
      */
-    private $loaders = [];
+    private $loaders = array();
 
     /**
      * @var array
      */
-    private $resources = [];
+    private $resources = array();
 
     /**
      * @var MessageFormatterInterface
@@ -131,10 +131,10 @@ class Translator implements TranslatorInterface, TranslatorBagInterface
 
         $this->assertValidLocale($locale);
 
-        $this->resources[$locale][] = [$format, $resource, $domain];
+        $this->resources[$locale][] = array($format, $resource, $domain);
 
         if (\in_array($locale, $this->fallbackLocales)) {
-            $this->catalogues = [];
+            $this->catalogues = array();
         } else {
             unset($this->catalogues[$locale]);
         }
@@ -167,7 +167,7 @@ class Translator implements TranslatorInterface, TranslatorBagInterface
     public function setFallbackLocales(array $locales)
     {
         // needed as the fallback locales are linked to the already loaded catalogues
-        $this->catalogues = [];
+        $this->catalogues = array();
 
         foreach ($locales as $locale) {
             $this->assertValidLocale($locale);
@@ -179,7 +179,7 @@ class Translator implements TranslatorInterface, TranslatorBagInterface
     /**
      * Gets the fallback locales.
      *
-     * @return array The fallback locales
+     * @return array $locales The fallback locales
      */
     public function getFallbackLocales()
     {
@@ -189,7 +189,7 @@ class Translator implements TranslatorInterface, TranslatorBagInterface
     /**
      * {@inheritdoc}
      */
-    public function trans($id, array $parameters = [], $domain = null, $locale = null)
+    public function trans($id, array $parameters = array(), $domain = null, $locale = null)
     {
         if (null === $domain) {
             $domain = 'messages';
@@ -201,7 +201,7 @@ class Translator implements TranslatorInterface, TranslatorBagInterface
     /**
      * {@inheritdoc}
      */
-    public function transChoice($id, $number, array $parameters = [], $domain = null, $locale = null)
+    public function transChoice($id, $number, array $parameters = array(), $domain = null, $locale = null)
     {
         if (!$this->formatter instanceof ChoiceMessageFormatterInterface) {
             throw new LogicException(sprintf('The formatter "%s" does not support plural translations.', \get_class($this->formatter)));
@@ -376,11 +376,7 @@ EOF
         if (isset($this->resources[$locale])) {
             foreach ($this->resources[$locale] as $resource) {
                 if (!isset($this->loaders[$resource[0]])) {
-                    if (\is_string($resource[1])) {
-                        throw new RuntimeException(sprintf('No loader is registered for the "%s" format when loading the "%s" resource.', $resource[0], $resource[1]));
-                    }
-
-                    throw new RuntimeException(sprintf('No loader is registered for the "%s" format.', $resource[0]));
+                    throw new RuntimeException(sprintf('The "%s" translation loader is not registered.', $resource[0]));
                 }
                 $this->catalogues[$locale]->addCatalogue($this->loaders[$resource[0]]->load($resource[1], $locale, $resource[2]));
             }
@@ -407,7 +403,7 @@ EOF
 
     protected function computeFallbackLocales($locale)
     {
-        $locales = [];
+        $locales = array();
         foreach ($this->fallbackLocales as $fallback) {
             if ($fallback === $locale) {
                 continue;
@@ -416,19 +412,8 @@ EOF
             $locales[] = $fallback;
         }
 
-        if (\function_exists('locale_parse')) {
-            $localeSubTags = locale_parse($locale);
-            if (1 < \count($localeSubTags)) {
-                array_pop($localeSubTags);
-                $fallback = locale_compose($localeSubTags);
-                if (false !== $fallback) {
-                    array_unshift($locales, $fallback);
-                }
-            }
-        } elseif (false !== strrchr($locale, '_')) {
+        if (false !== strrchr($locale, '_')) {
             array_unshift($locales, substr($locale, 0, -\strlen(strrchr($locale, '_'))));
-        } elseif (false !== strrchr($locale, '-')) {
-            array_unshift($locales, substr($locale, 0, -\strlen(strrchr($locale, '-'))));
         }
 
         return array_unique($locales);

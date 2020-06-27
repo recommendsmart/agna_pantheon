@@ -2,8 +2,6 @@
 
 namespace Drupal\system\Tests\Cache;
 
-@trigger_error(__NAMESPACE__ . '\PageCacheTagsTestBase is deprecated for removal before Drupal 9.0.0. Use \Drupal\Tests\system\Functional\Cache\PageCacheTagsTestBase instead. See https://www.drupal.org/node/2999939', E_USER_DEPRECATED);
-
 use Drupal\Core\Url;
 use Drupal\simpletest\WebTestBase;
 use Drupal\Component\Render\FormattableMarkup;
@@ -13,8 +11,6 @@ use Drupal\Component\Render\FormattableMarkup;
  *
  * @deprecated Scheduled for removal in Drupal 9.0.0.
  *   Use \Drupal\Tests\system\Functional\Cache\PageCacheTagsTestBase instead.
- *
- * @see https://www.drupal.org/node/2999939
  */
 abstract class PageCacheTagsTestBase extends WebTestBase {
 

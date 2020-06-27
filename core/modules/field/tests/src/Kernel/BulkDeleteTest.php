@@ -2,7 +2,6 @@
 
 namespace Drupal\Tests\field\Kernel;
 
-use Drupal\Core\Database\Database;
 use Drupal\Core\Entity\EntityInterface;
 use Drupal\field\Entity\FieldConfig;
 use Drupal\field\Entity\FieldStorageConfig;
@@ -187,7 +186,7 @@ class BulkDeleteTest extends FieldKernelTestBase {
     $table_mapping = $storage->getTableMapping();
     $table = $table_mapping->getDedicatedDataTableName($field_storage);
     $column = $table_mapping->getFieldColumnName($field_storage, 'value');
-    $result = Database::getConnection()->select($table, 't')
+    $result = db_select($table, 't')
       ->fields('t')
       ->execute();
     foreach ($result as $row) {

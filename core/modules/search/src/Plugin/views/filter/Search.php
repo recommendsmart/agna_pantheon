@@ -4,7 +4,6 @@ namespace Drupal\search\Plugin\views\filter;
 
 use Drupal\Core\Database\Query\Condition;
 use Drupal\Core\Form\FormStateInterface;
-use Drupal\search\ViewsSearchQuery;
 use Drupal\views\Plugin\views\filter\FilterPluginBase;
 use Drupal\views\Plugin\views\display\DisplayPluginBase;
 use Drupal\views\ViewExecutable;
@@ -121,7 +120,7 @@ class Search extends FilterPluginBase {
   protected function queryParseSearchExpression($input) {
     if (!isset($this->searchQuery)) {
       $this->parsed = TRUE;
-      $this->searchQuery = \Drupal::service('database.replica')->select('search_index', 'i')->extend(ViewsSearchQuery::class);
+      $this->searchQuery = db_select('search_index', 'i', ['target' => 'replica'])->extend('Drupal\search\ViewsSearchQuery');
       $this->searchQuery->searchExpression($input, $this->searchType);
       $this->searchQuery->publicParseSearchExpression();
     }

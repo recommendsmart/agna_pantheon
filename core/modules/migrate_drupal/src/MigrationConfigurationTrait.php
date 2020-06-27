@@ -4,7 +4,6 @@ namespace Drupal\migrate_drupal;
 
 use Drupal\Core\Database\Connection;
 use Drupal\Core\Database\Database;
-use Drupal\Core\Database\DatabaseExceptionWrapper;
 use Drupal\migrate\Exception\RequirementsException;
 use Drupal\migrate\Plugin\RequirementsInterface;
 
@@ -57,7 +56,7 @@ trait MigrationConfigurationTrait {
         $system_data[$result['type']][$result['name']] = $result;
       }
     }
-    catch (DatabaseExceptionWrapper $e) {
+    catch (\Exception $e) {
       // The table might not exist for example in tests.
     }
     return $system_data;
@@ -190,18 +189,10 @@ trait MigrationConfigurationTrait {
     // For Drupal 8 (and we're predicting beyond) the schema version is in the
     // key_value store.
     elseif ($connection->schema()->tableExists('key_value')) {
-      try {
-        $result = $connection
-          ->query("SELECT value FROM {key_value} WHERE collection = :system_schema  and name = :module", [
-            ':system_schema' => 'system.schema',
-            ':module' => 'system',
-          ])
-          ->fetchField();
-        $version_string = unserialize($result);
-      }
-      catch (DatabaseExceptionWrapper $e) {
-        $version_string = FALSE;
-      }
+      $result = $connection
+        ->query("SELECT value FROM {key_value} WHERE collection = :system_schema  and name = :module", [':system_schema' => 'system.schema', ':module' => 'system'])
+        ->fetchField();
+      $version_string = unserialize($result);
     }
     else {
       $version_string = FALSE;

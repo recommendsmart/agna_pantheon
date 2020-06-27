@@ -23,7 +23,7 @@ class OptionsDynamicValuesApiTest extends OptionsDynamicValuesTestBase {
 
     $expected_values = [
       $this->entity->label(),
-      $this->entity->toUrl()->toString(),
+      $this->entity->url(),
       $this->entity->uuid(),
       $this->entity->bundle(),
     ];

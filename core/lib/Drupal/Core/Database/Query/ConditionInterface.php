@@ -31,7 +31,7 @@ interface ConditionInterface {
    * to tell the database that case insensitive equivalence is desired:
    * @code
    * db_select('users')
-   *  ->condition('name', $injected_connection->escapeLike($name), 'LIKE')
+   *  ->condition('name', db_like($name), 'LIKE')
    * @endcode
    * Use 'LIKE BINARY' instead of 'LIKE' for case sensitive queries.
    *
@@ -131,13 +131,6 @@ interface ConditionInterface {
    *   The called object.
    */
   public function notExists(SelectInterface $select);
-
-  /**
-   * Sets a condition that is always false.
-   *
-   * @return $this
-   */
-  public function alwaysFalse();
 
   /**
    * Gets the, possibly nested, list of conditions in this conditional clause.

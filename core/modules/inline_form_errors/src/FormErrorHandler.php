@@ -5,13 +5,14 @@ namespace Drupal\inline_form_errors;
 use Drupal\Core\Form\FormElementHelper;
 use Drupal\Core\Form\FormErrorHandler as CoreFormErrorHandler;
 use Drupal\Core\Form\FormStateInterface;
-use Drupal\Core\Link;
 use Drupal\Core\Messenger\MessengerInterface;
 use Drupal\Core\Render\Element;
+use Drupal\Core\Routing\LinkGeneratorTrait;
 use Drupal\Core\Render\RendererInterface;
 use Drupal\Core\StringTranslation\StringTranslationTrait;
 use Drupal\Core\StringTranslation\TranslationInterface;
 use Drupal\Core\Url;
+use Drupal\Core\Utility\LinkGeneratorInterface;
 
 /**
  * Produces inline form errors.
@@ -19,6 +20,7 @@ use Drupal\Core\Url;
 class FormErrorHandler extends CoreFormErrorHandler {
 
   use StringTranslationTrait;
+  use LinkGeneratorTrait;
 
   /**
    * The renderer service.
@@ -39,13 +41,16 @@ class FormErrorHandler extends CoreFormErrorHandler {
    *
    * @param \Drupal\Core\StringTranslation\TranslationInterface $string_translation
    *   The string translation service.
+   * @param \Drupal\Core\Utility\LinkGeneratorInterface $link_generator
+   *   The link generation service.
    * @param \Drupal\Core\Render\RendererInterface $renderer
    *   The renderer service.
    * @param \Drupal\Core\Messenger\MessengerInterface $messenger
    *   The messenger.
    */
-  public function __construct(TranslationInterface $string_translation, RendererInterface $renderer, MessengerInterface $messenger) {
+  public function __construct(TranslationInterface $string_translation, LinkGeneratorInterface $link_generator, RendererInterface $renderer, MessengerInterface $messenger) {
     $this->stringTranslation = $string_translation;
+    $this->linkGenerator = $link_generator;
     $this->renderer = $renderer;
     $this->messenger = $messenger;
   }
@@ -95,7 +100,7 @@ class FormErrorHandler extends CoreFormErrorHandler {
         unset($errors[$name]);
       }
       elseif ($is_visible_element && $has_title && $has_id) {
-        $error_links[] = Link::fromTextAndUrl($title, Url::fromRoute('<none>', [], ['fragment' => $form_element['#id'], 'external' => TRUE]))->toRenderable();
+        $error_links[] = $this->l($title, Url::fromRoute('<none>', [], ['fragment' => $form_element['#id'], 'external' => TRUE]));
         unset($errors[$name]);
       }
     }

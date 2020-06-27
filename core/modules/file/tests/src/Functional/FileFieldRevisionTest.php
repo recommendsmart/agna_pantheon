@@ -2,7 +2,6 @@
 
 namespace Drupal\Tests\file\Functional;
 
-use Drupal\Core\Database\Database;
 use Drupal\file\Entity\File;
 
 /**
@@ -118,10 +117,8 @@ class FileFieldRevisionTest extends FileFieldTestBase {
 
     // Call file_cron() to clean up the file. Make sure the changed timestamp
     // of the file is older than the system.file.temporary_maximum_age
-    // configuration value. We use an UPDATE statement because using the API
-    // would set the timestamp.
-    $connection = Database::getConnection();
-    $connection->update('file_managed')
+    // configuration value.
+    db_update('file_managed')
       ->fields([
         'changed' => REQUEST_TIME - ($this->config('system.file')->get('temporary_maximum_age') + 1),
       ])
@@ -136,9 +133,8 @@ class FileFieldRevisionTest extends FileFieldTestBase {
     $this->drupalPostForm('node/' . $nid . '/delete', [], t('Delete'));
     // Call file_cron() to clean up the file. Make sure the changed timestamp
     // of the file is older than the system.file.temporary_maximum_age
-    // configuration value. We use an UPDATE statement because using the API
-    // would set the timestamp.
-    $connection->update('file_managed')
+    // configuration value.
+    db_update('file_managed')
       ->fields([
         'changed' => REQUEST_TIME - ($this->config('system.file')->get('temporary_maximum_age') + 1),
       ])

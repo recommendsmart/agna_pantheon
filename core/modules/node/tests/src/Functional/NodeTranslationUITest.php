@@ -26,7 +26,6 @@ class NodeTranslationUITest extends ContentTranslationUITestBase {
     'timezone',
     'url.path.parent',
     'url.query_args:_wrapper_format',
-    'url.site',
     'user.roles',
     'url.path.is_front',
     // These two cache contexts are added by BigPipe.
@@ -162,7 +161,7 @@ class NodeTranslationUITest extends ContentTranslationUITestBase {
       // statuses are (un)published accordingly.
       foreach ($this->langcodes as $langcode) {
         $options = ['language' => $languages[$langcode]];
-        $url = $entity->toUrl('edit-form', $options);
+        $url = $entity->urlInfo('edit-form', $options);
         $this->drupalPostForm($url, ['status[value]' => $value], t('Save') . $this->getFormSubmitSuffix($entity, $langcode), $options);
       }
       $storage->resetCache([$this->entityId]);
@@ -197,17 +196,15 @@ class NodeTranslationUITest extends ContentTranslationUITestBase {
         'sticky' => (bool) mt_rand(0, 1),
         'promote' => (bool) mt_rand(0, 1),
       ];
-      /** @var \Drupal\Core\Datetime\DateFormatterInterface $date_formatter */
-      $date_formatter = $this->container->get('date.formatter');
       $edit = [
-        'uid[0][target_id]' => $user->getAccountName(),
-        'created[0][value][date]' => $date_formatter->format($values[$langcode]['created'], 'custom', 'Y-m-d'),
-        'created[0][value][time]' => $date_formatter->format($values[$langcode]['created'], 'custom', 'H:i:s'),
+        'uid[0][target_id]' => $user->getUsername(),
+        'created[0][value][date]' => format_date($values[$langcode]['created'], 'custom', 'Y-m-d'),
+        'created[0][value][time]' => format_date($values[$langcode]['created'], 'custom', 'H:i:s'),
         'sticky[value]' => $values[$langcode]['sticky'],
         'promote[value]' => $values[$langcode]['promote'],
       ];
       $options = ['language' => $languages[$langcode]];
-      $url = $entity->toUrl('edit-form', $options);
+      $url = $entity->urlInfo('edit-form', $options);
       $this->drupalPostForm($url, $edit, $this->getFormSubmitAction($entity, $langcode), $options);
     }
 
@@ -356,7 +353,7 @@ class NodeTranslationUITest extends ContentTranslationUITestBase {
     $this->doTestTranslations('node/' . $node->id(), $values);
 
     // Test that the node page has the correct alternate hreflang links.
-    $this->doTestAlternateHreflangLinks($node->toUrl());
+    $this->doTestAlternateHreflangLinks($node->urlInfo());
   }
 
   /**
@@ -443,7 +440,7 @@ class NodeTranslationUITest extends ContentTranslationUITestBase {
       // We only want to test the title for non-english translations.
       if ($langcode != 'en') {
         $options = ['language' => $languages[$langcode]];
-        $url = $entity->toUrl('edit-form', $options);
+        $url = $entity->urlInfo('edit-form', $options);
         $this->drupalGet($url);
 
         $title = t('<em>Edit @type</em> @title [%language translation]', [

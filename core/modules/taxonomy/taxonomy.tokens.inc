@@ -116,11 +116,11 @@ function taxonomy_tokens($type, $tokens, array $data, array $options, Bubbleable
           break;
 
         case 'url':
-          $replacements[$original] = $term->toUrl('canonical', ['absolute' => TRUE])->toString();
+          $replacements[$original] = $term->url('canonical', ['absolute' => TRUE]);
           break;
 
         case 'node-count':
-          $query = \Drupal::database()->select('taxonomy_index');
+          $query = db_select('taxonomy_index');
           $query->condition('tid', $term->id());
           $query->addTag('term_node_count');
           $count = $query->countQuery()->execute()->fetchField();

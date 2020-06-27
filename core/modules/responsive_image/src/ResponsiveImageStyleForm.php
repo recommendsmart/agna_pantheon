@@ -2,7 +2,6 @@
 
 namespace Drupal\responsive_image;
 
-use Drupal\Core\Url;
 use Drupal\breakpoint\BreakpointManagerInterface;
 use Drupal\Core\Entity\EntityForm;
 use Drupal\Core\Form\FormStateInterface;
@@ -82,8 +81,8 @@ class ResponsiveImageStyleForm extends EntityForm {
     ];
 
     $image_styles = image_style_options(TRUE);
-    $image_styles[ResponsiveImageStyleInterface::ORIGINAL_IMAGE] = $this->t('- None (original image) -');
-    $image_styles[ResponsiveImageStyleInterface::EMPTY_IMAGE] = $this->t('- empty image -');
+    $image_styles[RESPONSIVE_IMAGE_ORIGINAL_IMAGE] = $this->t('- None (original image) -');
+    $image_styles[RESPONSIVE_IMAGE_EMPTY_IMAGE] = $this->t('- empty image -');
 
     if ((bool) $responsive_image_style->id() && $this->operation != 'duplicate') {
       $description = $this->t('Select a breakpoint group from the installed themes and modules. Below you can select which breakpoints to use from this group. You can also select which image style or styles to use for each breakpoint you use.') . ' ' . $this->t("Warning: if you change the breakpoint group you lose all your image style selections for each breakpoint.");
@@ -128,7 +127,7 @@ class ResponsiveImageStyleForm extends EntityForm {
         ];
         $image_style_mapping = $responsive_image_style->getImageStyleMapping($breakpoint_id, $multiplier);
         if (\Drupal::moduleHandler()->moduleExists('help')) {
-          $description = $this->t('See the <a href=":responsive_image_help">Responsive Image help page</a> for information on the sizes attribute.', [':responsive_image_help' => Url::fromRoute('help.page', ['name' => 'responsive_image'])->toString()]);
+          $description = $this->t('See the <a href=":responsive_image_help">Responsive Image help page</a> for information on the sizes attribute.', [':responsive_image_help' => \Drupal::url('help.page', ['name' => 'responsive_image'])]);
         }
         else {
           $description = $this->t('Enable the Help module for more information on the sizes attribute.');
@@ -288,7 +287,7 @@ class ResponsiveImageStyleForm extends EntityForm {
       );
     }
     else {
-      $form_state->setRedirectUrl($this->entity->toUrl('collection'));
+      $form_state->setRedirectUrl($this->entity->urlInfo('collection'));
     }
   }
 

@@ -35,6 +35,3 @@ access media overview:
 
 permission_callbacks:
   - \Drupal\media\MediaPermissions::mediaTypePermissions
-
-view own unpublished media:
-  title: 'View own unpublished media'

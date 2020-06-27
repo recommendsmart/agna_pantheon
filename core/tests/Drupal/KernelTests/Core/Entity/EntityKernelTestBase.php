@@ -4,22 +4,13 @@ namespace Drupal\KernelTests\Core\Entity;
 
 use Drupal\Core\Entity\EntityInterface;
 use Drupal\KernelTests\KernelTestBase;
-use Drupal\Tests\user\Traits\UserCreationTrait;
+use Drupal\user\Entity\Role;
+use Drupal\user\Entity\User;
 
 /**
  * Defines an abstract test base for entity kernel tests.
  */
 abstract class EntityKernelTestBase extends KernelTestBase {
-
-  use UserCreationTrait {
-    checkPermissions as drupalCheckPermissions;
-    createAdminRole as drupalCreateAdminRole;
-    createRole as drupalCreateRole;
-    createUser as drupalCreateUser;
-    grantPermissions as drupalGrantPermissions;
-    setCurrentUser as drupalSetCurrentUser;
-    setUpCurrentUser as drupalSetUpCurrentUser;
-  }
 
   /**
    * Modules to enable.
@@ -34,13 +25,6 @@ abstract class EntityKernelTestBase extends KernelTestBase {
    * @var \Drupal\Core\Entity\EntityManagerInterface
    */
   protected $entityManager;
-
-  /**
-   * The entity type manager service.
-   *
-   * @var \Drupal\Core\Entity\EntityTypeManagerInterface
-   */
-  protected $entityTypeManager;
 
   /**
    * A list of generated identifiers.
@@ -60,7 +44,6 @@ abstract class EntityKernelTestBase extends KernelTestBase {
     parent::setUp();
 
     $this->entityManager = $this->container->get('entity.manager');
-    $this->entityTypeManager = $this->container->get('entity_type.manager');
     $this->state = $this->container->get('state');
 
     $this->installSchema('system', 'sequences');
@@ -87,8 +70,8 @@ abstract class EntityKernelTestBase extends KernelTestBase {
             // enabled in. The comment, node and taxonomy config and the
             // taxonomy_term schema need to be installed before the forum config
             // which in turn needs to be installed before field config.
-            $this->installEntitySchema('taxonomy_term');
             $this->installConfig(['comment', 'node', 'taxonomy']);
+            $this->installEntitySchema('taxonomy_term');
             $this->installConfig(['forum']);
           }
         }
@@ -111,7 +94,24 @@ abstract class EntityKernelTestBase extends KernelTestBase {
    *   The created user entity.
    */
   protected function createUser($values = [], $permissions = []) {
-    return $this->drupalCreateUser($permissions ?: [], NULL, FALSE, $values ?: []);
+    if ($permissions) {
+      // Create a new role and apply permissions to it.
+      $role = Role::create([
+        'id' => strtolower($this->randomMachineName(8)),
+        'label' => $this->randomMachineName(8),
+      ]);
+      $role->save();
+      user_role_grant_permissions($role->id(), $permissions);
+      $values['roles'][] = $role->id();
+    }
+
+    $account = User::create($values + [
+      'name' => $this->randomMachineName(),
+      'status' => 1,
+    ]);
+    $account->enforceIsNew();
+    $account->save();
+    return $account;
   }
 
   /**
@@ -170,7 +170,6 @@ abstract class EntityKernelTestBase extends KernelTestBase {
   protected function refreshServices() {
     $this->container = \Drupal::getContainer();
     $this->entityManager = $this->container->get('entity.manager');
-    $this->entityTypeManager = $this->container->get('entity_type.manager');
     $this->state = $this->container->get('state');
   }
 

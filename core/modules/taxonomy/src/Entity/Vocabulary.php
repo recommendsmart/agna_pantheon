@@ -53,6 +53,7 @@ use Drupal\taxonomy\VocabularyInterface;
  *     "name",
  *     "vid",
  *     "description",
+ *     "hierarchy",
  *     "weight",
  *   }
  * )
@@ -81,6 +82,18 @@ class Vocabulary extends ConfigEntityBundleBase implements VocabularyInterface {
   protected $description;
 
   /**
+   * The type of hierarchy allowed within the vocabulary.
+   *
+   * Possible values:
+   * - VocabularyInterface::HIERARCHY_DISABLED: No parents.
+   * - VocabularyInterface::HIERARCHY_SINGLE: Single parent.
+   * - VocabularyInterface::HIERARCHY_MULTIPLE: Multiple parents.
+   *
+   * @var int
+   */
+  protected $hierarchy = VocabularyInterface::HIERARCHY_DISABLED;
+
+  /**
    * The weight of this vocabulary in relation to other vocabularies.
    *
    * @var int
@@ -91,16 +104,14 @@ class Vocabulary extends ConfigEntityBundleBase implements VocabularyInterface {
    * {@inheritdoc}
    */
   public function getHierarchy() {
-    @trigger_error('\Drupal\taxonomy\VocabularyInterface::getHierarchy() is deprecated in Drupal 8.7.x and will be removed before Drupal 9.0.x. Use \Drupal\taxonomy\TermStorage::getVocabularyHierarchyType() instead.', E_USER_DEPRECATED);
-    return $this->entityTypeManager()->getStorage('taxonomy_term')->getVocabularyHierarchyType($this->id());
+    return $this->hierarchy;
   }
 
   /**
    * {@inheritdoc}
    */
   public function setHierarchy($hierarchy) {
-    @trigger_error('\Drupal\taxonomy\VocabularyInterface::setHierarchy() is deprecated in Drupal 8.7.x and will be removed before Drupal 9.0.x. Reset the cache of the taxonomy_term storage controller instead.', E_USER_DEPRECATED);
-    $this->entityTypeManager()->getStorage('taxonomy_term')->resetCache();
+    $this->hierarchy = $hierarchy;
     return $this;
   }
 

@@ -2479,14 +2479,6 @@ abstract class DisplayPluginBase extends PluginBase implements DisplayPluginInte
       }
     }
 
-    // Validate extenders.
-    foreach ($this->extenders as $extender) {
-      $result = $extender->validate();
-      if (!empty($result) && is_array($result)) {
-        $errors = array_merge($errors, $result);
-      }
-    }
-
     return $errors;
   }
 

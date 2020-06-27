@@ -11,27 +11,22 @@ use Symfony\Component\HttpFoundation\Response;
 class ResourceController {
 
   /**
-   * Creates an oEmbed resource response.
+   * Returns the contents of an oEmbed resource fixture.
    *
    * @param \Symfony\Component\HttpFoundation\Request $request
    *   The request.
    *
    * @return \Symfony\Component\HttpFoundation\Response
-   *   The oEmbed resource response.
+   *   The JSON response.
    */
   public function get(Request $request) {
     $asset_url = $request->query->get('url');
 
     $resources = \Drupal::state()->get(static::class, []);
 
-    if ($resources[$asset_url] === 404) {
-      $response = new Response('Not Found', 404);
-    }
-    else {
-      $content = file_get_contents($resources[$asset_url]);
-      $response = new Response($content);
-      $response->headers->set('Content-Type', 'application/json');
-    }
+    $content = file_get_contents($resources[$asset_url]);
+    $response = new Response($content);
+    $response->headers->set('Content-Type', 'application/json');
 
     return $response;
   }
@@ -47,18 +42,6 @@ class ResourceController {
   public static function setResourceUrl($asset_url, $resource_path) {
     $resources = \Drupal::state()->get(static::class, []);
     $resources[$asset_url] = $resource_path;
-    \Drupal::state()->set(static::class, $resources);
-  }
-
-  /**
-   * Maps an asset URL to a 404 response.
-   *
-   * @param string $asset_url
-   *   The asset URL.
-   */
-  public static function setResource404($asset_url) {
-    $resources = \Drupal::state()->get(static::class, []);
-    $resources[$asset_url] = 404;
     \Drupal::state()->set(static::class, $resources);
   }
 

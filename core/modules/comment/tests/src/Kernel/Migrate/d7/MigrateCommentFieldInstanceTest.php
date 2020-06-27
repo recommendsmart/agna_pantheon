@@ -23,9 +23,10 @@ class MigrateCommentFieldInstanceTest extends MigrateDrupal7TestBase {
    */
   protected function setUp() {
     parent::setUp();
-    $this->migrateContentTypes();
-    $this->migrateCommentTypes();
+    $this->installConfig(['comment', 'node']);
     $this->executeMigrations([
+      'd7_node_type',
+      'd7_comment_type',
       'd7_comment_field',
       'd7_comment_field_instance',
     ]);

@@ -9,7 +9,6 @@ use Drupal\Tests\migrate\Kernel\MigrateSqlSourceTestBase;
  *
  * @covers \Drupal\comment\Plugin\migrate\source\d6\CommentVariable
  * @group comment
- * @group legacy
  */
 class CommentVariableTest extends MigrateSqlSourceTestBase {
 
@@ -17,17 +16,6 @@ class CommentVariableTest extends MigrateSqlSourceTestBase {
    * {@inheritdoc}
    */
   public static $modules = ['comment', 'migrate_drupal'];
-
-  /**
-   * {@inheritdoc}
-   *
-   * @dataProvider providerSource
-   * @requires extension pdo_sqlite
-   * @expectedDeprecation CommentVariable is deprecated in Drupal 8.4.x and will be removed before Drupal 9.0.x. Use \Drupal\node\Plugin\migrate\source\d6\NodeType instead.
-   */
-  public function testSource(array $source_data, array $expected_data, $expected_count = NULL, array $configuration = [], $high_water = NULL) {
-    parent::testSource($source_data, $expected_data, $expected_count, $configuration, $high_water);
-  }
 
   /**
    * {@inheritdoc}

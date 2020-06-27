@@ -270,7 +270,7 @@ class EntityReferenceSelectionAccessTest extends KernelTestBase {
         $account = $values;
       }
       $users[$key] = $account;
-      $user_labels[$key] = Html::escape($account->getAccountName());
+      $user_labels[$key] = Html::escape($account->getUsername());
     }
 
     // Test as a non-admin.

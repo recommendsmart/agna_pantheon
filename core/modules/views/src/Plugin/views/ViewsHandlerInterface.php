@@ -31,7 +31,7 @@ interface ViewsHandlerInterface extends ViewsPluginInterface {
 
   /**
    * Determines if the handler is considered 'broken', meaning it's a
-   * placeholder used when a handler can't be found.
+   * a placeholder used when a handler can't be found.
    */
   public function broken();
 

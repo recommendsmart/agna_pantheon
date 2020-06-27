@@ -25,6 +25,7 @@ process:
   label: name
   name: name
   description: description
+  hierarchy: hierarchy
   weight: weight
 destination:
   plugin: entity:taxonomy_vocabulary

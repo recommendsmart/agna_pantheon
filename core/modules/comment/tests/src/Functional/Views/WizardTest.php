@@ -60,7 +60,7 @@ class WizardTest extends WizardTestBase {
     $fields = $this->xpath($xpath);
     $options = [];
     foreach ($fields as $field) {
-      $items = $field->findAll('xpath', 'option');
+      $items = $this->getAllOptions($field);
       foreach ($items as $item) {
         $options[] = $item->getValue();
       }

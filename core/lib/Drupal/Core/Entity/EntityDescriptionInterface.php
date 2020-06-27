@@ -5,7 +5,7 @@ namespace Drupal\Core\Entity;
 /**
  * Defines the interface for entities that have a description.
  */
-interface EntityDescriptionInterface extends EntityInterface {
+interface EntityDescriptionInterface {
 
   /**
    * Gets the entity description.

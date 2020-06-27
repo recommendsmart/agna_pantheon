@@ -58,7 +58,7 @@ class KeyValueContentEntityStorageTest extends KernelTestBase {
     $this->assertIdentical($empty->getEntityTypeId(), 'entity_test_label');
     // The URI can only be checked after saving.
     try {
-      $empty->toUrl();
+      $empty->urlInfo();
       $this->fail('EntityMalformedException was thrown.');
     }
     catch (EntityMalformedException $e) {

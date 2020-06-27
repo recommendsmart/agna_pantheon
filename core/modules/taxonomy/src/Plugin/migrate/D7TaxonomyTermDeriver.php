@@ -3,17 +3,20 @@
 namespace Drupal\taxonomy\Plugin\migrate;
 
 use Drupal\Component\Plugin\Derivative\DeriverBase;
+use Drupal\Component\Plugin\Exception\PluginNotFoundException;
 use Drupal\Core\Database\DatabaseExceptionWrapper;
 use Drupal\Core\Plugin\Discovery\ContainerDeriverInterface;
 use Drupal\migrate\Exception\RequirementsException;
 use Drupal\migrate\Plugin\MigrationDeriverTrait;
-use Drupal\migrate_drupal\FieldDiscoveryInterface;
+use Drupal\migrate_drupal\Plugin\MigrateCckFieldPluginManagerInterface;
+use Drupal\migrate_drupal\Plugin\MigrateFieldPluginManagerInterface;
 use Symfony\Component\DependencyInjection\ContainerInterface;
 
 /**
  * Deriver for Drupal 7 taxonomy term migrations based on vocabularies.
  */
 class D7TaxonomyTermDeriver extends DeriverBase implements ContainerDeriverInterface {
+
   use MigrationDeriverTrait;
 
   /**
@@ -24,23 +27,47 @@ class D7TaxonomyTermDeriver extends DeriverBase implements ContainerDeriverInter
   protected $basePluginId;
 
   /**
-   * The migration field discovery service.
+   * Already-instantiated cckfield plugins, keyed by ID.
    *
-   * @var \Drupal\migrate_drupal\FieldDiscoveryInterface
+   * @var \Drupal\migrate_drupal\Plugin\MigrateCckFieldInterface[]
    */
-  protected $fieldDiscovery;
+  protected $cckPluginCache;
+
+  /**
+   * The CCK plugin manager.
+   *
+   * @var \Drupal\migrate_drupal\Plugin\MigrateCckFieldPluginManagerInterface
+   */
+  protected $cckPluginManager;
+
+  /**
+   * Already-instantiated field plugins, keyed by ID.
+   *
+   * @var \Drupal\migrate_drupal\Plugin\MigrateFieldInterface[]
+   */
+  protected $fieldPluginCache;
+
+  /**
+   * The field plugin manager.
+   *
+   * @var \Drupal\migrate_drupal\Plugin\MigrateFieldPluginManagerInterface
+   */
+  protected $fieldPluginManager;
 
   /**
    * D7TaxonomyTermDeriver constructor.
    *
    * @param string $base_plugin_id
    *   The base plugin ID for the plugin ID.
-   * @param \Drupal\migrate_drupal\FieldDiscoveryInterface $field_discovery
-   *   The migration field discovery service.
+   * @param \Drupal\migrate_drupal\Plugin\MigrateCckFieldPluginManagerInterface $cck_manager
+   *   The CCK plugin manager.
+   * @param \Drupal\migrate_drupal\Plugin\MigrateFieldPluginManagerInterface $field_manager
+   *   The field plugin manager.
    */
-  public function __construct($base_plugin_id, FieldDiscoveryInterface $field_discovery) {
+  public function __construct($base_plugin_id, MigrateCckFieldPluginManagerInterface $cck_manager, MigrateFieldPluginManagerInterface $field_manager) {
     $this->basePluginId = $base_plugin_id;
-    $this->fieldDiscovery = $field_discovery;
+    $this->cckPluginManager = $cck_manager;
+    $this->fieldPluginManager = $field_manager;
   }
 
   /**
@@ -49,7 +76,8 @@ class D7TaxonomyTermDeriver extends DeriverBase implements ContainerDeriverInter
   public static function create(ContainerInterface $container, $base_plugin_id) {
     return new static(
       $base_plugin_id,
-      $container->get('migrate_drupal.field_discovery')
+      $container->get('plugin.manager.migrate.cckfield'),
+      $container->get('plugin.manager.migrate.field')
     );
   }
 
@@ -57,6 +85,23 @@ class D7TaxonomyTermDeriver extends DeriverBase implements ContainerDeriverInter
    * {@inheritdoc}
    */
   public function getDerivativeDefinitions($base_plugin_definition) {
+    $fields = [];
+    try {
+      $source_plugin = static::getSourcePlugin('d7_field_instance');
+      $source_plugin->checkRequirements();
+
+      // Read all field instance definitions in the source database.
+      foreach ($source_plugin as $row) {
+        if ($row->getSourceProperty('entity_type') == 'taxonomy_term') {
+          $fields[$row->getSourceProperty('bundle')][$row->getSourceProperty('field_name')] = $row->getSource();
+        }
+      }
+    }
+    catch (RequirementsException $e) {
+      // If checkRequirements() failed then the field module did not exist and
+      // we do not have any fields. Therefore, $fields will be empty and below
+      // we'll create a migration just for the node properties.
+    }
 
     $vocabulary_source_plugin = static::getSourcePlugin('d7_taxonomy_vocabulary');
     try {
@@ -81,9 +126,34 @@ class D7TaxonomyTermDeriver extends DeriverBase implements ContainerDeriverInter
         $values['source']['bundle'] = $bundle;
         $values['destination']['default_bundle'] = $bundle;
 
-        /** @var \Drupal\migrate\Plugin\MigrationInterface $migration */
+        /** @var Migration $migration */
         $migration = \Drupal::service('plugin.manager.migration')->createStubMigration($values);
-        $this->fieldDiscovery->addBundleFieldProcesses($migration, 'taxonomy_term', $bundle);
+        if (isset($fields[$bundle])) {
+          foreach ($fields[$bundle] as $field_name => $info) {
+            $field_type = $info['type'];
+            try {
+              $plugin_id = $this->fieldPluginManager->getPluginIdFromFieldType($field_type, ['core' => 7], $migration);
+              if (!isset($this->fieldPluginCache[$field_type])) {
+                $this->fieldPluginCache[$field_type] = $this->fieldPluginManager->createInstance($plugin_id, ['core' => 7], $migration);
+              }
+              $this->fieldPluginCache[$field_type]
+                ->defineValueProcessPipeline($migration, $field_name, $info);
+            }
+            catch (PluginNotFoundException $ex) {
+              try {
+                $plugin_id = $this->cckPluginManager->getPluginIdFromFieldType($field_type, ['core' => 7], $migration);
+                if (!isset($this->cckPluginCache[$field_type])) {
+                  $this->cckPluginCache[$field_type] = $this->cckPluginManager->createInstance($plugin_id, ['core' => 7], $migration);
+                }
+                $this->cckPluginCache[$field_type]
+                  ->processCckFieldValues($migration, $field_name, $info);
+              }
+              catch (PluginNotFoundException $ex) {
+                $migration->setProcessOfProperty($field_name, $field_name);
+              }
+            }
+          }
+        }
         $this->derivatives[$bundle] = $migration->getPluginDefinition();
       }
     }

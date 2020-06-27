@@ -11,11 +11,8 @@ use Symfony\Component\DependencyInjection\ContainerInterface;
  *
  * Use this in a post update function like so:
  * @code
- * // Ensure Taxonomy module installed before trying to update vocabularies.
- * if (\Drupal::moduleHandler()->moduleExists('taxonomy')) {
- *   // Update the dependencies of all Vocabulary configuration entities.
- *   \Drupal::classResolver(ConfigEntityUpdater::class)->update($sandbox, 'taxonomy_vocabulary');
- * }
+ * // Update the dependencies of all Vocabulary configuration entities.
+ * \Drupal::classResolver(ConfigEntityUpdater::class)->update($sandbox, 'taxonomy_vocabulary');
  * @endcode
  *
  * The number of entities processed in each batch is determined by the
@@ -68,9 +65,6 @@ class ConfigEntityUpdater implements ContainerInjectionInterface {
    *   Stores information for batch updates.
    * @param string $entity_type_id
    *   The configuration entity type ID. For example, 'view' or 'vocabulary'.
-   *   The calling code should ensure that the entity type exists beforehand
-   *   (i.e., by checking that the entity type is defined or that the module
-   *   that provides it is installed).
    * @param callable $callback
    *   (optional) A callback to determine if a configuration entity should be
    *   saved. The callback will be passed each entity of the provided type that

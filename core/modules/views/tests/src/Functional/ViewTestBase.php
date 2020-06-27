@@ -3,7 +3,6 @@
 namespace Drupal\Tests\views\Functional;
 
 use Behat\Mink\Exception\ElementNotFoundException;
-use Drupal\Core\Database\Database;
 use Drupal\Core\Database\Query\SelectInterface;
 use Drupal\Tests\BrowserTestBase;
 use Drupal\views\Tests\ViewResultAssertionTrait;
@@ -56,7 +55,7 @@ abstract class ViewTestBase extends BrowserTestBase {
 
     // Load the test dataset.
     $data_set = $this->dataSet();
-    $query = Database::getConnection()->insert('views_test_data')
+    $query = db_insert('views_test_data')
       ->fields(array_keys($data_set[0]));
     foreach ($data_set as $record) {
       $query->values($record);

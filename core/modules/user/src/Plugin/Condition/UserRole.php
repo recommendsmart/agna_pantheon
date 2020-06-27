@@ -11,7 +11,7 @@ use Drupal\Core\Form\FormStateInterface;
  * @Condition(
  *   id = "user_role",
  *   label = @Translation("User Role"),
- *   context_definitions = {
+ *   context = {
  *     "user" = @ContextDefinition("entity:user", label = @Translation("User"))
  *   }
  * )

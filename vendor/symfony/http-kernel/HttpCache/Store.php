@@ -40,7 +40,7 @@ class Store implements StoreInterface
             throw new \RuntimeException(sprintf('Unable to create the store directory (%s).', $this->root));
         }
         $this->keyCache = new \SplObjectStorage();
-        $this->locks = [];
+        $this->locks = array();
     }
 
     /**
@@ -54,7 +54,7 @@ class Store implements StoreInterface
             fclose($lock);
         }
 
-        $this->locks = [];
+        $this->locks = array();
     }
 
     /**
@@ -134,7 +134,7 @@ class Store implements StoreInterface
         $key = $this->getCacheKey($request);
 
         if (!$entries = $this->getMetadata($key)) {
-            return null;
+            return;
         }
 
         // find a cached entry that matches the request.
@@ -148,18 +148,17 @@ class Store implements StoreInterface
         }
 
         if (null === $match) {
-            return null;
+            return;
         }
 
         $headers = $match[1];
-        if (file_exists($path = $this->getPath($headers['x-content-digest'][0]))) {
-            return $this->restoreResponse($headers, $path);
+        if (file_exists($body = $this->getPath($headers['x-content-digest'][0]))) {
+            return $this->restoreResponse($headers, $body);
         }
 
         // TODO the metaStore referenced an entity that doesn't exist in
         // the entityStore. We definitely want to return nil but we should
         // also purge the entry from the meta-store when this is detected.
-        return null;
     }
 
     /**
@@ -177,24 +176,15 @@ class Store implements StoreInterface
         $key = $this->getCacheKey($request);
         $storedEnv = $this->persistRequest($request);
 
-        if ($response->headers->has('X-Body-File')) {
-            // Assume the response came from disk, but at least perform some safeguard checks
-            if (!$response->headers->has('X-Content-Digest')) {
-                throw new \RuntimeException('A restored response must have the X-Content-Digest header.');
-            }
-
-            $digest = $response->headers->get('X-Content-Digest');
-            if ($this->getPath($digest) !== $response->headers->get('X-Body-File')) {
-                throw new \RuntimeException('X-Body-File and X-Content-Digest do not match.');
-            }
-            // Everything seems ok, omit writing content to disk
-        } else {
+        // write the response body to the entity store if this is the original response
+        if (!$response->headers->has('X-Content-Digest')) {
             $digest = $this->generateContentDigest($response);
-            $response->headers->set('X-Content-Digest', $digest);
 
-            if (!$this->save($digest, $response->getContent(), false)) {
+            if (false === $this->save($digest, $response->getContent())) {
                 throw new \RuntimeException('Unable to store the entity.');
             }
+
+            $response->headers->set('X-Content-Digest', $digest);
 
             if (!$response->headers->has('Transfer-Encoding')) {
                 $response->headers->set('Content-Length', \strlen($response->getContent()));
@@ -202,11 +192,11 @@ class Store implements StoreInterface
         }
 
         // read existing cache entries, remove non-varying, and add this one to the list
-        $entries = [];
+        $entries = array();
         $vary = $response->headers->get('vary');
         foreach ($this->getMetadata($key) as $entry) {
             if (!isset($entry[1]['vary'][0])) {
-                $entry[1]['vary'] = [''];
+                $entry[1]['vary'] = array('');
             }
 
             if ($entry[1]['vary'][0] != $vary || !$this->requestsMatch($vary, $entry[0], $storedEnv)) {
@@ -217,9 +207,9 @@ class Store implements StoreInterface
         $headers = $this->persistResponse($response);
         unset($headers['age']);
 
-        array_unshift($entries, [$storedEnv, $headers]);
+        array_unshift($entries, array($storedEnv, $headers));
 
-        if (!$this->save($key, serialize($entries))) {
+        if (false === $this->save($key, serialize($entries))) {
             throw new \RuntimeException('Unable to store the metadata.');
         }
 
@@ -246,19 +236,19 @@ class Store implements StoreInterface
         $modified = false;
         $key = $this->getCacheKey($request);
 
-        $entries = [];
+        $entries = array();
         foreach ($this->getMetadata($key) as $entry) {
             $response = $this->restoreResponse($entry[1]);
             if ($response->isFresh()) {
                 $response->expire();
                 $modified = true;
-                $entries[] = [$entry[0], $this->persistResponse($response)];
+                $entries[] = array($entry[0], $this->persistResponse($response));
             } else {
                 $entries[] = $entry;
             }
         }
 
-        if ($modified && !$this->save($key, serialize($entries))) {
+        if ($modified && false === $this->save($key, serialize($entries))) {
             throw new \RuntimeException('Unable to store the metadata.');
         }
     }
@@ -303,7 +293,7 @@ class Store implements StoreInterface
     private function getMetadata($key)
     {
         if (!$entries = $this->load($key)) {
-            return [];
+            return array();
         }
 
         return unserialize($entries);
@@ -359,31 +349,26 @@ class Store implements StoreInterface
      *
      * @param string $key The store key
      *
-     * @return string|null The data associated with the key
+     * @return string The data associated with the key
      */
     private function load($key)
     {
         $path = $this->getPath($key);
 
-        return file_exists($path) && false !== ($contents = file_get_contents($path)) ? $contents : null;
+        return file_exists($path) ? file_get_contents($path) : false;
     }
 
     /**
      * Save data for the given key.
      *
-     * @param string $key       The store key
-     * @param string $data      The data to store
-     * @param bool   $overwrite Whether existing data should be overwritten
+     * @param string $key  The store key
+     * @param string $data The data to store
      *
      * @return bool
      */
-    private function save($key, $data, $overwrite = true)
+    private function save($key, $data)
     {
         $path = $this->getPath($key);
-
-        if (!$overwrite && file_exists($path)) {
-            return true;
-        }
 
         if (isset($this->locks[$key])) {
             $fp = $this->locks[$key];
@@ -423,8 +408,6 @@ class Store implements StoreInterface
         }
 
         @chmod($path, 0666 & ~umask());
-
-        return true;
     }
 
     public function getPath($key)
@@ -481,7 +464,7 @@ class Store implements StoreInterface
     private function persistResponse(Response $response)
     {
         $headers = $response->headers->all();
-        $headers['X-Status'] = [$response->getStatusCode()];
+        $headers['X-Status'] = array($response->getStatusCode());
 
         return $headers;
     }
@@ -490,19 +473,19 @@ class Store implements StoreInterface
      * Restores a Response from the HTTP headers and body.
      *
      * @param array  $headers An array of HTTP headers for the Response
-     * @param string $path    Path to the Response body
+     * @param string $body    The Response body
      *
      * @return Response
      */
-    private function restoreResponse($headers, $path = null)
+    private function restoreResponse($headers, $body = null)
     {
         $status = $headers['X-Status'][0];
         unset($headers['X-Status']);
 
-        if (null !== $path) {
-            $headers['X-Body-File'] = [$path];
+        if (null !== $body) {
+            $headers['X-Body-File'] = array($body);
         }
 
-        return new Response($path, $status, $headers);
+        return new Response($body, $status, $headers);
     }
 }
