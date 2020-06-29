@@ -80,7 +80,7 @@ class YamlFileLoader extends FileLoader
      */
     protected function parseNodes(array $nodes)
     {
-        $values = array();
+        $values = [];
 
         foreach ($nodes as $name => $childNodes) {
             if (is_numeric($name) && \is_array($childNodes) && 1 === \count($childNodes)) {
@@ -124,14 +124,14 @@ class YamlFileLoader extends FileLoader
         try {
             $classes = $this->yamlParser->parseFile($path, Yaml::PARSE_CONSTANT);
         } catch (ParseException $e) {
-            throw new \InvalidArgumentException(sprintf('The file "%s" does not contain valid YAML.', $path), 0, $e);
+            throw new \InvalidArgumentException(sprintf('The file "%s" does not contain valid YAML: ', $path).$e->getMessage(), 0, $e);
         } finally {
             restore_error_handler();
         }
 
         // empty file
         if (null === $classes) {
-            return array();
+            return [];
         }
 
         // not an array
