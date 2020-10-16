@@ -1,0 +1,5 @@
+{% if results.vote_field_count|default is empty %}
+    <p>{% trans %}No votes have been submitted yet.{% endtrans %}</p>
+{% else %}
+    <p>{% trans %}{{ results.vote_field_count }} votes with an average rating of {{ results.vote_field_average }}.{% endtrans %}</p>
+{% endif %}
