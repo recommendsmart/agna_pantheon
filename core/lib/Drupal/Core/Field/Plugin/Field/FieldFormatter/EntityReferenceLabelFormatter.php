@@ -47,7 +47,7 @@ class EntityReferenceLabelFormatter extends EntityReferenceFormatterBase {
    * {@inheritdoc}
    */
   public function settingsSummary() {
-    $summary = [];
+    $summary = parent::settingsSummary();
     $summary[] = $this->getSetting('link') ? t('Link to the referenced entity') : t('No link');
     return $summary;
   }
@@ -65,7 +65,7 @@ class EntityReferenceLabelFormatter extends EntityReferenceFormatterBase {
       // link.
       if ($output_as_link && !$entity->isNew()) {
         try {
-          $uri = $entity->urlInfo();
+          $uri = $entity->toUrl();
         }
         catch (UndefinedLinkTemplateException $e) {
           // This exception is thrown by \Drupal\Core\Entity\Entity::urlInfo()

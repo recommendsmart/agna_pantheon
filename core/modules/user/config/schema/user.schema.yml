@@ -189,7 +189,7 @@ entity_reference_selection.default:user:
       label: 'Include the anonymous user in the matched entities.'
 
 field.formatter.settings.user_name:
-  type: mapping
+  type: base_field_formatter_settings
   mapping:
     link_to_entity:
       type: boolean

@@ -4,7 +4,8 @@ namespace Drupal\comment;
 
 use Drupal\comment\Plugin\Field\FieldType\CommentItemInterface;
 use Drupal\Component\Utility\NestedArray;
-use Drupal\Core\Entity\EntityManagerInterface;
+use Drupal\Core\DependencyInjection\DeprecatedServicePropertyTrait;
+use Drupal\Core\Entity\EntityTypeManagerInterface;
 use Drupal\Core\Entity\FieldableEntityInterface;
 use Drupal\Core\Extension\ModuleHandlerInterface;
 use Drupal\Core\Session\AccountInterface;
@@ -20,6 +21,12 @@ use Drupal\Core\Url;
 class CommentLinkBuilder implements CommentLinkBuilderInterface {
 
   use StringTranslationTrait;
+  use DeprecatedServicePropertyTrait;
+
+  /**
+   * {@inheritdoc}
+   */
+  protected $deprecatedProperties = ['entityManager' => 'entity.manager'];
 
   /**
    * Current user.
@@ -43,11 +50,11 @@ class CommentLinkBuilder implements CommentLinkBuilderInterface {
   protected $moduleHandler;
 
   /**
-   * The entity manager service.
+   * The entity type manager service.
    *
-   * @var \Drupal\Core\Entity\EntityManagerInterface
+   * @var \Drupal\Core\Entity\EntityTypeManagerInterface
    */
-  protected $entityManager;
+  protected $entityTypeManager;
 
   /**
    * Constructs a new CommentLinkBuilder object.
@@ -60,15 +67,15 @@ class CommentLinkBuilder implements CommentLinkBuilderInterface {
    *   Module handler service.
    * @param \Drupal\Core\StringTranslation\TranslationInterface $string_translation
    *   String translation service.
-   * @param \Drupal\Core\Entity\EntityManagerInterface $entity_manager
-   *   The entity manager service.
+   * @param \Drupal\Core\Entity\EntityTypeManagerInterface $entity_type_manager
+   *   The entity type manager.
    */
-  public function __construct(AccountInterface $current_user, CommentManagerInterface $comment_manager, ModuleHandlerInterface $module_handler, TranslationInterface $string_translation, EntityManagerInterface $entity_manager) {
+  public function __construct(AccountInterface $current_user, CommentManagerInterface $comment_manager, ModuleHandlerInterface $module_handler, TranslationInterface $string_translation, EntityTypeManagerInterface $entity_type_manager) {
     $this->currentUser = $current_user;
     $this->commentManager = $comment_manager;
     $this->moduleHandler = $module_handler;
     $this->stringTranslation = $string_translation;
-    $this->entityManager = $entity_manager;
+    $this->entityTypeManager = $entity_type_manager;
   }
 
   /**
@@ -93,7 +100,8 @@ class CommentLinkBuilder implements CommentLinkBuilderInterface {
         continue;
       }
       $links = [];
-      $commenting_status = $entity->get($field_name)->status;
+      $field = $entity->get($field_name);
+      $commenting_status = $field->status;
       if ($commenting_status != CommentItemInterface::HIDDEN) {
         // Entity has commenting status open or closed.
         $field_definition = $entity->getFieldDefinition($field_name);
@@ -101,10 +109,10 @@ class CommentLinkBuilder implements CommentLinkBuilderInterface {
           // Teaser view: display the number of comments that have been posted,
           // or a link to add new comments if the user has permission, the
           // entity is open to new comments, and there currently are none.
-          if ($this->currentUser->hasPermission('access comments')) {
-            if (!empty($entity->get($field_name)->comment_count)) {
+          if ($field->access('view only', $this->currentUser)) {
+            if ($field->comment_count > 0) {
               $links['comment-comments'] = [
-                'title' => $this->formatPlural($entity->get($field_name)->comment_count, '1 comment', '@count comments'),
+                'title' => $this->formatPlural($field->comment_count, '1 comment', '@count comments'),
                 'attributes' => ['title' => $this->t('Jump to the first comment.')],
                 'fragment' => 'comments',
                 'url' => $entity->toUrl(),
@@ -116,7 +124,7 @@ class CommentLinkBuilder implements CommentLinkBuilderInterface {
                   'attributes' => [
                     'class' => 'hidden',
                     'title' => $this->t('Jump to the first new comment.'),
-                    'data-history-node-last-comment-timestamp' => $entity->get($field_name)->last_comment_timestamp,
+                    'data-history-node-last-comment-timestamp' => $field->last_comment_timestamp,
                     'data-history-node-field-name' => $field_name,
                   ],
                 ];
@@ -126,7 +134,7 @@ class CommentLinkBuilder implements CommentLinkBuilderInterface {
           // Provide a link to new comment form.
           if ($commenting_status == CommentItemInterface::OPEN) {
             $comment_form_location = $field_definition->getSetting('form_location');
-            if ($this->currentUser->hasPermission('post comments')) {
+            if ($field->access('create', $this->currentUser)) {
               $links['comment-add'] = [
                 'title' => $this->t('Add new comment'),
                 'language' => $entity->language(),
@@ -157,10 +165,12 @@ class CommentLinkBuilder implements CommentLinkBuilderInterface {
           // comments.
           if ($commenting_status == CommentItemInterface::OPEN) {
             $comment_form_location = $field_definition->getSetting('form_location');
-            if ($this->currentUser->hasPermission('post comments')) {
+            if ($field->access('create', $this->currentUser)) {
               // Show the "post comment" link if the form is on another page, or
               // if there are existing comments that the link will skip past.
-              if ($comment_form_location == CommentItemInterface::FORM_SEPARATE_PAGE || (!empty($entity->get($field_name)->comment_count) && $this->currentUser->hasPermission('access comments'))) {
+              $separate_form_location = $comment_form_location == CommentItemInterface::FORM_SEPARATE_PAGE;
+              $existing_comments = ($field->comment_count > 0) && $field->access('view only', $this->currentUser);
+              if ($separate_form_location || $existing_comments) {
                 $links['comment-add'] = [
                   'title' => $this->t('Add new comment'),
                   'attributes' => ['title' => $this->t('Share your thoughts and opinions.')],
@@ -201,16 +211,16 @@ class CommentLinkBuilder implements CommentLinkBuilderInterface {
           $entity_links['comment__' . $field_name]['#attached']['drupalSettings']['history']['lastReadTimestamps'][$entity->id()] = (int) history_read($entity->id());
           $new_comments = $this->commentManager->getCountNewComments($entity);
           if ($new_comments > 0) {
-            $page_number = $this->entityManager
+            $page_number = $this->entityTypeManager
               ->getStorage('comment')
-              ->getNewCommentPageNumber($entity->{$field_name}->comment_count, $new_comments, $entity, $field_name);
+              ->getNewCommentPageNumber($field->comment_count, $new_comments, $entity, $field_name);
             $query = $page_number ? ['page' => $page_number] : NULL;
             $value = [
               'new_comment_count' => (int) $new_comments,
-              'first_new_comment_link' => $entity->url('canonical', [
+              'first_new_comment_link' => $entity->toUrl('canonical', [
                 'query' => $query,
                 'fragment' => 'new',
-              ]),
+              ])->toString(),
             ];
             $parents = ['comment', 'newCommentsLinks', $entity->getEntityTypeId(), $field_name, $entity->id()];
             NestedArray::setValue($entity_links['comment__' . $field_name]['#attached']['drupalSettings'], $parents, $value);

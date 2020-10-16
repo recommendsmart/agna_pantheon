@@ -15,7 +15,7 @@ class MigrateFieldFormatterSettingsTest extends MigrateDrupal6TestBase {
   /**
    * {@inheritdoc}
    */
-  public static $modules = ['menu_ui'];
+  public static $modules = ['menu_ui', 'node'];
 
   /**
    * {@inheritdoc}
@@ -48,7 +48,11 @@ class MigrateFieldFormatterSettingsTest extends MigrateDrupal6TestBase {
       'label' => 'above',
       'weight' => 1,
       'type' => 'text_trimmed',
-      'settings' => ['trim_length' => 600],
+      'settings' => [
+        'trim_length' => 600,
+        'offset' => 0,
+        'limit' => 0,
+      ],
       'third_party_settings' => [],
       'region' => 'content',
     ];
@@ -69,7 +73,10 @@ class MigrateFieldFormatterSettingsTest extends MigrateDrupal6TestBase {
 
     // Test the default format with text_default which comes from a static map.
     $expected['type'] = 'text_default';
-    $expected['settings'] = [];
+    $expected['settings'] = [
+      'offset' => 0,
+      'limit' => 0,
+    ];
     $display = EntityViewDisplay::load('node.story.default');
     $this->assertIdentical($expected, $display->getComponent($field_name));
 
@@ -87,6 +94,8 @@ class MigrateFieldFormatterSettingsTest extends MigrateDrupal6TestBase {
     $expected['settings'] = [
       'thousand_separator' => ',',
       'prefix_suffix' => TRUE,
+      'offset' => 0,
+      'limit' => 0,
     ];
     $component = $display->getComponent('field_test_two');
     $this->assertIdentical($expected, $component);
@@ -97,6 +106,8 @@ class MigrateFieldFormatterSettingsTest extends MigrateDrupal6TestBase {
        'decimal_separator' => '.',
        'thousand_separator' => ',',
        'prefix_suffix' => TRUE,
+       'offset' => 0,
+       'limit' => 0,
     ];
     $component = $display->getComponent('field_test_three');
     $this->assertIdentical($expected, $component);
@@ -104,7 +115,10 @@ class MigrateFieldFormatterSettingsTest extends MigrateDrupal6TestBase {
     // Test the email field formatter settings are correct.
     $expected['weight'] = 6;
     $expected['type'] = 'email_mailto';
-    $expected['settings'] = [];
+    $expected['settings'] = [
+      'offset' => 0,
+      'limit' => 0,
+    ];
     $component = $display->getComponent('field_test_email');
     $this->assertIdentical($expected, $component);
 
@@ -117,6 +131,8 @@ class MigrateFieldFormatterSettingsTest extends MigrateDrupal6TestBase {
       'url_plain' => TRUE,
       'rel' => '0',
       'target' => '0',
+      'offset' => 0,
+      'limit' => 0,
     ];
     $component = $display->getComponent('field_test_link');
     $this->assertIdentical($expected, $component);
@@ -131,6 +147,8 @@ class MigrateFieldFormatterSettingsTest extends MigrateDrupal6TestBase {
     $expected['type'] = 'file_default';
     $expected['settings'] = [
       'use_description_as_link_text' => TRUE,
+      'offset' => 0,
+      'limit' => 0,
     ];
     $component = $display->getComponent('field_test_filefield');
     $this->assertIdentical($expected, $component);
@@ -143,7 +161,12 @@ class MigrateFieldFormatterSettingsTest extends MigrateDrupal6TestBase {
     // Test the image field formatter settings.
     $expected['weight'] = 9;
     $expected['type'] = 'image';
-    $expected['settings'] = ['image_style' => '', 'image_link' => ''];
+    $expected['settings'] = [
+      'image_style' => '',
+      'image_link' => '',
+      'offset' => 0,
+      'limit' => 0,
+    ];
     $component = $display->getComponent('field_test_imagefield');
     $this->assertIdentical($expected, $component);
     $display = EntityViewDisplay::load('node.story.teaser');
@@ -154,12 +177,20 @@ class MigrateFieldFormatterSettingsTest extends MigrateDrupal6TestBase {
     // Test phone field.
     $expected['weight'] = 13;
     $expected['type'] = 'basic_string';
-    $expected['settings'] = [];
+    $expected['settings'] = [
+      'offset' => 0,
+      'limit' => 0,
+    ];
     $component = $display->getComponent('field_test_phone');
     $this->assertIdentical($expected, $component);
 
     // Test date field.
-    $defaults = ['format_type' => 'fallback', 'timezone_override' => ''];
+    $defaults = [
+      'format_type' => 'fallback',
+      'timezone_override' => '',
+      'offset' => 0,
+      'limit' => 0,
+    ];
     $expected['weight'] = 10;
     $expected['type'] = 'datetime_default';
     $expected['settings'] = ['format_type' => 'fallback'] + $defaults;
@@ -197,7 +228,7 @@ class MigrateFieldFormatterSettingsTest extends MigrateDrupal6TestBase {
     $component = $display->getComponent('field_test_datetime');
     $this->assertIdentical($expected, $component);
     // Test that our Id map has the correct data.
-    $this->assertIdentical(['node', 'story', 'teaser', 'field_test'], $this->getMigration('d6_field_formatter_settings')->getIdMap()->lookupDestinationId(['story', 'teaser', 'node', 'field_test']));
+    $this->assertIdentical([['node', 'story', 'teaser', 'field_test']], $this->getMigration('d6_field_formatter_settings')->getIdMap()->lookupDestinationIds(['story', 'teaser', 'node', 'field_test']));
 
     // Test hidden field.
     $this->assertComponentNotExists('node.test_planet.teaser', 'field_test_text_single_checkbox');
@@ -206,7 +237,7 @@ class MigrateFieldFormatterSettingsTest extends MigrateDrupal6TestBase {
     // reference field.
     $display = EntityViewDisplay::load('node.employee.default');
     $component = $display->getComponent('field_company');
-    $this->assertInternalType('array', $component);
+    $this->assertIsArray($component);
     $this->assertSame('entity_reference_label', $component['type']);
     // The default node reference formatter shows the referenced node's title
     // as a link.
@@ -214,14 +245,14 @@ class MigrateFieldFormatterSettingsTest extends MigrateDrupal6TestBase {
 
     $display = EntityViewDisplay::load('node.employee.teaser');
     $component = $display->getComponent('field_company');
-    $this->assertInternalType('array', $component);
+    $this->assertIsArray($component);
     $this->assertSame('entity_reference_label', $component['type']);
     // The plain node reference formatter shows the referenced node's title,
     // unlinked.
     $this->assertFalse($component['settings']['link']);
 
     $component = $display->getComponent('field_commander');
-    $this->assertInternalType('array', $component);
+    $this->assertIsArray($component);
     $this->assertSame('entity_reference_label', $component['type']);
     // The default user reference formatter links to the referenced user.
     $this->assertTrue($component['settings']['link']);

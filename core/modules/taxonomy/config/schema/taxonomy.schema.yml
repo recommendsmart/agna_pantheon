@@ -27,13 +27,10 @@ taxonomy.vocabulary.*:
     description:
       type: label
       label: 'Description'
-    hierarchy:
-      type: integer
-      label: 'Hierarchy'
     weight:
       type: integer
       label: 'Weight'
 
 field.formatter.settings.entity_reference_rss_category:
-  type: mapping
+  type: base_field_formatter_settings
   label: 'Taxonomy format settings'

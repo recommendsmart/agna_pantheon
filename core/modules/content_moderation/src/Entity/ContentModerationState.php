@@ -2,12 +2,14 @@
 
 namespace Drupal\content_moderation\Entity;
 
+use Drupal\content_moderation\Event\ContentModerationEvents;
+use Drupal\content_moderation\Event\ContentModerationStateChangedEvent;
 use Drupal\Core\Entity\ContentEntityBase;
 use Drupal\Core\Entity\EntityInterface;
 use Drupal\Core\Entity\EntityTypeInterface;
 use Drupal\Core\Field\BaseFieldDefinition;
 use Drupal\Core\TypedData\TranslatableInterface;
-use Drupal\user\UserInterface;
+use Drupal\user\EntityOwnerTrait;
 
 /**
  * Defines the Content moderation state entity.
@@ -37,6 +39,7 @@ use Drupal\user\UserInterface;
  *     "revision" = "revision_id",
  *     "uuid" = "uuid",
  *     "uid" = "uid",
+ *     "owner" = "uid",
  *     "langcode" = "langcode",
  *   }
  * )
@@ -48,18 +51,18 @@ use Drupal\user\UserInterface;
  */
 class ContentModerationState extends ContentEntityBase implements ContentModerationStateInterface {
 
+  use EntityOwnerTrait;
+
   /**
    * {@inheritdoc}
    */
   public static function baseFieldDefinitions(EntityTypeInterface $entity_type) {
     $fields = parent::baseFieldDefinitions($entity_type);
+    $fields += static::ownerBaseFieldDefinitions($entity_type);
 
-    $fields['uid'] = BaseFieldDefinition::create('entity_reference')
+    $fields['uid']
       ->setLabel(t('User'))
       ->setDescription(t('The username of the entity creator.'))
-      ->setSetting('target_type', 'user')
-      ->setDefaultValueCallback('Drupal\content_moderation\Entity\ContentModerationState::getCurrentUserId')
-      ->setTranslatable(TRUE)
       ->setRevisionable(TRUE);
 
     $fields['workflow'] = BaseFieldDefinition::create('entity_reference')
@@ -96,36 +99,6 @@ class ContentModerationState extends ContentEntityBase implements ContentModerat
       ->setRevisionable(TRUE);
 
     return $fields;
-  }
-
-  /**
-   * {@inheritdoc}
-   */
-  public function getOwner() {
-    return $this->get('uid')->entity;
-  }
-
-  /**
-   * {@inheritdoc}
-   */
-  public function getOwnerId() {
-    return $this->getEntityKey('uid');
-  }
-
-  /**
-   * {@inheritdoc}
-   */
-  public function setOwnerId($uid) {
-    $this->set('uid', $uid);
-    return $this;
-  }
-
-  /**
-   * {@inheritdoc}
-   */
-  public function setOwner(UserInterface $account) {
-    $this->set('uid', $account->id());
-    return $this;
   }
 
   /**
@@ -185,23 +158,38 @@ class ContentModerationState extends ContentEntityBase implements ContentModerat
    *
    * @see \Drupal\content_moderation\Entity\ContentModerationState::baseFieldDefinitions()
    *
+   * @deprecated The ::getCurrentUserId method is deprecated in 8.6.x and will
+   *   be removed before 9.0.0.
+   *
    * @return array
    *   An array of default values.
    */
   public static function getCurrentUserId() {
+    @trigger_error('The ::getCurrentUserId method is deprecated in 8.6.x and will be removed before 9.0.0.', E_USER_DEPRECATED);
     return [\Drupal::currentUser()->id()];
   }
 
   /**
-   * {@inheritdoc}
+   * Load the entity whose state is being tracked by this entity.
+   *
+   * @return \Drupal\Core\Entity\ContentEntityInterface
+   *   The entity whose state is being tracked.
    */
-  public function save() {
+  protected function loadModeratedEntity() {
     $related_entity = \Drupal::entityTypeManager()
       ->getStorage($this->content_entity_type_id->value)
       ->loadRevision($this->content_entity_revision_id->value);
     if ($related_entity instanceof TranslatableInterface) {
       $related_entity = $related_entity->getTranslation($this->activeLangcode);
     }
+    return $related_entity;
+  }
+
+  /**
+   * {@inheritdoc}
+   */
+  public function save() {
+    $related_entity = $this->loadModeratedEntity();
     $related_entity->moderation_state = $this->moderation_state;
     return $related_entity->save();
   }
@@ -219,7 +207,25 @@ class ContentModerationState extends ContentEntityBase implements ContentModerat
    *   In case of failures an exception is thrown.
    */
   protected function realSave() {
-    return parent::save();
+    if (!$this->getLoadedRevisionId()) {
+      $original_state = FALSE;
+    }
+    else {
+      $original_content_moderation_state = \Drupal::entityTypeManager()
+        ->getStorage($this->getEntityTypeId())
+        ->loadRevision($this->getLoadedRevisionId());
+      if (!$this->isDefaultTranslation() && $original_content_moderation_state->hasTranslation($this->activeLangcode)) {
+        $original_content_moderation_state = $original_content_moderation_state->getTranslation($this->activeLangcode);
+      }
+      $original_state = $original_content_moderation_state->moderation_state->value;
+    }
+
+    $result = parent::save();
+
+    $event = new ContentModerationStateChangedEvent($this->loadModeratedEntity(), $this->moderation_state->value, $original_state, $this->workflow->target_id);
+    \Drupal::service('event_dispatcher')->dispatch(ContentModerationEvents::STATE_CHANGED, $event);
+
+    return $result;
   }
 
   /**

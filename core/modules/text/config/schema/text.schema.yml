@@ -61,6 +61,9 @@ field.field_settings.text_with_summary:
     display_summary:
       type: boolean
       label: 'Summary input'
+    required_summary:
+      type: boolean
+      label: 'Require summary'
 
 field.value.text_with_summary:
   type: mapping
@@ -77,11 +80,11 @@ field.value.text_with_summary:
       label: 'Text format'
 
 field.formatter.settings.text_default:
-  type: mapping
+  type: base_field_formatter_settings
   label: 'Formatted text default display format settings'
 
 field.formatter.settings.text_summary_or_trimmed:
-  type: mapping
+  type: base_field_formatter_settings
   label: 'Summary or trimmed formatted text display format settings'
   mapping:
     trim_length:
@@ -89,7 +92,7 @@ field.formatter.settings.text_summary_or_trimmed:
       label: 'Trim length'
 
 field.formatter.settings.text_trimmed:
-  type: mapping
+  type: base_field_formatter_settings
   label: 'Trimmed text display format settings'
   mapping:
     trim_length:
@@ -120,6 +123,9 @@ field.widget.settings.text_textarea_with_summary:
     placeholder:
       type: label
       label: 'Placeholder'
+    show_summary:
+      type: boolean
+      label: 'Always show summary'
 
 field.widget.settings.text_textfield:
   type: mapping

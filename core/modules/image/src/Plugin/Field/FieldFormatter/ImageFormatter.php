@@ -85,7 +85,7 @@ class ImageFormatter extends ImageFormatterBase implements ContainerFactoryPlugi
       $configuration['view_mode'],
       $configuration['third_party_settings'],
       $container->get('current_user'),
-      $container->get('entity.manager')->getStorage('image_style')
+      $container->get('entity_type.manager')->getStorage('image_style')
     );
   }
 
@@ -130,14 +130,14 @@ class ImageFormatter extends ImageFormatterBase implements ContainerFactoryPlugi
       '#options' => $link_types,
     ];
 
-    return $element;
+    return parent::settingsForm($form, $form_state) + $element;
   }
 
   /**
    * {@inheritdoc}
    */
   public function settingsSummary() {
-    $summary = [];
+    $summary = parent::settingsSummary();
 
     $image_styles = image_style_options(FALSE);
     // Unset possible 'No defined styles' option.
@@ -183,7 +183,7 @@ class ImageFormatter extends ImageFormatterBase implements ContainerFactoryPlugi
     if ($image_link_setting == 'content') {
       $entity = $items->getEntity();
       if (!$entity->isNew()) {
-        $url = $entity->urlInfo();
+        $url = $entity->toUrl();
       }
     }
     elseif ($image_link_setting == 'file') {

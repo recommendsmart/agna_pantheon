@@ -5,13 +5,6 @@ build:
   assessment:
     validate_codebase:
       phplint:
-      # Re-run composer install to ensure the dependencies resolve for the
-      # containerized PHP version.
-      container_composer:
-        options: ' install --prefer-dist --no-suggest --no-progress --no-interaction'
-        halt-on-fail: true
-      csslint:
-        halt-on-fail: false
       eslint:
         # A test must pass eslinting standards check in order to continue processing.
         halt-on-fail: false
@@ -39,6 +32,13 @@ build:
          testgroups: '--all'
          suppress-deprecations: false
          halt-on-fail: false
+      run_tests.build:
+        # Limit concurrency due to disk space concerns.
+        concurrency: 15
+        types: 'PHPUnit-Build'
+        testgroups: '--all'
+        suppress-deprecations: false
+        halt-on-fail: false
       run_tests.functional:
         types: 'PHPUnit-Functional'
         testgroups: '--all'

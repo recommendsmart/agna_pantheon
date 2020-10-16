@@ -58,7 +58,7 @@ responsive_image.image_mapping_type.sizes:
         label: 'Image style'
 
 field.formatter.settings.responsive_image:
-  type: mapping
+  type: base_field_formatter_settings
   label: 'Responsive image list format settings'
   mapping:
     responsive_image_style:

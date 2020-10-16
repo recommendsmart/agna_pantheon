@@ -133,7 +133,7 @@ field.value.image:
   label: 'Default value'
 
 field.formatter.settings.image:
-  type: mapping
+  type: base_field_formatter_settings
   label: 'Image field display format settings'
   mapping:
     image_link:

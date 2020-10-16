@@ -46,7 +46,7 @@ class TelephoneLinkFormatter extends FormatterBase {
    * {@inheritdoc}
    */
   public function settingsSummary() {
-    $summary = [];
+    $summary = parent::settingsSummary();
     $settings = $this->getSettings();
 
     if (!empty($settings['title'])) {

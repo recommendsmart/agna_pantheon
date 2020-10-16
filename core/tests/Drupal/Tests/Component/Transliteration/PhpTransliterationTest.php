@@ -58,8 +58,8 @@ class PhpTransliterationTest extends TestCase {
       // Test all characters in the Unicode range 0x01CD to 0x024F.
       ['ǍǎǏ', 'AaI'],
       ['ǐǑǒǓǔǕǖǗǘǙǚǛǜǝǞǟ', 'iOoUuUuUuUuUuǝAa'],
-      ['ǠǡǢǣǤǥǦǧǨǩǪǫǬǭǮǯ', 'AaǢǣGgGgKkOoOoǮǯ'],
-      ['ǰǱǲǳǴǵǶǷǸǹǺǻǼǽǾǿ', 'jǱǲǳGgǶǷNnAaǼǽOo'],
+      ['ǠǡǢǣǤǥǦǧǨǩǪǫǬǭǮǯ', 'AaÆæGgGgKkOoOoƷʒ'],
+      ['ǰǱǲǳǴǵǶǷǸǹǺǻǼǽǾǿ', 'jǱǲǳGgǶǷNnAaÆæOo'],
       ['ȀȁȂȃȄȅȆȇȈȉȊȋȌȍȎȏ', 'AaAaEeEeIiIiOoOo'],
       ['ȐȑȒȓȔȕȖȗȘșȚțȜȝȞȟ', 'RrRrUuUuSsTtȜȝHh'],
       ['ȠȡȢȣȤȥȦȧȨȩȪȫȬȭȮȯ', 'ȠȡȢȣZzAaEeOoOoOo'],
@@ -137,8 +137,8 @@ class PhpTransliterationTest extends TestCase {
       // Test language overrides provided by core.
       ['de', $two_byte, 'Ae Oe Ue A O aeoeueaohello'],
       ['de', $random, $random],
-      ['dk', $two_byte, 'A O U Aa Oe aouaaoehello'],
-      ['dk', $random, $random],
+      ['da', $two_byte, 'A O U Aa Oe aouaaoehello'],
+      ['da', $random, $random],
       ['kg', $three_byte, 'ts'],
       // Test strings in some other languages.
       // Turkish, provided by drupal.org user Kartagis.

@@ -4,14 +4,16 @@ namespace Drupal\Core\Field;
 
 use Drupal\Core\Form\FormStateInterface;
 use Drupal\Core\Language\LanguageInterface;
+use Drupal\Core\Plugin\ContainerFactoryPluginInterface;
 use Drupal\Core\Render\Element;
+use Symfony\Component\DependencyInjection\ContainerInterface;
 
 /**
  * Base class for 'Field formatter' plugin implementations.
  *
  * @ingroup field_formatter
  */
-abstract class FormatterBase extends PluginSettingsBase implements FormatterInterface {
+abstract class FormatterBase extends PluginSettingsBase implements FormatterInterface, ContainerFactoryPluginInterface {
 
   /**
    * The field definition.
@@ -72,6 +74,13 @@ abstract class FormatterBase extends PluginSettingsBase implements FormatterInte
   /**
    * {@inheritdoc}
    */
+  public static function create(ContainerInterface $container, array $configuration, $plugin_id, $plugin_definition) {
+    return new static($plugin_id, $plugin_definition, $configuration['field_definition'], $configuration['settings'], $configuration['label'], $configuration['view_mode'], $configuration['third_party_settings']);
+  }
+
+  /**
+   * {@inheritdoc}
+   */
   public function view(FieldItemListInterface $items, $langcode = NULL) {
     // Default the language to the current content language.
     if (empty($langcode)) {
@@ -100,6 +109,7 @@ abstract class FormatterBase extends PluginSettingsBase implements FormatterInte
         '#items' => $items,
         '#formatter' => $this->getPluginId(),
         '#is_multiple' => $this->fieldDefinition->getFieldStorageDefinition()->isMultiple(),
+        '#third_party_settings' => $this->getThirdPartySettings(),
       ];
 
       $elements = array_merge($info, $elements);
@@ -109,23 +119,85 @@ abstract class FormatterBase extends PluginSettingsBase implements FormatterInte
   }
 
   /**
+   * Returns the cardinality setting of the field instance.
+   */
+  protected function getCardinality() {
+    return $this->fieldDefinition->getFieldStorageDefinition()->getCardinality();
+  }
+
+  /**
+   * {@inheritdoc}
+   */
+  public static function defaultSettings() {
+    return array(
+      'offset' => 0,
+      'limit' => 0,
+    ) + parent::defaultSettings();
+  }
+
+  /**
    * {@inheritdoc}
    */
   public function settingsForm(array $form, FormStateInterface $form_state) {
-    return [];
+    if ($this->getCardinality() == 1) {
+      return [];
+    }
+
+    $element['offset'] = [
+      '#type' => 'number',
+      '#title' => $this->t('Skip items'),
+      '#default_value' => $this->getSetting('offset'),
+      '#required' => TRUE,
+      '#min' => 0,
+      '#description' => $this->t('Number of items to skip from the beginning.')
+    ];
+
+    $element['limit'] = [
+      '#type' => 'number',
+      '#title' => $this->t('Display items'),
+      '#default_value' => $this->getSetting('limit'),
+      '#required' => TRUE,
+      '#min' => 0,
+      '#description' => $this->t('Number of items to display. Set to 0 to display all items.')
+    ];
+
+    return $element;
   }
 
   /**
    * {@inheritdoc}
    */
   public function settingsSummary() {
-    return [];
+    $summary = [];
+    $limit =  $this->getSetting('limit');
+
+    if ($this->getCardinality() == 1 || empty($limit)) {
+      return $summary;
+    }
+
+    $offset = $this->getSetting('offset');
+    $summary[] = $this->t('Display %limit items, skip %offset item(s).', [
+      '%limit' => $limit,
+      '%offset' => $offset
+    ]);
+
+    return $summary;
   }
 
   /**
    * {@inheritdoc}
    */
-  public function prepareView(array $entities_items) {}
+  public function prepareView(array $entities_items) {
+    foreach ($entities_items as $items) {
+      if ($this->getCardinality() != 0) {
+        $offset = $this->getSetting('offset');
+        $limit = $this->getSetting('limit');
+        if (!empty($offset) || !empty($limit)) {
+          $items->setValue(array_slice($items->getValue(), $offset, empty($limit) ? NULL : $limit));
+        }
+      }
+    }
+  }
 
   /**
    * Returns the array of field settings.

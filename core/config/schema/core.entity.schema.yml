@@ -143,9 +143,19 @@ core.entity_form_display.*.*.*:
         type: boolean
         label: 'Component'
 
+base_field_formatter_settings:
+  type: mapping
+  mapping:
+    offset:
+      type: integer
+      label: 'Offset'
+    limit:
+      type: integer
+      label: 'Limit'
+
 # Default schema for entity display field with undefined type.
 field.formatter.settings.*:
-  type: mapping
+  type: base_field_formatter_settings
 
 # Default schema for entity form display field with undefined type.
 field.widget.settings.*:
@@ -234,6 +244,9 @@ field.widget.settings.entity_reference_autocomplete_tags:
     match_operator:
       type: string
       label: 'Autocomplete matching'
+    match_limit:
+      type: integer
+      label: 'Maximum number of autocomplete suggestions.'
     size:
       type: integer
       label: 'Size of textfield'
@@ -248,6 +261,9 @@ field.widget.settings.entity_reference_autocomplete:
     match_operator:
       type: string
       label: 'Autocomplete matching'
+    match_limit:
+      type: integer
+      label: 'Maximum number of autocomplete suggestions.'
     size:
       type: integer
       label: 'Size of textfield'
@@ -256,7 +272,7 @@ field.widget.settings.entity_reference_autocomplete:
       label: 'Placeholder'
 
 field.formatter.settings.boolean:
-  type: mapping
+  type: base_field_formatter_settings
   mapping:
     format:
       type: string
@@ -269,7 +285,7 @@ field.formatter.settings.boolean:
       label: 'Custom output for TRUE'
 
 field.formatter.settings.string:
-  type: mapping
+  type: base_field_formatter_settings
   mapping:
     link_to_entity:
       type: boolean
@@ -283,7 +299,7 @@ field.formatter.settings.language:
       label: 'Display in native language'
 
 field.formatter.settings.number_decimal:
-  type: mapping
+  type: base_field_formatter_settings
   label: 'Number decimal display format settings'
   mapping:
     thousand_separator:
@@ -300,7 +316,7 @@ field.formatter.settings.number_decimal:
       label: 'Display prefix and suffix.'
 
 field.formatter.settings.number_integer:
-  type: mapping
+  type: base_field_formatter_settings
   label: 'Number integer display format settings'
   mapping:
     thousand_separator:
@@ -311,15 +327,15 @@ field.formatter.settings.number_integer:
       label: 'Display prefix and suffix.'
 
 field.formatter.settings.number_unformatted:
-  type: mapping
+  type: base_field_formatter_settings
   label: 'Number unformatted display format settings'
 
 field.formatter.settings.uri_link:
-  type: mapping
+  type: base_field_formatter_settings
   label: 'URI as link display format settings'
 
 field.formatter.settings.timestamp:
-  type: mapping
+  type: base_field_formatter_settings
   label: 'Timestamp display format settings'
   mapping:
     date_format:
@@ -333,7 +349,7 @@ field.formatter.settings.timestamp:
       label: 'Time zone'
 
 field.formatter.settings.timestamp_ago:
-  type: mapping
+  type: base_field_formatter_settings
   label: 'Timestamp ago display format settings'
   mapping:
     future_format:
@@ -347,7 +363,7 @@ field.formatter.settings.timestamp_ago:
       label: 'Granularity'
 
 field.formatter.settings.entity_reference_entity_view:
-  type: mapping
+  type: base_field_formatter_settings
   label: 'Entity reference rendered entity display format settings'
   mapping:
     view_mode:
@@ -358,11 +374,11 @@ field.formatter.settings.entity_reference_entity_view:
       label: 'Show links'
 
 field.formatter.settings.entity_reference_entity_id:
-  type: mapping
+  type: base_field_formatter_settings
   label: 'Entity reference entity ID display format settings'
 
 field.formatter.settings.entity_reference_label:
-  type: mapping
+  type: base_field_formatter_settings
   label: 'Entity reference label display format settings'
   mapping:
     link:
@@ -379,3 +395,33 @@ block.settings.field_block:*:*:*:
 action.configuration.entity:*:*:
   type: action_configuration_default
   label: 'Entity action'
+
+action.configuration.action_send_email_action:
+  type: mapping
+  label: 'Send email configuration'
+  mapping:
+    recipient:
+      type: string
+      label: 'Recipient'
+    subject:
+      type: label
+      label: 'Subject'
+    message:
+      type: text
+      label: 'Message'
+
+action.configuration.action_goto_action:
+  type: mapping
+  label: 'Redirect to URL configuration'
+  mapping:
+    url:
+      type: string
+      label: 'URL'
+
+action.configuration.action_message_action:
+  type: mapping
+  label: 'Display a message to the user configuration'
+  mapping:
+    message:
+      type: text
+      label: 'Message'

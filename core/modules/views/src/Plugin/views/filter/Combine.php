@@ -3,7 +3,6 @@
 namespace Drupal\views\Plugin\views\filter;
 
 use Drupal\Core\Form\FormStateInterface;
-use Drupal\Core\Database\Database;
 
 /**
  * Filter handler which allows to search on multiple fields.
@@ -75,19 +74,31 @@ class Combine extends StringFilter {
       if (!empty($field->field_alias) && !empty($field->field_alias)) {
         $fields[] = "$field->tableAlias.$field->realField";
       }
-    }
-    if ($fields) {
-      $count = count($fields);
-      $separated_fields = [];
-      foreach ($fields as $key => $field) {
-        $separated_fields[] = $field;
-        if ($key < $count - 1) {
-          $separated_fields[] = "' '";
-        }
-      }
-      $expression = implode(', ', $separated_fields);
-      $expression = "CONCAT_WS(' ', $expression)";
 
+      if ($field->additional_fields) {
+        $fieldFull = array_map(function ($additional_fields) use ($field) {
+          return "$field->tableAlias.$additional_fields";
+        }, $field->additional_fields);
+        $fields += $fieldFull;
+      }
+    }
+
+    if ($fields) {
+      // We do not use the CONCAT_WS operator when there is only a single field.
+      // Using the CONCAT_WS operator with a single field is not a problem for
+      // the by core supported databases. Only the MS SQL Server requires the
+      // CONCAT_WS operator to be used with at least three arguments.
+      if (count($fields) == 1) {
+        $expression = reset($fields);
+      }
+      else {
+        // Multiple fields are separated by 3 spaces so that so that search
+        // strings that contain spaces are still only matched to single field
+        // values and not to multi-field values that exist only because we do
+        // the concatenation/LIKE trick.
+        $expression = implode(", ' ', ", $fields);
+        $expression = "CONCAT_WS(' ', $expression)";
+      }
       $info = $this->operators();
       if (!empty($info[$this->operator]['method'])) {
         $this->{$info[$this->operator]['method']}($expression);
@@ -136,7 +147,7 @@ class Combine extends StringFilter {
 
   protected function opContains($expression) {
     $placeholder = $this->placeholder();
-    $this->query->addWhereExpression($this->options['group'], "$expression LIKE $placeholder", [$placeholder => '%' . db_like($this->value) . '%']);
+    $this->query->addWhereExpression($this->options['group'], "$expression LIKE $placeholder", [$placeholder => '%' . $this->connection->escapeLike($this->value) . '%']);
   }
 
   /**
@@ -162,40 +173,40 @@ class Combine extends StringFilter {
     // Switch between the 'word' and 'allwords' operator.
     $type = $this->operator == 'word' ? 'OR' : 'AND';
     $group = $this->query->setWhereGroup($type);
-    $operator = Database::getConnection()->mapConditionOperator('LIKE');
+    $operator = $this->connection->mapConditionOperator('LIKE');
     $operator = isset($operator['operator']) ? $operator['operator'] : 'LIKE';
 
     foreach ($matches as $match_key => $match) {
       $temp_placeholder = $placeholder . '_' . $match_key;
       // Clean up the user input and remove the sentence delimiters.
       $word = trim($match[2], ',?!();:-"');
-      $this->query->addWhereExpression($group, "$expression $operator $temp_placeholder", [$temp_placeholder => '%' . Database::getConnection()->escapeLike($word) . '%']);
+      $this->query->addWhereExpression($group, "$expression $operator $temp_placeholder", [$temp_placeholder => '%' . $this->connection->escapeLike($word) . '%']);
     }
   }
 
   protected function opStartsWith($expression) {
     $placeholder = $this->placeholder();
-    $this->query->addWhereExpression($this->options['group'], "$expression LIKE $placeholder", [$placeholder => db_like($this->value) . '%']);
+    $this->query->addWhereExpression($this->options['group'], "$expression LIKE $placeholder", [$placeholder => $this->connection->escapeLike($this->value) . '%']);
   }
 
   protected function opNotStartsWith($expression) {
     $placeholder = $this->placeholder();
-    $this->query->addWhereExpression($this->options['group'], "$expression NOT LIKE $placeholder", [$placeholder => db_like($this->value) . '%']);
+    $this->query->addWhereExpression($this->options['group'], "$expression NOT LIKE $placeholder", [$placeholder => $this->connection->escapeLike($this->value) . '%']);
   }
 
   protected function opEndsWith($expression) {
     $placeholder = $this->placeholder();
-    $this->query->addWhereExpression($this->options['group'], "$expression LIKE $placeholder", [$placeholder => '%' . db_like($this->value)]);
+    $this->query->addWhereExpression($this->options['group'], "$expression LIKE $placeholder", [$placeholder => '%' . $this->connection->escapeLike($this->value)]);
   }
 
   protected function opNotEndsWith($expression) {
     $placeholder = $this->placeholder();
-    $this->query->addWhereExpression($this->options['group'], "$expression NOT LIKE $placeholder", [$placeholder => '%' . db_like($this->value)]);
+    $this->query->addWhereExpression($this->options['group'], "$expression NOT LIKE $placeholder", [$placeholder => '%' . $this->connection->escapeLike($this->value)]);
   }
 
   protected function opNotLike($expression) {
     $placeholder = $this->placeholder();
-    $this->query->addWhereExpression($this->options['group'], "$expression NOT LIKE $placeholder", [$placeholder => '%' . db_like($this->value) . '%']);
+    $this->query->addWhereExpression($this->options['group'], "$expression NOT LIKE $placeholder", [$placeholder => '%' . $this->connection->escapeLike($this->value) . '%']);
   }
 
   protected function opRegex($expression) {
