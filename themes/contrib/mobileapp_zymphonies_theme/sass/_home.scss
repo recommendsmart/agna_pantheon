@@ -1,0 +1,156 @@
+.screenshot,
+.topwidget,
+.bottom-widget,
+.path-frontpage .main-content,
+.services,
+.products,
+.footer,
+.features,
+.services,
+.price-table{
+	padding: 40px 0;
+}
+
+.main-content{
+	padding: 0 0 50px 0;
+}
+
+.screenshot{
+	text-align: center;
+}
+
+.team,
+.features,
+.products,
+.price-table{
+    background: #f6f6f6;
+    text-align: center;
+}
+
+.price-table{
+	.region{
+		padding: 10px;
+	    border: 1px solid #f1eef1;
+	}
+	h1{
+		color: #07b307;
+	}
+}
+
+.services{
+	text-align: left;
+	padding:15px;
+	background: #f6f6f6;
+
+	.block{
+		padding: 15px;
+		background: #f6f6f6;
+	}
+	
+	.circle-icon{
+		background: #fff;
+	    display: inline-block;
+	    padding: 20px;
+	    border-radius: 50%;
+	    box-shadow: 0px 9px 32px 0px rgba(0, 0, 0, 0.07);
+	    font-size: 2em;
+	    width: 60px;
+	    height: 60px;
+	    text-align: center;
+	}
+}
+
+.team{
+	img{
+		
+	}
+}
+
+.features{
+	@include gradiant2();
+	color: #fff;
+
+	h3{
+		display: inline-block;
+		background: #fff;
+		padding: 10px;
+		border-radius: 4px;
+	}
+}
+
+
+/* Testimonials */
+
+.testimonials-wrap{
+	background: #fafafa;
+	border-top: solid 1px #e3e3e3;
+	border-bottom: solid 1px #e3e3e3;
+	padding: 20px 0;
+	text-align: center;
+	font-size: 1em;
+	line-height: 160%;
+}
+
+.region-testimonials{
+	max-width: 600px;
+	margin: 0 auto;
+}
+
+.testimonials-pic{
+	width: 40px;
+	height: 40px;
+	display: inline-block;
+	vertical-align: bottom;
+	margin-right: 10px;
+}
+
+.testimonials-pic img{
+	@include border-radius(50%);
+}
+
+.testimonials-author{
+	padding: 0 5px;
+	font-size: .75em;
+	color: #555;
+}
+
+
+/*Front Page*/
+
+.path-frontpage .feed-icon{
+ 	display: none;
+}
+
+
+/*Bottom Widgets*/
+
+.bottom-widget{
+	text-align: center;
+	margin: 0 auto;
+	padding-bottom: 30px;
+	background: #c791ff;
+    color: #fff;
+    font-size: 1.2em;
+
+	h2{
+	  color: #fff;
+	  font-size: 3em;
+	}
+
+	h3{
+	  color: #fff;
+	}
+
+	.row > div{
+		border-right: 1px solid rgba(255, 255, 255, 0.07);
+
+		&:last-child{
+			border: 0;
+		}
+	}
+}
+
+.path-frontpage .bottom-widgets{
+	padding: 20px 0;
+}
+

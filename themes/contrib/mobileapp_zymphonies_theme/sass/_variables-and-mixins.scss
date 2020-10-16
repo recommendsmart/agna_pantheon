@@ -1,0 +1,60 @@
+
+/*Variables*/
+
+$fontFamily: 'Poppins', sans-serif;
+$titleFontFamily: 'Poppins', sans-serif;
+$baseFontSize: 14px;
+$bodyBGColor: #fff;
+$baseFontColor: #333;
+
+$linkColor: #9251d4;
+$linkColorHover: #9453d4;
+
+$titleColor: #633991;
+
+/*Header*/
+$headerBGColor: #000;
+$headerTextColor: #fff;
+
+$secColor: #fc466b;
+
+/*Menu Color*/
+$menuTextColor: #fff;
+$menuTextActiveColor: $linkColor;
+
+$mobileMenuBg: #000;
+$desktopMenuTextColor: #fff;
+$desktopMenuDropDownBg: #000;
+$borderColor: #e8e8e8;
+
+/*Mixins*/
+
+@mixin globalButton(){
+	background: $linkColor;
+	cursor: pointer;
+	color: #fff;
+	border: 0;
+	padding: 12px 18px;
+	line-height: 100%;
+	margin-right: 2px;
+	border-radius: 4px;
+}
+
+@mixin globalButtonHover(){
+	background: $linkColorHover;
+	color: #fff;
+}
+
+@mixin gradiant(){
+	background: -moz-linear-gradient(top, #a78ac7 0%, #fa2a8f 100%);
+	background: -webkit-linear-gradient(top, #a78ac7 0%, #fa2a8f 100%);
+	background: linear-gradient(to bottom, #a78ac7 0%,#fa2a8f 100%);
+	background-color: #a78ac7;
+}
+
+@mixin gradiant2(){
+	background: -moz-linear-gradient(right, #a78ac7 0%, #fa2a8f 100%);
+	background: -webkit-linear-gradient(right, #a78ac7 0%, #fa2a8f 100%);
+	background: linear-gradient(to right, #a78ac7 0%,#fa2a8f 100%);
+	background-color: #a78ac7;
+}

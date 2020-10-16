@@ -1,0 +1,79 @@
+name: Mobile App Zymphonies Theme
+type: theme
+description: 'Designed & Developed by <a href=http://www.zymphonies.com>Zymphonies</a><br/>Contact us for any kind of Drupal services <a href=mailto:info@zymphonies.com>info@zymphonies.com</a>'
+package: core
+base theme: false
+core: 8.x
+core_version_requirement: ^8 || ^9
+
+#libraries
+libraries:
+  - mobileapp_zymphonies_theme/bootstrap
+  - mobileapp_zymphonies_theme/fontawesome
+  - mobileapp_zymphonies_theme/smartmenus
+  - mobileapp_zymphonies_theme/owl
+  - mobileapp_zymphonies_theme/global-components
+
+#Regions
+regions:
+
+  #Header
+  header: 'Header'
+  top_menu: 'Top menu'
+  primary_menu: 'Primary menu'
+  welcome_message: 'Welcome message'
+
+  #Top widgets
+  topwidget_first: 'Top first widget'
+  topwidget_second: 'Top second widget'
+  topwidget_third: 'Top third widget' 
+
+  #Services widgets
+  services_first: 'Services first widget'
+  services_second: 'Services second widget'
+  services_third: 'Services third widget' 
+
+  #Global region
+  highlighted: 'Highlighted' 
+  page_title: 'Page title'
+  breadcrumb: 'Breadcrumb'
+  content: 'Content'
+  sidebar_first: 'Left sidebar'
+  sidebar_second: 'Right sidebar'
+
+  #Features widgets
+  features_first: 'Features first widget'
+  features_second: 'Features second widget'
+  features_third: 'Features third widget'
+
+  #Team widgets
+  screenshot_first: 'Screenshot first widget'
+  screenshot_second: 'Screenshot second widget'
+  screenshot_third: 'Screenshot third widget'
+  screenshot_forth: 'Screenshot forth widget'
+
+  #Price table widgets
+  pricetable_first: 'Price table first widget'
+  pricetable_second: 'Price table second widget'
+  pricetable_third: 'Price table third widget'
+  pricetable_forth: 'Price table forth widget'
+
+  #Bottom widgets
+  bottom_first: 'Bottom first widget'
+  bottom_second: 'Bottom second widget'
+  bottom_third: 'Bottom third widget'
+  bottom_forth: 'Bottom forth widget'
+
+  #Footer widgets
+  footer_first: 'Footer first widget'
+  footer_second: 'Footer second widget'
+  footer_third: 'Footer third widget'
+
+  #Auto hidden
+  auto_hidden_block: 'Auto hidden blocks'
+
+
+# Information added by Drupal.org packaging script on 2020-07-11
+version: '2.0.1'
+project: 'mobileapp_zymphonies_theme'
+datestamp: 1594490089
