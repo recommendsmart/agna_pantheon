@@ -94,6 +94,59 @@ Configurable Information
 - Privacy policy
 - Appearance
 
+WORKING WITH THE EVENTS
+-----------------------
+
+This module now exposes a JS API which other modules can use to hook into the events fired by this module. Eg. read the cookie preferences when they are saved or do something based on the user's response. For example the JS in the [EU Cookie Compliance GTM module](https://www.drupal.org/project/eu_cookie_compliance_gtm) uses the Events to do things with GTM.
+
+### Inside the scripts
+#### Main file
+Our main script (`eu_cookie_compliance.js`) is loaded via `defer`, which means it is executed when the page is parsed + just a few moments BEFORE the DOMContentLoaded event gets fired.  
+When that happens, a namespace is created within the Drupal object, which will house our Events.  
+Inside that namespace, a queue is set up to house instances when the Events are being hooked into, ready to be executed.
+```
+Drupal.eu_cookie_compliance = Drupal.eu_cookie_compliance || function () {
+   (Drupal.eu_cookie_compliance.queue = Drupal.eu_cookie_compliance.queue || []).push(arguments)
+};
+```
+This ensures that a script from another module (which either should not use `defer`, or should be placed AFTER the main script in the HTML) will be able to access the Events from the main script and perform actions.  
+_Note: This is very similar to how GA and GTM work with their events and methods._
+Besides a queue, there are special functions set up called 'Observers', which are used to observe and execute the functions for each Event.
+**Events: (Event name on the left)**
+Status is retrieved (internal use):
+- PreStatusLoad: Executed BEFORE cookie acceptance status is loaded
+- PostStatusLoad: Executed AFTER cookie acceptance status is loaded
+- preStatusSave: Executed BEFORE cookie acceptance status is saved
+- postStatusSave Executed AFTER cookie acceptance status is saved
+  
+Cookie is accepted by the user (public use):
+- prePreferencesSave: Executed BEFORE the cookie acceptance preferences are saved (to a cookie). 
+- postPreferencesSave: Executed AFTER the cookie acceptance preferences are saved (to a cookie). 
+- prePreferencesLoad: Executed BEFORE the cookie acceptance preferences are loaded (from cookie)
+- postPreferencesLoad: Executed AFTER the cookie acceptance preferences are loaded (from cookie)
+#### Secondary file
+**How to hook into the events:**
+Use this method in your JS,
+where `MY_EVENT` should be replaced by one of the Events mentioned above  
+and `MY_HANDLER` is a function that reads the data provided by the Method
+`Drupal.eu_cookie_compliance(MY_EVENT, MY_HANDLER);`  
+Example: reading the cookie preferences after submission + save it somewhere else for later use  
+```
+var postPreferencesLoadHandler = function(response) {
+   console.log(response);
+   window.cookieResponse = response;
+};
+Drupal.eu_cookie_compliance('postPreferencesLoad', postPreferencesLoadHandler);
+```
+
+The `response` variable is an object with the following structure:
+
+```
+{
+   currentStatus: null (not yet agreed/withdrawn), 0 (declined), 1 (accepted, show thank you banner) or 2 (accepted),
+   currentCategories: array of accepted categories (will be empty when not using category based compliance)
+}
+```
 
 MAINTAINERS
 -----------

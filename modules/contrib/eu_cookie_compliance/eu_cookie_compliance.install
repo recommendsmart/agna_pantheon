@@ -89,11 +89,15 @@ function eu_cookie_compliance_install() {
     ->set('uuid', \Drupal::service('uuid')->generate())
     ->save();
 
-  // Determine the best default text format to use.
-  $default_filter_format = filter_default_format();
-  $full_html_format = FilterFormat::load('full_html');
-  if (($default_filter_format === 'restricted_html' || $default_filter_format === 'plain_text') && $full_html_format !== NULL && $full_html_format->get('status')) {
-    $default_filter_format = 'full_html';
+  $all_filter_formats = filter_formats(\Drupal::currentUser());
+
+  if (count($all_filter_formats)) {
+    // Determine the best default text format to use.
+    $default_filter_format = filter_default_format();
+    $full_html_format = FilterFormat::load('full_html');
+    if (($default_filter_format === 'restricted_html' || $default_filter_format === 'plain_text') && $full_html_format !== NULL && $full_html_format->get('status')) {
+      $default_filter_format = 'full_html';
+    }
   }
 
   // We can't be sure "Restricted HTML" exists.

@@ -316,7 +316,8 @@ class EuCookieComplianceConfigForm extends ConfigFormBase {
       '#title' => $this->t('Allowed cookies'),
       '#default_value' => $config->get('allowed_cookies'),
       '#description' => $this->t("Include the name of cookies, each on a separate line. When using the opt-in or opt-out consent options, this module will <strong>delete cookies from your domain that are not allowed</strong> every few seconds when consent isn't given. PHP session cookies and the cookie for this module are always allowed.") .
-      '<br /><br />' . $this->t('When using the consent method "Opt-in with categories", you can link the cookie to a specific consent category by using the format: "category:cookie_name".  Only when consent is given for the given category, will the cookie be allowed.'),
+      '<br /><br />' . $this->t('When using the consent method "Opt-in with categories", you can link the cookie to a specific consent category by using the format: "category:cookie_name".  Only when consent is given for the given category, will the cookie be allowed.') .
+      '<br />' . $this->t('Cookie names can contain "*" characters which mean a series of any characters.'),
       '#states' => ['visible' => ['input[name="automatic_cookies_removal"]' => ['checked' => TRUE]]],
     ];
 
