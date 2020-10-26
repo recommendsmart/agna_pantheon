@@ -1,0 +1,43 @@
+langcode: en
+status: true
+dependencies:
+  config:
+    - field.field.paragraph.p_010_child.field_p_link
+    - field.field.paragraph.p_010_child.field_p_media_image
+    - paragraphs.paragraphs_type.p_010_child
+  module:
+    - field_formatter
+    - link
+id: paragraph.p_010_child.default
+targetEntityType: paragraph
+bundle: p_010_child
+mode: default
+content:
+  field_p_link:
+    weight: 0
+    label: hidden
+    settings:
+      trim_length: 80
+      url_only: false
+      url_plain: false
+      rel: ''
+      target: ''
+    third_party_settings: {  }
+    type: link
+    region: content
+  field_p_media_image:
+    weight: 1
+    label: hidden
+    settings:
+      field_name: field_media_image
+      label: hidden
+      type: responsive_image
+      settings:
+        responsive_image_style: paragraph_p010_child_logo
+        image_link: ''
+      link_to_entity: false
+    third_party_settings: {  }
+    type: field_formatter_with_inline_settings
+    region: content
+hidden:
+  search_api_excerpt: true

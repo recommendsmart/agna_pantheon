@@ -1,0 +1,36 @@
+langcode: en
+status: true
+dependencies: {  }
+id: dpa_files
+migration_group: dpa_content
+source:
+  plugin: csv
+  path: /assets/csv/files.csv
+  header_offset: 0
+  ids:
+    - id
+  constants:
+    source_base_path: '/assets/files/'
+    target_base_path: 'public://'
+process:
+  _source_full_path:
+    -
+      plugin: concat
+      source:
+        - constants/source_base_path
+        - name
+  _destination_full_path:
+    -
+      plugin: concat
+      source:
+        - constants/target_base_path
+        - name
+  uri:
+    plugin: file_copy
+    source:
+      - '@_source_full_path'
+      - '@_destination_full_path'
+    file_exists: rename
+destination:
+  plugin: 'entity:file'
+migration_dependencies: {  }

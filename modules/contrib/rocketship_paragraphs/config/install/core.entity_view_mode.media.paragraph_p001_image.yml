@@ -1,0 +1,9 @@
+langcode: en
+status: true
+dependencies:
+  module:
+    - media
+id: media.paragraph_p001_image
+label: 'Paragraph p001 (image aside)'
+targetEntityType: media
+cache: true

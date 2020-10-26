@@ -1,0 +1,88 @@
+langcode: en
+status: true
+dependencies:
+  config:
+    - core.entity_view_mode.paragraph.sidebar
+    - field.field.paragraph.p_002.field_p_002_layout_image
+    - field.field.paragraph.p_002.field_p_link
+    - field.field.paragraph.p_002.field_p_media_image
+    - paragraphs.paragraphs_type.p_002
+    - responsive_image.styles.paragraph_p002_image_aside
+  module:
+    - blazy
+    - link
+id: paragraph.p_002.sidebar
+targetEntityType: paragraph
+bundle: p_002
+mode: sidebar
+content:
+  field_p_link:
+    type: link
+    weight: 0
+    region: content
+    label: hidden
+    settings:
+      trim_length: null
+      url_only: false
+      url_plain: false
+      rel: '0'
+      target: '0'
+    third_party_settings: {  }
+  field_p_media_image:
+    type: blazy_media
+    weight: 2
+    region: content
+    label: hidden
+    settings:
+      image_style: ''
+      responsive_image_style: paragraph_p002_image_aside
+      media_switch: ''
+      box_style: ''
+      thumbnail_style: ''
+      box_media_style: ''
+      ratio: ''
+      box_caption: ''
+      view_mode: default
+      box_caption_custom: ''
+      sizes: ''
+      breakpoints:
+        xs:
+          image_style: ''
+          width: ''
+        sm:
+          image_style: ''
+          width: ''
+        md:
+          image_style: ''
+          width: ''
+        lg:
+          image_style: ''
+          width: ''
+        xl:
+          image_style: ''
+          width: ''
+      current_view_mode: sidebar
+      background: false
+      caption:
+        field_media_image: '0'
+      class: ''
+      id: ''
+      image: ''
+      link: ''
+      overlay: ''
+      title: ''
+      vanilla: false
+      icon: ''
+      layout: ''
+      cache: 0
+      optionset: default
+      skin: ''
+      style: ''
+      grid: 0
+      grid_header: ''
+      grid_medium: 0
+      grid_small: 0
+    third_party_settings: {  }
+hidden:
+  field_p_002_layout_image: true
+  search_api_excerpt: true

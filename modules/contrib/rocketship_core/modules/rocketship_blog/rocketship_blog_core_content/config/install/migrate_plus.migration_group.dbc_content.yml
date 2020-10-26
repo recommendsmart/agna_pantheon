@@ -1,0 +1,9 @@
+langcode: en
+status: true
+dependencies: {  }
+id: dbc_content
+label: 'Blog Core Content'
+description: 'Migrates core blog content'
+source_type: ''
+module: null
+shared_configuration: null

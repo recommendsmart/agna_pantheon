@@ -1,0 +1,5 @@
+permissions:
+  - 'edit any office content'
+  - 'edit own office content'
+  - 'revert office revisions'
+  - 'view office revisions'

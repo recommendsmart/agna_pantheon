@@ -1,0 +1,43 @@
+name: 'Rocketship News Advanced'
+type: module
+description: 'Contains the Advanced upgrade, which adds tags to filter by.'
+core_version_requirement: ^8.8 || ^9
+package: Rocketship
+states:
+  checked:
+    -
+      '#edit-rocketship-news-advanced-content':
+        checked: true
+  disabled:
+    -
+      '#edit-rocketship-news-advanced-content':
+        checked: true
+dependencies:
+  - blazy
+  - block
+  - config_rewrite
+  - content_translation
+  - ctools
+  - rocketship_core
+  - rocketship_news_basic
+  - rocketship_news_core
+  - rocketship_core
+  - rocketship_seo
+  - entity_reference_revisions
+  - facets
+  - field
+  - field_group
+  - language
+  - node
+  - rabbit_hole
+  - responsive_image
+  - rh_taxonomy
+  - search_api
+  - taxonomy
+  - user
+  - views
+
+# Information added by Drupal.org packaging script on 2020-09-29
+version: '5.0.0-alpha19'
+project: 'rocketship_core'
+datestamp: 1601395145

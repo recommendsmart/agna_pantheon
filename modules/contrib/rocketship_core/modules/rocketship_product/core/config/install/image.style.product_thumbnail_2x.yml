@@ -1,0 +1,16 @@
+langcode: en
+status: true
+dependencies:
+  module:
+    - focal_point
+name: product_thumbnail_2x
+label: 'Product thumbnail 2x'
+effects:
+  6ba08e9b-f588-4c64-9616-2461e8035fd4:
+    uuid: 6ba08e9b-f588-4c64-9616-2461e8035fd4
+    id: focal_point_scale_and_crop
+    weight: 1
+    data:
+      width: 360
+      height: 240
+      crop_type: focal_point

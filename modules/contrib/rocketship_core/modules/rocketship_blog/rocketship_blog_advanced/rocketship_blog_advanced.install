@@ -1,0 +1,27 @@
+<?php
+
+/**
+ * @file
+ * The main module file.
+ */
+
+use Drupal\taxonomy\Entity\Vocabulary;
+use Drupal\field\Entity\FieldStorageConfig;
+use Drupal\field\Entity\FieldConfig;
+use Drupal\views\Entity\View;
+use Drupal\search_api\Entity\Index;
+
+/**
+ * Implements hook_install().
+ */
+function rocketship_blog_advanced_install() {
+
+  Rocketship::updateRolePermissionsForModule('rocketship_blog_advanced');
+
+  // Load and resave the rewritten search index so it triggers
+  // database updates and what not.
+  $index = Index::load('content_index');
+  if ($index) {
+    $index->save();
+  }
+}

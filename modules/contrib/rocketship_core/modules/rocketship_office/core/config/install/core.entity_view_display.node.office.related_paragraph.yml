@@ -1,0 +1,335 @@
+langcode: en
+status: true
+dependencies:
+  config:
+    - core.entity_view_mode.node.related_paragraph
+    - field.field.node.office.field_description
+    - field.field.node.office.field_header_paragraph
+    - field.field.node.office.field_media_canonical_image
+    - field.field.node.office.field_meta_tags
+    - field.field.node.office.field_office_address
+    - field.field.node.office.field_office_display_field
+    - field.field.node.office.field_office_email
+    - field.field.node.office.field_office_fax
+    - field.field.node.office.field_office_geolocation
+    - field.field.node.office.field_office_hours
+    - field.field.node.office.field_office_override_mail
+    - field.field.node.office.field_office_phone
+    - field.field.node.office.field_office_show_contact_form
+    - field.field.node.office.field_office_teaser_title
+    - field.field.node.office.field_paragraphs
+    - field.field.node.office.field_show_contact_us_button
+    - node.type.office
+    - responsive_image.styles.paragraph_p014_image
+  module:
+    - address
+    - blazy
+    - field_group
+    - layout_builder
+    - rocketship_core
+    - smart_trim
+third_party_settings:
+  field_group:
+    group_actions:
+      children: {  }
+      parent_name: ''
+      weight: 35
+      format_type: html_element
+      format_settings:
+        id: ''
+        classes: 'node__actions node__actions--teaser node__actions--office node__actions--office-teaser'
+        element: div
+        show_label: false
+        label_element: h3
+        attributes: ''
+        effect: none
+        speed: fast
+      label: Actions
+      region: hidden
+  layout_builder:
+    allow_custom: false
+    enabled: true
+    sections:
+      -
+        layout_id: rs_header
+        layout_settings:
+          label: 'Rocketship Header'
+          with_subregion: 0
+          subregion_position: after
+          classes: ''
+        components:
+          4c258ebb-4b1c-4461-a983-1baebf12d82b:
+            uuid: 4c258ebb-4b1c-4461-a983-1baebf12d82b
+            region: content
+            configuration:
+              label_display: '0'
+              context_mapping:
+                entity: layout_builder.entity
+              id: 'field_block:node:office:field_media_canonical_image'
+              formatter:
+                type: blazy_media
+                label: hidden
+                settings:
+                  image_style: ''
+                  responsive_image_style: paragraph_p014_image
+                  media_switch: content
+                  box_style: ''
+                  thumbnail_style: ''
+                  box_media_style: ''
+                  ratio: ''
+                  box_caption: ''
+                  view_mode: default
+                  box_caption_custom: ''
+                  sizes: ''
+                  breakpoints:
+                    xs:
+                      image_style: ''
+                      width: ''
+                    sm:
+                      image_style: ''
+                      width: ''
+                    md:
+                      image_style: ''
+                      width: ''
+                    lg:
+                      image_style: ''
+                      width: ''
+                    xl:
+                      image_style: ''
+                      width: ''
+                  current_view_mode: related_paragraph
+                  background: false
+                  caption:
+                    field_media_image: '0'
+                  class: ''
+                  id: ''
+                  image: ''
+                  link: ''
+                  overlay: ''
+                  title: ''
+                  vanilla: false
+                  icon: ''
+                  layout: ''
+                  cache: 0
+                  skin: ''
+                  style: ''
+                  grid: 0
+                  grid_header: ''
+                  grid_medium: 0
+                  grid_small: 0
+                  fx: ''
+                  _uri: ''
+                third_party_settings: {  }
+            additional: {  }
+            weight: 0
+        third_party_settings: {  }
+      -
+        layout_id: rs_content
+        layout_settings:
+          label: 'Rocketship Content'
+          with_subregion: 0
+          subregion_position: after
+          classes: ''
+        components:
+          ee8ad4ee-f0b5-441f-b40d-170fd53f71f3:
+            uuid: ee8ad4ee-f0b5-441f-b40d-170fd53f71f3
+            region: content
+            configuration:
+              id: 'field_block:node:office:title'
+              label: Title
+              provider: layout_builder
+              label_display: '0'
+              formatter:
+                label: hidden
+                type: title
+                settings:
+                  tag: h3
+                  linked: true
+                third_party_settings: {  }
+              context_mapping:
+                entity: layout_builder.entity
+                view_mode: view_mode
+            additional: {  }
+            weight: 1
+          a8c32838-c219-438f-9a92-b45fdfadb04b:
+            uuid: a8c32838-c219-438f-9a92-b45fdfadb04b
+            region: content
+            configuration:
+              label_display: '0'
+              context_mapping:
+                entity: layout_builder.entity
+              id: 'field_block:node:office:field_description'
+              formatter:
+                type: smart_trim
+                label: hidden
+                settings:
+                  trim_length: 160
+                  trim_type: chars
+                  trim_suffix: ''
+                  wrap_class: trimmed
+                  more_text: More
+                  more_class: more-link
+                  trim_options:
+                    text: true
+                    trim_zero: false
+                  wrap_output: false
+                  more_link: false
+                  summary_handler: full
+                third_party_settings: {  }
+            additional: {  }
+            weight: 2
+          9913c814-8207-4705-848b-78721cc821ec:
+            uuid: 9913c814-8207-4705-848b-78721cc821ec
+            region: content
+            configuration:
+              label_display: '0'
+              context_mapping:
+                entity: layout_builder.entity
+              id: 'field_block:node:office:field_office_address'
+              formatter:
+                type: address_plain
+                label: hidden
+                settings: {  }
+                third_party_settings: {  }
+            additional: {  }
+            weight: 0
+        third_party_settings: {  }
+      -
+        layout_id: rs_footer
+        layout_settings:
+          label: 'Rocketship Footer'
+          with_subregion: 0
+          subregion_position: after
+          classes: ''
+        components:
+          6373d05f-b99a-442f-bbed-f83c1815dc02:
+            uuid: 6373d05f-b99a-442f-bbed-f83c1815dc02
+            region: content
+            configuration:
+              id: 'field_block:node:office:field_office_display_field'
+              label: 'Display Field'
+              provider: layout_builder
+              label_display: '0'
+              formatter:
+                label: hidden
+                type: rs_canonical_link
+                settings:
+                  'link text': 'Read more'
+                  'link class': ''
+                  wrapper: ''
+                  class: ''
+                third_party_settings: {  }
+              context_mapping:
+                entity: layout_builder.entity
+                view_mode: view_mode
+            additional: {  }
+            weight: 0
+        third_party_settings: {  }
+id: node.office.related_paragraph
+targetEntityType: node
+bundle: office
+mode: related_paragraph
+content:
+  field_description:
+    type: smart_trim
+    weight: 2
+    region: content
+    label: hidden
+    settings:
+      trim_length: 160
+      trim_type: chars
+      trim_suffix: ''
+      wrap_class: trimmed
+      more_text: More
+      more_class: more-link
+      trim_options:
+        text: true
+        trim_zero: false
+      wrap_output: false
+      more_link: false
+      summary_handler: full
+    third_party_settings: {  }
+  field_media_canonical_image:
+    type: blazy_media
+    weight: 0
+    region: content
+    label: hidden
+    settings:
+      image_style: ''
+      responsive_image_style: paragraph_p014_image
+      media_switch: content
+      box_style: ''
+      thumbnail_style: ''
+      box_media_style: ''
+      ratio: ''
+      box_caption: ''
+      view_mode: default
+      box_caption_custom: ''
+      sizes: ''
+      breakpoints:
+        xs:
+          image_style: ''
+          width: ''
+        sm:
+          image_style: ''
+          width: ''
+        md:
+          image_style: ''
+          width: ''
+        lg:
+          image_style: ''
+          width: ''
+        xl:
+          image_style: ''
+          width: ''
+      current_view_mode: related_paragraph
+      background: false
+      caption:
+        field_media_image: '0'
+      class: ''
+      id: ''
+      image: ''
+      link: ''
+      overlay: ''
+      title: ''
+      vanilla: false
+      icon: ''
+      layout: ''
+      cache: 0
+      skin: ''
+      style: ''
+      grid: 0
+      grid_header: ''
+      grid_medium: 0
+      grid_small: 0
+      fx: ''
+      _uri: ''
+    third_party_settings: {  }
+  field_office_address:
+    type: address_plain
+    weight: 3
+    region: content
+    label: hidden
+    settings: {  }
+    third_party_settings: {  }
+hidden:
+  rocketship_social_widgets: true
+  field_header_paragraph: true
+  field_meta_tags: true
+  field_office_display_field: true
+  field_office_email: true
+  field_office_fax: true
+  field_office_geolocation: true
+  field_office_hours: true
+  field_office_override_mail: true
+  field_office_phone: true
+  field_office_show_contact_form: true
+  field_office_teaser_title: true
+  field_paragraphs: true
+  field_show_breadcrumb: true
+  field_show_contact_us_button: true
+  langcode: true
+  links: true
+  search_api_excerpt: true
+  title: true
+  uid: true

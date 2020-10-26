@@ -1,0 +1,17 @@
+<?php
+
+/**
+ * @file
+ * Installation scripts for Rocketship cookie policy module.
+ */
+
+/**
+ * Implements hook_uninstall().
+ */
+function rocketship_cookie_policy_uninstall() {
+  \Drupal::configFactory()
+    ->getEditable('rocketship_cookie_policy.cookiepolicyconfig')
+    ->delete();
+
+  \Drupal::messenger()->addMessage(t('Deleted the Rocketship Cookie Policy configuration.'));
+}

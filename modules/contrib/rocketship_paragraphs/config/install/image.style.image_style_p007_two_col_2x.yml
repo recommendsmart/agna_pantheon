@@ -1,0 +1,16 @@
+langcode: en
+status: true
+dependencies:
+  module:
+    - focal_point
+name: image_style_p007_two_col_2x
+label: 'Paragraph p007 child (2 col) 2x'
+effects:
+  98680a8b-15d5-4a6f-9b41-b81f0a4b1f3c:
+    uuid: 98680a8b-15d5-4a6f-9b41-b81f0a4b1f3c
+    id: focal_point_scale_and_crop
+    weight: 1
+    data:
+      width: 200
+      height: 200
+      crop_type: focal_point

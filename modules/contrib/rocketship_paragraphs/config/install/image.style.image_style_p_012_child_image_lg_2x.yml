@@ -1,0 +1,16 @@
+langcode: en
+status: true
+dependencies:
+  module:
+    - focal_point
+name: image_style_p_012_child_image_lg_2x
+label: 'Paragraph p012 child image lg [400×600] 2x'
+effects:
+  4504dfc3-c9b9-47c5-b1c3-df0cc7841ef1:
+    uuid: 4504dfc3-c9b9-47c5-b1c3-df0cc7841ef1
+    id: focal_point_scale_and_crop
+    weight: 1
+    data:
+      width: 800
+      height: 1200
+      crop_type: focal_point

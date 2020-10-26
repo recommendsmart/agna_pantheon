@@ -1,0 +1,9 @@
+permissions:
+  - 'create realisation content'
+  - 'delete any realisation content'
+  - 'delete own realisation content'
+  - 'delete realisation revisions'
+  - 'edit any realisation content'
+  - 'edit own realisation content'
+  - 'revert realisation revisions'
+  - 'view realisation revisions'

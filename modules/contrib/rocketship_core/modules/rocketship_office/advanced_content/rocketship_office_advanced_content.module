@@ -1,0 +1,39 @@
+<?php
+
+function _rocketship_office_advanced_content_migrates() {
+  return [
+    'office_advanced_images',
+    'office_advanced_media_images',
+    'office_advanced_simple_header',
+    'office_advanced_node',
+  ];
+}
+
+/**
+ * Implements hook_migration_plugins_alter().
+ */
+function rocketship_office_advanced_content_migration_plugins_alter(&$definitions) {
+  if (!isset($definitions['office_advanced_images'])) {
+    return;
+  }
+  $path = drupal_get_path('module', 'rocketship_office_advanced_content');
+  $definitions['office_advanced_images']['source']['path'] = $path . $definitions['office_advanced_images']['source']['path'];
+  $definitions['office_advanced_media_images']['source']['path'] = $path . $definitions['office_advanced_media_images']['source']['path'];
+  $definitions['office_advanced_node']['source']['path'] = $path . $definitions['office_advanced_node']['source']['path'];
+  $definitions['office_advanced_simple_header']['source']['path'] = $path . $definitions['office_advanced_simple_header']['source']['path'];
+
+  $definitions['office_advanced_images']['source']['constants']['source_base_path'] = $path . $definitions['office_advanced_images']['source']['constants']['source_base_path'];
+}
+
+/**
+ * Implements hook_module_implements_alter().
+ *
+ * Make sure we go after block_themes_installed.
+ */
+function rocketship_office_advanced_content_module_implements_alter(&$implementations, $hook) {
+  if ($hook == 'migration_plugins_alter') {
+    $group = $implementations['rocketship_office_advanced_content'];
+    unset($implementations['rocketship_office_advanced_content']);
+    $implementations['rocketship_office_advanced_content'] = $group;
+  }
+}

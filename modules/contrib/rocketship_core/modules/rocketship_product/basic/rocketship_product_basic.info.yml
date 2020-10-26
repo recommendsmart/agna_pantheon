@@ -1,0 +1,40 @@
+name: 'Rocketship Product Basic'
+type: module
+description: 'Contains the Basic upgrade, which adds an overview page.'
+core_version_requirement: ^8.8 || ^9
+package: Rocketship
+states:
+  checked:
+    -
+      '#edit-rocketship-product-advanced':
+        checked: true
+    -
+      '#edit-rocketship-product-advanced-content':
+        checked: true
+  disabled:
+    -
+      '#edit-rocketship-product-advanced':
+        checked: true
+    -
+      '#edit-rocketship-product-advanced-content':
+        checked: true
+dependencies:
+  - node_keep
+  - rocketship_page
+  - rocketship_product_core
+  - rocketship_paragraphs
+  - rocketship_seo
+  - migrate
+  - migrate_plus
+  - migrate_source_csv
+  - node
+  - search_api
+  - search_api_db
+  - token
+  - user
+  - views
+
+# Information added by Drupal.org packaging script on 2020-09-29
+version: '5.0.0-alpha19'
+project: 'rocketship_core'
+datestamp: 1601395145

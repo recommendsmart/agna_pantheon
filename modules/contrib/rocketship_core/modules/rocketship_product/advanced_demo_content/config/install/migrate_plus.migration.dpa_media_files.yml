@@ -1,0 +1,23 @@
+langcode: en
+status: true
+dependencies: {  }
+id: dpa_media_files
+migration_group: dpa_content
+source:
+  plugin: csv
+  path: /assets/csv/files.csv
+  header_offset: 0
+  ids:
+    - id
+process:
+  name: name
+  field_media_file/target_id:
+    plugin: migration_lookup
+    migration: dpa_files
+    source: id
+destination:
+  plugin: 'entity:media'
+  default_bundle: file
+migration_dependencies:
+  required:
+    - dpa_files

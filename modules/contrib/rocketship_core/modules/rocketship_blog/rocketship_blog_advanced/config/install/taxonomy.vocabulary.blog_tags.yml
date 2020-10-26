@@ -1,0 +1,7 @@
+langcode: und
+status: true
+dependencies: {  }
+name: 'Blog tags'
+vid: blog_tags
+description: ''
+weight: 0

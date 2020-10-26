@@ -1,0 +1,31 @@
+langcode: en
+status: true
+dependencies:
+  config:
+    - core.entity_view_mode.event.teaser
+    - field.field.event.event.field_event_e_display_field
+    - field.field.event.event.field_event_price
+  module:
+    - rocketship_event_core
+id: event.event.teaser
+targetEntityType: event
+bundle: event
+mode: teaser
+content:
+  field_event_e_display_field:
+    type: rs_event_dates
+    weight: 0
+    region: content
+    label: hidden
+    settings:
+      date_format: d/m/Y
+      time_format: 'H:i'
+      combine_duplicates: true
+    third_party_settings: {  }
+hidden:
+  date_end: true
+  date_start: true
+  field_event_price: true
+  langcode: true
+  search_api_excerpt: true
+  user_id: true

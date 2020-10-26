@@ -1,0 +1,744 @@
+langcode: en
+status: true
+dependencies:
+  config:
+    - core.entity_view_mode.node.full
+    - field.field.node.office.field_description
+    - field.field.node.office.field_header_paragraph
+    - field.field.node.office.field_media_canonical_image
+    - field.field.node.office.field_meta_tags
+    - field.field.node.office.field_office_address
+    - field.field.node.office.field_office_display_field
+    - field.field.node.office.field_office_email
+    - field.field.node.office.field_office_fax
+    - field.field.node.office.field_office_geolocation
+    - field.field.node.office.field_office_hours
+    - field.field.node.office.field_office_override_mail
+    - field.field.node.office.field_office_phone
+    - field.field.node.office.field_office_show_contact_form
+    - field.field.node.office.field_office_teaser_title
+    - field.field.node.office.field_paragraphs
+    - field.field.node.office.field_show_contact_us_button
+    - node.type.office
+    - responsive_image.styles.office_detail
+  module:
+    - address
+    - blazy
+    - rocketship_office_core
+    - entity_reference_revisions
+    - geofield_map
+    - layout_builder
+    - office_hours
+    - rocketship_core
+    - telephone
+third_party_settings:
+  layout_builder:
+    allow_custom: false
+    enabled: true
+    sections:
+      -
+        layout_id: rs_header
+        layout_settings:
+          label: 'Rocketship Header'
+          with_subregion: 0
+          with_subregion_02: false
+          subregion_position: after
+          subregion_02_position: after
+          classes: ''
+        components:
+          47e60ccb-9d75-487e-bfec-6ba4c4839722:
+            uuid: 47e60ccb-9d75-487e-bfec-6ba4c4839722
+            region: content
+            configuration:
+              id: 'field_block:node:office:field_header_paragraph'
+              label: 'Header Paragraph'
+              provider: layout_builder
+              label_display: '0'
+              formatter:
+                label: hidden
+                type: entity_reference_revisions_entity_view
+                settings:
+                  view_mode: default
+                third_party_settings: {  }
+              context_mapping:
+                entity: layout_builder.entity
+                view_mode: view_mode
+            additional: {  }
+            weight: 0
+        third_party_settings: {  }
+      -
+        layout_id: rs_two_col
+        layout_settings:
+          label: 'Rocketship 2-Col'
+          layout_reversed: 0
+        components:
+          aeec4873-7075-4a1d-ae4f-1f6cbb5fc3b3:
+            uuid: aeec4873-7075-4a1d-ae4f-1f6cbb5fc3b3
+            region: first_main
+            configuration:
+              label_display: '0'
+              context_mapping:
+                entity: layout_builder.entity
+              id: 'field_block:node:office:field_media_canonical_image'
+              formatter:
+                type: blazy_media
+                label: hidden
+                settings:
+                  image_style: ''
+                  responsive_image_style: office_detail
+                  media_switch: ''
+                  box_style: ''
+                  thumbnail_style: ''
+                  box_media_style: ''
+                  ratio: ''
+                  box_caption: ''
+                  view_mode: default
+                  box_caption_custom: ''
+                  current_view_mode: full
+                  background: false
+                  caption:
+                    title: '0'
+                    alt: '0'
+                  class: ''
+                  id: ''
+                  image: ''
+                  link: ''
+                  overlay: ''
+                  title: ''
+                  vanilla: false
+                  icon: ''
+                  layout: ''
+                  cache: 0
+                  skin: ''
+                  fx: ''
+                  style: ''
+                  _uri: ''
+                  breakpoints: {  }
+                  sizes: ''
+                  grid_header: ''
+                  grid: 0
+                  grid_medium: 0
+                  grid_small: 0
+                third_party_settings: {  }
+            additional: {  }
+            weight: 0
+          01ab5dd0-0de6-4900-8865-a4b1c7874932:
+            uuid: 01ab5dd0-0de6-4900-8865-a4b1c7874932
+            region: second_top
+            configuration:
+              label_display: '0'
+              context_mapping:
+                entity: layout_builder.entity
+              id: 'field_block:node:office:field_office_teaser_title'
+              formatter:
+                type: header_text_field_formatter
+                label: hidden
+                settings:
+                  header: h2
+                third_party_settings: {  }
+            additional: {  }
+            weight: 0
+          bbd24655-a039-47ed-9e7f-27a65a10abb7:
+            uuid: bbd24655-a039-47ed-9e7f-27a65a10abb7
+            region: second_top
+            configuration:
+              label_display: '0'
+              context_mapping:
+                entity: layout_builder.entity
+              id: 'field_block:node:office:field_description'
+              formatter:
+                type: basic_string
+                label: hidden
+                settings: {  }
+                third_party_settings: {  }
+            additional: {  }
+            weight: 1
+          dd1132a8-0a2d-4dbb-b570-ccfe782e9292:
+            uuid: dd1132a8-0a2d-4dbb-b570-ccfe782e9292
+            region: second_main
+            configuration:
+              label_display: '0'
+              context_mapping:
+                entity: layout_builder.entity
+              id: 'field_block:node:office:field_office_address'
+              formatter:
+                type: address_plain
+                label: hidden
+                settings: {  }
+                third_party_settings: {  }
+            additional: {  }
+            weight: 0
+          8b8c8aa6-f059-4258-a5c1-a75565d33a32:
+            uuid: 8b8c8aa6-f059-4258-a5c1-a75565d33a32
+            region: second_main
+            configuration:
+              label_display: '0'
+              context_mapping:
+                entity: layout_builder.entity
+              id: 'field_block:node:office:field_office_phone'
+              formatter:
+                type: telephone_link
+                label: hidden
+                settings:
+                  title: ''
+                third_party_settings: {  }
+            additional: {  }
+            weight: 1
+          47c8e9fd-ae3c-421e-8cba-6d434f1d6b22:
+            uuid: 47c8e9fd-ae3c-421e-8cba-6d434f1d6b22
+            region: second_main
+            configuration:
+              label_display: '0'
+              context_mapping:
+                entity: layout_builder.entity
+              id: 'field_block:node:office:field_office_fax'
+              formatter:
+                type: string
+                label: hidden
+                settings:
+                  link_to_entity: false
+                third_party_settings: {  }
+            additional: {  }
+            weight: 2
+          38516b1b-799f-4844-9746-625e0a08377f:
+            uuid: 38516b1b-799f-4844-9746-625e0a08377f
+            region: second_main
+            configuration:
+              label_display: '0'
+              context_mapping:
+                entity: layout_builder.entity
+              id: 'field_block:node:office:field_office_email'
+              formatter:
+                type: email_mailto
+                label: hidden
+                settings: {  }
+                third_party_settings: {  }
+            additional: {  }
+            weight: 3
+          ae59b095-a653-4ea0-a400-254c634ddda0:
+            uuid: ae59b095-a653-4ea0-a400-254c634ddda0
+            region: second_main
+            configuration:
+              label_display: '0'
+              context_mapping:
+                entity: layout_builder.entity
+              id: 'field_block:node:office:field_show_contact_us_button'
+              formatter:
+                label: hidden
+                settings:
+                  link_text: 'Contact us'
+                third_party_settings: {  }
+                type: contact_us_button
+            additional: {  }
+            weight: 4
+          19998e04-24eb-4a13-bfda-0527735ea1fa:
+            uuid: 19998e04-24eb-4a13-bfda-0527735ea1fa
+            region: second_bottom
+            configuration:
+              label_display: '0'
+              context_mapping:
+                entity: layout_builder.entity
+              id: 'field_block:node:office:field_office_hours'
+              formatter:
+                type: office_hours
+                label: hidden
+                settings:
+                  show_closed: all
+                  office_hours_first_day: ''
+                  day_format: long
+                  time_format: G
+                  closed_format: Closed
+                  separator:
+                    days: '<br />'
+                    grouped_days: ' - '
+                    day_hours: ': '
+                    hours_hours: '-'
+                    more_hours: ', '
+                  current_status:
+                    position: ''
+                    open_text: 'Currently open!'
+                    closed_text: 'Currently closed'
+                  schema:
+                    enabled: true
+                  compress: false
+                  grouped: false
+                  timezone_field: ''
+                third_party_settings: {  }
+            additional: {  }
+            weight: 0
+        third_party_settings: {  }
+      -
+        layout_id: rs_content
+        layout_settings:
+          label: 'Rocketship Content'
+          with_subregion: 0
+          with_subregion_02: false
+          subregion_position: after
+          subregion_02_position: after
+          classes: ''
+        components:
+          a8cd6f53-d498-44b8-998f-26a3189ce5ae:
+            uuid: a8cd6f53-d498-44b8-998f-26a3189ce5ae
+            region: content
+            configuration:
+              id: 'field_block:node:office:field_office_geolocation'
+              label: 'Office geolocation'
+              provider: layout_builder
+              label_display: '0'
+              formatter:
+                label: hidden
+                type: geofield_google_map
+                settings:
+                  map_dimensions:
+                    width: 100%
+                    height: 450px
+                  map_empty:
+                    empty_behaviour: '0'
+                    empty_message: 'No Geofield Value entered for this field'
+                  map_center:
+                    lat: '42'
+                    lon: '12.5'
+                    center_force: 0
+                    geocode: 'Find my location'
+                  map_zoom_and_pan:
+                    zoom:
+                      initial: '16'
+                      force: 0
+                      min: '1'
+                      max: '22'
+                      finer: '0'
+                    gestureHandling: auto
+                    scrollwheel: '1'
+                    draggable: '1'
+                    map_reset: 0
+                    map_reset_position: TOP_RIGHT
+                  map_controls:
+                    disable_default_ui: 0
+                    zoom_control: 1
+                    map_type_id: roadmap
+                    map_type_control: 1
+                    map_type_control_options_type_ids:
+                      roadmap: roadmap
+                      satellite: satellite
+                      hybrid: hybrid
+                      terrain: terrain
+                    scale_control: 1
+                    street_view_control: 1
+                    fullscreen_control: 1
+                  map_marker_and_infowindow:
+                    icon_image_path: ''
+                    infowindow_field: '#rendered_entity'
+                    multivalue_split: 0
+                    view_mode: map_info
+                    tooltip_field: '0'
+                    force_open: 0
+                    icon_image_mode: icon_file
+                    icon_file_wrapper:
+                      icon_file:
+                        fids: {  }
+                        upload_button: Upload
+                        remove_button: Remove
+                        upload: ''
+                        is_svg: false
+                      image_style: geofield_map_default_icon_style
+                  map_additional_options: ''
+                  map_additional_libraries:
+                    places: 0
+                    drawing: 0
+                    geometry: 0
+                    visualization: 0
+                  map_geometries_options: '{"strokeColor":"black","strokeOpacity":"0.8","strokeWeight":2,"fillColor":"blue","fillOpacity":"0.1","clickable":false}'
+                  map_oms:
+                    map_oms_control: 0
+                    map_oms_options: '{"markersWontMove":"true","markersWontHide":"true","basicFormatEvents":"true","nearbyDistance":3}'
+                  custom_style_map:
+                    custom_style_control: 0
+                    custom_style_name: ''
+                    custom_style_options: ''
+                    custom_style_default: 0
+                  map_markercluster:
+                    markercluster_control: 0
+                    markercluster_additional_options: ''
+                  map_geocoder:
+                    control: 0
+                    settings:
+                      position: TOP_LEFT
+                      input_size: '25'
+                      providers:
+                        arcgisonline:
+                          weight: '0'
+                          checked: 0
+                        bingmaps:
+                          weight: '0'
+                          checked: 0
+                        file:
+                          weight: '0'
+                          checked: 0
+                        freegeoip:
+                          weight: '0'
+                          checked: 0
+                        gpxfile:
+                          weight: '0'
+                          checked: 0
+                        geojsonfile:
+                          weight: '0'
+                          checked: 0
+                        geoplugin:
+                          weight: '0'
+                          checked: 0
+                        geoip:
+                          weight: '0'
+                          checked: 0
+                        geonames:
+                          weight: '0'
+                          checked: 0
+                        googlemaps:
+                          weight: '0'
+                          checked: 0
+                        googlemaps_business:
+                          weight: '0'
+                          checked: 0
+                        hostip:
+                          weight: '0'
+                          checked: 0
+                        ipinfodb:
+                          weight: '0'
+                          checked: 0
+                        kmlfile:
+                          weight: '0'
+                          checked: 0
+                        mapquest:
+                          weight: '0'
+                          checked: 0
+                        maxmind:
+                          weight: '0'
+                          checked: 0
+                        nominatim:
+                          weight: '0'
+                          checked: 0
+                        opencage:
+                          weight: '0'
+                          checked: 0
+                        openstreetmap:
+                          weight: '0'
+                          checked: 0
+                        random:
+                          weight: '0'
+                          checked: 0
+                        tomtom:
+                          weight: '0'
+                          checked: 0
+                        yandex:
+                          weight: '0'
+                          checked: 0
+                      min_terms: '4'
+                      delay: '800'
+                      zoom: '16'
+                      infowindow: 0
+                      options: ''
+                  map_lazy_load:
+                    lazy_load: 0
+                third_party_settings: {  }
+              context_mapping:
+                entity: layout_builder.entity
+                view_mode: view_mode
+            additional: {  }
+            weight: 0
+          281dc1db-4479-46b8-ab2b-5637e44aafc9:
+            uuid: 281dc1db-4479-46b8-ab2b-5637e44aafc9
+            region: content
+            configuration:
+              label_display: '0'
+              context_mapping:
+                entity: layout_builder.entity
+              id: 'field_block:node:office:field_paragraphs'
+              formatter:
+                label: hidden
+                settings:
+                  view_mode: default
+                  link: ''
+                third_party_settings: {  }
+                type: entity_reference_revisions_entity_view
+            additional: {  }
+            weight: 1
+          8be3a043-1577-4e40-ae38-3e9a188fe5f1:
+            uuid: 8be3a043-1577-4e40-ae38-3e9a188fe5f1
+            region: content
+            configuration:
+              label_display: '0'
+              context_mapping:
+                entity: layout_builder.entity
+              id: 'field_block:node:office:field_office_show_contact_form'
+              formatter:
+                type: webform_render
+                label: hidden
+                settings:
+                  webform_id: office_contact
+                  label: ''
+                  redirect: 0
+                  show_label: 0
+                third_party_settings: {  }
+            additional: {  }
+            weight: 2
+          c9d2cf26-a283-4c63-a9f6-8776e2c49849:
+            uuid: c9d2cf26-a283-4c63-a9f6-8776e2c49849
+            region: content
+            configuration:
+              id: 'field_block:node:office:field_office_display_field'
+              label: 'Display Field'
+              provider: layout_builder
+              label_display: '0'
+              formatter:
+                label: hidden
+                type: rs_office_more_offices
+                settings:
+                  uuid: 69352ecf-1e01-49fb-a7b6-a8490803a9da
+                  link_text: 'More contact offices'
+                third_party_settings: {  }
+              context_mapping:
+                entity: layout_builder.entity
+                view_mode: view_mode
+            additional: {  }
+            weight: 3
+        third_party_settings: {  }
+id: node.office.full
+targetEntityType: node
+bundle: office
+mode: full
+content:
+  field_description:
+    type: basic_string
+    weight: 4
+    region: content
+    label: hidden
+    settings: {  }
+    third_party_settings: {  }
+  field_media_canonical_image:
+    type: blazy_media
+    weight: 0
+    region: content
+    label: hidden
+    settings:
+      image_style: ''
+      responsive_image_style: office_detail
+      media_switch: ''
+      box_style: ''
+      thumbnail_style: ''
+      box_media_style: ''
+      ratio: ''
+      box_caption: ''
+      view_mode: default
+      box_caption_custom: ''
+      current_view_mode: full
+      background: false
+      caption:
+        title: '0'
+        alt: '0'
+      class: ''
+      id: ''
+      image: ''
+      link: ''
+      overlay: ''
+      title: ''
+      vanilla: false
+      icon: ''
+      layout: ''
+      cache: 0
+      skin: ''
+      fx: ''
+      style: ''
+      _uri: ''
+      breakpoints: {  }
+      sizes: ''
+      grid_header: ''
+      grid: 0
+      grid_medium: 0
+      grid_small: 0
+    third_party_settings: {  }
+  field_office_address:
+    type: address_plain
+    weight: 1
+    region: content
+    label: hidden
+    settings: {  }
+    third_party_settings: {  }
+  field_office_email:
+    type: email_mailto
+    weight: 7
+    region: content
+    label: hidden
+    settings: {  }
+    third_party_settings: {  }
+  field_office_fax:
+    type: string
+    weight: 6
+    region: content
+    label: hidden
+    settings:
+      link_to_entity: false
+    third_party_settings: {  }
+  field_office_geolocation:
+    type: geofield_google_map
+    weight: 5
+    region: content
+    label: hidden
+    settings:
+      map_dimensions:
+        width: 100%
+        height: 450px
+      map_empty:
+        empty_behaviour: '0'
+        empty_message: 'No Geofield Value entered for this field'
+      map_center:
+        lat: '42'
+        lon: '12.5'
+        center_force: 0
+        geocode: 'Find my location'
+      map_zoom_and_pan:
+        zoom:
+          initial: '16'
+          min: '1'
+          max: '22'
+          force: 0
+        gestureHandling: auto
+        scrollwheel: '1'
+        draggable: '1'
+        map_reset: 0
+      map_controls:
+        zoom_control: '1'
+        map_type_id: roadmap
+        map_type_control: '1'
+        map_type_control_options_type_ids:
+          roadmap: roadmap
+          satellite: satellite
+          hybrid: hybrid
+          terrain: terrain
+        scale_control: '1'
+        street_view_control: '1'
+        fullscreen_control: '1'
+        disable_default_ui: 0
+      map_marker_and_infowindow:
+        icon_image_mode: icon_file
+        icon_file_wrapper:
+          icon_file:
+            fids: ''
+            upload_button: Upload
+            remove_button: Remove
+            upload: ''
+          image_style: geofield_map_default_icon_style
+        icon_image_path: ''
+        infowindow_field: '#rendered_entity'
+        view_mode: map_info
+        multivalue_split: 0
+        force_open: 0
+      map_additional_options: ''
+      map_oms:
+        map_oms_options: '{"markersWontMove":"true","markersWontHide":"true","basicFormatEvents":"true","nearbyDistance":3}'
+        map_oms_control: 0
+      custom_style_map:
+        custom_style_name: ''
+        custom_style_options: ''
+        custom_style_control: 0
+        custom_style_default: 0
+      map_markercluster:
+        markercluster_additional_options: ''
+        markercluster_control: 0
+      gmap_api_key: ''
+      map_additional_libraries: {  }
+      map_geometries_options: '{"strokeColor":"black","strokeOpacity":"0.8","strokeWeight":2,"fillColor":"blue","fillOpacity":"0.1", "clickable": false}'
+      map_geocoder:
+        control: 0
+        settings:
+          position: topright
+          input_size: 25
+          providers: {  }
+          min_terms: 4
+          delay: 800
+          zoom: 16
+          infowindow: 0
+          options: ''
+    third_party_settings: {  }
+  field_office_hours:
+    type: office_hours
+    weight: 8
+    region: content
+    label: hidden
+    settings:
+      show_closed: all
+      office_hours_first_day: ''
+      day_format: long
+      time_format: G
+      closed_format: Closed
+      separator:
+        days: '<br />'
+        grouped_days: ' - '
+        day_hours: ': '
+        hours_hours: '-'
+        more_hours: ', '
+      current_status:
+        position: ''
+        open_text: 'Currently open!'
+        closed_text: 'Currently closed'
+      schema:
+        enabled: true
+      compress: false
+      grouped: false
+      timezone_field: ''
+    third_party_settings: {  }
+  field_office_phone:
+    type: telephone_link
+    weight: 2
+    region: content
+    label: hidden
+    settings:
+      title: ''
+    third_party_settings: {  }
+  field_office_show_contact_form:
+    type: webform_render
+    weight: 11
+    region: content
+    label: hidden
+    settings:
+      webform_id: office_contact
+      label: ''
+      redirect: 0
+      show_label: 0
+    third_party_settings: {  }
+  field_office_teaser_title:
+    type: header_text_field_formatter
+    weight: 3
+    region: content
+    label: hidden
+    settings:
+      header: h2
+    third_party_settings: {  }
+  field_paragraphs:
+    weight: 10
+    label: hidden
+    settings:
+      view_mode: default
+      link: ''
+    third_party_settings: {  }
+    type: entity_reference_revisions_entity_view
+    region: content
+  field_show_contact_us_button:
+    weight: 9
+    label: hidden
+    settings:
+      link_text: 'Contact us'
+    third_party_settings: {  }
+    type: contact_us_button
+    region: content
+hidden:
+  created: true
+  rocketship_social_widgets: true
+  field_header_paragraph: true
+  field_meta_tags: true
+  field_node_title_replacement: true
+  field_office_display_field: true
+  field_office_override_mail: true
+  langcode: true
+  links: true
+  search_api_excerpt: true
+  title: true
+  uid: true

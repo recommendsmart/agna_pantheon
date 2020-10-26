@@ -1,0 +1,16 @@
+langcode: en
+status: true
+dependencies:
+  module:
+    - focal_point
+name: image_style_p005_avatar_2x
+label: 'Paragraph p005 avatar 2x'
+effects:
+  fac9be65-c260-403b-b931-f30ed3b2857f:
+    uuid: fac9be65-c260-403b-b931-f30ed3b2857f
+    id: focal_point_scale_and_crop
+    weight: 1
+    data:
+      width: 200
+      height: 200
+      crop_type: focal_point

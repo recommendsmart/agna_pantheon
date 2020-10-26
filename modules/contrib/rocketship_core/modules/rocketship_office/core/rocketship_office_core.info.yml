@@ -1,0 +1,88 @@
+name: 'Rocketship Contact'
+description: 'Contains the Contact Office content type.'
+type: module
+core_version_requirement: ^8.8 || ^9
+dependencies:
+  - address
+  - blazy
+  - block
+  - content_translation
+  - ctools
+  - rocketship_social_widgets
+  - entity_reference_revisions
+  - field
+  - field_group
+  - file
+  - focal_point
+  - geocoder_address
+  - geocoder_field
+  - geocoder_geofield
+  - geofield
+  - geofield_map
+  - image
+  - language
+  - maxlength
+  - media_library
+  - menu_ui
+  - metatag
+  - node
+  - node_title_help_text
+  - office_hours
+  - options
+  - paragraphs
+  - paragraphs_asymmetric_translation_widgets
+  - path
+  - pathauto
+  - rdf
+  - recaptcha
+  - responsive_image
+  - rocketship_core
+  - rocketship_paragraphs
+  - rocketship_seo
+  - roleassign
+  - scheduler
+  - search_api
+  - simple_sitemap
+  - smart_trim
+  - telephone
+  - text
+  - user
+  - views
+  - webform
+  - webform_views
+  - drupal:migrate
+  - migrate_plus
+  - token
+  - rocketship_core
+  - rocketship_paragraphs
+  - migrate_source_csv
+  - menu_link_attributes
+package: Rocketship
+group: 'R006 - Contact'
+weight: 6
+show_during_install: true
+name_override: Core/Basic
+fa_link: 'https://docs.google.com/document/d/1JJLHBrf9HjFR0qNgCOMphM5oakNqfGLsRuan92sNp3A/edit#heading=h.11q7sgj3dtn'
+upgrades:
+  - 'rocketship_office_advanced:Advanced'
+  - 'rocketship_office_advanced_content:Demo Content (Advanced)'
+states:
+  checked:
+    -
+      '#edit-rocketship-office-advanced':
+        checked: true
+    -
+      '#edit-rocketship-office-advanced-content':
+        checked: true
+  disabled:
+    -
+      '#edit-rocketship-office-advanced':
+        checked: true
+    -
+      '#edit-rocketship-office-advanced-content':
+        checked: true
+
+# Information added by Drupal.org packaging script on 2020-09-29
+version: '5.0.0-alpha19'
+project: 'rocketship_core'
+datestamp: 1601395145

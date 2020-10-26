@@ -1,0 +1,9 @@
+langcode: en
+status: true
+dependencies:
+  module:
+    - media
+id: media.paragraph_p009_image
+label: 'Paragraph p009 image (grid columns)'
+targetEntityType: media
+cache: true

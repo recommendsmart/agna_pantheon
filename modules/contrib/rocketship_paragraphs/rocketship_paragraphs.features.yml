@@ -1,0 +1,5 @@
+bundle: rocketship
+excluded:
+  - core.entity_view_display.media.image.paragraph_p009_child_images_colorbox
+  - image.style.medium
+required: true

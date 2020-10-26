@@ -1,0 +1,8 @@
+# Schema for the configuration files of the theme.
+rocketship_office_core.settings:
+  type: styling_settings
+  label: 'Module settings'
+  mapping:
+    css_structural:
+      type: boolean
+      label: 'Structural CSS'

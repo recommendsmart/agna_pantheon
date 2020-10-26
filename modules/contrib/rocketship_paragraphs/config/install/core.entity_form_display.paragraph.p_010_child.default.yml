@@ -1,0 +1,55 @@
+langcode: en
+status: true
+dependencies:
+  config:
+    - field.field.paragraph.p_010_child.field_p_link
+    - field.field.paragraph.p_010_child.field_p_media_image
+    - paragraphs.paragraphs_type.p_010_child
+  module:
+    - field_group
+    - media_library
+    - rocketship_core
+third_party_settings:
+  field_group:
+    group_details:
+      children:
+        - field_p_media_image
+        - field_p_link
+      parent_name: ''
+      weight: 0
+      format_type: details
+      format_settings:
+        id: ''
+        classes: ''
+        open: false
+        required_fields: true
+      label: Details
+      region: content
+id: paragraph.p_010_child.default
+targetEntityType: paragraph
+bundle: p_010_child
+mode: default
+content:
+  field_p_link:
+    weight: 13
+    settings:
+      placeholder_url: ''
+      placeholder_title: ''
+      target: ''
+    third_party_settings: {  }
+    type: link_target_widget
+    region: content
+  field_p_media_image:
+    weight: 11
+    settings:
+      media_types: {  }
+    third_party_settings: {  }
+    type: media_library_widget
+    region: content
+  translation:
+    weight: 10
+    region: content
+hidden:
+  created: true
+  status: true
+  uid: true

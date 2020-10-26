@@ -1,0 +1,76 @@
+langcode: en
+status: true
+dependencies:
+  config:
+    - field.field.event.event.field_event_e_display_field
+    - field.field.event.event.field_event_price
+  module:
+    - rocketship_event_core
+id: event.event.default
+targetEntityType: event
+bundle: event
+mode: default
+content:
+  date_end:
+    type: capture_only_time_timestamp
+    weight: 2
+    region: content
+    settings:
+      other_field_for_date: date_start
+    third_party_settings: {  }
+  date_start:
+    type: datetime_timestamp
+    weight: 1
+    region: content
+    settings: {  }
+    third_party_settings: {  }
+  end_date:
+    type: datetime_timestamp
+    weight: 3
+    region: content
+    settings: {  }
+    third_party_settings: {  }
+  field_event_e_display_field:
+    weight: 4
+    settings: {  }
+    third_party_settings: {  }
+    type: null
+    region: content
+  field_event_price:
+    weight: 3
+    settings:
+      placeholder: ''
+    third_party_settings: {  }
+    type: number
+    region: content
+  langcode:
+    type: language_select
+    weight: 0
+    region: content
+    settings:
+      include_locked: true
+    third_party_settings: {  }
+  name:
+    type: string_textfield
+    weight: 0
+    region: content
+    settings:
+      size: 60
+      placeholder: ''
+    third_party_settings: {  }
+  price:
+    type: number
+    weight: 2
+    region: content
+    settings:
+      placeholder: ''
+    third_party_settings: {  }
+  start_date:
+    type: datetime_timestamp
+    weight: 2
+    region: content
+    settings: {  }
+    third_party_settings: {  }
+hidden:
+  status: true
+  user_id: true

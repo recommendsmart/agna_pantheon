@@ -1,0 +1,27 @@
+<?php
+
+/**
+ * Implements hook_migration_plugins_alter().
+ */
+function rocketship_news_core_content_migration_plugins_alter(&$definitions) {
+  $path = drupal_get_path('module', 'rocketship_news_core_content');
+  $definitions['dnc_images']['source']['path'] = $path . $definitions['dnc_images']['source']['path'];
+  $definitions['dnc_media_images']['source']['path'] = $path . $definitions['dnc_media_images']['source']['path'];
+  $definitions['dnc_nodes']['source']['path'] = $path . $definitions['dnc_nodes']['source']['path'];
+  $definitions['dnc_text_main_p']['source']['path'] = $path . $definitions['dnc_text_main_p']['source']['path'];
+
+  $definitions['dnc_images']['source']['constants']['source_base_path'] = $path . $definitions['dnc_images']['source']['constants']['source_base_path'];
+}
+
+/**
+ * Implements hook_module_implements_alter().
+ *
+ * Make sure we go after migrate_plus.
+ */
+function rocketship_news_core_content_module_implements_alter(&$implementations, $hook) {
+  if ($hook == 'migration_plugins_alter') {
+    $group = $implementations['rocketship_news_core_content'];
+    unset($implementations['rocketship_news_core_content']);
+    $implementations['rocketship_news_core_content'] = $group;
+  }
+}

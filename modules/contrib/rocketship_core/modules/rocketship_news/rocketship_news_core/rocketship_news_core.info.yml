@@ -1,0 +1,83 @@
+name: 'Rocketship News'
+description: 'Contains the News content type, used for news articles.'
+type: module
+core_version_requirement: ^8.8 || ^9
+dependencies:
+  - blazy
+  - content_translation
+  - ctools
+  - rocketship_social_widgets
+  - entity_reference_revisions
+  - field
+  - field_group
+  - file
+  - focal_point
+  - image
+  - language
+  - layout_builder
+  - manage_display
+  - maxlength
+  - media_library
+  - menu_ui
+  - metatag
+  - node
+  - node_title_help_text
+  - options
+  - paragraphs
+  - paragraphs_asymmetric_translation_widgets
+  - path
+  - pathauto
+  - rdf
+  - responsive_image
+  - rocketship_core
+  - rocketship_paragraphs
+  - rocketship_seo
+  - roleassign
+  - scheduler
+  - simple_sitemap
+  - smart_trim
+  - text
+  - user
+  - views
+package: Rocketship
+group: 'R001 - News'
+weight: 1
+fa_link: 'https://docs.google.com/document/d/1JJLHBrf9HjFR0qNgCOMphM5oakNqfGLsRuan92sNp3A/edit#heading=h.6h7ait39najw'
+show_during_install: true
+upgrades:
+  - 'rocketship_news_core_content:Demo Content (Core)'
+  - 'rocketship_news_basic:Basic'
+  - 'rocketship_news_advanced:Advanced'
+  - 'rocketship_news_advanced_content:Demo Content (Advanced)'
+states:
+  checked:
+    -
+      '#edit-rocketship-news-basic':
+        checked: true
+    -
+      '#edit-rocketship-news-advanced':
+        checked: true
+    -
+      '#edit-rocketship-news-core-content':
+        checked: true
+    -
+      '#edit-rocketship-news-advanced-content':
+        checked: true
+  disabled:
+    -
+      '#edit-rocketship-news-basic':
+        checked: true
+    -
+      '#edit-rocketship-news-advanced':
+        checked: true
+    -
+      '#edit-rocketship-news-core-content':
+        checked: true
+    -
+      '#edit-rocketship-news-advanced-content':
+        checked: true
+
+# Information added by Drupal.org packaging script on 2020-09-29
+version: '5.0.0-alpha19'
+project: 'rocketship_core'
+datestamp: 1601395145

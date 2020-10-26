@@ -1,0 +1,422 @@
+langcode: en
+status: true
+dependencies:
+  config:
+    - core.entity_view_mode.node.full
+    - field.field.node.product.field_header_paragraph
+    - field.field.node.product.field_media_product_images
+    - field.field.node.product.field_media_product_sheet
+    - field.field.node.product.field_meta_tags
+    - field.field.node.product.field_node_title_replacement
+    - field.field.node.product.field_paragraphs
+    - field.field.node.product.field_product_attributes
+    - field.field.node.product.field_product_description
+    - field.field.node.product.field_product_display_field
+    - field.field.node.product.field_product_teaser
+    - field.field.node.product.field_show_breadcrumb
+    - image.style.product_thumbnail
+    - node.type.product
+    - responsive_image.styles.product_detail
+  module:
+    - rocketship_product_core
+    - entity_reference_revisions
+    - field_formatter
+    - layout_builder
+    - rocketship_core
+    - text
+third_party_settings:
+  layout_builder:
+    allow_custom: false
+    enabled: true
+    sections:
+      -
+        layout_id: rs_header
+        layout_settings:
+          label: 'Rocketship Header'
+          with_subregion: 0
+          with_subregion_02: 0
+          subregion_position: after
+          subregion_02_position: 0
+          classes: product__header--full
+        components:
+          152bfad7-3ab9-4d8e-b36b-461b6c92422f:
+            uuid: 152bfad7-3ab9-4d8e-b36b-461b6c92422f
+            region: content
+            configuration:
+              id: 'field_block:node:product:field_header_paragraph'
+              label: 'Header Paragraph'
+              provider: layout_builder
+              label_display: '0'
+              formatter:
+                label: hidden
+                type: entity_reference_revisions_entity_view
+                settings:
+                  view_mode: default
+                third_party_settings: {  }
+              context_mapping:
+                entity: layout_builder.entity
+                view_mode: view_mode
+            additional: {  }
+            weight: 0
+        third_party_settings: {  }
+      -
+        layout_id: rs_two_col
+        layout_settings:
+          label: 'Rocketship 2-Col'
+          layout_reversed: 0
+          classes: product__cols--full
+        components:
+          8c5e84c8-50b2-4194-8514-b97e020817fe:
+            uuid: 8c5e84c8-50b2-4194-8514-b97e020817fe
+            region: first_main
+            configuration:
+              label_display: '0'
+              context_mapping:
+                entity: layout_builder.entity
+              id: 'field_block:node:product:field_media_product_images'
+              formatter:
+                type: slick_infinite_media
+                label: hidden
+                settings:
+                  style: ''
+                  optionset: main_image
+                  optionset_thumbnail: thumbnail_navigation
+                  skin: ''
+                  skin_thumbnail: asnavfor
+                  image_style: ''
+                  responsive_image_style: product_detail
+                  thumbnail_effect: ''
+                  thumbnail_position: ''
+                  media_switch: colorbox
+                  box_style: ''
+                  thumbnail_style: product_thumbnail
+                  box_media_style: ''
+                  ratio: ''
+                  box_caption: ''
+                  view_mode: default
+                  box_caption_custom: ''
+                  grid: null
+                  grid_medium: null
+                  grid_small: null
+                  visible_items: null
+                  image: ''
+                  title: ''
+                  link: ''
+                  layout: ''
+                  class: ''
+                  cache: 0
+                  sizes: ''
+                  breakpoints:
+                    xs:
+                      image_style: ''
+                      width: ''
+                    sm:
+                      image_style: ''
+                      width: ''
+                    md:
+                      image_style: ''
+                      width: ''
+                    lg:
+                      image_style: ''
+                      width: ''
+                    xl:
+                      image_style: ''
+                      width: ''
+                  current_view_mode: full
+                  vanilla: false
+                  background: false
+                  caption:
+                    field_media_image: '0'
+                  preserve_keys: false
+                  override: false
+                  overridables:
+                    arrows: '0'
+                    autoplay: '0'
+                    dots: '0'
+                    draggable: '0'
+                    infinite: '0'
+                    mouseWheel: '0'
+                    randomize: '0'
+                    variableWidth: '0'
+                  thumbnail: ''
+                  thumbnail_caption: ''
+                  skin_arrows: ''
+                  skin_dots: ''
+                  icon: ''
+                  grid_header: ''
+                  id: ''
+                  overlay: ''
+                  fx: ''
+                  _uri: ''
+                third_party_settings: {  }
+            additional: {  }
+            weight: 0
+          f8bccb7a-d718-4bf7-a56c-5d36e5e1865d:
+            uuid: f8bccb7a-d718-4bf7-a56c-5d36e5e1865d
+            region: second_top
+            configuration:
+              label_display: '0'
+              context_mapping:
+                entity: layout_builder.entity
+              id: 'field_block:node:product:field_node_title_replacement'
+              formatter:
+                type: title_replacement_formatter
+                label: hidden
+                settings:
+                  wrapper_override: h2
+                third_party_settings: {  }
+            additional: {  }
+            weight: 0
+          3e495426-cd4e-414d-85e3-8f7ed9d78dd1:
+            uuid: 3e495426-cd4e-414d-85e3-8f7ed9d78dd1
+            region: second_main
+            configuration:
+              label_display: '0'
+              context_mapping:
+                entity: layout_builder.entity
+              id: 'field_block:node:product:field_product_attributes'
+              formatter:
+                type: label_value_formatter
+                label: hidden
+                settings:
+                  show_only_promoted: 0
+                third_party_settings: {  }
+            additional: {  }
+            weight: 4
+          c1be54e4-5cc3-4ce7-bb5d-95fffd9ff014:
+            uuid: c1be54e4-5cc3-4ce7-bb5d-95fffd9ff014
+            region: second_main
+            configuration:
+              label_display: '0'
+              context_mapping:
+                entity: layout_builder.entity
+              id: 'field_block:node:product:field_product_description'
+              formatter:
+                type: text_default
+                label: hidden
+                settings: {  }
+                third_party_settings: {  }
+            additional: {  }
+            weight: 5
+          13e05a63-6fa7-4d7a-a841-10adf44d276e:
+            uuid: 13e05a63-6fa7-4d7a-a841-10adf44d276e
+            region: second_bottom
+            configuration:
+              label_display: '0'
+              context_mapping:
+                entity: layout_builder.entity
+              id: 'field_block:node:product:field_media_product_sheet'
+              formatter:
+                type: field_formatter_with_inline_settings
+                label: hidden
+                settings:
+                  field_name: field_media_file
+                  label: hidden
+                  type: file_download_formatter
+                  settings:
+                    fallback_title: 'Download productsheet'
+                    use_description_as_link_text: 0
+                  link_to_entity: false
+                third_party_settings: {  }
+            additional: {  }
+            weight: 0
+          7c969585-2355-4ab9-ae3d-d154696a3c77:
+            uuid: 7c969585-2355-4ab9-ae3d-d154696a3c77
+            region: second_bottom
+            configuration:
+              id: 'field_block:node:product:field_product_display_field'
+              label: 'Display Field'
+              provider: layout_builder
+              label_display: '0'
+              formatter:
+                label: hidden
+                type: rs_configurable_link
+                settings:
+                  link: '/contact-us'
+                  link_text: 'Contact us for more information'
+                  link_class: 'more-info-contact-button, button'
+                  query_string: 'message=I would like some more information about [node:title]'
+                third_party_settings: {  }
+              context_mapping:
+                entity: layout_builder.entity
+                view_mode: view_mode
+            additional: {  }
+            weight: 1
+        third_party_settings: {  }
+      -
+        layout_id: rs_content
+        layout_settings:
+          label: 'Rocketship Content'
+          with_subregion: 0
+          with_subregion_02: 0
+          subregion_position: after
+          subregion_02_position: 0
+          classes: product__content--full
+        components:
+          f9c8fa3e-3bd3-47d9-9124-da2fb3b6ada6:
+            uuid: f9c8fa3e-3bd3-47d9-9124-da2fb3b6ada6
+            region: content
+            configuration:
+              label_display: '0'
+              context_mapping:
+                entity: layout_builder.entity
+              id: 'field_block:node:product:field_paragraphs'
+              formatter:
+                label: hidden
+                settings:
+                  view_mode: default
+                  link: ''
+                third_party_settings: {  }
+                type: entity_reference_revisions_entity_view
+            additional: {  }
+            weight: 0
+        third_party_settings: {  }
+id: node.product.full
+targetEntityType: node
+bundle: product
+mode: full
+content:
+  field_media_product_images:
+    type: slick_infinite_media
+    weight: 0
+    region: content
+    label: hidden
+    settings:
+      style: ''
+      optionset: main_image
+      optionset_thumbnail: thumbnail_navigation
+      skin: ''
+      skin_thumbnail: asnavfor
+      image_style: ''
+      responsive_image_style: product_detail
+      thumbnail_effect: ''
+      thumbnail_position: ''
+      media_switch: colorbox
+      box_style: ''
+      thumbnail_style: product_thumbnail
+      box_media_style: ''
+      ratio: ''
+      box_caption: ''
+      view_mode: default
+      box_caption_custom: ''
+      grid: null
+      grid_medium: null
+      grid_small: null
+      visible_items: null
+      image: ''
+      title: ''
+      link: ''
+      layout: ''
+      class: ''
+      cache: 0
+      sizes: ''
+      breakpoints:
+        xs:
+          image_style: ''
+          width: ''
+        sm:
+          image_style: ''
+          width: ''
+        md:
+          image_style: ''
+          width: ''
+        lg:
+          image_style: ''
+          width: ''
+        xl:
+          image_style: ''
+          width: ''
+      current_view_mode: full
+      vanilla: false
+      background: false
+      caption:
+        field_media_image: '0'
+      preserve_keys: false
+      override: false
+      overridables:
+        arrows: '0'
+        autoplay: '0'
+        dots: '0'
+        draggable: '0'
+        infinite: '0'
+        mouseWheel: '0'
+        randomize: '0'
+        variableWidth: '0'
+      thumbnail: ''
+      thumbnail_caption: ''
+      skin_arrows: ''
+      skin_dots: ''
+      icon: ''
+      grid_header: ''
+      id: ''
+      overlay: ''
+      fx: ''
+      _uri: ''
+    third_party_settings: {  }
+  field_media_product_sheet:
+    type: field_formatter_with_inline_settings
+    weight: 7
+    region: content
+    label: hidden
+    settings:
+      field_name: field_media_file
+      label: hidden
+      type: file_download_formatter
+      settings:
+        fallback_title: 'Download productsheet'
+        use_description_as_link_text: 0
+      link_to_entity: false
+    third_party_settings: {  }
+  field_node_title_replacement:
+    type: title_replacement_formatter
+    weight: 3
+    region: content
+    label: hidden
+    settings:
+      wrapper_override: h2
+    third_party_settings: {  }
+  field_paragraphs:
+    weight: 9
+    label: hidden
+    settings:
+      view_mode: default
+      link: ''
+    third_party_settings: {  }
+    type: entity_reference_revisions_entity_view
+    region: content
+  field_product_attributes:
+    type: label_value_formatter
+    weight: 5
+    region: content
+    label: hidden
+    settings:
+      show_only_promoted: 0
+    third_party_settings: {  }
+  field_product_description:
+    type: text_default
+    weight: 6
+    region: content
+    label: hidden
+    settings: {  }
+    third_party_settings: {  }
+  field_product_sheet:
+    type: rs_file_download_formatter
+    weight: 5
+    region: content
+    label: hidden
+    settings:
+      fallback_title: 'Download productsheet'
+      use_description_as_link_text: 0
+    third_party_settings: {  }
+hidden:
+  rocketship_social_widgets: true
+  field_header_paragraph: true
+  field_meta_tags: true
+  field_product_display_field: true
+  field_product_teaser: true
+  field_show_breadcrumb: true
+  langcode: true
+  links: true
+  search_api_excerpt: true
+  title: true
+  uid: true

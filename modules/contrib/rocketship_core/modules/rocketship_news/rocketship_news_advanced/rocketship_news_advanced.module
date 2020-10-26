@@ -1,0 +1,28 @@
+<?php
+
+/**
+ * @file
+ * Main module file.
+ */
+
+/**
+ * Implements hook_theme().
+ */
+function rocketship_news_advanced_theme($existing, $type, $theme, $path) {
+  return [
+    'news_facets_result_item' => [
+      'base hook' => 'facets_result_item',
+      'variables' => [
+        'facet' => NULL,
+        'raw_value' => '',
+        'value' => '',
+        'show_count' => FALSE,
+        'count' => NULL,
+        'is_active' => FALSE,
+      ],
+    ],
+    'facets_item_list__news_links__news_tags' => [
+      'base hook' => 'facets_item_list__news_links__news_tags'
+    ],
+  ];
+}

@@ -1,0 +1,156 @@
+langcode: en
+status: true
+dependencies:
+  config:
+    - core.entity_view_mode.node.related
+    - field.field.node.news.field_description
+    - field.field.node.news.field_media_canonical_image
+    - field.field.node.news.field_meta_tags
+    - field.field.node.news.field_news_display_field
+    - field.field.node.news.field_news_tags
+    - field.field.node.news.field_node_title_replacement
+    - field.field.node.news.field_paragraphs
+    - field.field.node.news.field_show_breadcrumb
+    - node.type.news
+  module:
+    - layout_builder
+    - rocketship_core
+third_party_settings:
+  layout_builder:
+    allow_custom: false
+    enabled: true
+    sections:
+      -
+        layout_id: rs_two_col
+        layout_settings:
+          label: 'Rocketship 2-Col'
+          layout_reversed: 0
+          classes: ''
+        components:
+          50d1dece-589c-45d6-b246-7c9e7271e335:
+            uuid: 50d1dece-589c-45d6-b246-7c9e7271e335
+            region: first_top
+            configuration:
+              id: 'field_block:node:news:field_media_canonical_image'
+              label: Image
+              provider: layout_builder
+              label_display: '0'
+              formatter:
+                label: hidden
+                type: blazy_media
+                settings:
+                  background: false
+                  caption:
+                    title: '0'
+                    alt: '0'
+                  view_mode: default
+                  image_style: ''
+                  thumbnail_style: ''
+                  responsive_image_style: news_related
+                  media_switch: content
+                  ratio: ''
+                  box_style: ''
+                  box_media_style: ''
+                  box_caption: ''
+                  box_caption_custom: ''
+                  current_view_mode: _custom
+                third_party_settings: {  }
+              context_mapping:
+                entity: layout_builder.entity
+                view_mode: view_mode
+            additional: {  }
+            weight: 0
+          323ba4ea-29ce-4a17-8e9b-258427a62571:
+            uuid: 323ba4ea-29ce-4a17-8e9b-258427a62571
+            region: second_top
+            configuration:
+              id: 'field_block:node:news:field_news_display_field'
+              label: 'Display Field'
+              provider: layout_builder
+              label_display: '0'
+              formatter:
+                label: hidden
+                type: rs_canonical_link
+                settings:
+                  'link text': 'Read more'
+                  'link class': ''
+                  wrapper: ''
+                  class: ''
+                third_party_settings: {  }
+              context_mapping:
+                entity: layout_builder.entity
+                view_mode: view_mode
+            additional: {  }
+            weight: 2
+          90c65a50-b68e-4a9c-94ae-1aff1dc108c0:
+            uuid: 90c65a50-b68e-4a9c-94ae-1aff1dc108c0
+            region: second_top
+            configuration:
+              id: 'field_block:node:news:title'
+              label: Title
+              provider: layout_builder
+              label_display: '0'
+              formatter:
+                label: hidden
+                type: title
+                settings:
+                  tag: h3
+                  linked: true
+                third_party_settings: {  }
+              context_mapping:
+                entity: layout_builder.entity
+                view_mode: view_mode
+            additional: {  }
+            weight: 0
+          0e1d6c78-5999-4fd6-8a23-8daafa5bce21:
+            uuid: 0e1d6c78-5999-4fd6-8a23-8daafa5bce21
+            region: second_top
+            configuration:
+              id: 'field_block:node:news:created'
+              label: 'Authored on'
+              provider: layout_builder
+              label_display: '0'
+              formatter:
+                label: hidden
+                type: timestamp
+                settings:
+                  date_format: day_month_year_short
+                  custom_date_format: ''
+                  timezone: ''
+                third_party_settings: {  }
+              context_mapping:
+                entity: layout_builder.entity
+                view_mode: view_mode
+            additional: {  }
+            weight: 1
+        third_party_settings: {  }
+      -
+        layout_id: rs_content
+        layout_settings:
+          label: 'Rocketship Content'
+          with_subregion: 0
+          subregion_position: after
+          classes: ''
+        components: {  }
+        third_party_settings: {  }
+id: node.news.related
+targetEntityType: node
+bundle: news
+mode: related
+content: {  }
+hidden:
+  rocketship_social_widgets: true
+  field_description: true
+  field_header_paragraph: true
+  field_media_canonical_image: true
+  field_meta_tags: true
+  field_news_display_field: true
+  field_news_tags: true
+  field_node_title_replacement: true
+  field_paragraphs: true
+  field_show_breadcrumb: true
+  langcode: true
+  links: true
+  search_api_excerpt: true
+  title: true
+  uid: true

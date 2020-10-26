@@ -1,0 +1,148 @@
+langcode: en
+status: true
+dependencies:
+  config:
+    - field.field.paragraph.p_008.field_p_bg_color
+    - field.field.paragraph.p_008.field_p_button
+    - field.field.paragraph.p_008.field_p_media_bg_image
+    - field.field.paragraph.p_008.field_p_subtitle
+    - field.field.paragraph.p_008.field_p_teaser
+    - field.field.paragraph.p_008.field_p_title
+    - paragraphs.paragraphs_type.p_008
+    - responsive_image.styles.paragraph_p005_image_background
+  module:
+    - blazy
+    - field_group
+    - link
+    - rocketship_core
+    - smart_trim
+third_party_settings:
+  field_group:
+    group_p_008_content:
+      children:
+        - field_p_title
+        - field_p_subtitle
+        - field_p_teaser
+      parent_name: ''
+      weight: 0
+      format_type: html_element
+      format_settings:
+        id: ''
+        classes: p-008-content
+        element: div
+        show_label: false
+        label_element: h3
+        attributes: ''
+        effect: none
+        speed: fast
+      label: Content
+      region: content
+id: paragraph.p_008.default
+targetEntityType: paragraph
+bundle: p_008
+mode: default
+content:
+  field_p_button:
+    weight: 4
+    label: hidden
+    settings:
+      trim_length: 80
+      url_only: false
+      url_plain: false
+      rel: ''
+      target: ''
+    third_party_settings: {  }
+    type: link
+    region: content
+  field_p_media_bg_image:
+    weight: 4
+    label: hidden
+    settings:
+      image_style: ''
+      responsive_image_style: paragraph_p005_image_background
+      media_switch: ''
+      box_style: ''
+      thumbnail_style: ''
+      box_media_style: ''
+      ratio: ''
+      box_caption: ''
+      view_mode: default
+      box_caption_custom: ''
+      sizes: ''
+      breakpoints:
+        xs:
+          image_style: ''
+          width: ''
+        sm:
+          image_style: ''
+          width: ''
+        md:
+          image_style: ''
+          width: ''
+        lg:
+          image_style: ''
+          width: ''
+        xl:
+          image_style: ''
+          width: ''
+      current_view_mode: default
+      background: false
+      caption:
+        field_media_image: '0'
+      class: ''
+      id: ''
+      image: ''
+      link: ''
+      overlay: ''
+      title: ''
+      vanilla: false
+      icon: ''
+      layout: ''
+      cache: 0
+      skin: ''
+      style: ''
+      grid: 0
+      grid_header: ''
+      grid_medium: 0
+      grid_small: 0
+      fx: ''
+      _uri: ''
+    third_party_settings: {  }
+    type: blazy_media
+    region: content
+  field_p_subtitle:
+    weight: 2
+    label: hidden
+    settings:
+      header: h3
+    third_party_settings: {  }
+    type: header_text_field_formatter
+    region: content
+  field_p_teaser:
+    weight: 3
+    label: hidden
+    settings:
+      trim_length: 600
+      trim_type: chars
+      trim_suffix: ''
+      wrap_output: false
+      wrap_class: trimmed
+      more_link: false
+      more_class: more-link
+      more_text: More
+      summary_handler: full
+      trim_options: {  }
+    third_party_settings: {  }
+    type: smart_trim
+    region: content
+  field_p_title:
+    weight: 1
+    label: hidden
+    settings:
+      header: h2
+    third_party_settings: {  }
+    type: header_text_field_formatter
+    region: content
+hidden:
+  field_p_bg_color: true
+  search_api_excerpt: true

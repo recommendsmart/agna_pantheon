@@ -1,0 +1,158 @@
+langcode: en
+status: true
+dependencies:
+  config:
+    - core.entity_view_mode.node.full
+    - field.field.node.realisation.field_description
+    - field.field.node.realisation.field_media_canonical_image
+    - field.field.node.realisation.field_meta_tags
+    - field.field.node.realisation.field_node_title_replacement
+    - field.field.node.realisation.field_paragraphs
+    - field.field.node.realisation.field_realisation_display_field
+    - field.field.node.realisation.field_show_breadcrumb
+    - node.type.realisation
+  module:
+    - entity_reference_revisions
+    - layout_builder
+    - rocketship_core
+third_party_settings:
+  layout_builder:
+    allow_custom: false
+    enabled: true
+    sections:
+      -
+        layout_id: rs_header
+        layout_settings:
+          label: 'Rocketship Header'
+          with_subregion: 1
+          with_subregion_02: 1
+          subregion_position: after
+          subregion_02_position: null
+          classes: 'realisation__header--full '
+        components:
+          08aa8617-a865-4cf0-ad9a-517504e1f470:
+            uuid: 08aa8617-a865-4cf0-ad9a-517504e1f470
+            region: content
+            configuration:
+              id: 'field_block:node:realisation:field_media_canonical_image'
+              label: Image
+              provider: layout_builder
+              label_display: '0'
+              formatter:
+                label: hidden
+                type: blazy_media
+                settings:
+                  background: false
+                  caption:
+                    title: '0'
+                    alt: '0'
+                  view_mode: default
+                  image_style: ''
+                  thumbnail_style: ''
+                  responsive_image_style: realisation_header
+                  media_switch: ''
+                  ratio: ''
+                  box_style: ''
+                  box_media_style: ''
+                  box_caption: ''
+                  box_caption_custom: ''
+                  current_view_mode: _custom
+                third_party_settings: {  }
+              context_mapping:
+                entity: layout_builder.entity
+                view_mode: view_mode
+            additional: {  }
+            weight: 1
+          ab134ca6-f3cc-4d59-a01a-80f55ef03e72:
+            uuid: ab134ca6-f3cc-4d59-a01a-80f55ef03e72
+            region: subregion
+            configuration:
+              id: 'field_block:node:realisation:field_node_title_replacement'
+              label: 'Replacement title'
+              provider: layout_builder
+              label_display: '0'
+              formatter:
+                label: hidden
+                type: title_replacement_formatter
+                settings:
+                  wrapper_override: nothing
+                third_party_settings: {  }
+              context_mapping:
+                entity: layout_builder.entity
+                view_mode: view_mode
+            additional: {  }
+            weight: 0
+          dd8dbaee-a74f-45e8-90df-6b50f320ff43:
+            uuid: dd8dbaee-a74f-45e8-90df-6b50f320ff43
+            region: subregion_02
+            configuration:
+              id: 'field_block:node:realisation:field_show_breadcrumb'
+              label: 'Show breadcrumb'
+              provider: layout_builder
+              label_display: '0'
+              formatter:
+                label: hidden
+                type: breadcrumb_render
+                settings: {  }
+                third_party_settings: {  }
+              context_mapping:
+                entity: layout_builder.entity
+                view_mode: view_mode
+            additional: {  }
+            weight: 0
+        third_party_settings: {  }
+      -
+        layout_id: rs_content
+        layout_settings:
+          label: 'Rocketship Content'
+          with_subregion: 0
+          with_subregion_02: 0
+          subregion_position: after
+          subregion_02_position: null
+          classes: 'realisation__content--full '
+        components:
+          3ec564da-e3f3-47c1-a72d-5693d0089280:
+            uuid: 3ec564da-e3f3-47c1-a72d-5693d0089280
+            region: content
+            configuration:
+              label_display: '0'
+              context_mapping:
+                entity: layout_builder.entity
+              id: 'field_block:node:realisation:field_paragraphs'
+              formatter:
+                label: hidden
+                settings:
+                  view_mode: default
+                  link: ''
+                third_party_settings: {  }
+                type: entity_reference_revisions_entity_view
+            additional: {  }
+            weight: 0
+        third_party_settings: {  }
+id: node.realisation.full
+targetEntityType: node
+bundle: realisation
+mode: full
+content:
+  field_paragraphs:
+    weight: 0
+    label: hidden
+    settings:
+      view_mode: default
+      link: ''
+    third_party_settings: {  }
+    type: entity_reference_revisions_entity_view
+    region: content
+hidden:
+  rocketship_social_widgets: true
+  field_description: true
+  field_media_canonical_image: true
+  field_meta_tags: true
+  field_node_title_replacement: true
+  field_realisation_display_field: true
+  field_show_breadcrumb: true
+  langcode: true
+  links: true
+  search_api_excerpt: true
+  title: true
+  uid: true

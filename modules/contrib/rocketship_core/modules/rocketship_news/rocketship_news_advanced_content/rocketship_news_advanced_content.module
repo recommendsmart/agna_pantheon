@@ -1,0 +1,31 @@
+<?php
+
+/**
+ * Implements hook_migration_plugins_alter().
+ */
+function rocketship_news_advanced_content_migration_plugins_alter(&$definitions) {
+  if (!isset($definitions['dna_images'])) {
+    return;
+  }
+  $path = drupal_get_path('module', 'rocketship_news_advanced_content');
+  $definitions['dna_images']['source']['path'] = $path . $definitions['dna_images']['source']['path'];
+  $definitions['dna_media_images']['source']['path'] = $path . $definitions['dna_media_images']['source']['path'];
+  $definitions['dna_nodes']['source']['path'] = $path . $definitions['dna_nodes']['source']['path'];
+  $definitions['dna_text_main_p']['source']['path'] = $path . $definitions['dna_text_main_p']['source']['path'];
+  $definitions['dna_taxonomy_terms']['source']['path'] = $path . $definitions['dna_taxonomy_terms']['source']['path'];
+
+  $definitions['dna_images']['source']['constants']['source_base_path'] = $path . $definitions['dna_images']['source']['constants']['source_base_path'];
+}
+
+/**
+ * Implements hook_module_implements_alter().
+ *
+ * Make sure we go after migrate_plus.
+ */
+function rocketship_news_advanced_content_module_implements_alter(&$implementations, $hook) {
+  if ($hook == 'migration_plugins_alter') {
+    $group = $implementations['rocketship_news_advanced_content'];
+    unset($implementations['rocketship_news_advanced_content']);
+    $implementations['rocketship_news_advanced_content'] = $group;
+  }
+}

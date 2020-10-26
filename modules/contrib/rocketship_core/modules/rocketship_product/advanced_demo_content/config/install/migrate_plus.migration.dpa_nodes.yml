@@ -1,0 +1,109 @@
+dependencies:
+  enforced:
+    module:
+      - rocketship_product_advanced_content
+id: dpa_nodes
+migration_group: dpa_content
+source:
+  plugin: csv
+  path: /assets/csv/nodes.csv
+  header_offset: 0
+  ids:
+    - id
+process:
+  langcode:
+    plugin: callback
+    callable: rocketship_core_get_default_content_default_language
+  field_product_category:
+    -
+      plugin: explode
+      source: field_product_category
+      delimiter: '|'
+    -
+      plugin: migration_lookup
+      migration: dpa_categories
+      no_stub: true
+  field_product_property_one:
+    plugin: migration_lookup
+    source: field_product_property_one
+    migration: dpa_property_one
+    no_stub: true
+  field_product_property_two:
+    plugin: migration_lookup
+    source: field_product_property_two
+    migration: dpa_property_two
+    no_stub: true
+  field_header_paragraph:
+    -
+      plugin: explode
+      source: field_header_paragraph
+      delimiter: '|'
+    -
+      plugin: migration_lookup
+      migration: dpa_simple_header
+      no_stub: true
+    -
+      plugin: sub_process
+      process:
+        target_id: '0'
+        target_revision_id: '1'
+  field_media_product_images:
+    -
+      plugin: explode
+      source: field_media_product_images
+      delimiter: '|'
+    -
+      plugin: migration_lookup
+      migration: dpa_media_images
+      no_stub: true
+  field_paragraphs:
+    -
+      plugin: explode
+      source: field_paragraphs
+      delimiter: '|'
+    -
+      plugin: migration_lookup
+      migration: dpa_text_main_p
+      no_stub: true
+    -
+      plugin: sub_process
+      process:
+        target_id: '0'
+        target_revision_id: '1'
+  field_product_attributes:
+    -
+      plugin: explode
+      delimiter: '|'
+      source: field_product_attributes
+    -
+      plugin: explode
+      delimiter: '**'
+    -
+      plugin: sub_process
+      process:
+        label: '0'
+        value: '1'
+        promoted: '2'
+  field_product_description: field_product_description
+  field_media_product_sheet:
+    plugin: migration_lookup
+    source: field_media_product_sheet
+    migration: dpa_media_files
+    no_stub: true
+  field_product_teaser: field_product_teaser
+  field_show_breadcrumb: field_show_breadcrumb
+  title: title
+destination:
+  plugin: 'entity:node'
+  default_bundle: product
+migration_dependencies:
+  required:
+    - dpa_property_two
+    - dpa_property_one
+    - dpa_categories
+    - dpa_text_main_p
+    - dpa_images
+    - dpa_media_images
+    - dpa_files
+    - dpa_media_files
+  optional: { }

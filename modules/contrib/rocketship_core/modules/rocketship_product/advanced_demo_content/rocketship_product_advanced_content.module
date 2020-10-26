@@ -1,0 +1,46 @@
+<?php
+
+function _rocketship_product_advanced_content_migrates() {
+  return [
+    'dpa_images',
+    'dpa_media_images',
+    'dpa_text_main_p',
+    'dpa_simple_header',
+    'dpa_files',
+    'dpa_media_files',
+    'dpa_property_one',
+    'dpa_property_two',
+    'dpa_categories',
+    'dpa_nodes',
+  ];
+}
+
+/**
+ * Implements hook_migration_plugins_alter().
+ */
+function rocketship_product_advanced_content_migration_plugins_alter(&$definitions) {
+  if (!isset($definitions['dpa_files'])) {
+    return;
+  }
+  $path = drupal_get_path('module', 'rocketship_product_advanced_content');
+
+  foreach (_rocketship_product_advanced_content_migrates() as $name) {
+    $definitions[$name]['source']['path'] = $path . $definitions[$name]['source']['path'];
+  }
+
+  $definitions['dpa_images']['source']['constants']['source_base_path'] = $path . $definitions['dpa_images']['source']['constants']['source_base_path'];
+  $definitions['dpa_files']['source']['constants']['source_base_path'] = $path . $definitions['dpa_files']['source']['constants']['source_base_path'];
+}
+
+/**
+ * Implements hook_module_implements_alter().
+ *
+ * Make sure we go after migrate_plus.
+ */
+function rocketship_product_advanced_content_module_implements_alter(&$implementations, $hook) {
+  if ($hook == 'migration_plugins_alter') {
+    $group = $implementations['rocketship_product_advanced_content'];
+    unset($implementations['rocketship_product_advanced_content']);
+    $implementations['rocketship_product_advanced_content'] = $group;
+  }
+}

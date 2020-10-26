@@ -1,0 +1,9 @@
+rocketship_office_core.admin_settings_form:
+  path: '/admin/config/system/rocketship-features/features-f006-contact-office'
+  defaults:
+    _form: '\Drupal\rocketship_office_core\Form\SettingsForm'
+    _title: 'F006 Contact/Office settings'
+  requirements:
+    _permission: 'administer rocketship feature settings'
+  options:
+    _admin_route: TRUE

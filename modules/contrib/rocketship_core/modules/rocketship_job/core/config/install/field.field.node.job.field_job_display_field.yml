@@ -1,0 +1,20 @@
+langcode: en
+status: true
+dependencies:
+  config:
+    - field.storage.node.field_job_display_field
+    - node.type.job
+  module:
+    - rocketship_core
+id: node.job.field_job_display_field
+field_name: field_job_display_field
+entity_type: node
+bundle: job
+label: 'Display Field'
+description: ''
+required: false
+translatable: false
+default_value: {  }
+default_value_callback: ''
+settings: {  }
+field_type: rs_display_field

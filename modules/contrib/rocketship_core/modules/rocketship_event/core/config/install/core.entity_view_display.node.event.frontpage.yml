@@ -1,0 +1,177 @@
+langcode: en
+status: true
+dependencies:
+  config:
+    - core.entity_view_mode.node.frontpage
+    - field.field.node.event.field_description
+    - field.field.node.event.field_event_extra_remarks
+    - field.field.node.event.field_event_geolocation
+    - field.field.node.event.field_event_location
+    - field.field.node.event.field_event_n_display_field
+    - field.field.node.event.field_event_place
+    - field.field.node.event.field_events
+    - field.field.node.event.field_media_canonical_image
+    - field.field.node.event.field_meta_tags
+    - field.field.node.event.field_node_title_replacement
+    - field.field.node.event.field_paragraphs
+    - field.field.node.event.field_show_breadcrumb
+    - node.type.event
+  module:
+    - layout_builder
+    - rocketship_core
+third_party_settings:
+  layout_builder:
+    allow_custom: false
+    enabled: true
+    sections:
+      -
+        layout_id: rs_top
+        layout_settings:
+          label: Top
+          with_subregion: 0
+          with_subregion_02: false
+          subregion_position: after
+          subregion_02_position: after
+          classes: ''
+        components:
+          c06e095c-730a-45ff-9e36-92d557e7b3da:
+            uuid: c06e095c-730a-45ff-9e36-92d557e7b3da
+            region: content
+            configuration:
+              id: 'field_block:node:event:field_events'
+              label: Event
+              provider: layout_builder
+              label_display: '0'
+              formatter:
+                label: hidden
+                type: rs_first_event_formatter
+                settings: {  }
+                third_party_settings: {  }
+              context_mapping:
+                entity: layout_builder.entity
+                view_mode: view_mode
+            additional: {  }
+            weight: 0
+        third_party_settings: {  }
+      -
+        layout_id: rs_content
+        layout_settings:
+          label: Content
+          with_subregion: 1
+          with_subregion_02: 1
+          subregion_position: after
+          subregion_02_position: null
+          classes: ''
+        components:
+          8be63c1e-286b-4781-be99-2e28ba91cd43:
+            uuid: 8be63c1e-286b-4781-be99-2e28ba91cd43
+            region: content
+            configuration:
+              id: 'field_block:node:event:title'
+              label: Title
+              provider: layout_builder
+              label_display: '0'
+              formatter:
+                label: hidden
+                type: title
+                settings:
+                  tag: h3
+                  linked: true
+                third_party_settings: {  }
+              context_mapping:
+                entity: layout_builder.entity
+                view_mode: view_mode
+            additional: {  }
+            weight: 0
+          3470d767-b81d-4b52-a8ad-e4d8efeaaaf0:
+            uuid: 3470d767-b81d-4b52-a8ad-e4d8efeaaaf0
+            region: subregion_02
+            configuration:
+              id: 'field_block:node:event:field_event_n_display_field'
+              label: 'Display Field'
+              provider: layout_builder
+              label_display: '0'
+              formatter:
+                label: hidden
+                type: rs_canonical_link
+                settings:
+                  'link text': 'Read more'
+                  'link class': ''
+                  wrapper: ''
+                  class: ''
+                third_party_settings: {  }
+              context_mapping:
+                entity: layout_builder.entity
+                view_mode: view_mode
+            additional: {  }
+            weight: 0
+          376d5cd1-fba9-423b-908f-be6a3c136fa2:
+            uuid: 376d5cd1-fba9-423b-908f-be6a3c136fa2
+            region: subregion
+            configuration:
+              id: 'field_block:node:event:field_event_place'
+              label: Location
+              provider: layout_builder
+              label_display: '0'
+              formatter:
+                label: hidden
+                type: string
+                settings:
+                  link_to_entity: false
+                third_party_settings: {  }
+              context_mapping:
+                entity: layout_builder.entity
+                view_mode: view_mode
+            additional: {  }
+            weight: 1
+          b0428f66-60bc-484e-983c-675ffe52a049:
+            uuid: b0428f66-60bc-484e-983c-675ffe52a049
+            region: subregion
+            configuration:
+              id: 'field_block:node:event:field_events'
+              label: Event
+              provider: layout_builder
+              label_display: '0'
+              formatter:
+                label: hidden
+                type: rs_events_date_range
+                settings:
+                  date_format: 'd M'
+                third_party_settings: {  }
+              context_mapping:
+                entity: layout_builder.entity
+                view_mode: view_mode
+            additional: {  }
+            weight: 0
+        third_party_settings: {  }
+id: node.event.frontpage
+targetEntityType: node
+bundle: event
+mode: frontpage
+content:
+  field_event_place:
+    type: string
+    weight: 16
+    region: content
+    label: hidden
+    settings:
+      link_to_entity: false
+    third_party_settings: {  }
+hidden:
+  rocketship_social_widgets: true
+  field_description: true
+  field_event_extra_remarks: true
+  field_event_geolocation: true
+  field_event_location: true
+  field_event_n_display_field: true
+  field_events: true
+  field_media_canonical_image: true
+  field_meta_tags: true
+  field_node_title_replacement: true
+  field_paragraphs: true
+  field_show_breadcrumb: true
+  langcode: true
+  links: true
+  search_api_excerpt: true
+  title: true
+  uid: true

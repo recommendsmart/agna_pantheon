@@ -1,0 +1,118 @@
+<?php
+
+use Drupal\migrate\MigrateExecutable;
+
+/**
+ * Implements hook_install().
+ */
+function rocketship_blog_advanced_content_install() {
+  $migrationManager = \Drupal::service('plugin.manager.migration');
+  try {
+    $migration = $migrationManager->createInstance('dba_text_main_p');
+    if ($migration) {
+      $executable = new MigrateExecutable($migration);
+      $executable->import();
+    }
+
+    $migration = $migrationManager->createInstance('dba_images');
+    if ($migration) {
+      $executable = new MigrateExecutable($migration);
+      $executable->import();
+    }
+
+    $migration = $migrationManager->createInstance('dba_media_images');
+    if ($migration) {
+      $executable = new MigrateExecutable($migration);
+      $executable->import();
+    }
+
+    $migration = $migrationManager->createInstance('dba_taxonomy_terms');
+    if ($migration) {
+      $executable = new MigrateExecutable($migration);
+      $executable->import();
+    }
+
+    $migration = $migrationManager->createInstance('dba_nodes');
+    if ($migration) {
+      $executable = new MigrateExecutable($migration);
+      $executable->import();
+    }
+
+    \Drupal::messenger()
+      ->addMessage(t('Migrated the Rocketship Blog Advanced Content content.'));
+  }
+  catch (\Exception $e) {
+    \Drupal::messenger()
+      ->addError(t('Failed migrating Rocketship Blog Advanced Content content.'));
+  }
+}
+
+/**
+ * Implements hook_uninstall().
+ */
+function rocketship_blog_advanced_content_uninstall() {
+  $migrationManager = \Drupal::service('plugin.manager.migration');
+
+  try {
+    // Rollback the content (reverse order)
+    $migration = $migrationManager->createInstance('dba_nodes');
+    if ($migration) {
+      $executable = new MigrateExecutable($migration);
+      $executable->rollback();
+    }
+
+    $migration = $migrationManager->createInstance('dba_text_main_p');
+    if ($migration) {
+      $executable = new MigrateExecutable($migration);
+      $executable->rollback();
+    }
+
+    $migration = $migrationManager->createInstance('dba_media_images');
+    if ($migration) {
+      $executable = new MigrateExecutable($migration);
+      $executable->rollback();
+    }
+
+    $migration = $migrationManager->createInstance('dba_images');
+    if ($migration) {
+      $executable = new MigrateExecutable($migration);
+      $executable->rollback();
+    }
+
+    $migration = $migrationManager->createInstance('dba_taxonomy_terms');
+    if ($migration) {
+      $executable = new MigrateExecutable($migration);
+      $executable->rollback();
+    }
+
+    \Drupal::messenger()
+      ->addMessage(t('Rolled back the Rocketship Content migration.'));
+
+    // Delete our migrates.
+    \Drupal::configFactory()
+      ->getEditable('migrate_plus.migration.dba_nodes')
+      ->delete();
+    \Drupal::configFactory()
+      ->getEditable('migrate_plus.migration.dba_text_main_p')
+      ->delete();
+    \Drupal::configFactory()
+      ->getEditable('migrate_plus.migration.dba_images')
+      ->delete();
+    \Drupal::configFactory()
+      ->getEditable('migrate_plus.migration.dba_media_images')
+      ->delete();
+    \Drupal::configFactory()
+      ->getEditable('migrate_plus.migration.dba_taxonomy_terms')
+      ->delete();
+    \Drupal::configFactory()
+      ->getEditable('migrate_plus.migration_group.dba_content')
+      ->delete();
+
+    \Drupal::messenger()
+      ->addMessage(t('Deleted the Rocketship Blog Advanced Content Content migrations.'));
+  }
+  catch (\Exception $e) {
+    \Drupal::messenger()
+      ->addError(t('Failed rolling back the Rocketship Blog Advanced Content Content content.'));
+  }
+}

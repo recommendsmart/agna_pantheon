@@ -1,0 +1,9 @@
+langcode: en
+status: true
+dependencies: {  }
+id: dnc_content
+label: 'News Core Content'
+description: 'Migrates core news content'
+source_type: ''
+module: null
+shared_configuration: null

@@ -1,0 +1,23 @@
+dependencies:
+  enforced:
+    module:
+      - rocketship_product_advanced_content
+id: dpa_categories
+migration_group: dpa_content
+source:
+  plugin: csv
+  path: /assets/csv/categories.csv
+  header_offset: 0
+  ids:
+    - id
+process:
+  langcode:
+    plugin: callback
+    callable: rocketship_core_get_default_content_default_language
+  name: name
+destination:
+  plugin: 'entity:taxonomy_term'
+  default_bundle: product_category
+migration_dependencies:
+  required: {}
+  optional: {}

@@ -1,0 +1,83 @@
+name: 'Rocketship Jobs'
+description: 'Contains the Jobs content type.'
+type: module
+core_version_requirement: ^8.8 || ^9
+dependencies:
+  - blazy
+  - content_translation
+  - ctools
+  - rocketship_social_widgets
+  - entity_reference_revisions
+  - field
+  - field_group
+  - file
+  - focal_point
+  - image
+  - language
+  - layout_builder
+  - manage_display
+  - maxlength
+  - media_library
+  - menu_ui
+  - metatag
+  - node
+  - node_title_help_text
+  - options
+  - paragraphs
+  - paragraphs_asymmetric_translation_widgets
+  - path
+  - pathauto
+  - rdf
+  - responsive_image
+  - rocketship_core
+  - rocketship_paragraphs
+  - rocketship_seo
+  - roleassign
+  - scheduler
+  - simple_sitemap
+  - smart_trim
+  - text
+  - user
+  - views
+package: Rocketship
+group: 'R012 - Jobs'
+weight: 12
+show_during_install: true
+fa_link: 'https://docs.google.com/document/d/1JJLHBrf9HjFR0qNgCOMphM5oakNqfGLsRuan92sNp3A/edit#heading=h.iytf5i9a7i74'
+upgrades:
+  - 'rocketship_job_core_content:Demo Content (Core)'
+  - 'rocketship_job_basic:Basic'
+  - 'rocketship_job_advanced:Advanced'
+  - 'rocketship_job_advanced_content:Demo Content (Advanced)'
+states:
+  checked:
+    -
+      '#edit-rocketship-job-basic':
+        checked: true
+    -
+      '#edit-rocketship-job-advanced':
+        checked: true
+    -
+      '#edit-rocketship-job-core-content':
+        checked: true
+    -
+      '#edit-rocketship-job-advanced-content':
+        checked: true
+  disabled:
+    -
+      '#edit-rocketship-job-basic':
+        checked: true
+    -
+      '#edit-rocketship-job-advanced':
+        checked: true
+    -
+      '#edit-rocketship-job-core-content':
+        checked: true
+    -
+      '#edit-rocketship-job-advanced-content':
+        checked: true
+
+# Information added by Drupal.org packaging script on 2020-09-29
+version: '5.0.0-alpha19'
+project: 'rocketship_core'
+datestamp: 1601395145

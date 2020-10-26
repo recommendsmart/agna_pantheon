@@ -1,0 +1,27 @@
+langcode: en
+status: true
+dependencies:
+  config:
+    - field.storage.node.field_media_product_images
+    - media.type.image
+    - node.type.product
+id: node.product.field_media_product_images
+field_name: field_media_product_images
+entity_type: node
+bundle: product
+label: Images
+description: 'These images are shown on the detail page in a slider. The first image will also be used for search engine and social media snippets, as well as being shown as the teaser image on overviews. Images can be reordered.'
+required: true
+translatable: true
+default_value: {  }
+default_value_callback: ''
+settings:
+  handler: 'default:media'
+  handler_settings:
+    target_bundles:
+      image: image
+    sort:
+      field: _none
+    auto_create: true
+    auto_create_bundle: ''
+field_type: entity_reference

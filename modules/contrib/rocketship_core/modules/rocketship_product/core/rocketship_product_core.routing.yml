@@ -1,0 +1,9 @@
+rocketship_product_core.admin_settings_form:
+  path: '/admin/config/system/rocketship-features/features-f009-product'
+  defaults:
+    _form: '\Drupal\rocketship_product_core\Form\SettingsForm'
+    _title: 'F009 Product settings'
+  requirements:
+    _permission: 'administer rocketship feature settings'
+  options:
+    _admin_route: TRUE

@@ -1,0 +1,107 @@
+<?php
+
+/**
+ * @file
+ * Main module file.
+ */
+
+/**
+ * Implements hook_themes_installed().
+ *
+ * Disable some blocks when one of our themes gets installed and this module
+ * is already active at the time.
+ */
+function rocketship_news_core_themes_installed($theme_list) {
+  /** @var \Drupal\Core\Extension\ThemeHandlerInterface $handler */
+  $handler = Drupal::service('theme_handler');
+
+  foreach ($theme_list as $theme) {
+    $info = $handler->getTheme($theme);
+    if (isset($info->info['package']) && $info->info['package'] == 'Rocketship Theme') {
+      Rocketship::hideBreadcrumbAndTitleBlockOnContentType($theme, 'news');
+    }
+  }
+}
+
+/**
+ * Implements hook_module_implements_alter().
+ *
+ * Make sure we go after block_themes_installed.
+ */
+function rocketship_news_core_module_implements_alter(&$implementations, $hook) {
+  if ($hook == 'themes_installed') {
+    $group = $implementations['rocketship_news_core'];
+    unset($implementations['rocketship_news_core']);
+    $implementations['rocketship_news_core'] = $group;
+  }
+}
+
+/**
+ * Adds an option to the overview field.
+ *
+ * @param array $options
+ *   Contains all the options for the overview field.
+ */
+function rocketship_news_overview_field_options_alter(array &$options) {
+  $options['news_overview'] = t('Show a list of news articles on your website');
+  $options['news_overview_front'] = t('Show the last three promoted news articles');
+}
+
+/**
+ * Defines what should be returned in the overview.
+ *
+ * @param string $key
+ *   The key defined in hook_overview_options_alter().
+ * @param array $output
+ *   A renderable array of data, that needs to be displayed in the field.
+ */
+function rocketship_news_overview_field_output_alter($key, array &$output) {
+  if ($key == 'news_overview') {
+    $output = overview_field_load_view('news_overview', 'news_overview_block');
+  }
+  if ($key == 'news_overview_front') {
+    $output = overview_field_load_view('news_overview', 'news_overview_front');
+  }
+}
+
+/**
+ * Implements hook_theme().
+ */
+function rocketship_news_theme($existing, $type, $theme, $path) {
+  return [
+    'news_facets_result_item' => [
+      'base hook' => 'facets_result_item',
+      'variables' => [
+        'facet' => NULL,
+        'raw_value' => '',
+        'value' => '',
+        'show_count' => FALSE,
+        'count' => NULL,
+        'is_active' => FALSE,
+      ],
+    ],
+  ];
+}
+
+/**
+ * Implements hook_theming_page_attachments().
+ */
+function rocketship_news_core_page_attachments(array &$attachments) {
+
+  // Make the form settings available in the javascript, twig, … because we
+  // need some of them to selectively add HTML classes or JS functions.
+  $config = \Drupal::config('rocketship_news_core.settings');
+  $cssStructural = $config->get('css_structural');
+
+  $variables['#attached']['drupalSettings']['rocketship_news_core']['css_structural'] = $cssStructural;
+
+  // Check the form settings to see if we need to attach certain libs, we only
+  // load critical CSS library in front theme, not admin.
+  if (\Drupal::service('router.admin_context')->isAdminRoute() == FALSE) {
+
+    // Only if structural css is chosen.
+    if ($cssStructural) {
+      $attachments['#attached']['library'][] = 'rocketship_news_core/structural';
+    }
+  }
+}

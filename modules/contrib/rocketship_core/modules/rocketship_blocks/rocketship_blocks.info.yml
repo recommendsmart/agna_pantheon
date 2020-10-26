@@ -1,0 +1,30 @@
+name: 'Rocketship Blocks'
+type: module
+description: 'Contains a custom content block type with paragraphs.'
+core_version_requirement: ^8.8 || ^9
+group: Blocks
+show_during_install: true
+prechecked: true
+upgrades: {  }
+package: Rocketship
+weight: 22
+dependencies:
+  - block
+  - block_content
+  - block_content_permissions
+  - content_translation
+  - entity_reference_revisions
+  - field
+  - field_group
+  - language
+  - paragraphs
+  - paragraphs_asymmetric_translation_widgets
+  - redirect
+  - rocketship_core
+  - rocketship_paragraphs
+  - user
+  - views
+# Information added by Drupal.org packaging script on 2020-09-29
+version: '5.0.0-alpha19'
+project: 'rocketship_core'
+datestamp: 1601395145

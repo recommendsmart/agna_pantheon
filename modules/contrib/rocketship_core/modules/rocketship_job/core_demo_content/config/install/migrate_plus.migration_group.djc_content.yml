@@ -1,0 +1,9 @@
+langcode: en
+status: true
+dependencies: {  }
+id: djc_content
+label: 'Job Core Demo Content'
+description: 'Migrates core job content'
+source_type: ''
+module: null
+shared_configuration: null

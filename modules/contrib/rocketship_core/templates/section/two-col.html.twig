@@ -1,0 +1,200 @@
+{% set modifier = false %}
+{% if (attributes['data-bem-modifier']|trim is not empty) %}
+  {% set modifier = attributes['data-bem-modifier'] %}
+{% endif %}
+
+{% set layoutModifier = settings.layout_reversed ? 'sidebar-secondary' : 'sidebar-primary' %}
+{% set classAside = settings.layout_reversed ? 'right' : 'left' %}
+{% set classMain = settings.layout_reversed ? 'left' : 'right' %}
+
+{% set classes = [
+    'layout',
+    'layout-section',
+    'layout--2col',
+    'layout--sidebar',
+    'layout--' ~ layoutModifier,
+    settings.label ? 'layout--label-' ~ settings.label|clean_class,
+    modifier ? 'layout' ~ '--' ~ modifier,
+] %}
+
+{% set colclasses = [
+    'layout__cols',
+    'layout__cols--sidebar',
+    'layout__cols--' ~ layoutModifier,
+    modifier ? 'layout__cols' ~ '--' ~ attributes['data-bem-modifier'],
+    modifier ? 'layout__cols--' ~ layoutModifier ~ '--' ~ attributes['data-bem-modifier'],
+] %}
+
+{% set sidebarclasses = [
+    'layout__region',
+    'layout-builder__region',
+    'layout__sidebar',
+    'layout__sidebar--sidebar',
+    'layout__sidebar--' ~ layoutModifier,
+    'layout__sidebar--' ~ layoutModifier ~ '--' ~ classAside,
+    modifier ? 'layout__region' ~ '--' ~ attributes['data-bem-modifier'],
+    modifier ? 'layout__sidebar' ~ '--' ~ attributes['data-bem-modifier'],
+    modifier ? 'layout__sidebar' ~ '--' ~ classAside ~ '--' ~ attributes['data-bem-modifier'],
+] %}
+
+{% set mainclasses = [
+    'layout__region',
+    'layout-builder__region',
+    'layout__content',
+    'layout__content--sidebar',
+    'layout__content--' ~ layoutModifier,
+    'layout__content--' ~ layoutModifier ~ '--' ~ classMain,
+    modifier ? 'layout__region' ~ '--' ~ attributes['data-bem-modifier'],
+    modifier ? 'layout__content' ~ '--' ~ attributes['data-bem-modifier'],
+] %}
+
+{% set cols_attributes = create_attribute() %}
+{% set sidebar_attributes = create_attribute() %}
+{% set main_attributes = create_attribute() %}
+
+<div{{ attributes.addClass(classes) }}>
+  <div{{ cols_attributes.addClass(colclasses) }}>
+
+    {# only holds first column if that is not reversed #}
+    {% if not settings.layout_reversed %}
+      <div {{ sidebar_attributes.addClass(sidebarclasses) }}>
+        {% if content.first_top %}
+          {% set top_classes = [
+              'layout__sidebar__row',
+              'layout__sidebar__row--primary',
+              'layout__sidebar__row--top',
+              'layout__sidebar__row--top--primary',
+              modifier ? 'layout__sidebar__row' ~ '--' ~ attributes['data-bem-modifier'],
+              modifier ? 'layout__sidebar__row--top' ~ '--' ~ attributes['data-bem-modifier'],
+              modifier ? 'layout__sidebar__row--top--primary' ~ '--' ~ attributes['data-bem-modifier'],
+            ]
+          %}
+          <div {{ region_attributes.first_top.addClass(top_classes) }}>
+            {{ content.first_top }}
+          </div>
+        {% endif %}
+        {% if content.first_main %}
+          {% set main_classes = [
+              'layout__sidebar__row',
+              'layout__sidebar__row--primary',
+              'layout__sidebar__row--main',
+              'layout__sidebar__row--main--primary',
+              modifier ? 'layout__sidebar__row' ~ '--' ~ attributes['data-bem-modifier'],
+              modifier ? 'layout__sidebar__row--main' ~ '--' ~ attributes['data-bem-modifier'],
+              modifier ? 'layout__sidebar__row--main--primary' ~ '--' ~ attributes['data-bem-modifier'],
+            ]
+          %}
+          <div {{ region_attributes.first_main.addClass(main_classes) }}>
+            {{ content.first_main }}
+          </div>
+        {% endif %}
+        {% if content.first_bottom %}
+          {% set bottom_classes = [
+              'layout__sidebar__row',
+              'layout__sidebar__row--primary',
+              'layout__sidebar__row--bottom',
+              'layout__sidebar__row--bottom--primary',
+              modifier ? 'layout__sidebar__row' ~ '--' ~ attributes['data-bem-modifier'],
+              modifier ? 'layout__sidebar__row--bottom' ~ '--' ~ attributes['data-bem-modifier'],
+              modifier ? 'layout__sidebar__row--bottom--primary' ~ '--' ~ attributes['data-bem-modifier'],
+            ]
+          %}
+          <div {{ region_attributes.first_bottom.addClass(bottom_classes) }}>
+            {{ content.first_bottom }}
+          </div>
+        {% endif %}
+      </div>
+    {% endif %}
+
+    <div {{ main_attributes.addClass(mainclasses) }}>
+      {% if content.second_top %}
+        {% set top_classes = [
+            'layout__content__row',
+            'layout__content__row--top',
+            modifier ? 'layout__content__row' ~ '--' ~ attributes['data-bem-modifier'],
+            modifier ? 'layout__content__row--top' ~ '--' ~ attributes['data-bem-modifier'],
+          ]
+        %}
+        <div {{ region_attributes.second_top.addClass(top_classes) }}>
+          {{ content.second_top }}
+        </div>
+      {% endif %}
+      {% if content.second_main %}
+        {% set main_classes = [
+            'layout__content__row',
+            'layout__content__row--main',
+            modifier ? 'layout__content__row' ~ '--' ~ attributes['data-bem-modifier'],
+            modifier ? 'layout__content__row--main' ~ '--' ~ attributes['data-bem-modifier'],
+          ]
+        %}
+        <div {{ region_attributes.second_main.addClass(main_classes) }}>
+          {{ content.second_main }}
+        </div>
+      {% endif %}
+      {% if content.second_bottom %}
+        {% set bottom_classes = [
+            'layout__content__row',
+            'layout__content__row--bottom',
+            modifier ? 'layout__content__row' ~ '--' ~ attributes['data-bem-modifier'],
+            modifier ? 'layout__content__row--bottom' ~ '--' ~ attributes['data-bem-modifier'],
+          ]
+        %}
+        <div {{ region_attributes.second_bottom.addClass(bottom_classes) }}>
+          {{ content.second_bottom }}
+        </div>
+      {% endif %}
+    </div>
+
+    {# only holds first column if reversed #}
+    {% if settings.layout_reversed %}
+      <div {{ sidebar_attributes.addClass(sidebarclasses) }}>
+        {% if content.first_top %}
+          {% set top_classes = [
+              'layout__sidebar__row',
+              'layout__sidebar__row--top',
+              'layout__sidebar__row--secondary',
+              'layout__sidebar__row--top--secondary',
+              modifier ? 'layout__sidebar__row' ~ '--' ~ attributes['data-bem-modifier'],
+              modifier ? 'layout__sidebar__row--top' ~ '--' ~ attributes['data-bem-modifier'],
+              modifier ? 'layout__sidebar__row--top--secondary' ~ '--' ~ attributes['data-bem-modifier'],
+            ]
+          %}
+          <div {{ region_attributes.first_top.addClass(top_classes) }}>
+            {{ content.first_top }}
+          </div>
+        {% endif %}
+        {% if content.first_main %}
+          {% set main_classes = [
+              'layout__sidebar__row',
+              'layout__sidebar__row--secondary',
+              'layout__sidebar__row--main',
+              'layout__sidebar__row--main--secondary',
+              modifier ? 'layout__sidebar__row' ~ '--' ~ attributes['data-bem-modifier'],
+              modifier ? 'layout__sidebar__row--main' ~ '--' ~ attributes['data-bem-modifier'],
+              modifier ? 'layout__sidebar__row--main--secondary' ~ '--' ~ attributes['data-bem-modifier'],
+            ]
+          %}
+          <div {{ region_attributes.first_main.addClass(main_classes) }}>
+            {{ content.first_main }}
+          </div>
+        {% endif %}
+        {% if content.first_bottom %}
+          {% set bottom_classes = [
+              'layout__sidebar__row',
+              'layout__sidebar__row--secondary',
+              'layout__sidebar__row--bottom',
+              'layout__sidebar__row--bottom--secondary',
+              modifier ? 'layout__sidebar__row' ~ '--' ~ attributes['data-bem-modifier'],
+              modifier ? 'layout__sidebar__row--bottom' ~ '--' ~ attributes['data-bem-modifier'],
+              modifier ? 'layout__sidebar__row--bottom--secondary' ~ '--' ~ attributes['data-bem-modifier'],
+            ]
+          %}
+          <div {{ region_attributes.first_bottom.addClass(bottom_classes) }}>
+            {{ content.first_bottom }}
+          </div>
+        {% endif %}
+      </div>
+    {% endif %}
+
+  </div>
+</div>

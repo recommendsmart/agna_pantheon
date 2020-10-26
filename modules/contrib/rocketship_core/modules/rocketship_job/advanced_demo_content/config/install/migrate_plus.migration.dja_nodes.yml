@@ -1,0 +1,77 @@
+dependencies:
+  enforced:
+    module:
+      - rocketship_job_advanced_content
+id: dja_nodes
+migration_group: dja_content
+source:
+  plugin: csv
+  path: /assets/csv/nodes.csv
+  header_offset: 0
+  ids:
+    - id
+process:
+  langcode:
+    plugin: callback
+    callable: rocketship_core_get_default_content_default_language
+  field_job_category:
+    -
+      plugin: explode
+      source: field_job_category
+      delimiter: '|'
+    -
+      plugin: migration_lookup
+      migration: dja_categories
+      no_stub: true
+  field_job_property_one:
+    -
+      plugin: explode
+      source: field_job_property_one
+      delimiter: '|'
+    -
+      plugin: migration_lookup
+      migration: dja_property_one
+      no_stub: true
+  field_job_property_two:
+    -
+      plugin: explode
+      source: field_job_property_two
+      delimiter: '|'
+    -
+      plugin: migration_lookup
+      migration: dja_property_two
+      no_stub: true
+  field_media_canonical_image:
+    plugin: migration_lookup
+    migration: dja_media_images
+    source: field_media_canonical_image
+    no_stub: true
+  field_description: field_description
+  field_paragraphs:
+    -
+      plugin: explode
+      source: field_paragraphs
+      delimiter: '|'
+    -
+      plugin: migration_lookup
+      migration: dja_text_main_p
+      no_stub: true
+    -
+      plugin: sub_process
+      process:
+        target_id: '0'
+        target_revision_id: '1'
+  field_show_breadcrumb: field_show_breadcrumb
+  title: title
+destination:
+  plugin: 'entity:node'
+  default_bundle: job
+migration_dependencies:
+  required:
+    - dja_text_main_p
+    - dja_images
+    - dja_media_images
+    - dja_categories
+    - dja_property_one
+    - dja_property_two
+  optional: { }

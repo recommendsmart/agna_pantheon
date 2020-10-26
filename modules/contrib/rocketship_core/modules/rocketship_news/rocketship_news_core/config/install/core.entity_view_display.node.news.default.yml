@@ -1,0 +1,81 @@
+langcode: en
+status: true
+dependencies:
+  config:
+    - field.field.node.news.field_description
+    - field.field.node.news.field_media_canonical_image
+    - field.field.node.news.field_meta_tags
+    - field.field.node.news.field_news_display_field
+    - field.field.node.news.field_node_title_replacement
+    - field.field.node.news.field_paragraphs
+    - field.field.node.news.field_show_breadcrumb
+    - node.type.news
+  module:
+    - entity_reference_revisions
+    - metatag
+    - rocketship_core
+id: node.news.default
+targetEntityType: node
+bundle: news
+mode: default
+content:
+  rocketship_social_widgets:
+    weight: 7
+    region: content
+    settings: {  }
+    third_party_settings: {  }
+  field_description:
+    weight: 6
+    label: above
+    settings: {  }
+    third_party_settings: {  }
+    type: basic_string
+    region: content
+  field_meta_tags:
+    weight: 4
+    label: above
+    settings: {  }
+    third_party_settings: {  }
+    type: metatag_empty_formatter
+    region: content
+  field_news_display_field:
+    weight: 8
+    label: above
+    settings:
+      link: ''
+      link_text: 'Back to overview'
+      link_class: ''
+      query_string: ''
+    third_party_settings: {  }
+    type: rs_configurable_link
+    region: content
+  field_paragraphs:
+    weight: 3
+    label: above
+    settings:
+      view_mode: default
+      link: ''
+    third_party_settings: {  }
+    type: entity_reference_revisions_entity_view
+    region: content
+  langcode:
+    type: language
+    weight: 0
+    region: content
+    label: above
+    settings:
+      link_to_entity: false
+      native_language: false
+    third_party_settings: {  }
+  links:
+    weight: 1
+    region: content
+    settings: {  }
+    third_party_settings: {  }
+hidden:
+  field_media_canonical_image: true
+  field_node_title_replacement: true
+  field_show_breadcrumb: true
+  search_api_excerpt: true
+  title: true
+  uid: true

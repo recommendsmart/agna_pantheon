@@ -1,0 +1,74 @@
+dependencies:
+  enforced:
+    module:
+      - rocketship_office_advanced
+id: office_advanced_node
+migration_group: office_advanced_content
+source:
+  plugin: 'csv'
+  path: /assets/csv/nodes.csv
+  header_offset: 0
+  ids:
+    - id
+process:
+  langcode:
+    plugin: callback
+    callable: rocketship_core_get_default_content_default_language
+  field_office_hours:
+    -
+      plugin: explode
+      source: field_office_hours
+      delimiter: '|'
+    -
+      plugin: explode
+      delimiter: '**'
+    -
+      plugin: sub_process
+      process:
+        day: '0'
+        starthours: '1'
+        endhours: '2'
+  field_office_teaser_title: field_office_teaser_title
+  field_office_show_contact_form: field_office_show_contact_form
+  field_show_breadcrumb: field_show_breadcrumb
+  field_show_contact_us_button: field_show_contact_us_button
+  field_office_phone: field_office_phone
+  field_office_fax: field_office_fax
+  field_office_email: field_office_email
+  'field_office_address/country_code': country_code
+  'field_office_address/locality': city
+  'field_office_address/postal_code': postal_code
+  'field_office_address/address_line1': address_line_1
+  'field_office_address/organization': organization
+  field_media_canonical_image:
+    plugin: migration_lookup
+    migration: office_advanced_media_images
+    source: field_media_canonical_image
+    no_stub: true
+  title: title
+  field_description: field_description
+  node_keeper: node_keeper
+  promote: promote
+  field_header_paragraph:
+    -
+      plugin: explode
+      source: field_header_paragraph
+      delimiter: '|'
+    -
+      plugin: migration_lookup
+      migration: office_advanced_simple_header
+      no_stub: true
+    -
+      plugin: sub_process
+      process:
+        target_id: '0'
+        target_revision_id: '1'
+destination:
+  plugin: 'entity:node'
+  default_bundle: office
+migration_dependencies:
+  required:
+    - office_advanced_simple_header
+    - office_advanced_images
+    - office_advanced_media_images
+  optional: { }

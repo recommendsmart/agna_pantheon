@@ -1,0 +1,9 @@
+langcode: en
+status: true
+dependencies: {  }
+id: drc_content
+label: 'Realisation Core Content'
+description: 'Migrates core realisation content'
+source_type: ''
+module: null
+shared_configuration: null

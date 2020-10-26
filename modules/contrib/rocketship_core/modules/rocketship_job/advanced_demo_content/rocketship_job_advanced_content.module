@@ -1,0 +1,39 @@
+<?php
+
+function _rocketship_job_advanced_content_migrates() {
+  return [
+    'dja_images',
+    'dja_media_images',
+    'dja_text_main_p',
+    'dja_categories',
+    'dja_property_one',
+    'dja_property_two',
+    'dja_nodes',
+  ];
+}
+
+/**
+ * Implements hook_migration_plugins_alter().
+ */
+function rocketship_job_advanced_content_migration_plugins_alter(&$definitions) {
+  $path = drupal_get_path('module', 'rocketship_job_advanced_content');
+
+  foreach (_rocketship_job_advanced_content_migrates() as $name) {
+    $definitions[$name]['source']['path'] = $path . $definitions[$name]['source']['path'];
+  }
+
+  $definitions['dja_images']['source']['constants']['source_base_path'] = $path . $definitions['dja_images']['source']['constants']['source_base_path'];
+}
+
+/**
+ * Implements hook_module_implements_alter().
+ *
+ * Make sure we go after migrate_plus.
+ */
+function rocketship_job_advanced_content_module_implements_alter(&$implementations, $hook) {
+  if ($hook == 'migration_plugins_alter') {
+    $group = $implementations['rocketship_job_advanced_content'];
+    unset($implementations['rocketship_job_advanced_content']);
+    $implementations['rocketship_job_advanced_content'] = $group;
+  }
+}

@@ -1,0 +1,58 @@
+langcode: en
+status: true
+dependencies:
+  enforced:
+    module:
+      - rocketship_blog_basic
+id: rocketship_blog_migrate_menu_links
+class: null
+field_plugin_method: null
+cck_plugin_method: null
+migration_tags: null
+migration_group: rocketship_blog_overview
+label: 'Create main menu links'
+source:
+  constants:
+    node_uri_prefix: 'entity:node/'
+  plugin: embedded_data
+  data_rows:
+    -
+      id: 1
+      title: Blog
+      menu_name: main
+      link: blog
+      weight: 0
+      expanded: 0
+      node: 1
+  ids:
+    id:
+      type: integer
+process:
+  langcode:
+    plugin: callback
+    callable: rocketship_core_get_default_content_default_language
+  bundle:
+    plugin: default_value
+    default_value: menu_link_content
+  menu_name: menu_name
+  title: title
+  _node_id:
+    plugin: migration_lookup
+    source: node
+    migration: rocketship_blog_overview
+    no_stub: true
+  link/uri:
+    plugin: concat
+    source:
+      - constants/node_uri_prefix
+      - '@_node_id'
+  weight: weight
+  expanded: expanded
+  parent:
+    plugin: default_value
+    default_value: 'menu_link_content:48a98eba-72c7-4e43-9f99-58af7623ce2d'
+destination:
+  plugin: 'entity:menu_link_content'
+migration_dependencies:
+  required:
+    - rocketship_blog_overview

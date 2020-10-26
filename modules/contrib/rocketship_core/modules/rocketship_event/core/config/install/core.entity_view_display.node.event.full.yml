@@ -1,0 +1,536 @@
+langcode: en
+status: true
+dependencies:
+  config:
+    - core.entity_view_mode.node.full
+    - field.field.node.event.field_description
+    - field.field.node.event.field_event_extra_remarks
+    - field.field.node.event.field_event_geolocation
+    - field.field.node.event.field_event_location
+    - field.field.node.event.field_event_n_display_field
+    - field.field.node.event.field_event_place
+    - field.field.node.event.field_events
+    - field.field.node.event.field_media_canonical_image
+    - field.field.node.event.field_meta_tags
+    - field.field.node.event.field_node_title_replacement
+    - field.field.node.event.field_paragraphs
+    - field.field.node.event.field_show_breadcrumb
+    - node.type.event
+  module:
+    - address
+    - entity_reference_revisions
+    - geofield_map
+    - layout_builder
+    - rocketship_core
+    - smart_trim
+    - text
+third_party_settings:
+  layout_builder:
+    allow_custom: false
+    enabled: true
+    sections:
+      -
+        layout_id: rs_header
+        layout_settings:
+          label: 'Top Header'
+          with_subregion: 1
+          with_subregion_02: 1
+          subregion_position: before
+          subregion_02_position: null
+          classes: event__top--full
+        components:
+          43077a71-81a2-4bc6-a278-00ad465bb285:
+            uuid: 43077a71-81a2-4bc6-a278-00ad465bb285
+            region: subregion
+            configuration:
+              id: 'field_block:node:event:field_event_place'
+              label: Location
+              provider: layout_builder
+              label_display: '0'
+              formatter:
+                label: hidden
+                type: string
+                settings:
+                  link_to_entity: false
+                third_party_settings: {  }
+              context_mapping:
+                entity: layout_builder.entity
+                view_mode: view_mode
+            additional: {  }
+            weight: 1
+          faf4e07d-d5b7-416e-b635-8156939e9ad5:
+            uuid: faf4e07d-d5b7-416e-b635-8156939e9ad5
+            region: subregion
+            configuration:
+              id: 'field_block:node:event:field_node_title_replacement'
+              label: 'Replacement title'
+              provider: layout_builder
+              label_display: '0'
+              formatter:
+                label: hidden
+                type: title_replacement_formatter
+                settings:
+                  wrapper_override: nothing
+                third_party_settings: {  }
+              context_mapping:
+                entity: layout_builder.entity
+                view_mode: view_mode
+            additional: {  }
+            weight: 0
+          8719ff06-90bc-4d9b-90e1-d5de9f9eccc9:
+            uuid: 8719ff06-90bc-4d9b-90e1-d5de9f9eccc9
+            region: content
+            configuration:
+              id: 'field_block:node:event:field_media_canonical_image'
+              label: Image
+              provider: layout_builder
+              label_display: '0'
+              formatter:
+                label: hidden
+                type: blazy_media
+                settings:
+                  background: false
+                  caption:
+                    title: '0'
+                    alt: '0'
+                  view_mode: default
+                  image_style: ''
+                  thumbnail_style: ''
+                  responsive_image_style: event_detail
+                  media_switch: ''
+                  ratio: ''
+                  box_style: ''
+                  box_media_style: ''
+                  box_caption: ''
+                  box_caption_custom: ''
+                  current_view_mode: _custom
+                third_party_settings: {  }
+              context_mapping:
+                entity: layout_builder.entity
+                view_mode: view_mode
+            additional: {  }
+            weight: 0
+          48ace79c-8442-41f7-ac29-03acde1ec6ff:
+            uuid: 48ace79c-8442-41f7-ac29-03acde1ec6ff
+            region: subregion_02
+            configuration:
+              id: 'field_block:node:event:field_show_breadcrumb'
+              label: 'Show breadcrumb'
+              provider: layout_builder
+              label_display: '0'
+              formatter:
+                label: hidden
+                type: breadcrumb_render
+                settings: {  }
+                third_party_settings: {  }
+              context_mapping:
+                entity: layout_builder.entity
+                view_mode: view_mode
+            additional: {  }
+            weight: 0
+        third_party_settings: {  }
+      -
+        layout_id: rs_content
+        layout_settings:
+          label: 'After Header'
+          with_subregion: 0
+          with_subregion_02: 0
+          subregion_position: after
+          subregion_02_position: null
+          classes: 'event__bar--full node__meta--bar'
+        components:
+          2dd7f276-d192-4950-867d-308e3600a725:
+            uuid: 2dd7f276-d192-4950-867d-308e3600a725
+            region: content
+            configuration:
+              id: 'field_block:node:event:field_events'
+              label: Event
+              provider: layout_builder
+              label_display: '0'
+              formatter:
+                label: hidden
+                type: entity_reference_entity_view
+                settings:
+                  view_mode: full
+                third_party_settings: {  }
+              context_mapping:
+                entity: layout_builder.entity
+                view_mode: view_mode
+            additional: {  }
+            weight: 0
+        third_party_settings: {  }
+      -
+        layout_id: rs_header
+        layout_settings:
+          label: Header
+          with_subregion: 0
+          with_subregion_02: 0
+          subregion_position: after
+          subregion_02_position: null
+          classes: event__header--full
+        components:
+          fe8fba23-e277-49a4-a82e-41d1f4bd7653:
+            uuid: fe8fba23-e277-49a4-a82e-41d1f4bd7653
+            region: content
+            configuration:
+              label_display: '0'
+              context_mapping:
+                entity: layout_builder.entity
+              id: 'field_block:node:event:field_event_extra_remarks'
+              formatter:
+                type: text_default
+                label: above
+                settings: {  }
+                third_party_settings: {  }
+            additional: {  }
+            weight: 2
+          5283265e-cede-493b-a643-54f3888a5246:
+            uuid: 5283265e-cede-493b-a643-54f3888a5246
+            region: content
+            configuration:
+              label_display: '0'
+              context_mapping:
+                entity: layout_builder.entity
+              id: 'field_block:node:event:field_event_geolocation'
+              formatter:
+                type: geofield_google_map
+                label: above
+                settings:
+                  map_dimensions:
+                    width: 100%
+                    height: 150px
+                  map_empty:
+                    empty_behaviour: '0'
+                    empty_message: 'No Geofield Value entered for this field'
+                  map_center:
+                    lat: '42'
+                    lon: '12.5'
+                    center_force: 0
+                    geocode: 'Find my location'
+                  map_zoom_and_pan:
+                    zoom:
+                      initial: '6'
+                      min: '1'
+                      max: '22'
+                      force: 0
+                    gestureHandling: none
+                    scrollwheel: '1'
+                    draggable: '1'
+                    map_reset: 0
+                  map_controls:
+                    zoom_control: '1'
+                    map_type_id: roadmap
+                    map_type_control: '1'
+                    map_type_control_options_type_ids:
+                      roadmap: roadmap
+                      satellite: satellite
+                      hybrid: hybrid
+                      terrain: terrain
+                    scale_control: '1'
+                    street_view_control: '1'
+                    fullscreen_control: '1'
+                    disable_default_ui: 0
+                  map_marker_and_infowindow:
+                    icon_image_mode: icon_file
+                    icon_file_wrapper:
+                      icon_file:
+                        fids: ''
+                        upload_button: Upload
+                        remove_button: Remove
+                        upload: ''
+                        is_svg: false
+                      image_style: geofield_map_default_icon_style
+                    icon_image_path: ''
+                    infowindow_field: '0'
+                    view_mode: footer
+                    multivalue_split: 0
+                    force_open: 0
+                  map_additional_options: ''
+                  map_geometries_options: '{"strokeColor":"black","strokeOpacity":"0.8","strokeWeight":2,"fillColor":"blue","fillOpacity":"0.1","clickable":false}'
+                  map_oms:
+                    map_oms_control: '1'
+                    map_oms_options: '{"markersWontMove":"true","markersWontHide":"true","basicFormatEvents":"true","nearbyDistance":3}'
+                  custom_style_map:
+                    custom_style_name: ''
+                    custom_style_options: ''
+                    custom_style_control: 0
+                    custom_style_default: 0
+                  map_markercluster:
+                    markercluster_additional_options: '{"maxZoom":12,"gridSize":50}'
+                    markercluster_control: 0
+                  gmap_api_key: ''
+                  map_additional_libraries: {  }
+                  map_geocoder:
+                    control: 0
+                    settings:
+                      position: topright
+                      input_size: 25
+                      providers: {  }
+                      min_terms: 4
+                      delay: 800
+                      zoom: 16
+                      infowindow: 0
+                      options: ''
+                third_party_settings: {  }
+            additional: {  }
+            weight: 0
+          5f491f81-21a9-42f2-912f-ca204d41c6ae:
+            uuid: 5f491f81-21a9-42f2-912f-ca204d41c6ae
+            region: content
+            configuration:
+              label_display: '0'
+              context_mapping:
+                entity: layout_builder.entity
+              id: 'field_block:node:event:field_event_location'
+              formatter:
+                type: address_plain
+                label: above
+                settings: {  }
+                third_party_settings: {  }
+            additional: {  }
+            weight: 1
+        third_party_settings: {  }
+      -
+        layout_id: rs_content
+        layout_settings:
+          label: Content
+          with_subregion: 0
+          with_subregion_02: 0
+          subregion_position: after
+          subregion_02_position: null
+          classes: event__content--full
+        components:
+          a2628efc-6d73-4776-86c9-ee5cb605ac64:
+            uuid: a2628efc-6d73-4776-86c9-ee5cb605ac64
+            region: content
+            configuration:
+              label_display: '0'
+              context_mapping:
+                entity: layout_builder.entity
+              id: 'field_block:node:event:field_paragraphs'
+              formatter:
+                label: hidden
+                settings:
+                  view_mode: default
+                  link: ''
+                third_party_settings: {  }
+                type: entity_reference_revisions_entity_view
+            additional: {  }
+            weight: 0
+        third_party_settings: {  }
+      -
+        layout_id: rs_bottom
+        layout_settings:
+          label: Bottom
+          with_subregion: 0
+          with_subregion_02: 0
+          subregion_position: after
+          subregion_02_position: null
+          classes: 'event__bottom--full node__meta--bottom'
+        components:
+          c13bc35a-7108-4b1b-a4d2-18485cbec538:
+            uuid: c13bc35a-7108-4b1b-a4d2-18485cbec538
+            region: content
+            configuration:
+              label_display: '0'
+              context_mapping:
+                entity: layout_builder.entity
+              id: 'field_block:node:event:field_event_place'
+              formatter:
+                type: smart_trim
+                label: hidden
+                settings:
+                  trim_length: 600
+                  trim_type: chars
+                  trim_suffix: ''
+                  wrap_output: false
+                  wrap_class: trimmed
+                  more_link: false
+                  more_class: more-link
+                  more_text: More
+                  summary_handler: full
+                  trim_options: {  }
+                third_party_settings: {  }
+            additional: {  }
+            weight: 2
+          22732f81-0671-4d40-80aa-59aa01356079:
+            uuid: 22732f81-0671-4d40-80aa-59aa01356079
+            region: content
+            configuration:
+              label_display: '0'
+              context_mapping:
+                entity: layout_builder.entity
+              id: 'extra_field_block:node:event:rocketship_social_widgets'
+            additional: {  }
+            weight: 3
+          31869b31-3021-460c-8b1e-675c21dd112c:
+            uuid: 31869b31-3021-460c-8b1e-675c21dd112c
+            region: content
+            configuration:
+              label_display: '0'
+              context_mapping:
+                entity: layout_builder.entity
+              id: 'field_block:node:event:field_events'
+              formatter:
+                type: entity_reference_entity_view
+                label: hidden
+                settings:
+                  view_mode: full
+                  link: false
+                third_party_settings: {  }
+            additional: {  }
+            weight: 1
+        third_party_settings: {  }
+id: node.event.full
+targetEntityType: node
+bundle: event
+mode: full
+content:
+  rocketship_social_widgets:
+    weight: 6
+    region: content
+    settings: {  }
+    third_party_settings: {  }
+  field_event_extra_remarks:
+    type: text_default
+    weight: 2
+    region: content
+    label: above
+    settings: {  }
+    third_party_settings: {  }
+  field_event_geolocation:
+    type: geofield_google_map
+    weight: 0
+    region: content
+    label: above
+    settings:
+      map_dimensions:
+        width: 100%
+        height: 150px
+      map_empty:
+        empty_behaviour: '0'
+        empty_message: 'No Geofield Value entered for this field'
+      map_center:
+        lat: '42'
+        lon: '12.5'
+        center_force: 0
+        geocode: 'Find my location'
+      map_zoom_and_pan:
+        zoom:
+          initial: '6'
+          min: '1'
+          max: '22'
+          force: 0
+        gestureHandling: none
+        scrollwheel: '1'
+        draggable: '1'
+        map_reset: 0
+      map_controls:
+        zoom_control: '1'
+        map_type_id: roadmap
+        map_type_control: '1'
+        map_type_control_options_type_ids:
+          roadmap: roadmap
+          satellite: satellite
+          hybrid: hybrid
+          terrain: terrain
+        scale_control: '1'
+        street_view_control: '1'
+        fullscreen_control: '1'
+        disable_default_ui: 0
+      map_marker_and_infowindow:
+        icon_image_mode: icon_file
+        icon_file_wrapper:
+          icon_file:
+            fids: ''
+            upload_button: Upload
+            remove_button: Remove
+            upload: ''
+            is_svg: false
+          image_style: geofield_map_default_icon_style
+        icon_image_path: ''
+        infowindow_field: '0'
+        view_mode: footer
+        multivalue_split: 0
+        force_open: 0
+      map_additional_options: ''
+      map_geometries_options: '{"strokeColor":"black","strokeOpacity":"0.8","strokeWeight":2,"fillColor":"blue","fillOpacity":"0.1","clickable":false}'
+      map_oms:
+        map_oms_control: '1'
+        map_oms_options: '{"markersWontMove":"true","markersWontHide":"true","basicFormatEvents":"true","nearbyDistance":3}'
+      custom_style_map:
+        custom_style_name: ''
+        custom_style_options: ''
+        custom_style_control: 0
+        custom_style_default: 0
+      map_markercluster:
+        markercluster_additional_options: '{"maxZoom":12,"gridSize":50}'
+        markercluster_control: 0
+      gmap_api_key: ''
+      map_additional_libraries: {  }
+      map_geocoder:
+        control: 0
+        settings:
+          position: topright
+          input_size: 25
+          providers: {  }
+          min_terms: 4
+          delay: 800
+          zoom: 16
+          infowindow: 0
+          options: ''
+    third_party_settings: {  }
+  field_event_location:
+    type: address_plain
+    weight: 1
+    region: content
+    label: above
+    settings: {  }
+    third_party_settings: {  }
+  field_event_place:
+    type: smart_trim
+    weight: 5
+    region: content
+    label: hidden
+    settings:
+      trim_length: 600
+      trim_type: chars
+      trim_suffix: ''
+      wrap_output: false
+      wrap_class: trimmed
+      more_link: false
+      more_class: more-link
+      more_text: More
+      summary_handler: full
+      trim_options: {  }
+    third_party_settings: {  }
+  field_events:
+    type: entity_reference_entity_view
+    weight: 4
+    region: content
+    label: hidden
+    settings:
+      view_mode: full
+      link: false
+    third_party_settings: {  }
+  field_paragraphs:
+    weight: 3
+    label: hidden
+    settings:
+      view_mode: default
+      link: ''
+    third_party_settings: {  }
+    type: entity_reference_revisions_entity_view
+    region: content
+hidden:
+  field_description: true
+  field_event_n_display_field: true
+  field_media_canonical_image: true
+  field_meta_tags: true
+  field_node_title_replacement: true
+  field_show_breadcrumb: true
+  langcode: true
+  links: true
+  search_api_excerpt: true
+  title: true
+  uid: true

@@ -1,0 +1,29 @@
+langcode: en
+status: true
+dependencies:
+  config:
+    - field.storage.paragraph.field_p_001_media
+    - media.type.image
+    - media.type.video_embed
+    - paragraphs.paragraphs_type.p_001
+id: paragraph.p_001.field_p_001_media
+field_name: field_p_001_media
+entity_type: paragraph
+bundle: p_001
+label: Media
+description: ''
+required: false
+translatable: false
+default_value: {  }
+default_value_callback: ''
+settings:
+  handler: 'default:media'
+  handler_settings:
+    target_bundles:
+      image: image
+      video_embed: video_embed
+    sort:
+      field: _none
+    auto_create: true
+    auto_create_bundle: image
+field_type: entity_reference

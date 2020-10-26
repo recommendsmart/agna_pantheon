@@ -1,0 +1,27 @@
+langcode: en
+status: true
+dependencies: {  }
+id: dec_events
+migration_group: dec_content
+source:
+  plugin: csv
+  path: /assets/csv/events.csv
+  header_offset: 0
+  ids:
+    - id
+process:
+  langcode:
+    plugin: callback
+    callable: rocketship_core_get_default_content_default_language
+  date_start:
+    plugin: callback
+    callable: strtotime
+    source: date_start
+  date_end:
+    plugin: callback
+    callable: strtotime
+    source: date_end
+  field_event_price: field_event_price
+destination:
+  plugin: 'entity:event'
+migration_dependencies: {  }

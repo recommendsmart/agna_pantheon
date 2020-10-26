@@ -1,0 +1,63 @@
+{% set modifier = false %}
+{% if (attributes['data-bem-modifier']|trim is not empty) %}
+  {% set modifier = attributes['data-bem-modifier'] %}
+{% endif %}
+
+{% set classes = [
+    'layout',
+    'layout-section',
+    settings.label ? 'layout--label-' ~ settings.label|clean_class,
+    modifier ? 'layout' ~ '--' ~ attributes['data-bem-modifier'],
+] %}
+
+{% set topclasses = [
+    'layout__region',
+    'layout-builder__region',
+    'layout__main-top',
+    modifier ? 'layout__region' ~ '--' ~ attributes['data-bem-modifier'],
+    modifier ? 'layout__main-top' ~ '--' ~ attributes['data-bem-modifier'],
+] %}
+
+{% set mainclasses = [
+    'layout__region',
+    'layout-builder__region',
+    'layout__main',
+    modifier ? 'layout__region' ~ '--' ~ attributes['data-bem-modifier'],
+    modifier ? 'layout__main' ~ '--' ~ attributes['data-bem-modifier'],
+] %}
+
+{% set bottomclasses = [
+    'layout__region',
+    'layout-builder__region',
+    'layout__main-bottom',
+    modifier ? 'layout__region' ~ '--' ~ attributes['data-bem-modifier'],
+    modifier ? 'layout__main-bottom' ~ '--' ~ attributes['data-bem-modifier'],
+] %}
+
+
+{# normal region, or header, aside, footer #}
+{% set region_type = layout.get('region_type') ?? 'region' %}
+
+{% if content.center_top or content.center_main or content.center_bottom %}
+    <div{{ attributes.addClass(classes) }}>
+
+      {% if content.center_top %}
+        <div {{ region_attributes.center_top.addClass(topclasses) }}>
+          {{ content.center_top }}
+        </div>
+      {% endif %}
+
+      {% if content.center_main %}
+        <div {{ region_attributes.center_main.addClass(mainclasses) }}>
+          {{ content.center_main }}
+        </div>
+      {% endif %}
+
+      {% if content.center_bottom %}
+        <div {{ region_attributes.center_bottom.addClass(bottomclasses) }}>
+          {{ content.center_bottom }}
+        </div>
+      {% endif %}
+
+    </div>
+{% endif %}

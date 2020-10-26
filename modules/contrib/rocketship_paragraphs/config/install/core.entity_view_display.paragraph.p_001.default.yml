@@ -1,0 +1,145 @@
+langcode: en
+status: true
+dependencies:
+  config:
+    - field.field.paragraph.p_001.field_p_001_layout
+    - field.field.paragraph.p_001.field_p_001_layout_image
+    - field.field.paragraph.p_001.field_p_001_media
+    - field.field.paragraph.p_001.field_p_bg_color
+    - field.field.paragraph.p_001.field_p_button
+    - field.field.paragraph.p_001.field_p_subtitle
+    - field.field.paragraph.p_001.field_p_text
+    - field.field.paragraph.p_001.field_p_title
+    - paragraphs.paragraphs_type.p_001
+  module:
+    - field_group
+    - link
+    - rocketship_core
+    - text
+third_party_settings:
+  field_group:
+    group_cols:
+      children:
+        - group_sidebar
+        - group_content
+      parent_name: ''
+      weight: 0
+      format_type: html_element
+      region: content
+      format_settings:
+        id: ''
+        classes: paragraph__cols
+        element: div
+        show_label: false
+        label_element: h3
+        label_element_classes: ''
+        attributes: ''
+        effect: none
+        speed: fast
+      label: Cols
+    group_sidebar:
+      children:
+        - field_p_001_media
+      parent_name: group_cols
+      weight: 2
+      format_type: html_element
+      region: content
+      format_settings:
+        element: div
+        show_label: false
+        label_element: h3
+        label_element_classes: ''
+        attributes: ''
+        effect: none
+        speed: fast
+        id: ''
+        classes: paragraph__sidebar
+      label: Sidebar
+    group_content:
+      children:
+        - field_p_title
+        - field_p_subtitle
+        - field_p_text
+        - field_p_button
+      parent_name: group_cols
+      weight: 3
+      format_type: html_element
+      region: content
+      format_settings:
+        element: div
+        show_label: false
+        label_element: h3
+        label_element_classes: ''
+        attributes: ''
+        effect: none
+        speed: fast
+        id: ''
+        classes: paragraph__content
+      label: Content
+id: paragraph.p_001.default
+targetEntityType: paragraph
+bundle: p_001
+mode: default
+content:
+  field_p_001_media:
+    type: multiviewmode_entityref_entity_view
+    weight: 1
+    label: hidden
+    settings:
+      view_modes:
+        default: default
+        file: default
+        image: paragraph_p001_image
+        video_embed: video
+      link: false
+    third_party_settings: {  }
+    region: content
+  field_p_button:
+    weight: 5
+    label: hidden
+    settings:
+      trim_length: 80
+      url_only: false
+      url_plain: false
+      rel: ''
+      target: ''
+    third_party_settings: {  }
+    type: link
+    region: content
+  field_p_media_bg_image:
+    type: entity_reference_entity_view
+    weight: 5
+    label: above
+    settings:
+      view_mode: default
+      link: false
+    third_party_settings: {  }
+    region: content
+  field_p_subtitle:
+    weight: 3
+    label: hidden
+    settings:
+      header: h3
+    third_party_settings: {  }
+    type: header_text_field_formatter
+    region: content
+  field_p_text:
+    weight: 4
+    label: hidden
+    settings: {  }
+    third_party_settings: {  }
+    type: text_default
+    region: content
+  field_p_title:
+    weight: 2
+    label: hidden
+    settings:
+      header: h2
+    third_party_settings: {  }
+    type: header_text_field_formatter
+    region: content
+hidden:
+  field_p_001_layout: true
+  field_p_001_layout_image: true
+  field_p_bg_color: true
+  search_api_excerpt: true

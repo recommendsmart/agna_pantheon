@@ -1,0 +1,27 @@
+langcode: en
+status: true
+dependencies:
+  config:
+    - field.storage.node.field_media_product_sheet
+    - media.type.file
+    - node.type.product
+id: node.product.field_media_product_sheet
+field_name: field_media_product_sheet
+entity_type: node
+bundle: product
+label: 'Product sheet'
+description: ''
+required: false
+translatable: true
+default_value: {  }
+default_value_callback: ''
+settings:
+  handler: 'default:media'
+  handler_settings:
+    target_bundles:
+      file: file
+    sort:
+      field: _none
+    auto_create: true
+    auto_create_bundle: ''
+field_type: entity_reference

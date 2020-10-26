@@ -1,0 +1,5 @@
+services:
+  rocketship_realisation_basic.migrate_subscriber:
+    class: Drupal\rocketship_realisation_basic\EventSubscriber\MigrateEventSubscriber
+    tags:
+      - { name: event_subscriber }

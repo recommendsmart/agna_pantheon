@@ -1,0 +1,21 @@
+langcode: en
+status: true
+dependencies:
+  module:
+    - node
+id: realisation_breadcrumb
+label: 'Realisations breadcrumb'
+type: 'canonical_entities:node'
+pattern: 'realisations/[node:title]'
+selection_criteria:
+  0f61ace9-cd73-4ddd-b8f3-b50c8e40976g:
+    id: node_type
+    bundles:
+      realisation: realisation
+    negate: false
+    context_mapping:
+      node: node
+    uuid: 0f61ace9-cd73-4ddd-b8f3-b50c8e40976g
+selection_logic: and
+weight: -5
+relationships: {  }

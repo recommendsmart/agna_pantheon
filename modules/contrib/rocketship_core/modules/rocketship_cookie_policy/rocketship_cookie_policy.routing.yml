@@ -1,0 +1,9 @@
+rocketship_cookie_policy.cookie_policy_config:
+  path: '/admin/config/services/rocketship_cookie_policy/cookiepolicyconfig'
+  defaults:
+    _form: '\Drupal\rocketship_cookie_policy\Form\CookiePolicyConfig'
+    _title: 'Cookie policy settings'
+  requirements:
+    _permission: 'change cookie policy settings'
+  options:
+    _admin_route: TRUE

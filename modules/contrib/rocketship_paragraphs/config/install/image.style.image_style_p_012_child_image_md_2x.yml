@@ -1,0 +1,16 @@
+langcode: en
+status: true
+dependencies:
+  module:
+    - focal_point
+name: image_style_p_012_child_image_md_2x
+label: 'Paragraph p012 child image md [300×470] 2x'
+effects:
+  75f0a325-2325-43f0-8381-265a23ebdc80:
+    uuid: 75f0a325-2325-43f0-8381-265a23ebdc80
+    id: focal_point_scale_and_crop
+    weight: 1
+    data:
+      width: 600
+      height: 940
+      crop_type: focal_point

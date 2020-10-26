@@ -1,0 +1,150 @@
+<?php
+
+/**
+ * @file
+ * Main module file.
+ */
+
+use Drupal\block\Entity\Block;
+use Drupal\Core\Datetime\Plugin\Field\FieldWidget\TimestampDatetimeWidget;
+use Drupal\Core\Form\FormStateInterface;
+use Drupal\Core\Entity\EntityInterface;
+use \Drupal\Core\Entity\Display\EntityViewDisplayInterface;
+
+/**
+ * Implements hook_field_widget_form_alter().
+ *
+ * Get rid of the stupid HARDCODED! description for TimestampDatetimeWidget.
+ */
+function rocketship_event_core_field_widget_form_alter(&$element, FormStateInterface $form_state, $context) {
+  if (!$context['widget'] instanceof TimestampDatetimeWidget) {
+    return;
+  }
+  /** @var \Drupal\Core\Field\FieldItemListInterface $list */
+  $list = $context['items'];
+  if (!in_array($list->getName(), ['date_start', 'date_end'])) {
+    return;
+  }
+  unset($element['value']['#description']);
+}
+
+/**
+ * Implements hook_themes_installed().
+ *
+ * Disable some blocks when one of our themes gets installed and this module
+ * is already active at the time.
+ */
+function rocketship_event_core_themes_installed($theme_list) {
+  /** @var \Drupal\Core\Extension\ThemeHandlerInterface $handler */
+  $handler = Drupal::service('theme_handler');
+
+  foreach ($theme_list as $theme) {
+    $info = $handler->getTheme($theme);
+    if (isset($info->info['package']) && $info->info['package'] == 'Rocketship Theme') {
+      Rocketship::hideBreadcrumbAndTitleBlockOnContentType($theme, 'event');
+    }
+  }
+}
+
+/**
+ * Implements hook_module_implements_alter().
+ *
+ * Make sure we go after block_themes_installed.
+ */
+function rocketship_event_core_module_implements_alter(&$implementations, $hook) {
+  if ($hook == 'themes_installed') {
+    $group = $implementations['rocketship_event_core'];
+    unset($implementations['rocketship_event_core']);
+    $implementations['rocketship_event_core'] = $group;
+  }
+}
+
+/**
+ * Implements hook_theme().
+ */
+function rocketship_event_core_theme() {
+  return [
+    'event_daterange' => [
+      'variables' => [
+        'dates' => NULL,
+        'times' => NULL,
+        'attributes' => [],
+      ],
+    ],
+  ];
+}
+
+/**
+ * Implements hook_theme_suggestions_HOOK().
+ */
+function rocketship_event_core_theme_suggestions_event_daterange(array $variables) {
+  $suggestions = [];
+
+  if (isset($variables['attributes']['class'])) {
+    $previous = $variables['theme_hook_original'] . '_';
+    foreach ($variables['attributes']['class'] as $class) {
+      $suggestions[] = $variables['theme_hook_original'] . '__' . $class;
+      $previous .= '_' . $class;
+      $suggestions[] = $previous;
+    }
+  }
+
+  $suggestions = array_unique($suggestions);
+
+  return $suggestions;
+}
+
+/**
+ * Implements hook_theming_page_attachments().
+ */
+function rocketship_event_core_page_attachments(array &$attachments) {
+
+  // ** load the js library we always need.
+  $attachments['#attached']['library'][] = 'rocketship_event_core/f014';
+
+  // Make the form settings available in the javascript, twig, … because we
+  // need some of them to selectively add HTML classes or JS functions.
+  $config = \Drupal::config('rocketship_event_core.settings');
+
+  $cssStructural = $config->get('css_structural');
+
+  $variables['#attached']['drupalSettings']['rocketship_event_core']['css_structural'] = $cssStructural;
+
+  // Check the form settings to see if we need to attach certain libs, we only
+  // load critical CSS library in front theme, not admin.
+  if (\Drupal::service('router.admin_context')->isAdminRoute() == FALSE) {
+
+    // Only if structural css is chosen.
+    if ($cssStructural) {
+      $attachments['#attached']['library'][] = 'rocketship_event_core/structural';
+    }
+  }
+
+}
+
+
+/**
+ * Implements hook_cloned_node_alter().
+ */
+function rocketship_event_core_cloned_node_alter(&$node) {
+  // Do not populate entity reference when cloning a node,
+  // because it will end up with multiple nodes referencing to same event ID.
+  if ($node->bundle() == 'event') {
+    $node->set('field_events', NULL);
+  }
+}
+
+/**
+ * Implements hook_ENTITY_TYPE_view_alter().
+ */
+function rocketship_event_core_node_view_alter(array &$build, EntityInterface $entity, EntityViewDisplayInterface $display) {
+  if (isset($build['field_event_location']) && isset($build['field_event_geolocation'])) {
+    if (empty($build['field_event_location']['#theme'])) {
+      // Field is empty, remove field_event_geolocation as well
+      // so the map doesn't get rendered. Would be nice if the field
+      // would un-geocode itself if the field it takes its data from
+      // is empty, but alas.
+      unset($build['field_event_geolocation']);
+    }
+  }
+}

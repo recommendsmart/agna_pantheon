@@ -1,0 +1,3 @@
+bundle: rocketship
+required:
+  - views.view.event_overview

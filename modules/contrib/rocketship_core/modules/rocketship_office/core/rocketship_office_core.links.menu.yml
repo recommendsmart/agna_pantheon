@@ -1,0 +1,11 @@
+features.collection:
+  title: 'Rocketship Features'
+  route_name: features.collection
+  parent: system.admin_config_system
+
+rocketship_office_core.admin_settings_form:
+  title: 'F006 Contact/Office'
+  route_name: rocketship_office_core.admin_settings_form
+  # parent: system.admin_config_system
+  parent: features.collection
+  weight: 6

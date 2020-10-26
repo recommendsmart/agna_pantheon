@@ -1,0 +1,4 @@
+id,uuid,title,field_paragraphs,field_header_paragraph,field_description,node_keeper,alias_keeper,path
+1,f6c9d484-8c89-4123-a95f-bc43f5f95a38,Cookie Policy,1,1,"Our Cookie Policy explains what cookies are, how we use cookies, how third-parties we may partner with may use cookies and your choices regarding cookies.",1,0,"/cookie-policy"
+2,f500d2f6-2b9e-4927-956c-d64bef92fc8a,Privacy Policy,2,2,"Privacy Policy description, please change this.",1,1,"/privacy-policy"
+3,3a4e6368-ebee-413c-a06c-89cd94569c2e,Disclaimer Page,3,3,"Disclaimer description, please change this.",1,1,"/disclaimer"

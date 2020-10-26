@@ -1,0 +1,30 @@
+migration_tags: {  }
+dependencies:
+  enforced:
+    module:
+      - rocketship_blog_advanced
+id: dba_text_main_p
+migration_group: dba_content
+source:
+  plugin: csv
+  path: /assets/csv/text_main.csv
+  header_offset: 0
+  ids:
+    - id
+process:
+  langcode:
+    plugin: callback
+    callable: rocketship_core_get_default_content_default_language
+  'field_p_text/value':
+    #replace the tokens with the actual values before saving the paragraph
+    plugin: token_replacer
+    source: field_p_text
+  'field_p_text/format':
+    plugin: default_value
+    default_value: full_html
+destination:
+  plugin: 'entity_reference_revisions:paragraph'
+  default_bundle: p_003
+migration_dependencies:
+  required: {}
+  optional: {}

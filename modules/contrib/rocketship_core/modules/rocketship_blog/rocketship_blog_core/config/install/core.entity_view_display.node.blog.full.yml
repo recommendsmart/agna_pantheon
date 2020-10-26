@@ -1,0 +1,262 @@
+langcode: en
+status: true
+dependencies:
+  config:
+    - core.entity_view_mode.node.full
+    - field.field.node.blog.field_blog_display_canonical
+    - field.field.node.blog.field_description
+    - field.field.node.blog.field_media_canonical_image
+    - field.field.node.blog.field_meta_tags
+    - field.field.node.blog.field_node_title_replacement
+    - field.field.node.blog.field_paragraphs
+    - field.field.node.blog.field_show_author
+    - field.field.node.blog.field_show_breadcrumb
+    - field.field.node.blog.field_show_post_date
+    - node.type.blog
+  module:
+    - entity_reference_revisions
+    - layout_builder
+    - rocketship_core
+third_party_settings:
+  layout_builder:
+    allow_custom: false
+    enabled: true
+    sections:
+      -
+        layout_id: rs_top
+        layout_settings:
+          label: Top
+          with_subregion: 1
+          with_subregion_02: 1
+          subregion_position: after
+          subregion_02_position: after
+          classes: blog__top--full
+        components:
+          180a68d6-97d3-4509-9529-ca6022110cb3:
+            uuid: 180a68d6-97d3-4509-9529-ca6022110cb3
+            region: content
+            configuration:
+              id: 'field_block:node:blog:field_media_canonical_image'
+              label: Image
+              provider: layout_builder
+              label_display: '0'
+              formatter:
+                label: hidden
+                type: blazy_media
+                settings:
+                  background: false
+                  caption:
+                    title: '0'
+                    alt: '0'
+                  view_mode: default
+                  image_style: ''
+                  thumbnail_style: ''
+                  responsive_image_style: blog_header
+                  media_switch: ''
+                  ratio: ''
+                  box_style: ''
+                  box_media_style: ''
+                  box_caption: ''
+                  box_caption_custom: ''
+                  current_view_mode: _custom
+                third_party_settings: {  }
+              context_mapping:
+                entity: layout_builder.entity
+                view_mode: view_mode
+            additional: {  }
+            weight: 0
+          a882cbd6-f02e-4774-8c89-382b20fd8631:
+            uuid: a882cbd6-f02e-4774-8c89-382b20fd8631
+            region: subregion
+            configuration:
+              id: 'field_block:node:blog:field_node_title_replacement'
+              label: 'Replacement title'
+              provider: layout_builder
+              label_display: '0'
+              formatter:
+                label: hidden
+                type: title_replacement_formatter
+                settings:
+                  wrapper_override: nothing
+                third_party_settings: {  }
+              context_mapping:
+                entity: layout_builder.entity
+                view_mode: view_mode
+            additional: {  }
+            weight: 1
+          3a652036-4fc3-4849-9dda-5bff4407886b:
+            uuid: 3a652036-4fc3-4849-9dda-5bff4407886b
+            region: subregion
+            configuration:
+              id: 'field_block:node:blog:field_show_post_date'
+              label: 'Show post date'
+              provider: layout_builder
+              label_display: '0'
+              formatter:
+                label: hidden
+                type: post_date_render
+                settings: {  }
+                third_party_settings: {  }
+              context_mapping:
+                entity: layout_builder.entity
+                view_mode: view_mode
+            additional: {  }
+            weight: 2
+          b5befaf2-6bb9-47fa-8d0a-eb9bd5fabc67:
+            uuid: b5befaf2-6bb9-47fa-8d0a-eb9bd5fabc67
+            region: subregion
+            configuration:
+              id: 'field_block:node:blog:field_show_author'
+              label: 'Show author'
+              provider: layout_builder
+              label_display: '0'
+              formatter:
+                label: hidden
+                type: author_render
+                settings: {  }
+                third_party_settings: {  }
+              context_mapping:
+                entity: layout_builder.entity
+                view_mode: view_mode
+            additional: {  }
+            weight: 3
+          1c46303a-3083-43be-aa26-b1273ea46cc9:
+            uuid: 1c46303a-3083-43be-aa26-b1273ea46cc9
+            region: subregion_02
+            configuration:
+              id: 'field_block:node:blog:field_show_breadcrumb'
+              label: 'Show breadcrumb'
+              provider: layout_builder
+              label_display: '0'
+              formatter:
+                label: hidden
+                type: breadcrumb_render
+                settings: {  }
+                third_party_settings: {  }
+              context_mapping:
+                entity: layout_builder.entity
+                view_mode: view_mode
+            additional: {  }
+            weight: 0
+        third_party_settings: {  }
+      -
+        layout_id: rs_header
+        layout_settings:
+          label: Header
+          with_subregion: 0
+          with_subregion_02: 0
+          subregion_position: after
+          subregion_02_position: after
+          classes: blog__header--full
+        components: {  }
+        third_party_settings: {  }
+      -
+        layout_id: rs_content
+        layout_settings:
+          label: Content
+          with_subregion: 0
+          with_subregion_02: 0
+          subregion_position: after
+          subregion_02_position: after
+          classes: blog__content--full
+        components:
+          befdadaa-38bc-40e8-820e-620f2805d4b3:
+            uuid: befdadaa-38bc-40e8-820e-620f2805d4b3
+            region: content
+            configuration:
+              label_display: '0'
+              context_mapping:
+                entity: layout_builder.entity
+              id: 'field_block:node:blog:field_paragraphs'
+              formatter:
+                label: hidden
+                settings:
+                  view_mode: default
+                  link: ''
+                third_party_settings: {  }
+                type: entity_reference_revisions_entity_view
+            additional: {  }
+            weight: 0
+        third_party_settings: {  }
+      -
+        layout_id: rs_bottom
+        layout_settings:
+          label: Bottom
+          with_subregion: 0
+          with_subregion_02: 0
+          subregion_position: after
+          subregion_02_position: after
+          classes: 'blog__footer--full node__meta--bottom'
+        components:
+          507cc2c8-12c7-4595-97d3-13786933c3a2:
+            uuid: 507cc2c8-12c7-4595-97d3-13786933c3a2
+            region: content
+            configuration:
+              id: 'field_block:node:blog:field_show_post_date'
+              label: 'Show post date'
+              provider: layout_builder
+              label_display: '0'
+              formatter:
+                label: hidden
+                type: post_date_render
+                settings: {  }
+                third_party_settings: {  }
+              context_mapping:
+                entity: layout_builder.entity
+                view_mode: view_mode
+            additional: {  }
+            weight: 0
+          7061fd26-005c-41a8-b596-c4d64747900b:
+            uuid: 7061fd26-005c-41a8-b596-c4d64747900b
+            region: content
+            configuration:
+              id: 'field_block:node:blog:field_show_author'
+              label: 'Show author'
+              provider: layout_builder
+              label_display: '0'
+              formatter:
+                label: hidden
+                type: author_render
+                settings: {  }
+                third_party_settings: {  }
+              context_mapping:
+                entity: layout_builder.entity
+                view_mode: view_mode
+            additional: {  }
+            weight: 1
+          4fc30264-c3b4-4ab3-a7a6-cec9a2c7bb01:
+            uuid: 4fc30264-c3b4-4ab3-a7a6-cec9a2c7bb01
+            region: content
+            configuration:
+              id: 'extra_field_block:node:blog:rocketship_social_widgets'
+              label: 'Social sharing widgets'
+              provider: layout_builder
+              label_display: '0'
+              context_mapping:
+                entity: layout_builder.entity
+            additional: {  }
+            weight: 3
+        third_party_settings: {  }
+id: node.blog.full
+targetEntityType: node
+bundle: blog
+mode: full
+content:
+  rocketship_social_widgets:
+    weight: 5
+    region: bottom
+    settings: {  }
+    third_party_settings: {  }
+hidden:
+  field_blog_display_canonical: true
+  field_description: true
+  field_media_canonical_image: true
+  field_meta_tags: true
+  field_node_title_replacement: true
+  field_show_breadcrumb: true
+  field_show_post_date: true
+  langcode: true
+  links: true
+  search_api_excerpt: true
+  title: true
+  uid: true

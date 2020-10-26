@@ -1,0 +1,27 @@
+langcode: en
+status: true
+dependencies:
+  config:
+    - field.storage.paragraph.field_p_media_bg_image
+    - media.type.image
+    - paragraphs.paragraphs_type.simple_header
+id: paragraph.simple_header.field_p_media_bg_image
+field_name: field_p_media_bg_image
+entity_type: paragraph
+bundle: simple_header
+label: 'Background image'
+description: 'This image will be used as the background for this header.'
+required: false
+translatable: true
+default_value: {  }
+default_value_callback: ''
+settings:
+  handler: 'default:media'
+  handler_settings:
+    target_bundles:
+      image: image
+    sort:
+      field: _none
+    auto_create: true
+    auto_create_bundle: ''
+field_type: entity_reference

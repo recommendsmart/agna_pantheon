@@ -1,0 +1,9 @@
+rocketship_realisation_core.admin_settings_form:
+  path: '/admin/config/system/rocketship-features/features-f007-realisation'
+  defaults:
+    _form: '\Drupal\rocketship_realisation_core\Form\SettingsForm'
+    _title: 'F007 Realisation settings'
+  requirements:
+    _permission: 'administer rocketship feature settings'
+  options:
+    _admin_route: TRUE

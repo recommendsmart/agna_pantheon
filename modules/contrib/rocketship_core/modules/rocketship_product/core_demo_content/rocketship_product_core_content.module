@@ -1,0 +1,43 @@
+<?php
+
+function _rocketship_product_core_content_migrates() {
+  return [
+    'dpc_images',
+    'dpc_media_images',
+    'dpc_text_main_p',
+    'dpc_simple_header',
+    'dpc_files',
+    'dpc_media_files',
+    'dpc_nodes',
+  ];
+}
+
+/**
+ * Implements hook_migration_plugins_alter().
+ */
+function rocketship_product_core_content_migration_plugins_alter(&$definitions) {
+  if (!isset($definitions['dpc_images'])) {
+    return;
+  }
+  $path = drupal_get_path('module', 'rocketship_product_core_content');
+
+  foreach (_rocketship_product_core_content_migrates() as $name) {
+    $definitions[$name]['source']['path'] = $path . $definitions[$name]['source']['path'];
+  }
+
+  $definitions['dpc_images']['source']['constants']['source_base_path'] = $path . $definitions['dpc_images']['source']['constants']['source_base_path'];
+  $definitions['dpc_files']['source']['constants']['source_base_path'] = $path . $definitions['dpc_files']['source']['constants']['source_base_path'];
+}
+
+/**
+ * Implements hook_module_implements_alter().
+ *
+ * Make sure we go after migrate_plus.
+ */
+function rocketship_product_core_content_module_implements_alter(&$implementations, $hook) {
+  if ($hook == 'migration_plugins_alter') {
+    $group = $implementations['rocketship_product_core_content'];
+    unset($implementations['rocketship_product_core_content']);
+    $implementations['rocketship_product_core_content'] = $group;
+  }
+}

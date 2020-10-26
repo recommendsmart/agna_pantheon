@@ -1,0 +1,121 @@
+<?php
+
+use Drupal\migrate\MigrateExecutable;
+
+/**
+ * Implements hook_install().
+ */
+function rocketship_job_advanced_content_install() {
+
+  $migrations = _rocketship_job_advanced_content_migrates();
+
+  $migrationManager = \Drupal::service('plugin.manager.migration');
+  try {
+    foreach ($migrations as $name) {
+      $migration = $migrationManager->createInstance($name);
+      if ($migration) {
+        $executable = new MigrateExecutable($migration);
+        $executable->import();
+      }
+    }
+
+    \Drupal::messenger()
+      ->addMessage(t('Migrated the Rocketship Job Advanced Demo Content content.'));
+  }
+  catch (\Exception $e) {
+    \Drupal::messenger()
+      ->addError(t('Failed migrating Rocketship Job Advanced Demo Content content.'));
+  }
+
+  // Grab the overview node, add the blocks to the sidebar in the overview paragraph
+  $data = [
+    0 => [
+      'plugin_id' => 'facet_block:job_category',
+      'settings' => [
+        'id' => 'facet_block:job_category',
+        'label' => 'Job Category',
+        'provider' => 'facets',
+        'label_display' => 'visible',
+      ],
+    ],
+    1 => [
+      'plugin_id' => 'facet_block:job_property_one',
+      'settings' => [
+        'id' => 'facet_block:job_property_one',
+        'label' => 'Job Property One',
+        'provider' => 'facets',
+        'label_display' => 'visible',
+      ],
+    ],
+    2 => [
+      'plugin_id' => 'facet_block:job_property_two',
+      'settings' => [
+        'id' => 'facet_block:job_property_two',
+        'label' => 'Job Property Two',
+        'provider' => 'facets',
+        'label_display' => 'visible',
+      ],
+    ],
+    3 => [
+      'plugin_id' => 'search_redirect_block',
+      'settings' => [
+        'id' => 'search_redirect_block',
+        'label' => 'Search',
+        'provider' => 'rocketship_blocks',
+        'label_display' => 'visible',
+        'redirect_path' => '<current>',
+        'query_key' => 'keys',
+        'reset' => 0,
+      ],
+    ],
+  ];
+  $uuid = '1a36f2f1-75e4-4407-a161-06a2a515dbac';
+  $nodes = \Drupal::entityTypeManager()
+    ->getStorage('node')
+    ->loadByProperties(['uuid' => $uuid]);
+  if ($nodes) {
+    $node = reset($nodes);
+    /** @var \Drupal\paragraphs\ParagraphInterface[] $paragraphs */
+    $paragraphs = $node->get('field_paragraphs')->referencedEntities();
+    foreach ($paragraphs as $paragraph) {
+      if ($paragraph->bundle() === 'overview') {
+        $paragraph->set('field_overview_sidebar_blocks', $data);
+        $paragraph->save();
+      }
+    }
+    $node->save();
+  }
+
+}
+
+/**
+ * Implements hook_uninstall().
+ */
+function rocketship_job_advanced_content_uninstall() {
+
+  $migrations = _rocketship_job_advanced_content_migrates();
+  $migrations = array_reverse($migrations);
+
+  $migrationManager = \Drupal::service('plugin.manager.migration');
+  try {
+    foreach ($migrations as $name) {
+      $migration = $migrationManager->createInstance($name);
+      if ($migration) {
+        $executable = new MigrateExecutable($migration);
+        $executable->rollback();
+      }
+      \Drupal::configFactory()
+        ->getEditable('migrate_plus.migration.' . $name)
+        ->delete();
+    }
+
+    \Drupal::messenger()
+      ->addMessage(t('Rolled back the Rocketship Job Advanced Demo Content migrations.'));
+    \Drupal::messenger()
+      ->addMessage(t('Deleted the Rocketship Job Advanced Demo Content migrations.'));
+  }
+  catch (\Exception $e) {
+    \Drupal::messenger()
+      ->addError(t('Failed rolling back Rocketship Job Advanced Demo Content migrations.'));
+  }
+}

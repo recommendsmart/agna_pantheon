@@ -1,0 +1,5 @@
+services:
+  rocketship_job_basic.migrate_subscriber:
+    class: Drupal\rocketship_job_basic\EventSubscriber\MigrateEventSubscriber
+    tags:
+      - { name: event_subscriber }

@@ -1,0 +1,5 @@
+permissions:
+  - 'create office content'
+  - 'delete any office content'
+  - 'delete own office content'
+  - 'delete office revisions'

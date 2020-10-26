@@ -1,0 +1,132 @@
+langcode: en
+status: true
+dependencies:
+  config:
+    - field.field.paragraph.overview.field_overview
+    - field.field.paragraph.overview.field_overview_sidebar_blocks
+    - field.field.paragraph.overview.field_p_bg_color
+    - field.field.paragraph.overview.field_p_link
+    - field.field.paragraph.overview.field_p_subtitle
+    - field.field.paragraph.overview.field_p_teaser
+    - field.field.paragraph.overview.field_p_title
+    - paragraphs.paragraphs_type.overview
+  module:
+    - block_field
+    - field_group
+    - link
+    - overview_field
+    - rocketship_core
+third_party_settings:
+  field_group:
+    group_cols:
+      children:
+        - group_sidebar
+        - group_content
+      parent_name: ''
+      weight: 3
+      format_type: html_element
+      region: content
+      format_settings:
+        id: ''
+        classes: paragraph__cols
+        element: div
+        show_label: false
+        label_element: h3
+        label_element_classes: ''
+        attributes: ''
+        effect: none
+        speed: fast
+      label: Cols
+    group_sidebar:
+      children:
+        - field_overview_sidebar_blocks
+      parent_name: group_cols
+      weight: 9
+      format_type: html_element
+      region: content
+      format_settings:
+        element: div
+        show_label: false
+        label_element: h3
+        label_element_classes: ''
+        attributes: ''
+        effect: none
+        speed: fast
+        id: ''
+        classes: paragraph__sidebar
+      label: Sidebar
+    group_content:
+      children:
+        - field_overview
+      parent_name: group_cols
+      weight: 10
+      format_type: html_element
+      region: content
+      format_settings:
+        element: div
+        show_label: false
+        label_element: h3
+        label_element_classes: ''
+        attributes: ''
+        effect: none
+        speed: fast
+        id: ''
+        classes: paragraph__content
+      label: Content
+id: paragraph.overview.default
+targetEntityType: paragraph
+bundle: overview
+mode: default
+content:
+  field_overview:
+    weight: 5
+    label: hidden
+    settings: {  }
+    third_party_settings: {  }
+    type: overview_field_formatter
+    region: content
+  field_overview_sidebar_blocks:
+    weight: 4
+    label: hidden
+    settings: {  }
+    third_party_settings: {  }
+    type: block_field
+    region: content
+  field_p_link:
+    type: link
+    weight: 4
+    region: content
+    label: hidden
+    settings:
+      trim_length: 80
+      url_only: false
+      url_plain: false
+      rel: ''
+      target: ''
+    third_party_settings: {  }
+  field_p_subtitle:
+    weight: 1
+    label: hidden
+    settings:
+      header: h3
+    third_party_settings: {  }
+    type: header_text_field_formatter
+    region: content
+  field_p_teaser:
+    weight: 2
+    label: hidden
+    settings: {  }
+    third_party_settings: {  }
+    type: basic_string
+    region: content
+  field_p_title:
+    weight: 0
+    label: hidden
+    settings:
+      header: h2
+    third_party_settings: {  }
+    type: header_text_field_formatter
+    region: content
+hidden:
+  field_p_bg_color: true
+  search_api_excerpt: true

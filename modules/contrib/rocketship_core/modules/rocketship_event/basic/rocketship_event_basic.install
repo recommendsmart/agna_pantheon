@@ -1,0 +1,171 @@
+<?php
+
+/**
+ * @file
+ * Install file.
+ */
+
+use Drupal\layout_builder\SectionComponent;
+use Drupal\migrate\MigrateExecutable;
+use Drupal\views\Entity\View;
+
+/**
+ * Implements hook_install().
+ */
+function rocketship_event_basic_install() {
+
+  try {
+    Rocketship::ensureFeaturesMenuLinkExists();
+
+    // Import the content.
+    $migration = \Drupal::service('plugin.manager.migration')
+      ->createInstance('rocketship_event_overview_header');
+    if ($migration) {
+      $executable = new MigrateExecutable($migration);
+      $executable->import();
+    }
+
+    $migration = \Drupal::service('plugin.manager.migration')
+      ->createInstance('rocketship_event_overview_p');
+    if ($migration) {
+      $executable = new MigrateExecutable($migration);
+      $executable->import();
+    }
+
+    $migration = \Drupal::service('plugin.manager.migration')
+      ->createInstance('rocketship_event_overview');
+    if ($migration) {
+      $executable = new MigrateExecutable($migration);
+      $executable->import();
+    }
+
+    $migration = \Drupal::service('plugin.manager.migration')
+      ->createInstance('rocketship_event_blocks');
+    if ($migration) {
+      $executable = new MigrateExecutable($migration);
+      $executable->import();
+    }
+
+    $migration = \Drupal::service('plugin.manager.migration')
+      ->createInstance('rocketship_event_migrate_menu_links');
+    if ($migration) {
+      $executable = new MigrateExecutable($migration);
+      $executable->import();
+    }
+
+    \Drupal::messenger()
+      ->addMessage(t('Migrated the Event overview page content.'));
+
+    // Add overview block to frontpage.
+    $node = Rocketship::loadMigratedFrontpageNode();
+    if ($node) {
+      $uuidGenerator = \Rocketship::getUuidGenerator();
+      /** @var \Drupal\layout_builder\Field\LayoutSectionItemList $layouts */
+      $layouts = $node->get('layout_builder__layout');
+      $sections = $layouts->getSections();
+      if (isset($sections[3]) && $sections[3]->getLayoutId() === 'rs_two_col') {
+
+        $section_configuration = $sections[3]->getLayoutSettings();
+        $section_configuration['classes'] = $section_configuration['classes'] ?? '';
+        $section_configuration['classes'] .= " home__section home__section--blog-events";
+        $sections[3]->setLayoutSettings($section_configuration);
+        
+        $component = new SectionComponent($uuidGenerator->generate(), 'second_main');
+        $configuration = [
+          'id' => 'block_content:94356e36-7990-48d5-bff4-fc01b2b7a626',
+          'label' => 'Events',
+          'provider' => 'block_content',
+          'label_display' => 0,
+          'status' => 1,
+          'info' => '',
+          'view_mode' => 'full',
+          'context_mapping' => [],
+        ];
+        $component->setConfiguration($configuration);
+        $sections[3]->appendComponent($component);
+        $node->save();
+      }
+    }
+  }
+  catch (\Exception $e) {
+    \Drupal::messenger()->addMessage($e->getMessage(), 'error');
+  }
+
+  Rocketship::updateRolePermissionsForModule('rocketship_event_basic');
+}
+
+/**
+ * Implements hook_uninstall().
+ */
+function rocketship_event_basic_uninstall() {
+
+  try {
+    // Rollback the content (reverse order)
+    $migration = \Drupal::service('plugin.manager.migration')
+      ->createInstance('rocketship_event_migrate_menu_links');
+    if ($migration) {
+      $executable = new MigrateExecutable($migration);
+      $executable->rollback();
+    }
+
+    $migration = \Drupal::service('plugin.manager.migration')
+      ->createInstance('rocketship_event_blocks');
+    if ($migration) {
+      $executable = new MigrateExecutable($migration);
+      $executable->rollback();
+    }
+
+    $migration = \Drupal::service('plugin.manager.migration')
+      ->createInstance('rocketship_event_overview');
+    if ($migration) {
+      $executable = new MigrateExecutable($migration);
+      $executable->rollback();
+    }
+
+    $migration = \Drupal::service('plugin.manager.migration')
+      ->createInstance('rocketship_event_overview_p');
+    if ($migration) {
+      $executable = new MigrateExecutable($migration);
+      $executable->rollback();
+    }
+
+    $migration = \Drupal::service('plugin.manager.migration')
+      ->createInstance('rocketship_event_overview_header');
+    if ($migration) {
+      $executable = new MigrateExecutable($migration);
+      $executable->rollback();
+    }
+
+    \Drupal::messenger()
+      ->addMessage(t('Rolled back the Event overview page migration.'));
+
+    // Delete our migrates.
+    \Drupal::configFactory()
+      ->getEditable('migrate_plus.migration.rocketship_event_overview')
+      ->delete();
+    \Drupal::configFactory()
+      ->getEditable('migrate_plus.migration.rocketship_event_overview_header')
+      ->delete();
+    \Drupal::configFactory()
+      ->getEditable('migrate_plus.migration.rocketship_event_overview_p')
+      ->delete();
+    \Drupal::configFactory()
+      ->getEditable('migrate_plus.migration.rocketship_event_migrate_menu_links')
+      ->delete();
+    \Drupal::configFactory()
+      ->getEditable('migrate_plus.migration.rocketship_event_blocks')
+      ->delete();
+
+    \Drupal::messenger()
+      ->addMessage(t('Deleted the Event overview page migrations.'));
+
+    // Deleting view.
+    $view = View::load('event_overview');
+    if ($view) {
+      $view->delete();
+    }
+  }
+  catch (\Exception $e) {
+    \Drupal::messenger()->addMessage($e->getMessage(), 'error');
+  }
+}

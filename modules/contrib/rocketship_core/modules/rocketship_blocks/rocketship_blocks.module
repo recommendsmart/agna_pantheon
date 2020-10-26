@@ -1,0 +1,61 @@
+<?php
+
+/**
+ * @file
+ * Main module file.
+ */
+
+/**
+ * Implements hook_themes_installed().
+ */
+function rocketship_blocks_themes_installed($theme_list) {
+  /** @var \Drupal\Core\Extension\ThemeHandlerInterface $handler */
+  $handler = Drupal::service('theme_handler');
+
+  foreach ($theme_list as $theme) {
+    $info = $handler->getTheme($theme);
+    if (isset($info->info['package']) && $info->info['package'] == 'Rocketship Theme') {
+      rocketship_blocks_place_default_blocks($info);
+    }
+  }
+}
+
+/**
+ * Place our blocks in the footer region of the provided theme.
+ *
+ * @param \Drupal\Core\Extension\Extension $theme
+ *   Theme name.
+ */
+function rocketship_blocks_place_default_blocks($theme) {
+  $regions = $theme->info['regions'];
+  if (isset($regions['footer'])) {
+    \Rocketship::placeBlock('powered_by_dropsolid', [
+      'region' => 'footer',
+      'theme' => $theme->getName(),
+      'label' => 'Powered by Dropsolid',
+      'label_display' => 0,
+    ]);
+    \Rocketship::placeBlock('rocketship_copyright_block', [
+      'region' => 'footer',
+      'theme' => $theme->getName(),
+      'label' => 'Copyright',
+      'terms_of_use' => NULL,
+      'privacy_policy' => NULL,
+      'company' => \Drupal::config('system.site')->get('name'),
+      'label_display' => 0,
+    ]);
+  }
+}
+
+/**
+ * Implements hook_modules_implements_alter().
+ *
+ * Make sure we go after block_themes_installed.
+ */
+function rocketship_blocks_module_implements_alter(&$implementations, $hook) {
+  if ($hook == 'themes_installed') {
+    $group = $implementations['rocketship_blocks'];
+    unset($implementations['rocketship_blocks']);
+    $implementations['rocketship_blocks'] = $group;
+  }
+}

@@ -1,0 +1,22 @@
+dependencies:
+  config:
+    - block.block.tags
+display:
+  blog_overview_block:
+    display_options:
+      header:
+        entity_block:
+          id: entity_block
+          table: views
+          field: entity_block
+          relationship: none
+          group_type: group
+          admin_label: ''
+          empty: false
+          tokenize: false
+          target: tags
+          view_mode: default
+          bypass_access: true
+          plugin_id: entity
+      defaults:
+        header: false

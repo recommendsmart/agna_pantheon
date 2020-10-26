@@ -1,0 +1,58 @@
+dependencies:
+  enforced:
+    module:
+      - rocketship_news_core
+id: dna_nodes
+migration_group: dna_content
+source:
+  plugin: csv
+  path: /assets/csv/nodes.csv
+  header_offset: 0
+  ids:
+    - id
+process:
+  langcode:
+    plugin: callback
+    callable: rocketship_core_get_default_content_default_language
+  field_news_tags:
+    -
+      plugin: explode
+      source: field_news_tags
+      delimiter: '|'
+    -
+      plugin: migration_lookup
+      migration: dna_taxonomy_terms
+      no_stub: true
+  title: title
+  field_description: field_description
+  field_media_canonical_image:
+    plugin: migration_lookup
+    migration: dna_media_images
+    source: field_media_canonical_image
+    no_stub: true
+  field_paragraphs:
+    -
+      plugin: explode
+      source: field_paragraphs
+      delimiter: '|'
+    -
+      plugin: migration_lookup
+      migration: dna_text_main_p
+      no_stub: true
+    -
+      plugin: sub_process
+      process:
+        target_id: '0'
+        target_revision_id: '1'
+  field_show_breadcrumb:
+    plugin: default_value
+    default_value: 1
+destination:
+  plugin: 'entity:node'
+  default_bundle: news
+migration_dependencies:
+  required:
+    - dna_text_main_p
+    - dna_images
+    - dna_taxonomy_terms
+  optional: { }

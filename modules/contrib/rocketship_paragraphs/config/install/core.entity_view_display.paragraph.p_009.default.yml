@@ -1,0 +1,70 @@
+langcode: en
+status: true
+dependencies:
+  config:
+    - core.entity_view_mode.media.full
+    - core.entity_view_mode.media.paragraph_p009_child_images_colorbox
+    - field.field.paragraph.p_009.field_p_009_view_mode
+    - field.field.paragraph.p_009.field_p_bg_color
+    - field.field.paragraph.p_009.field_p_load_more
+    - field.field.paragraph.p_009.field_p_media_images_unlimited
+    - field.field.paragraph.p_009.field_p_subtitle
+    - field.field.paragraph.p_009.field_p_teaser
+    - field.field.paragraph.p_009.field_p_title
+    - paragraphs.paragraphs_type.p_009
+  module:
+    - colorbox
+    - rocketship_core
+id: paragraph.p_009.default
+targetEntityType: paragraph
+bundle: p_009
+mode: default
+content:
+  field_p_load_more:
+    type: boolean
+    weight: 5
+    region: content
+    label: hidden
+    settings:
+      format: true-false
+      format_custom_true: ''
+      format_custom_false: ''
+    third_party_settings: {  }
+  field_p_media_images_unlimited:
+    type: colorbox_view_modes
+    weight: 3
+    label: hidden
+    settings:
+      colorbox_view_mode: paragraph_p009_child_images_colorbox
+      colorbox_modal_view_mode: full
+      colorbox_gallery: post
+      colorbox_gallery_custom: ''
+    third_party_settings: {  }
+    region: content
+  field_p_subtitle:
+    weight: 1
+    label: hidden
+    settings:
+      header: h3
+    third_party_settings: {  }
+    type: header_text_field_formatter
+    region: content
+  field_p_teaser:
+    weight: 2
+    label: hidden
+    settings: {  }
+    third_party_settings: {  }
+    type: basic_string
+    region: content
+  field_p_title:
+    weight: 0
+    label: hidden
+    settings:
+      header: h2
+    third_party_settings: {  }
+    type: header_text_field_formatter
+    region: content
+hidden:
+  field_p_009_view_mode: true
+  field_p_bg_color: true
+  search_api_excerpt: true

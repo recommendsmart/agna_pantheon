@@ -1,0 +1,31 @@
+langcode: en
+status: true
+dependencies:
+  config:
+    - field.field.paragraph.p_006.field_p_media_video
+    - field.field.paragraph.p_006.field_video_layout
+    - paragraphs.paragraphs_type.p_006
+  module:
+    - media_library
+id: paragraph.p_006.default
+targetEntityType: paragraph
+bundle: p_006
+mode: default
+content:
+  field_p_media_video:
+    weight: 0
+    settings:
+      media_types: {  }
+    third_party_settings: {  }
+    type: media_library_widget
+    region: content
+  field_video_layout:
+    weight: 2
+    settings: {  }
+    third_party_settings: {  }
+    type: options_buttons
+    region: content
+hidden:
+  created: true
+  status: true
+  uid: true

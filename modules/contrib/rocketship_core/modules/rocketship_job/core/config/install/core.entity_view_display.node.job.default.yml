@@ -1,0 +1,116 @@
+langcode: en
+status: true
+dependencies:
+  config:
+    - field.field.node.job.field_description
+    - field.field.node.job.field_job_display_field
+    - field.field.node.job.field_media_canonical_image
+    - field.field.node.job.field_meta_tags
+    - field.field.node.job.field_node_title_replacement
+    - field.field.node.job.field_paragraphs
+    - field.field.node.job.field_show_breadcrumb
+    - node.type.job
+  module:
+    - entity_reference_revisions
+    - manage_display
+    - metatag
+    - rocketship_core
+id: node.job.default
+targetEntityType: node
+bundle: job
+mode: default
+content:
+  rocketship_social_widgets:
+    weight: 7
+    region: content
+    settings: {  }
+    third_party_settings: {  }
+  field_description:
+    weight: 6
+    label: above
+    settings: {  }
+    third_party_settings: {  }
+    type: basic_string
+    region: content
+  field_job_display_field:
+    weight: 16
+    label: above
+    settings:
+      link: ''
+      link_text: 'Back to overview'
+      link_class: ''
+      query_string: ''
+    third_party_settings: {  }
+    type: rs_configurable_link
+    region: content
+  field_media_canonical_image:
+    weight: 15
+    label: above
+    settings:
+      link: true
+    third_party_settings: {  }
+    type: entity_reference_label
+    region: content
+  field_meta_tags:
+    weight: 4
+    label: above
+    settings: {  }
+    third_party_settings: {  }
+    type: metatag_empty_formatter
+    region: content
+  field_node_title_replacement:
+    weight: 12
+    label: above
+    settings:
+      wrapper_override: nothing
+    third_party_settings: {  }
+    type: title_replacement_formatter
+    region: content
+  field_paragraphs:
+    weight: 3
+    label: above
+    settings:
+      view_mode: default
+      link: ''
+    third_party_settings: {  }
+    type: entity_reference_revisions_entity_view
+    region: content
+  field_show_breadcrumb:
+    weight: 14
+    label: above
+    settings:
+      format: default
+      format_custom_false: ''
+      format_custom_true: ''
+    third_party_settings: {  }
+    type: boolean
+    region: content
+  job_created_time_ago:
+    weight: 0
+    region: content
+  langcode:
+    type: language
+    weight: 0
+    region: content
+    label: above
+    settings:
+      link_to_entity: false
+      native_language: false
+    third_party_settings: {  }
+  links:
+    weight: 1
+    region: content
+    settings: {  }
+    third_party_settings: {  }
+  title:
+    label: hidden
+    type: title
+    weight: -50
+    region: content
+    settings:
+      tag: h2
+      linked: true
+    third_party_settings: {  }
+hidden:
+  search_api_excerpt: true
+  uid: true

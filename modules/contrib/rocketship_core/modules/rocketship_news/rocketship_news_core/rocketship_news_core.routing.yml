@@ -1,0 +1,9 @@
+rocketship_news_core.admin_settings_form:
+  path: '/admin/config/system/rocketship-features/features-f001-news'
+  defaults:
+    _form: '\Drupal\rocketship_news_core\Form\SettingsForm'
+    _title: 'F001 News settings'
+  requirements:
+    _permission: 'administer rocketship feature settings'
+  options:
+    _admin_route: TRUE

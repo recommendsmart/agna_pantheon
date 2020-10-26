@@ -1,0 +1,66 @@
+<?php
+
+/**
+ * @file
+ * The main module file.
+ */
+
+use Drupal\Core\Cache\Cache;
+
+/**
+ * Adds an option to the overview field.
+ *
+ * @param array $options
+ *   Contains all the options for the overview field.
+ */
+function rocketship_realisation_basic_overview_field_options_alter(array &$options) {
+  $options['realisation_overview'] = t('Show a list of realisation articles on your website');
+  $options['realisation_overview_front'] = t('Show a limited list of promoted realisation articles for your front page');
+}
+
+/**
+ * Defines what should be returned in the overview.
+ *
+ * @param string $key
+ *   The key defined in hook_overview_options_alter().
+ * @param array $output
+ *   A renderable array of data, that needs to be displayed in the field.
+ */
+function rocketship_realisation_basic_overview_field_output_alter($key, array &$output) {
+  if ($key == 'realisation_overview') {
+    $output = overview_field_load_view('realisation_overview', 'realisation_overview_block');
+  }
+  if ($key == 'realisation_overview_front') {
+    $output = overview_field_load_view('realisation_overview', 'realisation_overview_front');
+    // Cache this one, speed up homepage a bit for webadmin.
+    $output['#cache']['max-age'] = Cache::PERMANENT;
+    $output['#cache']['tags'][] = 'node_list';
+  }
+}
+
+/**
+ * Implements hook_migration_plugins_alter().
+ */
+function rocketship_realisation_basic_migration_plugins_alter(&$definitions) {
+  if (!isset($definitions['rocketship_realisation_blocks'])) {
+    return;
+  }
+  $path = drupal_get_path('module', 'rocketship_realisation_basic');
+  $definitions['rocketship_realisation_overview']['source']['path'] = $path . $definitions['rocketship_realisation_overview']['source']['path'];
+  $definitions['rocketship_realisation_overview_header']['source']['path'] = $path . $definitions['rocketship_realisation_overview_header']['source']['path'];
+  $definitions['rocketship_realisation_overview_p']['source']['path'] = $path . $definitions['rocketship_realisation_overview_p']['source']['path'];
+  $definitions['rocketship_realisation_blocks']['source']['path'] = $path . $definitions['rocketship_realisation_blocks']['source']['path'];
+}
+
+/**
+ * Implements hook_module_implements_alter().
+ *
+ * Make sure we go after migration_plus.
+ */
+function rocketship_realisation_basic_module_implements_alter(&$implementations, $hook) {
+  if ($hook == 'migration_plugins_alter') {
+    $group = $implementations['rocketship_realisation_basic'];
+    unset($implementations['rocketship_realisation_basic']);
+    $implementations['rocketship_realisation_basic'] = $group;
+  }
+}

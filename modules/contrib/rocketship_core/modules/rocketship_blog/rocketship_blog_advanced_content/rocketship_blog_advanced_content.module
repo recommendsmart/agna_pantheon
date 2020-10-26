@@ -1,0 +1,28 @@
+<?php
+
+/**
+ * Implements hook_migration_plugins_alter().
+ */
+function rocketship_blog_advanced_content_migration_plugins_alter(&$definitions) {
+  $path = drupal_get_path('module', 'rocketship_blog_advanced_content');
+  $definitions['dba_images']['source']['path'] = $path . $definitions['dba_images']['source']['path'];
+  $definitions['dba_media_images']['source']['path'] = $path . $definitions['dba_media_images']['source']['path'];
+  $definitions['dba_nodes']['source']['path'] = $path . $definitions['dba_nodes']['source']['path'];
+  $definitions['dba_taxonomy_terms']['source']['path'] = $path . $definitions['dba_taxonomy_terms']['source']['path'];
+  $definitions['dba_text_main_p']['source']['path'] = $path . $definitions['dba_text_main_p']['source']['path'];
+
+  $definitions['dba_images']['source']['constants']['source_base_path'] = $path . $definitions['dba_images']['source']['constants']['source_base_path'];
+}
+
+/**
+ * Implements hook_module_implements_alter().
+ *
+ * Make sure we go after migrate_plus.
+ */
+function rocketship_blog_advanced_content_module_implements_alter(&$implementations, $hook) {
+  if ($hook == 'migration_plugins_alter') {
+    $group = $implementations['rocketship_blog_advanced_content'];
+    unset($implementations['rocketship_blog_advanced_content']);
+    $implementations['rocketship_blog_advanced_content'] = $group;
+  }
+}

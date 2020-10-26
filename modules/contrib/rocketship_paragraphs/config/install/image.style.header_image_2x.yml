@@ -1,0 +1,14 @@
+langcode: en
+status: true
+dependencies: {  }
+name: header_image_2x
+label: 'Header image (1920x600) 2x'
+effects:
+  d9f331b0-08d5-483c-859c-fb5cab452a56:
+    uuid: d9f331b0-08d5-483c-859c-fb5cab452a56
+    id: image_scale_and_crop
+    weight: 1
+    data:
+      width: 3840
+      height: 1200
+      anchor: center-center

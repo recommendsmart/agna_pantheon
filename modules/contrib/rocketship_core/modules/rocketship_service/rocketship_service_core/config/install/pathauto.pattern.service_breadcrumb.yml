@@ -1,0 +1,21 @@
+langcode: en
+status: true
+dependencies:
+  module:
+    - node
+id: service_breadcrumb
+label: 'Services breadcrumb'
+type: 'canonical_entities:node'
+pattern: 'services/[node:title]'
+selection_criteria:
+  0f61ace9-cd73-4aaa-c9e4-b50c8e38754e:
+    id: node_type
+    bundles:
+      service: service
+    negate: false
+    context_mapping:
+      node: node
+    uuid: 0f61ace9-cd73-4aaa-c9e4-b50c8e38754e
+selection_logic: and
+weight: -5
+relationships: {  }

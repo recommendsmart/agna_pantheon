@@ -1,0 +1,17 @@
+langcode: en
+status: true
+dependencies: {  }
+id: paragraph_media_videos
+migration_group: paragraph_demo_content
+source:
+  plugin: csv
+  path: /assets/csv/videos.csv
+  header_offset: 0
+  ids:
+    - id
+process:
+  name: video_url
+  field_media_video_embed_field: video_url
+destination:
+  plugin: 'entity:media'
+  default_bundle: video_embed

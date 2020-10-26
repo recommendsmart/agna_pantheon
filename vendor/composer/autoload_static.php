@@ -20,6 +20,7 @@ class ComposerStaticInit65031d77c4d09eb8ad2aa625ea8e4c5c
         'c964ee0ededf28c96ebd9db5099ef910' => __DIR__ . '/..' . '/guzzlehttp/promises/src/functions_include.php',
         'a0edc8309cc5e1d60e3047b5df6b7052' => __DIR__ . '/..' . '/guzzlehttp/psr7/src/functions_include.php',
         '37a3dc5111fe8f707ab4c132ef1dbc62' => __DIR__ . '/..' . '/guzzlehttp/guzzle/src/functions_include.php',
+        'def43f6c87e4f8dfd0c9e1b1bab14fe8' => __DIR__ . '/..' . '/symfony/polyfill-iconv/bootstrap.php',
         '07d7f1a47144818725fd8d91a907ac57' => __DIR__ . '/..' . '/laminas/laminas-diactoros/src/functions/create_uploaded_file.php',
         'da94ac5d3ca7d2dbab84ce561ce72bfd' => __DIR__ . '/..' . '/laminas/laminas-diactoros/src/functions/marshal_headers_from_sapi.php',
         '3d97c8dcdfba8cb85d3b34f116bb248b' => __DIR__ . '/..' . '/laminas/laminas-diactoros/src/functions/marshal_method_from_sapi.php',
@@ -36,12 +37,17 @@ class ComposerStaticInit65031d77c4d09eb8ad2aa625ea8e4c5c
         'cc8e14526dc240491e17a838cb78508c' => __DIR__ . '/..' . '/laminas/laminas-diactoros/src/functions/normalize_server.legacy.php',
         '786bf90caabc9e09b6ad4cc5ca8f0e30' => __DIR__ . '/..' . '/laminas/laminas-diactoros/src/functions/normalize_uploaded_files.legacy.php',
         '751a5a3f463e4be759be31748b61737c' => __DIR__ . '/..' . '/laminas/laminas-diactoros/src/functions/parse_cookie_header.legacy.php',
-        'def43f6c87e4f8dfd0c9e1b1bab14fe8' => __DIR__ . '/..' . '/symfony/polyfill-iconv/bootstrap.php',
+        '9e4824c5afbdc1482b6025ce3d4dfde8' => __DIR__ . '/..' . '/league/csv/src/functions_include.php',
         '952683d815ff0a7bf322b93c0be7e4e4' => __DIR__ . '/..' . '/chi-teck/drupal-code-generator/src/bootstrap.php',
         '801c31d8ed748cfa537fa45402288c95' => __DIR__ . '/..' . '/psy/psysh/src/functions.php',
+        '2c102faa651ef8ea5874edb585946bce' => __DIR__ . '/..' . '/swiftmailer/swiftmailer/lib/swift_required.php',
     );
 
     public static $prefixLengthsPsr4 = array (
+        'l' => 
+        array (
+            'lsolesen\\pel\\' => 13,
+        ),
         'c' => 
         array (
             'cweagans\\Composer\\' => 18,
@@ -63,6 +69,7 @@ class ComposerStaticInit65031d77c4d09eb8ad2aa625ea8e4c5c
         'T' => 
         array (
             'Twig\\' => 5,
+            'TijsVerkoyen\\CssToInlineStyles\\' => 31,
             'TYPO3\\PharStreamWrapper\\' => 24,
         ),
         'S' => 
@@ -90,6 +97,7 @@ class ComposerStaticInit65031d77c4d09eb8ad2aa625ea8e4c5c
             'Symfony\\Component\\EventDispatcher\\' => 34,
             'Symfony\\Component\\DependencyInjection\\' => 38,
             'Symfony\\Component\\Debug\\' => 24,
+            'Symfony\\Component\\CssSelector\\' => 30,
             'Symfony\\Component\\Console\\' => 26,
             'Symfony\\Component\\ClassLoader\\' => 30,
             'Symfony\\Cmf\\Component\\Routing\\' => 30,
@@ -131,6 +139,10 @@ class ComposerStaticInit65031d77c4d09eb8ad2aa625ea8e4c5c
         array (
             'Interop\\Container\\' => 18,
         ),
+        'H' => 
+        array (
+            'Html2Text\\' => 10,
+        ),
         'G' => 
         array (
             'GuzzleHttp\\Psr7\\' => 16,
@@ -138,6 +150,10 @@ class ComposerStaticInit65031d77c4d09eb8ad2aa625ea8e4c5c
             'GuzzleHttp\\' => 11,
             'Grasmash\\YamlExpander\\' => 22,
             'Grasmash\\Expander\\' => 18,
+        ),
+        'F' => 
+        array (
+            'FontLib\\' => 8,
         ),
         'E' => 
         array (
@@ -147,6 +163,7 @@ class ComposerStaticInit65031d77c4d09eb8ad2aa625ea8e4c5c
         array (
             'Drush\\Internal\\' => 15,
             'Drush\\' => 6,
+            'Drupal\\plugin\\' => 14,
             'Drupal\\Driver\\' => 14,
             'Drupal\\Core\\' => 12,
             'Drupal\\Composer\\Plugin\\Scaffold\\' => 32,
@@ -183,6 +200,10 @@ class ComposerStaticInit65031d77c4d09eb8ad2aa625ea8e4c5c
     );
 
     public static $prefixDirsPsr4 = array (
+        'lsolesen\\pel\\' => 
+        array (
+            0 => __DIR__ . '/..' . '/lsolesen/pel/src',
+        ),
         'cweagans\\Composer\\' => 
         array (
             0 => __DIR__ . '/..' . '/cweagans/composer-patches/src',
@@ -210,6 +231,10 @@ class ComposerStaticInit65031d77c4d09eb8ad2aa625ea8e4c5c
         'Twig\\' => 
         array (
             0 => __DIR__ . '/..' . '/twig/twig/src',
+        ),
+        'TijsVerkoyen\\CssToInlineStyles\\' => 
+        array (
+            0 => __DIR__ . '/..' . '/tijsverkoyen/css-to-inline-styles/src',
         ),
         'TYPO3\\PharStreamWrapper\\' => 
         array (
@@ -307,6 +332,10 @@ class ComposerStaticInit65031d77c4d09eb8ad2aa625ea8e4c5c
         array (
             0 => __DIR__ . '/..' . '/symfony/debug',
         ),
+        'Symfony\\Component\\CssSelector\\' => 
+        array (
+            0 => __DIR__ . '/..' . '/symfony/css-selector',
+        ),
         'Symfony\\Component\\Console\\' => 
         array (
             0 => __DIR__ . '/..' . '/symfony/console',
@@ -399,6 +428,11 @@ class ComposerStaticInit65031d77c4d09eb8ad2aa625ea8e4c5c
         array (
             0 => __DIR__ . '/..' . '/container-interop/container-interop/src/Interop/Container',
         ),
+        'Html2Text\\' => 
+        array (
+            0 => __DIR__ . '/..' . '/html2text/html2text/src',
+            1 => __DIR__ . '/..' . '/html2text/html2text/test',
+        ),
         'GuzzleHttp\\Psr7\\' => 
         array (
             0 => __DIR__ . '/..' . '/guzzlehttp/psr7/src',
@@ -419,6 +453,10 @@ class ComposerStaticInit65031d77c4d09eb8ad2aa625ea8e4c5c
         array (
             0 => __DIR__ . '/..' . '/grasmash/expander/src',
         ),
+        'FontLib\\' => 
+        array (
+            0 => __DIR__ . '/..' . '/phenx/php-font-lib/src/FontLib',
+        ),
         'Egulias\\EmailValidator\\' => 
         array (
             0 => __DIR__ . '/..' . '/egulias/email-validator/EmailValidator',
@@ -430,6 +468,10 @@ class ComposerStaticInit65031d77c4d09eb8ad2aa625ea8e4c5c
         'Drush\\' => 
         array (
             0 => __DIR__ . '/..' . '/drush/drush/src',
+        ),
+        'Drupal\\plugin\\' => 
+        array (
+            0 => __DIR__ . '/../..' . '/modules/contrib/plugin/src',
         ),
         'Drupal\\Driver\\' => 
         array (
@@ -593,6 +635,7 @@ class ComposerStaticInit65031d77c4d09eb8ad2aa625ea8e4c5c
     public static $classMap = array (
         'ArithmeticError' => __DIR__ . '/..' . '/symfony/polyfill-php70/Resources/stubs/ArithmeticError.php',
         'AssertionError' => __DIR__ . '/..' . '/symfony/polyfill-php70/Resources/stubs/AssertionError.php',
+        'Attribute' => __DIR__ . '/..' . '/symfony/polyfill-php80/Resources/stubs/Attribute.php',
         'DivisionByZeroError' => __DIR__ . '/..' . '/symfony/polyfill-php70/Resources/stubs/DivisionByZeroError.php',
         'Drupal' => __DIR__ . '/../..' . '/core/lib/Drupal.php',
         'DrupalFinder\\DrupalFinder' => __DIR__ . '/..' . '/webflo/drupal-finder/src/DrupalFinder.php',

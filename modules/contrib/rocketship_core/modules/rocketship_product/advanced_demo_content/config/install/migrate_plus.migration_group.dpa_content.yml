@@ -1,0 +1,9 @@
+langcode: en
+status: true
+dependencies: {  }
+id: dpa_content
+label: 'Product Advanced Demo Content'
+description: 'Migrates advanced product content'
+source_type: ''
+module: null
+shared_configuration: null

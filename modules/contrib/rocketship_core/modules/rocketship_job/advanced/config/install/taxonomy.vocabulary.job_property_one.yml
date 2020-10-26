@@ -1,0 +1,8 @@
+langcode: en
+status: true
+dependencies: {  }
+name: 'Job Property One'
+vid: job_property_one
+description: ''
+hierarchy: 0
+weight: 0

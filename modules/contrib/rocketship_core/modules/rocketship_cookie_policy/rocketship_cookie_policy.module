@@ -1,0 +1,199 @@
+<?php
+
+/**
+ * @file
+ * Contains rocketship_cookie_policy.module.
+ */
+
+use Drupal\Core\Routing\RouteMatchInterface;
+use Drupal\Core\Link;
+use Drupal\Core\Url;
+use Drupal\Core\Cache\Cache;
+use Drupal\Core\Render\BubbleableMetadata;
+
+/**
+ * Implements hook_help().
+ */
+function rocketship_cookie_policy_help($route_name, RouteMatchInterface $route_match) {
+  switch ($route_name) {
+    // Main module help for the rocketship_cookie_policy module.
+    case 'help.page.rocketship_cookie_policy':
+      $output = '';
+      $output .= '<h3>' . t('About') . '</h3>';
+      $output .= '<p>' . t('Contains functionality to include a cookie policy popup on every page') . '</p>';
+      return $output;
+
+    default:
+  }
+}
+
+/**
+ * Implements hook_page_attachments().
+ */
+function rocketship_cookie_policy_page_attachments(array &$attachments) {
+  $cookiePolicyConfig = \Drupal::config('rocketship_cookie_policy.cookiepolicyconfig');
+  // Set cache tags (if config changes, the settings change).
+  $cache_tags = isset($attachments['#cache']['tags']) ? $attachments['#cache']['tags'] : [];
+  $attachments['#cache']['tags'] = Cache::mergeTags($cache_tags, $cookiePolicyConfig->getCacheTags());
+
+  // Add cache context theme.
+  $cache_context = isset($attachments['#cache']['contexts']) ? $attachments['#cache']['contexts'] : [];
+  $attachments['#cache']['contexts'] = Cache::mergeContexts($cache_context, ['theme']);
+
+  $current_theme = \Drupal::service('theme.manager')->getActiveTheme();
+  $system_theme = \Drupal::config('system.theme');
+
+  if ($system_theme->get('admin') !== $current_theme->getName()) {
+
+    $nid = $cookiePolicyConfig->get('more_info_page');
+    if (empty($nid)) {
+      // Early return if no linked page is available.
+      return;
+    }
+
+    // If nid is set, we also need to take it into account for cache tags
+    // (for the url alias).
+    $cache_tags = isset($attachments['#cache']['tags']) ? $attachments['#cache']['tags'] : [];
+    $attachments['#cache']['tags'] = Cache::mergeTags($cache_tags, ['node:' . $nid]);
+
+    $company_name = !empty($cookiePolicyConfig->get('company_name')) ? $cookiePolicyConfig->get('company_name') : \Drupal::config('system.site')
+      ->get('name');
+
+    $more_info_link = Link::fromTextAndUrl(t('More info.'), Url::fromRoute('entity.node.canonical', ['node' => $nid], [
+      'absolute' => TRUE,
+      'attributes' => [
+        'target' => '_blank',
+      ],
+    ]))
+      ->toString();
+    $link_text = !empty($cookiePolicyConfig->get('link_text')) ? $cookiePolicyConfig->get('link_text') : t('I understand');
+
+    $build = [
+      '#theme' => 'rocketship_cookie_policy_popup',
+      '#template_first_line' => t('@company_name uses cookies to improve your online experience.', ['@company_name' => $company_name]),
+      '#template_second_line' => t('By clicking on "@link_text", you accept the use of cookies. @link', ['@link' => $more_info_link,
+        '@link_text' => $link_text]),
+      '#dismiss_text' => $link_text,
+    ];
+
+    /** @var \Twig_Environment $twig_service */
+    $twig_service = \Drupal::service('twig');
+    $was_debugging = FALSE;
+    if ($twig_service->isDebug()) {
+      $was_debugging = TRUE;
+      $twig_service->disableDebug();
+    }
+
+    $renderedTemplate = \Drupal::service('renderer')
+      ->renderRoot($build)
+      ->__toString();
+
+    if ($was_debugging) {
+      $twig_service->enableDebug();
+    }
+
+    $attachments['#attached']['library'][] = 'rocketship_cookie_policy/CookiePolicyPopup';
+    $attachments['#attached']['drupalSettings']['rocketship_cookie_policy']['template'] = $renderedTemplate;
+  }
+}
+
+/**
+ * Implements hook_theme().
+ */
+function rocketship_cookie_policy_theme($existing, $type, $theme, $path) {
+  return [
+    'rocketship_cookie_policy_popup' => [
+      'variables' => [
+        'template_first_line' => NULL,
+        'template_second_line' => NULL,
+        'dismiss_text' => NULL,
+      ],
+      'template' => 'cookie-policy-popup',
+    ],
+  ];
+}
+
+
+/**
+ * Implements hook_token_info().
+ */
+function rocketship_cookie_policy_token_info() {
+  // Add a token for the alias of the parent menu link.
+  $info['tokens']['site']['privacy-policy-url'] = [
+    'name' => t('Site: Privacy Policy URL'),
+    'description' => t('URL for the site Privacy Policy'),
+    'type' => 'url',
+  ];
+  $info['tokens']['site']['legal-disclaimer-url'] = [
+    'name' => t('Site: Legal Disclaimer URL'),
+    'description' => t('URl for the site Legal Disclaimer'),
+    'type' => 'url',
+  ];
+  return $info;
+}
+
+/**
+ * Implements hook_tokens().
+ */
+function rocketship_cookie_policy_tokens($type, $tokens, array $data, array $options, BubbleableMetadata $bubbleable_metadata) {
+  $replacements = [];
+  $language_manager = \Drupal::languageManager();
+  $url_options = [
+    'absolute' => TRUE,
+    'attributes' => [
+      'target' => '_blank',
+    ],
+  ];
+  if (isset($options['langcode'])) {
+    $url_options['language'] = $language_manager->getLanguage($options['langcode']);
+  }
+
+  // Current page tokens.
+  if ($type == 'site') {
+    foreach ($tokens as $name => $original) {
+      switch ($name) {
+        case 'legal-disclaimer-url':
+          $cookiePolicyConfig = \Drupal::config('rocketship_cookie_policy.cookiepolicyconfig');
+          $bubbleable_metadata->addCacheTags($cookiePolicyConfig->getCacheTags());
+          $bubbleable_metadata->addCacheContexts(['languages:language_interface']);
+          $nid = $cookiePolicyConfig->get('legal_disclaimer');
+          if (!empty($nid)) {
+            try {
+              $url = Url::fromRoute('entity.node.canonical', ['node' => $nid], $url_options)
+                ->toString();
+
+              $replacements[$original] = $url;
+              $bubbleable_metadata->addCacheTags(["node:$nid"]);
+            }
+            catch (\Exception $e) {
+              // Catch the exception, log it.
+              \Drupal::logger('token')->error($e->getMessage());
+            }
+          }
+          break;
+
+        case 'privacy-policy-url':
+          $cookiePolicyConfig = \Drupal::config('rocketship_cookie_policy.cookiepolicyconfig');
+          $bubbleable_metadata->addCacheTags($cookiePolicyConfig->getCacheTags());
+          $bubbleable_metadata->addCacheContexts(['languages:language_interface']);
+          $nid = $cookiePolicyConfig->get('privacy_policy');
+          if (!empty($nid)) {
+            try {
+              $url = Url::fromRoute('entity.node.canonical', ['node' => $nid], $url_options)
+                ->toString();
+
+              $replacements[$original] = $url;
+              $bubbleable_metadata->addCacheTags(["node:$nid"]);
+            }
+            catch (\Exception $e) {
+              // Catch the exception, log it.
+              \Drupal::logger('token')->error($e->getMessage());
+            }
+          }
+          break;
+      }
+    }
+  }
+
+  return $replacements;
+}

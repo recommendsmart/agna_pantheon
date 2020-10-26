@@ -1,0 +1,149 @@
+<?php
+
+/**
+ * @file
+ * Main module file.
+ */
+
+use Drupal\Core\Form\FormStateInterface;
+use Drupal\node\Entity\Node;
+use Drupal\node\NodeInterface;
+use Drupal\Core\Access\AccessResult;
+use Drupal\Core\Session\AccountInterface;
+use Drupal\Core\Entity\EntityInterface;
+
+/**
+ * Adds an option to the overview field.
+ *
+ * @param array $options
+ *   Contains all the options for the overview field.
+ */
+function rocketship_event_basic_overview_field_options_alter(array &$options) {
+  $options['event_overview'] = t('Show a list of upcoming events on your website');
+  $options['event_overview_front'] = t('Show the next three upcoming promoted events');
+  $options['event_archive_block'] = t('Show a list of past events on your website');
+}
+
+/**
+ * Defines what should be returned in the overview.
+ *
+ * @param string $key
+ *   The key defined in hook_overview_options_alter().
+ * @param array $output
+ *   A renderable array of data, that needs to be displayed in the field.
+ */
+function rocketship_event_basic_overview_field_output_alter($key, array &$output) {
+  // Search API views have Max-Age 0 by default.
+  if ($key == 'event_overview') {
+    $output = overview_field_load_view('event_overview', 'event_overview_block');
+  }
+  if ($key == 'event_overview_front') {
+    // For the front page, we'd like some caching after all. It's already
+    // got a lot of different stuff to load, and there's no facets to break
+    // or anything fancy. A simple view mode, with a max-age to midnight
+    // and node_list.
+    $output = overview_field_load_view('event_overview', 'event_overview_front');
+    $output['#cache']['max-age'] = strtotime('tomorrow') - time();
+    $output['#cache']['tags'][] = 'node_list';
+    $output['#cache']['contexts'][] = 'timezone';
+  }
+  if ($key == 'event_archive_block') {
+    $output = overview_field_load_view('event_overview', 'event_archive_block');
+  }
+}
+
+/**
+ * Implements hook_migration_plugins_alter().
+ */
+function rocketship_event_basic_migration_plugins_alter(&$definitions) {
+  $path = drupal_get_path('module', 'rocketship_event_basic');
+  $definitions['rocketship_event_overview']['source']['path'] = $path . $definitions['rocketship_event_overview']['source']['path'];
+  $definitions['rocketship_event_overview_header']['source']['path'] = $path . $definitions['rocketship_event_overview_header']['source']['path'];
+  $definitions['rocketship_event_overview_p']['source']['path'] = $path . $definitions['rocketship_event_overview_p']['source']['path'];
+  $definitions['rocketship_event_blocks']['source']['path'] = $path . $definitions['rocketship_event_blocks']['source']['path'];
+}
+
+/**
+ * Implements hook_module_implements_alter().
+ *
+ * Make sure we go after migration_plus.
+ */
+function rocketship_event_basic_module_implements_alter(&$implementations, $hook) {
+  if ($hook == 'migration_plugins_alter') {
+    $group = $implementations['rocketship_event_basic'];
+    unset($implementations['rocketship_event_basic']);
+    $implementations['rocketship_event_basic'] = $group;
+  }
+}
+
+
+/**
+ * Implements hook_entity_access().
+ */
+function rocketship_event_basic_webform_access(EntityInterface $entity, $operation, AccountInterface $account) {
+  // Restrict access to editing this webform.
+  /** @var \Drupal\webform\WebformInterface $entity */
+  if (!$account->hasPermission('administer webform') && $entity->id() === 'event_subscription' && ($operation === 'update' || $operation === 'delete')) {
+    return AccessResult::forbidden('This webform is part of a premade feature and can not be edited or deleted.')
+      ->addCacheContexts(['user.permissions']);
+  }
+}
+
+/**
+ * Implements hook_theme().
+ */
+function rocketship_event_basic_theme($existing, $type, $theme, $path) {
+  return [
+    'event_facets_result_item' => [
+      'base hook' => 'facets_result_item',
+      'variables' => [
+        'facet' => NULL,
+        'raw_value' => '',
+        'value' => '',
+        'show_count' => FALSE,
+        'count' => NULL,
+        'is_active' => FALSE,
+      ],
+    ],
+  ];
+}
+
+/**
+ * Implements hook_local_tasks_alter().
+ */
+function rocketship_event_basic_menu_local_tasks_alter(&$local_tasks) {
+  if (isset($local_tasks['tabs'][0]['webform_view:webform_views:view.event_subscriptions.event_submission_page'])) {
+    // Only show Submissions link on Event nodes.
+    $node = \Drupal::routeMatch()->getParameter('node');
+    if ($node && is_string($node)) {
+      $node = Node::load($node);
+    }
+    if ($node instanceof NodeInterface && $node->bundle() !== 'event') {
+      unset($local_tasks['tabs'][0]['webform_view:webform_views:view.event_subscriptions.event_submission_page']);
+    }
+  }
+  if (isset($local_tasks['tabs'][0]['views_view:view.event_subscriptions.event_submission_page'])) {
+    // Only show Submissions link on Event nodes.
+    $node = \Drupal::routeMatch()->getParameter('node');
+    if ($node && is_string($node)) {
+      $node = Node::load($node);
+    }
+    if ($node instanceof NodeInterface && $node->bundle() !== 'event') {
+      unset($local_tasks['tabs'][0]['views_view:view.event_subscriptions.event_submission_page']);
+    }
+  }
+}
+
+/**
+ * Implements hook_form_alter().
+ */
+function rocketship_event_basic_form_webform_submission_event_subscription_form_alter(&$form, FormStateInterface $form_state, $form_id) {
+
+  $form['scroll_to'] = [
+    // Fingers crossed nobody puts two of these on the same page. Can't use
+    // Unique ID method cuz this alter gets called twice per request.
+    '#markup' => '<div id="subscribe-now" class="scroll-to-anchor"></div>',
+    '#weight' => -9999,
+  ];
+
+}

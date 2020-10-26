@@ -1,0 +1,5 @@
+manage rs paragraph settings:
+  title: 'Manage Rocketship Paragraphs settings'
+  description: 'Allow access to the Rocketship Paragraphs settings form.'
+select overviews in overview paragraphs:
+  title: 'Select overviews and facets in overview paragraph'

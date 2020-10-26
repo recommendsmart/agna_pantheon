@@ -1,0 +1,37 @@
+<?php
+
+
+function _rocketship_service_core_content_migrates() {
+  return [
+    'dsc_images',
+    'dsc_media_images',
+    'dsc_text_main_p',
+    'dsc_nodes',
+  ];
+}
+
+/**
+ * Implements hook_migration_plugins_alter().
+ */
+function rocketship_service_core_content_migration_plugins_alter(&$definitions) {
+  $path = drupal_get_path('module', 'rocketship_service_core_content');
+
+  foreach (_rocketship_service_core_content_migrates() as $name) {
+    $definitions[$name]['source']['path'] = $path . $definitions[$name]['source']['path'];
+  }
+
+  $definitions['dsc_images']['source']['constants']['source_base_path'] = $path . $definitions['dsc_images']['source']['constants']['source_base_path'];
+}
+
+/**
+ * Implements hook_module_implements_alter().
+ *
+ * Make sure we go after migrate_plus.
+ */
+function rocketship_service_core_content_module_implements_alter(&$implementations, $hook) {
+  if ($hook == 'migration_plugins_alter') {
+    $group = $implementations['rocketship_service_core_content'];
+    unset($implementations['rocketship_service_core_content']);
+    $implementations['rocketship_service_core_content'] = $group;
+  }
+}

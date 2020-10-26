@@ -1,0 +1,57 @@
+<?php
+
+/**
+ * @file
+ * The main module file.
+ */
+
+/**
+ * Implements hook_themes_installed().
+ */
+function rocketship_realisation_core_themes_installed($theme_list) {
+  /** @var \Drupal\Core\Extension\ThemeHandlerInterface $handler */
+  $handler = Drupal::service('theme_handler');
+
+  foreach ($theme_list as $theme) {
+    $info = $handler->getTheme($theme);
+    if (isset($info->info['package']) && $info->info['package'] == 'Rocketship Theme') {
+      \Rocketship::hideBreadcrumbAndTitleBlockOnContentType($theme, 'realisation');
+    }
+  }
+}
+
+/**
+ * Implements hook_module_implements_alter().
+ *
+ * Make sure we go after block_themes_installed.
+ */
+function rocketship_realisation_core_module_implements_alter(&$implementations, $hook) {
+  if ($hook == 'themes_installed') {
+    $group = $implementations['rocketship_realisation_core'];
+    unset($implementations['rocketship_realisation_core']);
+    $implementations['rocketship_realisation_core'] = $group;
+  }
+}
+
+/**
+ * Implements hook_theming_page_attachments().
+ */
+function rocketship_realisation_core_page_attachments(array &$attachments) {
+
+  // Make the form settings available in the javascript, twig, … because we
+  // need some of them to selectively add HTML classes or JS functions.
+  $config = \Drupal::config('rocketship_realisation_core.settings');
+  $cssStructural = $config->get('css_structural');
+
+  $variables['#attached']['drupalSettings']['rocketship_realisation_core']['css_structural'] = $cssStructural;
+
+  // Check the form settings to see if we need to attach certain libs, we only
+  // load critical CSS library in front theme, not admin.
+  if (\Drupal::service('router.admin_context')->isAdminRoute() == FALSE) {
+
+    // Only if structural css is chosen.
+    if ($cssStructural) {
+      $attachments['#attached']['library'][] = 'rocketship_realisation_core/structural';
+    }
+  }
+}

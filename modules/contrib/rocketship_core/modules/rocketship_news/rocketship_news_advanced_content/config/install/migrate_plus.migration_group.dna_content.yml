@@ -1,0 +1,9 @@
+langcode: en
+status: true
+dependencies: {  }
+id: dna_content
+label: 'News Advanced Content'
+description: 'Migrates advanced news content'
+source_type: ''
+module: null
+shared_configuration: null

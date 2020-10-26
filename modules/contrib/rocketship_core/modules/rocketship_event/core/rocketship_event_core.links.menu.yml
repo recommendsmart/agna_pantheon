@@ -1,0 +1,25 @@
+
+# Event menu items definition
+entity.event.collection:
+  title: 'Event list'
+  route_name: entity.event.collection
+  description: 'List Event entities'
+  parent: system.admin_structure
+
+event.admin.structure.settings:
+  title: 'Event settings'
+  description: 'Configure Event entities'
+  route_name: event.settings
+  parent: entity.event.collection
+
+features.collection:
+  title: 'Rocketship Features'
+  route_name: features.collection
+  parent: system.admin_config_system
+
+rocketship_event_core.admin_settings_form:
+  title: 'F014 Event'
+  route_name: rocketship_event_core.admin_settings_form
+  # parent: system.admin_config_system
+  parent: features.collection
+  weight: 14

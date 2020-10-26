@@ -1,0 +1,66 @@
+langcode: en
+status: true
+dependencies:
+  config:
+    - core.entity_view_mode.node.search_index
+    - field.field.node.service.field_description
+    - field.field.node.service.field_media_canonical_image
+    - field.field.node.service.field_meta_tags
+    - field.field.node.service.field_node_title_replacement
+    - field.field.node.service.field_paragraphs
+    - field.field.node.service.field_service_display_field
+    - field.field.node.service.field_show_breadcrumb
+    - node.type.service
+  module:
+    - entity_reference_revisions
+    - manage_display
+    - rocketship_core
+id: node.service.search_index
+targetEntityType: node
+bundle: service
+mode: search_index
+content:
+  field_description:
+    weight: 2
+    label: hidden
+    settings:
+      header: h2
+    third_party_settings: {  }
+    type: header_text_field_formatter
+    region: content
+  field_node_title_replacement:
+    type: title_replacement_formatter
+    weight: 1
+    region: content
+    label: hidden
+    settings:
+      wrapper_override: nothing
+    third_party_settings: {  }
+  field_paragraphs:
+    weight: 3
+    label: hidden
+    settings:
+      view_mode: default
+      link: ''
+    third_party_settings: {  }
+    type: entity_reference_revisions_entity_view
+    region: content
+  title:
+    type: title
+    weight: 0
+    region: content
+    label: hidden
+    settings:
+      tag: h1
+      linked: false
+    third_party_settings: {  }
+hidden:
+  rocketship_social_widgets: true
+  field_media_canonical_image: true
+  field_meta_tags: true
+  field_service_display_field: true
+  field_show_breadcrumb: true
+  langcode: true
+  links: true
+  search_api_excerpt: true
+  uid: true

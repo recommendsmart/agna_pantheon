@@ -1,0 +1,41 @@
+langcode: en
+status: true
+dependencies:
+  enforced:
+    module:
+      - rocketship_event_basic
+id: rocketship_event_blocks
+migration_group: rocketship_event_overview
+source:
+  plugin: csv
+  path: /assets/csv/blocks.csv
+  header_offset: 0
+  ids:
+    - id
+process:
+  langcode:
+    plugin: callback
+    callable: rocketship_core_get_default_content_default_language
+  info: title
+  uuid: uuid
+  field_paragraphs:
+    -
+      plugin: explode
+      source: field_paragraphs
+      delimiter: '|'
+    -
+      plugin: migration_lookup
+      migration: rocketship_event_overview_p
+      no_stub: true
+    -
+      plugin: sub_process
+      process:
+        target_id: '0'
+        target_revision_id: '1'
+destination:
+  plugin: 'entity:block_content'
+  default_bundle: content
+migration_dependencies:
+  required:
+    - rocketship_event_overview_p
+  optional: {  }

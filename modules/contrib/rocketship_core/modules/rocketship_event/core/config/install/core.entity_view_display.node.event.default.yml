@@ -1,0 +1,41 @@
+langcode: en
+status: true
+dependencies:
+  config:
+    - field.field.node.event.field_description
+    - field.field.node.event.field_event_extra_remarks
+    - field.field.node.event.field_event_geolocation
+    - field.field.node.event.field_event_location
+    - field.field.node.event.field_event_n_display_field
+    - field.field.node.event.field_event_place
+    - field.field.node.event.field_events
+    - field.field.node.event.field_media_canonical_image
+    - field.field.node.event.field_meta_tags
+    - field.field.node.event.field_node_title_replacement
+    - field.field.node.event.field_paragraphs
+    - field.field.node.event.field_show_breadcrumb
+    - node.type.event
+id: node.event.default
+targetEntityType: node
+bundle: event
+mode: default
+content: {  }
+hidden:
+  rocketship_social_widgets: true
+  field_description: true
+  field_event_extra_remarks: true
+  field_event_geolocation: true
+  field_event_location: true
+  field_event_n_display_field: true
+  field_event_place: true
+  field_events: true
+  field_media_canonical_image: true
+  field_meta_tags: true
+  field_node_title_replacement: true
+  field_paragraphs: true
+  field_show_breadcrumb: true
+  langcode: true
+  links: true
+  search_api_excerpt: true
+  title: true
+  uid: true

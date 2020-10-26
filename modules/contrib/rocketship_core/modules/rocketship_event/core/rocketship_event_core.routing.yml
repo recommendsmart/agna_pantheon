@@ -1,0 +1,9 @@
+rocketship_event_core.admin_settings_form:
+  path: '/admin/config/system/rocketship-features/features-f014-event'
+  defaults:
+    _form: '\Drupal\rocketship_event_core\Form\EventConfigSettingsForm'
+    _title: 'F014 Event settings'
+  requirements:
+    _permission: 'administer rocketship feature settings'
+  options:
+    _admin_route: TRUE

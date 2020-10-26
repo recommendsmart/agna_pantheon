@@ -1,0 +1,113 @@
+langcode: en
+status: true
+dependencies:
+  config:
+    - field.field.paragraph.simple_header.field_p_bg_color
+    - field.field.paragraph.simple_header.field_p_media_bg_image
+    - field.field.paragraph.simple_header.field_replacement_title
+    - field.field.paragraph.simple_header.field_show_breadcrumb
+    - paragraphs.paragraphs_type.simple_header
+    - responsive_image.styles.para_header_bg_image
+  module:
+    - blazy
+    - field_group
+    - rocketship_core
+third_party_settings:
+  field_group:
+    group_p_simple_hear_content:
+      children:
+        - field_replacement_title
+        - field_show_breadcrumb
+      parent_name: ''
+      weight: 0
+      format_type: html_element
+      format_settings:
+        label: Content
+        element: div
+        show_label: false
+        label_element: h3
+        attributes: ''
+        effect: none
+        speed: fast
+        id: ''
+        classes: 'p-header__content p-header-simple__content'
+      label: Content
+      region: content
+id: paragraph.simple_header.default
+targetEntityType: paragraph
+bundle: simple_header
+mode: default
+content:
+  field_p_media_bg_image:
+    weight: 4
+    label: hidden
+    settings:
+      image_style: ''
+      responsive_image_style: para_header_bg_image
+      media_switch: ''
+      box_style: ''
+      thumbnail_style: ''
+      box_media_style: ''
+      ratio: ''
+      box_caption: ''
+      view_mode: default
+      box_caption_custom: ''
+      sizes: ''
+      breakpoints:
+        xs:
+          image_style: ''
+          width: ''
+        sm:
+          image_style: ''
+          width: ''
+        md:
+          image_style: ''
+          width: ''
+        lg:
+          image_style: ''
+          width: ''
+        xl:
+          image_style: ''
+          width: ''
+      current_view_mode: default
+      background: false
+      caption:
+        field_media_image: '0'
+      class: ''
+      id: ''
+      image: ''
+      link: ''
+      overlay: ''
+      title: ''
+      vanilla: false
+      icon: ''
+      layout: ''
+      cache: 0
+      optionset: default
+      skin: ''
+      style: ''
+      grid: 0
+      grid_header: ''
+      grid_medium: 0
+      grid_small: 0
+    third_party_settings: {  }
+    type: blazy_media
+    region: content
+  field_replacement_title:
+    weight: 1
+    label: hidden
+    settings:
+      wrapper_override: nothing
+    third_party_settings: {  }
+    type: title_replacement_formatter
+    region: content
+  field_show_breadcrumb:
+    weight: 2
+    label: hidden
+    settings: {  }
+    third_party_settings: {  }
+    type: breadcrumb_render
+    region: content
+hidden:
+  field_p_bg_color: true
+  search_api_excerpt: true

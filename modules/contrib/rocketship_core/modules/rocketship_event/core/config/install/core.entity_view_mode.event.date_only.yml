@@ -1,0 +1,9 @@
+langcode: en
+status: true
+dependencies:
+  module:
+    - rocketship_event_core
+id: event.date_only
+label: 'Date only'
+targetEntityType: event
+cache: true

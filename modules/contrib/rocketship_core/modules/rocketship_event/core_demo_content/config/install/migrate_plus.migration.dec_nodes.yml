@@ -1,0 +1,63 @@
+dependencies:
+  enforced:
+    module:
+      - rocketship_event_core_content
+id: dec_nodes
+migration_group: dec_content
+source:
+  plugin: csv
+  path: /assets/csv/nodes.csv
+  header_offset: 0
+  ids:
+    - id
+process:
+  langcode:
+    plugin: callback
+    callable: rocketship_core_get_default_content_default_language
+  field_events:
+    plugin: migration_lookup
+    migration: dec_events
+    source: field_events
+    no_stub: true
+  'field_event_location/country_code': country_code
+  'field_event_location/locality': city
+  'field_event_location/postal_code': postal_code
+  'field_event_location/address_line1': address_line_1
+  'field_event_location/address_line2': address_line_2
+  'field_event_extra_remarks/value': field_event_extra_remarks
+  'field_event_extra_remarks/format':
+    plugin: default_value
+    default_value: full_html
+  field_media_canonical_image:
+    plugin: migration_lookup
+    migration: dec_media_images
+    source: field_media_canonical_image
+    no_stub: true
+  field_event_place: field_event_place
+  field_description: field_description
+  field_paragraphs:
+    -
+      plugin: explode
+      source: field_paragraphs
+      delimiter: '|'
+    -
+      plugin: migration_lookup
+      migration: dec_text_main_p
+      no_stub: true
+    -
+      plugin: sub_process
+      process:
+        target_id: '0'
+        target_revision_id: '1'
+  field_show_breadcrumb: field_show_breadcrumb
+  title: title
+destination:
+  plugin: 'entity:node'
+  default_bundle: event
+migration_dependencies:
+  required:
+    - dec_text_main_p
+    - dec_images
+    - dec_media_images
+    - dec_events
+  optional: { }

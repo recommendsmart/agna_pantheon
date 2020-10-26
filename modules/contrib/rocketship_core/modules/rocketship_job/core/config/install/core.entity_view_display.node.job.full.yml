@@ -1,0 +1,238 @@
+langcode: en
+status: true
+dependencies:
+  config:
+    - core.entity_view_mode.node.full
+    - field.field.node.job.field_description
+    - field.field.node.job.field_job_display_field
+    - field.field.node.job.field_media_canonical_image
+    - field.field.node.job.field_meta_tags
+    - field.field.node.job.field_node_title_replacement
+    - field.field.node.job.field_paragraphs
+    - field.field.node.job.field_show_breadcrumb
+    - node.type.job
+  module:
+    - entity_reference_revisions
+    - layout_builder
+    - manage_display
+    - rocketship_core
+third_party_settings:
+  layout_builder:
+    allow_custom: false
+    enabled: true
+    sections:
+      -
+        layout_id: rs_header
+        layout_settings:
+          label: 'Rocketship Header'
+          with_subregion: 1
+          with_subregion_02: 1
+          subregion_position: before
+          subregion_02_position: after
+          classes: job__header--full
+        components:
+          d4535b4a-f5bc-4aef-ab4f-53c91c67aa8f:
+            uuid: d4535b4a-f5bc-4aef-ab4f-53c91c67aa8f
+            region: subregion
+            configuration:
+              id: 'field_block:node:job:field_node_title_replacement'
+              label: 'Replacement title'
+              provider: layout_builder
+              label_display: '0'
+              formatter:
+                label: hidden
+                type: title_replacement_formatter
+                settings:
+                  wrapper_override: nothing
+                third_party_settings: {  }
+              context_mapping:
+                entity: layout_builder.entity
+                view_mode: view_mode
+            additional: {  }
+            weight: 0
+          f029013c-21ab-4e5b-ae6c-e7fab631daa0:
+            uuid: f029013c-21ab-4e5b-ae6c-e7fab631daa0
+            region: subregion
+            configuration:
+              id: 'field_block:node:job:created'
+              label: 'Authored on'
+              provider: layout_builder
+              label_display: '0'
+              formatter:
+                label: hidden
+                type: timestamp_ago
+                settings:
+                  future_format: '@interval hence'
+                  past_format: '@interval ago'
+                  granularity: 2
+                third_party_settings: {  }
+              context_mapping:
+                entity: layout_builder.entity
+                view_mode: view_mode
+            additional: {  }
+            weight: 1
+          b64745e4-da5b-4e28-aabb-174675485cbf:
+            uuid: b64745e4-da5b-4e28-aabb-174675485cbf
+            region: content
+            configuration:
+              id: 'field_block:node:job:field_media_canonical_image'
+              label: Image
+              provider: layout_builder
+              label_display: '0'
+              formatter:
+                label: hidden
+                type: blazy_media
+                settings:
+                  background: false
+                  caption:
+                    title: '0'
+                    alt: '0'
+                  view_mode: default
+                  image_style: ''
+                  thumbnail_style: ''
+                  responsive_image_style: job_detail
+                  media_switch: ''
+                  ratio: ''
+                  box_style: ''
+                  box_media_style: ''
+                  box_caption: ''
+                  box_caption_custom: ''
+                  current_view_mode: _custom
+                third_party_settings: {  }
+              context_mapping:
+                entity: layout_builder.entity
+                view_mode: view_mode
+            additional: {  }
+            weight: 0
+          22b3c067-78cc-42f4-b4fd-02d2f830db31:
+            uuid: 22b3c067-78cc-42f4-b4fd-02d2f830db31
+            region: subregion_02
+            configuration:
+              id: 'field_block:node:job:field_show_breadcrumb'
+              label: 'Show breadcrumb'
+              provider: layout_builder
+              label_display: '0'
+              formatter:
+                label: hidden
+                type: breadcrumb_render
+                settings: {  }
+                third_party_settings: {  }
+              context_mapping:
+                entity: layout_builder.entity
+                view_mode: view_mode
+            additional: {  }
+            weight: 0
+        third_party_settings: {  }
+      -
+        layout_id: rs_content
+        layout_settings:
+          label: 'Rocketship Content'
+          with_subregion: 0
+          with_subregion_02: 0
+          subregion_position: after
+          subregion_02_position: after
+          classes: job__content--full
+        components:
+          ab62b566-d080-42e4-b19d-fc3d8e6a90cc:
+            uuid: ab62b566-d080-42e4-b19d-fc3d8e6a90cc
+            region: content
+            configuration:
+              label_display: '0'
+              context_mapping:
+                entity: layout_builder.entity
+              id: 'field_block:node:job:field_paragraphs'
+              formatter:
+                label: hidden
+                settings:
+                  view_mode: default
+                  link: ''
+                third_party_settings: {  }
+                type: entity_reference_revisions_entity_view
+            additional: {  }
+            weight: 0
+        third_party_settings: {  }
+      -
+        layout_id: rs_footer
+        layout_settings:
+          label: 'Rocketship Footer'
+          with_subregion: 0
+          with_subregion_02: 0
+          subregion_position: after
+          subregion_02_position: after
+          classes: 'job__footer--full node__meta--bottom'
+        components:
+          36b670b7-e637-4794-aed6-96a7e9a9e4af:
+            uuid: 36b670b7-e637-4794-aed6-96a7e9a9e4af
+            region: content
+            configuration:
+              id: 'field_block:node:job:created'
+              label: 'Authored on'
+              provider: layout_builder
+              label_display: '0'
+              formatter:
+                label: hidden
+                type: timestamp_ago
+                settings:
+                  future_format: '@interval hence'
+                  past_format: '@interval ago'
+                  granularity: 2
+                third_party_settings: {  }
+              context_mapping:
+                entity: layout_builder.entity
+                view_mode: view_mode
+            additional: {  }
+            weight: 3
+          61a91b77-424f-428b-8792-2883cdeebbb8:
+            uuid: 61a91b77-424f-428b-8792-2883cdeebbb8
+            region: content
+            configuration:
+              label_display: '0'
+              context_mapping:
+                entity: layout_builder.entity
+              id: 'extra_field_block:node:job:rocketship_social_widgets'
+            additional: {  }
+            weight: 4
+        third_party_settings: {  }
+id: node.job.full
+targetEntityType: node
+bundle: job
+mode: full
+content:
+  rocketship_social_widgets:
+    weight: 3
+    region: footer
+    settings: {  }
+    third_party_settings: {  }
+  field_paragraphs:
+    weight: 0
+    label: hidden
+    settings:
+      view_mode: default
+      link: ''
+    third_party_settings: {  }
+    type: entity_reference_revisions_entity_view
+    region: content
+  job_created_time_ago:
+    weight: 3
+    region: footer
+    settings: {  }
+    third_party_settings: {  }
+  title:
+    label: hidden
+    type: title
+    weight: -50
+    region: content
+    settings:
+      tag: h2
+      linked: true
+    third_party_settings: {  }
+hidden:
+  field_description: true
+  field_job_display_field: true
+  field_media_canonical_image: true
+  field_meta_tags: true
+  field_node_title_replacement: true
+  field_show_breadcrumb: true
+  langcode: true
+  links: true
+  search_api_excerpt: true

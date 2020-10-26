@@ -1,0 +1,165 @@
+#
+# Layout Builder
+################################################################################
+
+rs_top:
+  label: Rocketship Top
+  class: '\Drupal\rocketship_core\Plugin\Layout\OneColumnWithOptionalSubregionLayout'
+  library: rocketship_core/lb
+  additional:
+    region_type: region
+  template: templates/section/rs_top
+  category: Rocketship Layouts
+  default_region: content
+  icon_map:
+    - [content]
+  regions:
+    content:
+      label: Top
+
+rs_header:
+  label: Rocketship Header
+  class: '\Drupal\rocketship_core\Plugin\Layout\OneColumnWithOptionalSubregionLayout'
+  library: rocketship_core/lb
+  additional:
+    region_type: header
+  template: templates/section/rs_header
+  category: Rocketship Layouts
+  default_region: content
+  icon_map:
+    - [content]
+  regions:
+    content:
+      label: Header
+
+rs_content:
+  label: Rocketship Content
+  class: '\Drupal\rocketship_core\Plugin\Layout\OneColumnWithOptionalSubregionLayout'
+  library: rocketship_core/lb
+  additional:
+    region_type: region
+  template: templates/section/rs_content
+  category: Rocketship Layouts
+  default_region: content
+  icon_map:
+    - [content]
+  regions:
+    content:
+      label: Content
+
+rs_footer:
+  label: Rocketship Footer
+  class: '\Drupal\rocketship_core\Plugin\Layout\OneColumnWithOptionalSubregionLayout'
+  library: rocketship_core/lb
+  additional:
+    region_type: footer
+  template: templates/section/rs_footer
+  category: Rocketship Layouts
+  default_region: content
+  icon_map:
+    - [content]
+  regions:
+    content:
+      label: Footer
+
+rs_bottom:
+  label: Rocketship Bottom
+  class: '\Drupal\rocketship_core\Plugin\Layout\OneColumnWithOptionalSubregionLayout'
+  library: rocketship_core/lb
+  additional:
+    region_type: region
+  template: templates/section/rs_bottom
+  category: Rocketship Layouts
+  default_region: content
+  icon_map:
+    - [content]
+  regions:
+    content:
+      label: Bottom
+
+rs_two_col:
+  label: Rocketship 2-Col
+  class: '\Drupal\rocketship_core\Plugin\Layout\TwoColumnLayout'
+  library: rocketship_core/lb
+  template: templates/section/two-col
+  category: Rocketship Layouts
+  default_region: second_main
+  icon_map:
+    - [first_top, second_top]
+    - [first_main, second_main]
+    - [first_bottom, second_bottom]
+  regions:
+    first_top:
+      label: First Top
+    first_main:
+      label: First Main
+    first_bottom:
+      label: First Bottom
+    second_top:
+      label: Second Top
+    second_main:
+      label: Second Main
+    second_bottom:
+      label: Second Bottom
+
+rs_three_col:
+  label: Rocketship 3-Col
+  class: '\Drupal\rocketship_core\Plugin\Layout\ThreeColumnLayout'
+  library: rocketship_core/lb
+  template: templates/section/three-col
+  category: Rocketship Layouts
+  default_region: center_main
+  icon_map:
+    - [first_top, center_top, second_top]
+    - [first_main, center_main, second_main]
+    - [first_bottom, center_bottom, second_bottom]
+  regions:
+    first_top:
+      label: First Top
+    first_main:
+      label: First Main
+    first_bottom:
+      label: First Bottom
+    second_top:
+      label: Second Top
+    second_main:
+      label: Second Main
+    second_bottom:
+      label: Second Bottom
+    center_top:
+      label: Center Top
+    center_main:
+      label: Center Main
+    center_bottom:
+      label: Center Bottom
+
+rs_three_col_dynamic:
+  label: Rocketship 3-Col Dynamic
+  class: '\Drupal\rocketship_core\Plugin\Layout\ThreeColumnDynamicLayout'
+  library: rocketship_core/lb
+  template: templates/section/three-col-dynamic
+  category: Rocketship Layouts
+  default_region: center_main
+  icon_map:
+    - [first_top, center_top, second_top]
+    - [first_main, center_main, second_main]
+    - [first_bottom, center_bottom, second_bottom]
+  regions:
+    first_top:
+      label: First Top
+    first_main:
+      label: First Main
+    first_bottom:
+      label: First Bottom
+    second_top:
+      label: Second Top
+    second_main:
+      label: Second Main
+    second_bottom:
+      label: Second Bottom
+    center_top:
+      label: Center Top
+    center_main:
+      label: Center Main
+    center_bottom:
+      label: Center Bottom

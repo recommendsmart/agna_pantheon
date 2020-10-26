@@ -1,0 +1,31 @@
+langcode: en
+status: true
+dependencies:
+  config:
+    - core.entity_view_mode.media.paragraph_p009_image_masonry
+    - field.field.media.image.field_media_image
+    - image.style.image_style_scale_width_xs_wide
+    - media.type.image
+  module:
+    - image
+id: media.image.paragraph_p009_image_masonry
+targetEntityType: media
+bundle: image
+mode: paragraph_p009_image_masonry
+content:
+  field_media_image:
+    weight: 0
+    label: hidden
+    settings:
+      image_style: image_style_scale_width_xs_wide
+      image_link: ''
+    third_party_settings: {  }
+    type: image
+    region: content
+hidden:
+  created: true
+  langcode: true
+  name: true
+  search_api_excerpt: true
+  thumbnail: true
+  uid: true

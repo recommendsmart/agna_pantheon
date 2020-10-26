@@ -1,0 +1,87 @@
+dependencies:
+  enforced:
+    module:
+      - rocketship_product_core_content
+id: dpc_nodes
+migration_group: dpc_content
+source:
+  plugin: csv
+  path: /assets/csv/nodes.csv
+  header_offset: 0
+  ids:
+    - id
+process:
+  langcode:
+    plugin: callback
+    callable: rocketship_core_get_default_content_default_language
+  field_header_paragraph:
+    -
+      plugin: explode
+      source: field_header_paragraph
+      delimiter: '|'
+    -
+      plugin: migration_lookup
+      migration: dpc_simple_header
+      no_stub: true
+    -
+      plugin: sub_process
+      process:
+        target_id: '0'
+        target_revision_id: '1'
+  field_media_product_images:
+    -
+      plugin: explode
+      source: field_media_product_images
+      delimiter: '|'
+    -
+      plugin: migration_lookup
+      migration: dpc_media_images
+      no_stub: true
+  field_paragraphs:
+    -
+      plugin: explode
+      source: field_paragraphs
+      delimiter: '|'
+    -
+      plugin: migration_lookup
+      migration: dpc_text_main_p
+      no_stub: true
+    -
+      plugin: sub_process
+      process:
+        target_id: '0'
+        target_revision_id: '1'
+  field_product_attributes:
+    -
+      plugin: explode
+      delimiter: '|'
+      source: field_product_attributes
+    -
+      plugin: explode
+      delimiter: '**'
+    -
+      plugin: sub_process
+      process:
+        label: '0'
+        value: '1'
+        promoted: '2'
+  field_product_description: field_product_description
+  field_media_product_sheet:
+    plugin: migration_lookup
+    source: field_media_product_sheet
+    migration: dpc_media_files
+    no_stub: true
+  field_product_teaser: field_product_teaser
+  field_show_breadcrumb: field_show_breadcrumb
+  title: title
+destination:
+  plugin: 'entity:node'
+  default_bundle: product
+migration_dependencies:
+  required:
+    - dpc_text_main_p
+    - dpc_images
+    - dpc_files
+    - dpc_media_images
+    - dpc_media_files
+  optional: { }

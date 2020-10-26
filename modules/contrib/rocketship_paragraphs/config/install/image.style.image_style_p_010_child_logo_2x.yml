@@ -1,0 +1,22 @@
+langcode: en
+status: true
+dependencies: {  }
+name: image_style_p_010_child_logo_2x
+label: 'Paragraph p010 logo 2x'
+effects:
+  9bfac525-2e5b-45b7-a811-c07adcb79b2d:
+    uuid: 9bfac525-2e5b-45b7-a811-c07adcb79b2d
+    id: image_scale
+    weight: 1
+    data:
+      width: 400
+      height: null
+      upscale: false
+  9f3955c5-1433-4453-94fb-1ff610f97d1e:
+    uuid: 9f3955c5-1433-4453-94fb-1ff610f97d1e
+    id: image_scale
+    weight: 2
+    data:
+      width: null
+      height: 160
+      upscale: false

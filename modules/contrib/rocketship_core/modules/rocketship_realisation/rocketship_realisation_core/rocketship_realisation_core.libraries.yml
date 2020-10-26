@@ -1,0 +1,6 @@
+structural:
+  version: VERSION
+  css:
+    theme:
+      css/style.realisation.css: {minified: true, weight: 50}
+      css/style.realisation.print.css: {minified: true, weight: 50}

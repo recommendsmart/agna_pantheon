@@ -1,0 +1,11 @@
+features.collection:
+  title: 'Rocketship Features'
+  route_name: features.collection
+  parent: system.admin_config_system
+
+rocketship_product_core.admin_settings_form:
+  title: 'F009 Product'
+  route_name: rocketship_product_core.admin_settings_form
+  # parent: system.admin_config_system
+  parent: features.collection
+  weight: 9

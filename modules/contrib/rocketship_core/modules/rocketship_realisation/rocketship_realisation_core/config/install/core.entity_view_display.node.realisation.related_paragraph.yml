@@ -1,0 +1,274 @@
+langcode: en
+status: true
+dependencies:
+  config:
+    - core.entity_view_mode.node.related_paragraph
+    - field.field.node.realisation.field_description
+    - field.field.node.realisation.field_media_canonical_image
+    - field.field.node.realisation.field_meta_tags
+    - field.field.node.realisation.field_node_title_replacement
+    - field.field.node.realisation.field_paragraphs
+    - field.field.node.realisation.field_realisation_display_field
+    - field.field.node.realisation.field_show_breadcrumb
+    - node.type.realisation
+    - responsive_image.styles.paragraph_p014_image
+  module:
+    - blazy
+    - field_group
+    - layout_builder
+    - rocketship_core
+    - smart_trim
+third_party_settings:
+  field_group:
+    group_actions:
+      children: {  }
+      parent_name: ''
+      weight: 24
+      format_type: html_element
+      format_settings:
+        id: ''
+        classes: 'node__actions node__actions--teaser node__actions--realisation node__actions--realisation-teaser'
+        element: div
+        show_label: false
+        label_element: h3
+        attributes: ''
+        effect: none
+        speed: fast
+      label: actions
+      region: hidden
+  layout_builder:
+    allow_custom: false
+    enabled: true
+    sections:
+      -
+        layout_id: rs_header
+        layout_settings:
+          label: 'Rocketship Header'
+          with_subregion: 0
+          subregion_position: after
+          classes: ''
+        components:
+          e52dbfde-0d23-4f90-af37-2c9f29d312c3:
+            uuid: e52dbfde-0d23-4f90-af37-2c9f29d312c3
+            region: content
+            configuration:
+              label_display: '0'
+              context_mapping:
+                entity: layout_builder.entity
+              id: 'field_block:node:realisation:field_media_canonical_image'
+              formatter:
+                type: blazy_media
+                label: hidden
+                settings:
+                  image_style: ''
+                  responsive_image_style: paragraph_p014_image
+                  media_switch: content
+                  box_style: ''
+                  thumbnail_style: ''
+                  box_media_style: ''
+                  ratio: ''
+                  box_caption: ''
+                  view_mode: default
+                  box_caption_custom: ''
+                  sizes: ''
+                  breakpoints:
+                    xs:
+                      image_style: ''
+                      width: ''
+                    sm:
+                      image_style: ''
+                      width: ''
+                    md:
+                      image_style: ''
+                      width: ''
+                    lg:
+                      image_style: ''
+                      width: ''
+                    xl:
+                      image_style: ''
+                      width: ''
+                  current_view_mode: related_paragraph
+                  background: false
+                  caption:
+                    field_media_image: '0'
+                  class: ''
+                  id: ''
+                  image: ''
+                  link: ''
+                  overlay: ''
+                  title: ''
+                  vanilla: false
+                  icon: ''
+                  layout: ''
+                  cache: 0
+                  skin: ''
+                  style: ''
+                  grid: 0
+                  grid_header: ''
+                  grid_medium: 0
+                  grid_small: 0
+                  fx: ''
+                  _uri: ''
+                third_party_settings: {  }
+            additional: {  }
+            weight: 0
+        third_party_settings: {  }
+      -
+        layout_id: rs_content
+        layout_settings:
+          label: 'Rocketship Content'
+          with_subregion: 0
+          subregion_position: after
+          classes: ''
+        components:
+          a0a084ff-a37c-4116-83f0-67c3e64971ff:
+            uuid: a0a084ff-a37c-4116-83f0-67c3e64971ff
+            region: content
+            configuration:
+              label_display: '0'
+              context_mapping:
+                entity: layout_builder.entity
+              id: 'field_block:node:realisation:field_description'
+              formatter:
+                type: smart_trim
+                label: hidden
+                settings:
+                  trim_length: 160
+                  trim_type: chars
+                  trim_suffix: ''
+                  wrap_class: trimmed
+                  more_text: More
+                  more_class: more-link
+                  trim_options:
+                    text: true
+                    trim_zero: false
+                  wrap_output: false
+                  more_link: false
+                  summary_handler: full
+                third_party_settings: {  }
+            additional: {  }
+            weight: 0
+        third_party_settings: {  }
+      -
+        layout_id: rs_footer
+        layout_settings:
+          label: 'Rocketship Footer'
+          with_subregion: 0
+          subregion_position: after
+          classes: ''
+        components:
+          11d4f5c9-c857-4787-b70e-1ad98106b370:
+            uuid: 11d4f5c9-c857-4787-b70e-1ad98106b370
+            region: content
+            configuration:
+              id: 'field_block:node:realisation:field_realisation_display_field'
+              label: 'Display Field'
+              provider: layout_builder
+              label_display: '0'
+              formatter:
+                label: hidden
+                type: rs_canonical_link
+                settings:
+                  'link text': 'Read more'
+                  'link class': ''
+                  wrapper: ''
+                  class: ''
+                third_party_settings: {  }
+              context_mapping:
+                entity: layout_builder.entity
+                view_mode: view_mode
+            additional: {  }
+            weight: 0
+        third_party_settings: {  }
+id: node.realisation.related_paragraph
+targetEntityType: node
+bundle: realisation
+mode: related_paragraph
+content:
+  field_description:
+    type: smart_trim
+    weight: 2
+    region: content
+    label: hidden
+    settings:
+      trim_length: 160
+      trim_type: chars
+      trim_suffix: ''
+      wrap_class: trimmed
+      more_text: More
+      more_class: more-link
+      trim_options:
+        text: true
+        trim_zero: false
+      wrap_output: false
+      more_link: false
+      summary_handler: full
+    third_party_settings: {  }
+  field_media_canonical_image:
+    type: blazy_media
+    weight: 0
+    region: content
+    label: hidden
+    settings:
+      image_style: ''
+      responsive_image_style: paragraph_p014_image
+      media_switch: content
+      box_style: ''
+      thumbnail_style: ''
+      box_media_style: ''
+      ratio: ''
+      box_caption: ''
+      view_mode: default
+      box_caption_custom: ''
+      sizes: ''
+      breakpoints:
+        xs:
+          image_style: ''
+          width: ''
+        sm:
+          image_style: ''
+          width: ''
+        md:
+          image_style: ''
+          width: ''
+        lg:
+          image_style: ''
+          width: ''
+        xl:
+          image_style: ''
+          width: ''
+      current_view_mode: related_paragraph
+      background: false
+      caption:
+        field_media_image: '0'
+      class: ''
+      id: ''
+      image: ''
+      link: ''
+      overlay: ''
+      title: ''
+      vanilla: false
+      icon: ''
+      layout: ''
+      cache: 0
+      skin: ''
+      style: ''
+      grid: 0
+      grid_header: ''
+      grid_medium: 0
+      grid_small: 0
+      fx: ''
+      _uri: ''
+    third_party_settings: {  }
+hidden:
+  rocketship_social_widgets: true
+  field_meta_tags: true
+  field_node_title_replacement: true
+  field_paragraphs: true
+  field_realisation_display_field: true
+  field_show_breadcrumb: true
+  langcode: true
+  links: true
+  search_api_excerpt: true
+  title: true
+  uid: true

@@ -1,0 +1,5 @@
+rocketship_cookie_policy.cookiepolicyconfig:
+  title: 'cookiepolicyconfig settings'
+  base_route_name: rocketship_cookie_policy.cookie_policy_config
+  names:
+    - rocketship_cookie_policy.cookiepolicyconfig

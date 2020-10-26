@@ -1,0 +1,9 @@
+langcode: en
+status: true
+dependencies:
+  module:
+    - media
+id: media.paragraph_p009_child_images_colorbox
+label: 'Paragraph p009 child (images colorbox)'
+targetEntityType: media
+cache: true

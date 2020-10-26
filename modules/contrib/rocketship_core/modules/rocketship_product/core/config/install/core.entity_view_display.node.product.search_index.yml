@@ -1,0 +1,97 @@
+langcode: en
+status: true
+dependencies:
+  config:
+    - core.entity_view_mode.node.search_index
+    - field.field.node.product.field_header_paragraph
+    - field.field.node.product.field_media_product_images
+    - field.field.node.product.field_media_product_sheet
+    - field.field.node.product.field_meta_tags
+    - field.field.node.product.field_node_title_replacement
+    - field.field.node.product.field_paragraphs
+    - field.field.node.product.field_product_attributes
+    - field.field.node.product.field_product_description
+    - field.field.node.product.field_product_display_field
+    - field.field.node.product.field_product_teaser
+    - field.field.node.product.field_show_breadcrumb
+    - node.type.product
+  module:
+    - entity_reference_revisions
+    - field_formatter
+    - manage_display
+    - rocketship_core
+    - text
+id: node.product.search_index
+targetEntityType: node
+bundle: product
+mode: search_index
+content:
+  field_media_product_sheet:
+    type: field_formatter_with_inline_settings
+    weight: 2
+    region: content
+    label: hidden
+    settings:
+      field_name: field_media_file
+      label: hidden
+      type: media_generic_file_formatter
+      settings: {  }
+      link_to_entity: false
+    third_party_settings: {  }
+  field_node_title_replacement:
+    type: title_replacement_formatter
+    weight: 1
+    region: content
+    label: hidden
+    settings:
+      wrapper_override: nothing
+    third_party_settings: {  }
+  field_paragraphs:
+    weight: 6
+    label: hidden
+    settings:
+      view_mode: default
+      link: ''
+    third_party_settings: {  }
+    type: entity_reference_revisions_entity_view
+    region: content
+  field_product_attributes:
+    type: label_value_formatter
+    weight: 5
+    region: content
+    label: hidden
+    settings:
+      show_only_promoted: false
+    third_party_settings: {  }
+  field_product_description:
+    type: text_default
+    weight: 4
+    region: content
+    label: hidden
+    settings: {  }
+    third_party_settings: {  }
+  field_product_teaser:
+    type: basic_string
+    weight: 3
+    region: content
+    label: hidden
+    settings: {  }
+    third_party_settings: {  }
+  title:
+    type: title
+    weight: 0
+    region: content
+    label: hidden
+    settings:
+      tag: h1
+      linked: false
+    third_party_settings: {  }
+hidden:
+  rocketship_social_widgets: true
+  field_header_paragraph: true
+  field_media_product_images: true
+  field_meta_tags: true
+  field_show_breadcrumb: true
+  langcode: true
+  links: true
+  search_api_excerpt: true

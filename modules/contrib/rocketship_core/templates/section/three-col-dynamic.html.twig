@@ -1,0 +1,59 @@
+{% set first_col_has_content = content.first_top or content.first_main or content.first_bottom %}
+{% set center_col_has_content = content.center_top or content.center_main or content.center_bottom %}
+{% set second_col_has_content = content.second_top or content.second_main or content.second_bottom %}
+
+{% if (first_col_has_content and second_col_has_content) %}
+
+  {# If left and right sidebar content (with or without content column) #}
+
+  {% if (center_col_has_content) %}
+    {# all 3 columns #}
+    {% include "@rocketship_core/section/three-col.html.twig" %}
+  {% else %}
+    {# If left and right sidebar content only #}
+    {% include "@rocketship_core/section/two-col.html.twig" %}
+  {% endif %}
+
+{% elseif (center_col_has_content) %}
+  {# If a combination of center with a left or right #}
+
+  {% if (first_col_has_content and center_col_has_content) %}
+    {# If left sidebar content: move center content into second region #}
+    {% set content = content|merge({'second_top': content.second_top}) %}
+    {% set content = content|merge({'second_main': content.second_main}) %}
+    {% set content = content|merge({'second_bottom': content.second_bottom}) %}
+
+    {% set region_attributes = region_attributes|merge({'second_top': region_attributes.second_top}) %}
+    {% set region_attributes = region_attributes|merge({'second_main': region_attributes.second_main}) %}
+    {% set region_attributes = region_attributes|merge({'second_bottom': region_attributes.second_bottom}) %}
+    {% include "@rocketship_core/section/two-col.html.twig" %}
+
+  {% else %}
+
+    {# If right sidebar content: content flip layout + move first content into second region, move center content into first region #}
+    {% set content = content|merge({'first_top': content.second_top}) %}
+    {% set content = content|merge({'first_main': content.second_main}) %}
+    {% set content = content|merge({'first_bottom': content.second_bottom}) %}
+
+    {% set content = content|merge({'second_top': content.center_top}) %}
+    {% set content = content|merge({'second_main': content.center_main}) %}
+    {% set content = content|merge({'second_bottom': content.center_bottom}) %}
+
+    {% set region_attributes = region_attributes|merge({'first_top': region_attributes.second_top}) %}
+    {% set region_attributes = region_attributes|merge({'first_main': region_attributes.second_main}) %}
+    {% set region_attributes = region_attributes|merge({'first_bottom': region_attributes.second_bottom}) %}
+
+    {% set region_attributes = region_attributes|merge({'second_top': region_attributes.center_top}) %}
+    {% set region_attributes = region_attributes|merge({'second_main': region_attributes.center_main}) %}
+    {% set region_attributes = region_attributes|merge({'second_bottom': region_attributes.center_bottom}) %}
+
+    {% set settings = settings|merge({'layout_reversed': true}) %}
+    {% include "@rocketship_core/section/two-col.html.twig" %}
+  {% endif %}
+
+{% else %}
+
+  {# No sidebars at all #}
+  {% include "@rocketship_core/section/one-col-with-optional-subsection.html.twig" %}
+
+{% endif %}

@@ -1,0 +1,9 @@
+langcode: en
+status: true
+dependencies:
+  module:
+    - media
+id: media.paragraph_p009_image_masonry
+label: 'Paragraph p009 (masonry images)'
+targetEntityType: media
+cache: true

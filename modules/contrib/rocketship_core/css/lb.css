@@ -1,0 +1,222 @@
+/* Modal/Sidebar
+   Various overrides to fix the LayoutBuilder preview clashing with the front-end
+================================================================================ */
+
+/* Spacing before getting to LB preview */
+
+.entity-view-display-layout-builder-form {
+  margin-top: 40px;
+}
+
+.form__element--toggle-content-preview {
+  margin-top: 20px;
+}
+
+/* The off-canvas styling is a mess of overrides and nesting
+   between the off-canvas stylesheet and the theme jquery ui theming (eg. .ui-widget-content)
+*/
+#drupal-off-canvas {
+  /*
+  // To fix the bg to match with nested elements, in the off-canvas
+  // we set a bg and reset the border here
+  */
+  border: 0 none;
+  background-color: #444;
+}
+
+/*
+// mismatch of styling on the off-canvas and its nested elements
+// + off-canvas button resets
+// + the off-canvas button styles
+// + our own buttons
+// so need to re-add some styling
+*/
+#drupal-off-canvas button,
+#drupal-off-canvas .button {
+  padding: rem(5) rem(10);
+  color: #444;
+  background-color: #fff;
+}
+
+/*
+// has negative margins on all sides, presumably so it is flush against the sides of the off-canvas
+// unfortunatly, this means everything below it will overlay
+// so we reset the bottom margin
+*/
+#drupal-off-canvas table {
+  margin-bottom: rem(20);
+}
+
+.ui-widget.ui-widget-content {
+  z-index: 910; /* over the drupal messages and over full bg of paragraphs*/
+}
+
+.ui-widget-overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+}
+
+/* the dialog close button is mismatched in position & text is showing*/
+.ui-dialog.ui-dialog-off-canvas .ui-dialog-titlebar-close {
+  top: 0;
+  font-size: 0;
+}
+
+.ui-dialog-titlebar {
+  position: relative;
+}
+
+.ui-dialog.ui-dialog-off-canvas .ui-resizable-w {
+  position: absolute;
+}
+
+/* modal in layout builder for configuring fields and blocks */
+#layout-builder-modal {
+  padding: 1em;
+}
+
+.ui-dialog-titlebar .ui-dialog-titlebar-close {
+  position: absolute;
+  right: 1em;
+}
+
+/* Preview
+================================================================================ */
+
+/* .layout-builder .layout-builder__section {
+  overflow: hidden;
+} */
+
+/* .layout-builder .layout-builder__link--remove {
+  margin-left: 0;
+} */
+
+.layout-builder__actions {
+  z-index: 10;
+}
+
+.layout-builder .layout-builder__layout {
+  position: static !important;
+  display: block !important;
+  height: auto !important;
+  padding: 0 !important;
+  color: #686868 !important;
+}
+
+.layout-builder .layout-builder__layout a {
+  color: #686868 !important;
+}
+
+/* no overlays please */
+.layout-builder .layout:before,
+.layout-builder .layout:after {
+  display: none !important;
+}
+
+.layout-builder .layout-builder__layout .field {
+  position: static !important;
+  transform: none !important;
+  opacity: 1 !important;
+  margin: 0 !important;
+  width: auto !important;
+  height: auto !important;
+  min-width: 0 !important;
+  max-width: none !important;
+  color: #686868 !important;
+}
+
+.layout-builder .layout-builder__layout .field img {
+  position: static !important;
+  transform: none !important;
+  opacity: 1 !important;
+  width: 100% !important;
+  height: auto !important;
+  min-width: 0 !important;
+  max-width: 100% !important;
+  object-fit: none !important;
+}
+
+.layout-builder .layout-builder__layout .field * {
+  color: #686868 !important;
+}
+
+.layout-builder .layout-builder__region,
+.layout-builder .layout__subregion {
+    display: block !important;
+  /* overflow: hidden !important; */
+}
+
+.layout-builder .layout-builder-block {
+  display: block !important;
+  position: relative !important;
+  left: 0;
+  top: 0;
+  right: 0;
+  bottom: 0;
+  transform: none !important;
+  opacity: 1 !important;
+  width: auto !important;
+}
+
+.layout-builder .layout-builder__region .layout-builder__region {
+  display: block !important;
+  margin: 20px !important;
+}
+
+.layout-builder .layout-builder__region .layout__subregion {
+  display: block !important;
+  position: static !important;
+  transform: none !important;
+  opacity: 1 !important;
+  margin: 10px 5px !important;
+  padding: 1em !important;
+  width: auto !important;
+  height: auto !important;
+  min-width: 0 !important;
+  max-width: none !important;
+  color: #686868 !important;
+  border: 2px dashed #979797;
+  outline: initial !important;
+}
+
+.layout-builder .layout-builder__region-label, .layout-builder__section-label {
+  display: block !important;
+}
+
+.layout-builder .layout__cols {
+  display: flex !important;
+  flex-wrap: wrap;
+  margin: 0;
+}
+
+.layout-builder .layout__cols > .layout-builder__region {
+  flex: 0 1 auto;
+  width: auto;
+  margin: 0;
+  display: block;
+  outline: 2px dashed #979797;
+}
+
+.layout-builder .layout--2col .layout__cols > .layout__sidebar,
+.layout-builder .layout--3col .layout__cols > .layout__sidebar,
+.layout-builder .layout--3col .layout__cols > .layout__content {
+  flex: 0 1 33%;
+  width: 33%;
+  margin: 0;
+  display: block;
+}
+
+.layout-builder .layout--2col .layout__cols > .layout__content {
+  flex: 0 1 67%;
+  width: 67%;
+  margin: 0;
+}
+
+/* Override paragraphs styling for preview*/
+
+.layout-builder .group--paragraphs__item .paragraph.has-bg-stretched {
+  /* overflow: hidden; */
+}

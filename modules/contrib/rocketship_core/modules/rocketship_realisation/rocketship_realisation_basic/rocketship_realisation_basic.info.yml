@@ -1,0 +1,34 @@
+name: 'Rocketship Realisation Basic'
+type: module
+description: 'Contains the Basic upgrade, which adds an overview page.'
+core_version_requirement: ^8.8 || ^9
+package: Rocketship
+upgrades: { }
+states:
+  checked:
+    -
+      '#edit-rocketship-realisation-advanced':
+        checked: true
+dependencies:
+  - rocketship_page
+  - rocketship_realisation_core
+  - node_keep
+  - rocketship_paragraphs
+  - rocketship_seo
+  - migrate
+  - migrate_plus
+  - migrate_source_csv
+  - node
+  - search_api
+  - search_api_db
+  - token
+  - user
+  - views
+  - config_rewrite
+  - rocketship_content
+  - rocketship_blocks
+
+# Information added by Drupal.org packaging script on 2020-09-29
+version: '5.0.0-alpha19'
+project: 'rocketship_core'
+datestamp: 1601395145

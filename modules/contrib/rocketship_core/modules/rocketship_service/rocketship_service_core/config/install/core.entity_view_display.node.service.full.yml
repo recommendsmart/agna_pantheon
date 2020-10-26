@@ -1,0 +1,167 @@
+langcode: en
+status: true
+dependencies:
+  config:
+    - core.entity_view_mode.node.full
+    - field.field.node.service.field_description
+    - field.field.node.service.field_media_canonical_image
+    - field.field.node.service.field_meta_tags
+    - field.field.node.service.field_node_title_replacement
+    - field.field.node.service.field_paragraphs
+    - field.field.node.service.field_service_display_field
+    - field.field.node.service.field_show_breadcrumb
+    - node.type.service
+  module:
+    - entity_reference_revisions
+    - layout_builder
+    - manage_display
+    - rocketship_core
+third_party_settings:
+  layout_builder:
+    allow_custom: false
+    enabled: true
+    sections:
+      -
+        layout_id: rs_header
+        layout_settings:
+          label: 'Rocketship Header'
+          with_subregion: 1
+          with_subregion_02: 1
+          subregion_position: after
+          subregion_02_position: null
+          classes: service__header--full
+        components:
+          38b858e8-957e-4280-8716-8a234eeb2065:
+            uuid: 38b858e8-957e-4280-8716-8a234eeb2065
+            region: content
+            configuration:
+              id: 'field_block:node:service:field_media_canonical_image'
+              label: Image
+              provider: layout_builder
+              label_display: '0'
+              formatter:
+                label: hidden
+                type: blazy_media
+                settings:
+                  background: false
+                  caption:
+                    title: '0'
+                    alt: '0'
+                  view_mode: default
+                  image_style: ''
+                  thumbnail_style: ''
+                  responsive_image_style: service_header
+                  media_switch: ''
+                  ratio: ''
+                  box_style: ''
+                  box_media_style: ''
+                  box_caption: ''
+                  box_caption_custom: ''
+                  current_view_mode: _custom
+                third_party_settings: {  }
+              context_mapping:
+                entity: layout_builder.entity
+                view_mode: view_mode
+            additional: {  }
+            weight: 1
+          ab3e88a6-9e44-4785-907c-8de0ba1c86ef:
+            uuid: ab3e88a6-9e44-4785-907c-8de0ba1c86ef
+            region: subregion
+            configuration:
+              id: 'field_block:node:service:field_node_title_replacement'
+              label: 'Replacement title'
+              provider: layout_builder
+              label_display: '0'
+              formatter:
+                label: hidden
+                type: title_replacement_formatter
+                settings:
+                  wrapper_override: nothing
+                third_party_settings: {  }
+              context_mapping:
+                entity: layout_builder.entity
+                view_mode: view_mode
+            additional: {  }
+            weight: 0
+          328d3268-71b3-4e07-9eb1-623e882fceec:
+            uuid: 328d3268-71b3-4e07-9eb1-623e882fceec
+            region: subregion_02
+            configuration:
+              id: 'field_block:node:service:field_show_breadcrumb'
+              label: 'Show breadcrumb'
+              provider: layout_builder
+              label_display: '0'
+              formatter:
+                label: hidden
+                type: breadcrumb_render
+                settings: {  }
+                third_party_settings: {  }
+              context_mapping:
+                entity: layout_builder.entity
+                view_mode: view_mode
+            additional: {  }
+            weight: 0
+        third_party_settings: {  }
+      -
+        layout_id: rs_content
+        layout_settings:
+          label: 'Rocketship Content'
+          with_subregion: 0
+          with_subregion_02: 0
+          subregion_position: after
+          subregion_02_position: null
+          classes: service__content--full
+        components:
+          020d79e9-c9ff-4b6b-86e5-5444c671c130:
+            uuid: 020d79e9-c9ff-4b6b-86e5-5444c671c130
+            region: content
+            configuration:
+              label_display: '0'
+              context_mapping:
+                entity: layout_builder.entity
+              id: 'field_block:node:service:field_paragraphs'
+              formatter:
+                label: hidden
+                settings:
+                  view_mode: default
+                  link: ''
+                third_party_settings: {  }
+                type: entity_reference_revisions_entity_view
+            additional: {  }
+            weight: 0
+        third_party_settings: {  }
+id: node.service.full
+targetEntityType: node
+bundle: service
+mode: full
+content:
+  field_paragraphs:
+    weight: 0
+    label: hidden
+    settings:
+      view_mode: default
+      link: ''
+    third_party_settings: {  }
+    type: entity_reference_revisions_entity_view
+    region: content
+  title:
+    label: hidden
+    type: title
+    weight: -50
+    region: content
+    settings:
+      tag: h2
+      linked: true
+    third_party_settings: {  }
+hidden:
+  rocketship_social_widgets: true
+  field_description: true
+  field_media_canonical_image: true
+  field_meta_tags: true
+  field_node_title_replacement: true
+  field_service_display_field: true
+  field_show_breadcrumb: true
+  langcode: true
+  links: true
+  search_api_excerpt: true
+  uid: true

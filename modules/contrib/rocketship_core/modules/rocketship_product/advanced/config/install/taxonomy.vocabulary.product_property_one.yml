@@ -1,0 +1,7 @@
+langcode: en
+status: true
+dependencies: {  }
+name: 'Product property one'
+vid: product_property_one
+description: ''
+weight: 0

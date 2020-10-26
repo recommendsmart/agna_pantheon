@@ -1,0 +1,27 @@
+langcode: en
+status: true
+dependencies:
+  config:
+    - field.storage.paragraph.field_p_media_video
+    - media.type.video_embed
+    - paragraphs.paragraphs_type.p_006
+id: paragraph.p_006.field_p_media_video
+field_name: field_p_media_video
+entity_type: paragraph
+bundle: p_006
+label: Video
+description: 'Add a YouTube or Vimeo video.'
+required: true
+translatable: false
+default_value: {  }
+default_value_callback: ''
+settings:
+  handler: 'default:media'
+  handler_settings:
+    target_bundles:
+      video_embed: video_embed
+    sort:
+      field: _none
+    auto_create: true
+    auto_create_bundle: ''
+field_type: entity_reference

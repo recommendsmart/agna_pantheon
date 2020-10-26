@@ -1,0 +1,9 @@
+langcode: en
+status: true
+dependencies:
+  module:
+    - node
+id: node.office_promoted
+label: 'Contact Office promoted'
+targetEntityType: node
+cache: true

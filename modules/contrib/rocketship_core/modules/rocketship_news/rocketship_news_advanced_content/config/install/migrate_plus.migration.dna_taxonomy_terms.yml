@@ -1,0 +1,23 @@
+dependencies:
+  enforced:
+    module:
+      - rocketship_news_advanced
+id: dna_taxonomy_terms
+migration_group: dna_content
+source:
+  plugin: csv
+  path: /assets/csv/terms.csv
+  header_offset: 0
+  ids:
+    - id
+process:
+  langcode:
+    plugin: callback
+    callable: rocketship_core_get_default_content_default_language
+  name: name
+destination:
+  plugin: 'entity:taxonomy_term'
+  default_bundle: news_tags
+migration_dependencies:
+  required: {}
+  optional: {}

@@ -1,0 +1,9 @@
+langcode: en
+status: true
+dependencies: {  }
+id: dja_content
+label: 'Job Advanced Demo Content'
+description: 'Migrates advanced job content'
+source_type: ''
+module: null
+shared_configuration: null

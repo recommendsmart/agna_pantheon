@@ -1,0 +1,16 @@
+name: 'Rocketship News Advanced Demo Content'
+type: module
+description: 'Migrates several news items for demo purposes. Uninstalling this module will remove the news items again.'
+core_version_requirement: ^8.8 || ^9
+package: Rocketship
+dependencies:
+  - rocketship_news:rocketship_news_advanced
+  - drupal:migrate
+  - migrate_plus:migrate_plus
+  - token:token
+  - migrate_source_csv:migrate_source_csv
+
+# Information added by Drupal.org packaging script on 2020-09-29
+version: '5.0.0-alpha19'
+project: 'rocketship_core'
+datestamp: 1601395145

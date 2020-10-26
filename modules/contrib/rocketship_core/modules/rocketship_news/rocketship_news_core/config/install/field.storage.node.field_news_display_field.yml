@@ -1,0 +1,19 @@
+uuid: 8c3b1ee2-f9b0-408b-9716-dd0d9d332272
+langcode: en
+status: true
+dependencies:
+  module:
+    - node
+    - rocketship_core
+id: node.field_news_display_field
+field_name: field_news_display_field
+entity_type: node
+type: rs_display_field
+settings: {  }
+module: rocketship_core
+locked: false
+cardinality: 1
+translatable: true
+indexes: {  }
+persist_with_no_fields: false
+custom_storage: true
