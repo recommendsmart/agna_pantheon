@@ -1,0 +1,12 @@
+name: Compare
+description: 'Allow customers can compare multiple products'
+core_version_requirement: ^8.8 || ^9
+type: module
+package: 'Arch'
+dependencies:
+- arch:arch_product
+
+# Information added by Drupal.org packaging script on 2020-08-25
+version: '8.x-1.x-dev'
+project: 'arch'
+datestamp: 1598368233

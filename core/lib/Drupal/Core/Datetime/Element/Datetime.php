@@ -236,7 +236,7 @@ class Datetime extends DateElementBase {
       // placeholders are invalid for HTML5 date and datetime, so an example
       // format is appended to the title to appear in tooltips.
       $extra_attributes = [
-        'title' => t('Date (e.g. @format)', ['@format' => static::formatExample($date_format)]),
+        'title' => t('Date'),
         'type' => $element['#date_date_element'],
       ];
 
@@ -283,7 +283,7 @@ class Datetime extends DateElementBase {
 
       // Adds the HTML5 attributes.
       $extra_attributes = [
-        'title' => t('Time (e.g. @format)', ['@format' => static::formatExample($time_format)]),
+        'title' => t('Time'),
         'type' => $element['#date_time_element'],
         'step' => $element['#date_increment'],
       ];
@@ -362,7 +362,7 @@ class Datetime extends DateElementBase {
       // If there's empty input and the field is required, set an error. A
       // reminder of the required format in the message provides a good UX.
       elseif (empty($input['date']) && empty($input['time']) && $element['#required']) {
-        $form_state->setError($element, t('The %field date is required. Please enter a date in the format %format.', ['%field' => $title, '%format' => static::formatExample($format)]));
+        $form_state->setError($element, t('The %field date is required.', ['%field' => $title]));
       }
       else {
         // If the date is valid, set it.
@@ -373,7 +373,7 @@ class Datetime extends DateElementBase {
         // If the date is invalid, set an error. A reminder of the required
         // format in the message provides a good UX.
         else {
-          $form_state->setError($element, t('The %field date is invalid. Please enter a date in the format %format.', ['%field' => $title, '%format' => static::formatExample($format)]));
+          $form_state->setError($element, t('The %field date is invalid. Please enter a date in the correct format.', ['%field' => $title]));
         }
       }
     }
@@ -387,6 +387,10 @@ class Datetime extends DateElementBase {
    * @param string $format
    *
    * @return string
+   *
+   * @deprecated in Drupal 8.6.x and will be removed before Drupal 9.0.0.
+   *   HTML date input format should not be exposed to users, as browser widgets
+   *   expose input differently, varying by vendor, locale, device type, etc.
    */
   public static function formatExample($format) {
     if (!static::$dateExample) {

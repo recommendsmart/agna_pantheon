@@ -36,10 +36,6 @@ class YamlPecl implements SerializationInterface {
       ini_set('yaml.decode_php', 0);
       $init = TRUE;
     }
-    // yaml_parse() will error with an empty value.
-    if (!trim($raw)) {
-      return NULL;
-    }
     // @todo Use ErrorExceptions when https://drupal.org/node/1247666 is in.
     // yaml_parse() will throw errors instead of raising an exception. Until
     // such time as Drupal supports native PHP ErrorExceptions as the error
@@ -50,11 +46,23 @@ class YamlPecl implements SerializationInterface {
     // @see http://php.net/manual/class.errorexception.php
     set_error_handler([__CLASS__, 'errorHandler']);
     $ndocs = 0;
-    $data = yaml_parse($raw, 0, $ndocs, [
-      YAML_BOOL_TAG => '\Drupal\Component\Serialization\YamlPecl::applyBooleanCallbacks',
-    ]);
-    restore_error_handler();
-    return $data;
+    try {
+      $data = yaml_parse($raw, 0, $ndocs, [
+        YAML_BOOL_TAG => '\Drupal\Component\Serialization\YamlPecl::applyBooleanCallbacks',
+      ]);
+      restore_error_handler();
+      return $data;
+    } catch (InvalidDataTypeException $e) {
+      if ($e->getMessage() == 'yaml_parse(): end of stream reached without finding document 0') {
+        // yaml_parse() errors when only comments or empty lines are in $raw
+        // while that's valid YAML according to the spec.
+        // @see https://bugs.php.net/bug.php?id=75029
+        // @see http://yaml.org/spec/current.html#id2527268
+        return NULL;
+      } else {
+        throw $e;
+      }
+    }
   }
 
   /**

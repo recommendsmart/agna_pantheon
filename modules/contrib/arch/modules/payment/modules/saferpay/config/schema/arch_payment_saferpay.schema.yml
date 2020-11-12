@@ -1,0 +1,16 @@
+arch_payment_saferpay.config:
+  type: config_object
+  label: 'Saferpay Payment Configuration'
+  mapping:
+    customer_id:
+      type: string
+      label: 'Customer id'
+    terminal_id:
+      type: string
+      label: 'Terminal id'
+    username:
+      type: string
+      label: 'Username'
+    password:
+      type: string
+      label: 'Password'

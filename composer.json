@@ -5,6 +5,7 @@
     "license": "GPL-2.0-or-later",
     "require": {
         "composer/installers": "^1.2",
+        "drupal/arch": "1.x-dev",
         "drupal/commerce": "^2.21",
         "drupal/core-composer-scaffold": "^8.8",
         "drupal/core-project-message": "^8.8",

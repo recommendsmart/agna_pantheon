@@ -396,3 +396,25 @@ function views_post_update_field_names_for_multivalue_fields(&$sandbox = NULL) {
     return $view_config_updater->needsMultivalueBaseFieldUpdate($view);
   });
 }
+
+/**
+ * Add administrative theme option for views with page displays.
+ */
+function views_post_update_enforce_admin_theme() {
+  $config_factory = \Drupal::configFactory();
+  foreach ($config_factory->listAll('views.view.') as $name) {
+    $view = $config_factory->getEditable($name);
+    $changed = FALSE;
+    foreach ($view->get('display') as $display_id => $display) {
+      // Deal only with page displays.
+      if ($display['display_plugin'] === 'page') {
+        $trail = "display.$display_id.display_options.always_use_admin_theme";
+        $view->set($trail, FALSE)->save();
+        $changed = TRUE;
+      }
+    }
+    if ($changed) {
+      $view->save();
+    }
+  }
+}

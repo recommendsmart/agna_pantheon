@@ -10,7 +10,10 @@ use Drupal\Core\Entity\EntityTypeBundleInfoInterface;
 use Drupal\Core\Entity\EntityTypeInterface;
 use Drupal\Core\Entity\EntityTypeManagerInterface;
 use Drupal\Core\Entity\FieldableEntityInterface;
+use Drupal\Core\Language\LanguageManagerInterface;
 use Drupal\Core\Plugin\ContainerFactoryPluginInterface;
+use Drupal\Core\Plugin\Context\Context;
+use Drupal\Core\Plugin\Context\ContextDefinition;
 use Drupal\Core\Plugin\Context\EntityContext;
 use Drupal\Core\Session\AccountInterface;
 use Drupal\Core\Url;
@@ -35,6 +38,7 @@ use Symfony\Component\Routing\RouteCollection;
  *   context_definitions = {
  *     "display" = @ContextDefinition("entity:entity_view_display"),
  *     "view_mode" = @ContextDefinition("string", default_value = "default"),
+ *     "language" = @ContextDefinition("language", label = @Translation("Language"), required = FALSE),
  *   },
  * )
  *
@@ -65,14 +69,31 @@ class DefaultsSectionStorage extends SectionStorageBase implements ContainerFact
   protected $sampleEntityGenerator;
 
   /**
+   * @var \Drupal\language\Config\LanguageConfigOverride
+   */
+  protected $translationOverride;
+
+  /**
+   * The language manager.
+   *
+   * @var \Drupal\Core\Language\LanguageManagerInterface
+   */
+  protected $languageManager;
+
+  /**
    * {@inheritdoc}
    */
-  public function __construct(array $configuration, $plugin_id, $plugin_definition, EntityTypeManagerInterface $entity_type_manager, EntityTypeBundleInfoInterface $entity_type_bundle_info, SampleEntityGeneratorInterface $sample_entity_generator) {
+  public function __construct(array $configuration, $plugin_id, $plugin_definition, EntityTypeManagerInterface $entity_type_manager, EntityTypeBundleInfoInterface $entity_type_bundle_info, SampleEntityGeneratorInterface $sample_entity_generator, LanguageManagerInterface $language_manager = NULL) {
     parent::__construct($configuration, $plugin_id, $plugin_definition);
 
     $this->entityTypeManager = $entity_type_manager;
     $this->entityTypeBundleInfo = $entity_type_bundle_info;
     $this->sampleEntityGenerator = $sample_entity_generator;
+    if (!$language_manager) {
+      @trigger_error('The language_manager service must be passed to DefaultsSectionStorage::__construct(), it is required before Drupal 9.0.0.', E_USER_DEPRECATED);
+      $language_manager = \Drupal::languageManager();
+    }
+    $this->languageManager = $language_manager;
   }
 
   /**
@@ -85,7 +106,8 @@ class DefaultsSectionStorage extends SectionStorageBase implements ContainerFact
       $plugin_definition,
       $container->get('entity_type.manager'),
       $container->get('entity_type.bundle.info'),
-      $container->get('layout_builder.sample_entity_generator')
+      $container->get('layout_builder.sample_entity_generator'),
+      $container->get('language_manager')
     );
   }
 
@@ -279,6 +301,10 @@ class DefaultsSectionStorage extends SectionStorageBase implements ContainerFact
     if ($entity = $this->extractEntityFromRoute($value, $defaults)) {
       $contexts['display'] = EntityContext::fromEntity($entity);
     }
+    if (isset($defaults['langcode'])) {
+      $language = \Drupal::languageManager()->getLanguage($defaults['langcode']);
+      $contexts['language'] = new Context(new ContextDefinition('language', 'language'), $language);
+    }
     return $contexts;
   }
 
@@ -340,6 +366,10 @@ class DefaultsSectionStorage extends SectionStorageBase implements ContainerFact
    * {@inheritdoc}
    */
   public function save() {
+    if ($language = $this->getTranslationLanguage()) {
+      $this->translationOverride->save();
+      return;
+    }
     return $this->getDisplay()->save();
   }
 
@@ -443,6 +473,113 @@ class DefaultsSectionStorage extends SectionStorageBase implements ContainerFact
       $this->setContextValue('view_mode', $context->getContextValue()->getMode());
     }
     parent::setContext($name, $context);
+    if ($name === 'language' || $name === 'display') {
+      if (empty(array_diff(['language', 'display'], array_keys($this->context)))) {
+        $this->translationOverride = $this->getTranslationOverride();
+      }
+    }
+  }
+
+  /**
+   * {@inheritdoc}
+   */
+  public function isDefaultTranslation() {
+    if ($this->getTranslationLanguage()) {
+      return FALSE;
+    }
+    else {
+      return TRUE;
+    }
+  }
+
+  /**
+   * {@inheritdoc}
+   */
+  public function setTranslatedComponentConfiguration($uuid, array $configuration) {
+    foreach ($this->getSections() as $delta => $section) {
+      $components = $section->getComponents();
+      if (isset($components[$uuid])) {
+        $this->translationOverride->set("third_party_settings.layout_builder.sections.$delta.components.$uuid.configuration", $configuration);
+      }
+      else {
+        $components = $this->translationOverride->get("third_party_settings.layout_builder.sections.$delta.components");
+        // Check if this component was previously in this section.
+        if (isset($components[$uuid])) {
+          unset($components[$uuid]);
+          $this->translationOverride->set("third_party_settings.layout_builder.sections.$delta.components", $components);
+        }
+      }
+    }
+  }
+
+  /**
+   * {@inheritdoc}
+   */
+  public function getTranslatedComponentConfiguration($uuid) {
+    if ($sections_override = $this->translationOverride->get('third_party_settings.layout_builder.sections')) {
+      foreach ($sections_override as $delta => $section) {
+        if (isset($section['components'][$uuid])) {
+          return $section['components'][$uuid]['configuration'];
+        }
+      }
+    }
+    return [];
+  }
+
+  /**
+   * {@inheritdoc}
+   */
+  public function getTranslatedConfiguration() {
+    // TODO: Implement getTranslatedConfiguration() method.
+  }
+
+  /**
+   * {@inheritdoc}
+   */
+  public function getTempstoreKey() {
+    $key = parent::getTempstoreKey();
+
+    if ($language = $this->getTranslationLanguage()) {
+      $key .= '.' . $language->getId();
+    }
+    return $key;
+  }
+
+  /**
+   * Gets the language config override if applicable.
+   *
+   * @return \Drupal\language\Config\LanguageConfigOverride|null
+   *   The language override if the sections are for a translation otherwise
+   *   NULL.
+   */
+  protected function getTranslationOverride() {
+    if ($language = $this->getTranslationLanguage()) {
+      return \Drupal::languageManager()->getLanguageConfigOverride($language->getId(), $this->getDisplay()->getConfigDependencyName());
+    }
+    return NULL;
+  }
+
+  /**
+   * {@inheritdoc}
+   */
+  public function getTranslationLanguage() {
+    $contexts = $this->getContexts();
+    if (isset($contexts['language'])) {
+      /** @var \Drupal\Core\Language\LanguageInterface $language */
+      return $contexts['language']->getContextData()->getValue();
+    }
+    return NULL;
+  }
+
+  /**
+   * Gets the source language of the translation if any.
+   *
+   * @return \Drupal\Core\Language\LanguageInterface|null
+   *   The translation source language if the current layout is for a
+   *   translation otherwise NULL.
+   */
+  public function getSourceLanguage() {
+    return $this->languageManager->getDefaultLanguage();
   }
 
 }

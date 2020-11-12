@@ -7,6 +7,7 @@
 
 use Drupal\Core\Breadcrumb\Breadcrumb;
 use Drupal\Core\Cache\CacheableMetadata;
+use Drupal\Core\Entity\Entity\EntityViewDisplay;
 use Drupal\Core\Entity\EntityInterface;
 use Drupal\Core\Entity\FieldableEntityInterface;
 use Drupal\Core\Form\FormStateInterface;
@@ -15,8 +16,10 @@ use Drupal\Core\Render\Element;
 use Drupal\Core\Routing\RouteMatchInterface;
 use Drupal\Core\Url;
 use Drupal\field\FieldConfigInterface;
+use Drupal\layout_builder\ConfigTranslation\LayoutEntityDisplayUpdater;
 use Drupal\layout_builder\Entity\LayoutBuilderEntityViewDisplay;
 use Drupal\layout_builder\Entity\LayoutBuilderEntityViewDisplayStorage;
+use Drupal\layout_builder\Form\BlockContentInlineBlockTranslateForm;
 use Drupal\layout_builder\Form\DefaultsEntityForm;
 use Drupal\layout_builder\Form\LayoutBuilderEntityViewDisplayForm;
 use Drupal\layout_builder\Form\OverridesEntityForm;
@@ -82,6 +85,10 @@ function layout_builder_entity_type_alter(array &$entity_types) {
     if ($entity_type->entityClassImplements(FieldableEntityInterface::class)) {
       $entity_type->setFormClass('layout_builder', OverridesEntityForm::class);
     }
+  }
+
+  if (isset($entity_types['block_content'])) {
+    $entity_types['block_content']->setFormClass('layout_builder_translate', BlockContentInlineBlockTranslateForm::class);
   }
 }
 
@@ -333,7 +340,7 @@ function layout_builder_plugin_filter_layout_alter(array &$definitions, array $e
  */
 function layout_builder_system_breadcrumb_alter(Breadcrumb &$breadcrumb, RouteMatchInterface $route_match, array $context) {
   // Remove the extra 'Manage display' breadcrumb for Layout Builder defaults.
-  if ($route_match->getRouteObject()->hasOption('_layout_builder') && $route_match->getParameter('section_storage_type') === 'defaults') {
+  if ($route_match->getRouteObject() && $route_match->getRouteObject()->hasOption('_layout_builder') && $route_match->getParameter('section_storage_type') === 'defaults') {
     $links = array_filter($breadcrumb->getLinks(), function (Link $link) use ($route_match) {
       $entity_type_id = $route_match->getParameter('entity_type_id');
       return $link->getUrl()->getRouteName() !== "entity.entity_view_display.$entity_type_id.default";
@@ -407,6 +414,18 @@ function layout_builder_preprocess_language_content_settings_table(&$variables) 
 }
 
 /**
+ * Implements hook_preprocess_block().
+ */
+function layout_builder_preprocess_block(&$variables) {
+  // Prevent field label from overriding the configured block title for field
+  // blocks. See template_preprocess_block from block module for why this is
+  // necessary.
+  if ($variables['elements']['#base_plugin_id'] === 'field_block' && !empty($variables['configuration']['label']) && !empty($variables['configuration']['label_display'])) {
+    $variables['label'] = $variables['configuration']['label'];
+  }
+}
+
+/**
  * Implements hook_theme_suggestions_HOOK_alter().
  */
 function layout_builder_theme_suggestions_field_alter(&$suggestions, array $variables) {
@@ -416,4 +435,43 @@ function layout_builder_theme_suggestions_field_alter(&$suggestions, array $vari
     $suggestions[] = 'field__' . $element['#entity_type'] . '__' . $element['#field_name'] . '__' . $element['#bundle'] . '__' . $element['#third_party_settings']['layout_builder']['view_mode'];
   }
   return $suggestions;
+}
+
+/**
+ * Implements hook_config_translation_info().
+ */
+function layout_builder_config_translation_info(&$info) {
+  // If field UI is not enabled, the base routes of the type
+  // "entity.entity_view_display.$entity_type_id.view_mode" are not defined.
+  if (\Drupal::moduleHandler()->moduleExists('field_ui')) {
+    $entity_type_manager = \Drupal::entityTypeManager();
+    foreach (EntityViewDisplay::loadMultiple() as $entity_view_display) {
+      if ($entity_view_display instanceof LayoutBuilderEntityViewDisplay && $entity_view_display->isLayoutBuilderEnabled()) {
+        $entity_type_id = $entity_view_display->getTargetEntityTypeId();
+        /** @var \Drupal\Core\Entity\EntityTypeInterface $entity_type */
+        $entity_type = $entity_type_manager->getDefinition($entity_type_id);
+        // Make sure entity type has field UI enabled and has a base route.
+        if ($entity_type->get('field_ui_base_route')) {
+          $info[$entity_type_id . '_' . $entity_view_display->getTargetBundle() . '_' . $entity_view_display->getMode() . '_entity_view_display'] = [
+            'base_route_name' => "entity.entity_view_display.$entity_type_id.view_mode",
+            'entity_type' => 'entity_view_display',
+            'title' => t('Layout'),
+            'class' => '\Drupal\layout_builder\ConfigTranslation\LayoutEntityDisplayMapper',
+            'weight' => 10,
+            'names' => [],
+            'target_entity_type' => $entity_type_id,
+          ];
+        }
+      }
+    }
+  }
+}
+
+/**
+ * Implements hook_ENTITY_TYPE_presave().
+ */
+function layout_builder_entity_view_display_presave(EntityViewDisplayInterface $entity) {
+  /** @var \Drupal\layout_builder\ConfigTranslation\LayoutEntityDisplayUpdater $translation_updater */
+  $translation_updater = \Drupal::classResolver(LayoutEntityDisplayUpdater::class);
+  $translation_updater->presaveUpdateOverrides($entity);
 }

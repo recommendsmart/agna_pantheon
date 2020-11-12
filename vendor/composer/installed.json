@@ -4141,7 +4141,22 @@
                 "Limit the number of fields to display": "https://www.drupal.org/files/issues/2019-05-07/1234624-115-limit-values-to-display.patch",
                 "Dispatch events for changing content moderation states": "https://www.drupal.org/files/issues/2018-11-06/2873287-50.patch",
                 "Entity reference error messages are not user friendly": "https://www.drupal.org/files/issues/2020-06-04/3138631-9.patch",
-                "Callers of LayoutEntityHelperTrait::getEntitySections() do not account for the view mode": "https://www.drupal.org/files/issues/2019-06-20/3008924-5.patch"
+                "Callers of LayoutEntityHelperTrait::getEntitySections() do not account for the view mode": "https://www.drupal.org/files/issues/2019-06-20/3008924-5.patch",
+                "Support priority for needs_destruction service tag": "https://www.drupal.org/files/issues/2019-03-06/support-priority-for-need_destruction-tag.patch",
+                "Toolbar's renderPlain() is incompatible with dynamic page cache": "https://www.drupal.org/files/issues/2020-04-24/2949457-53.patch",
+                "Exposed term filter is not updated when terms are added, deleted, or rearranged  https://www.drupal.org/project/drupal/issues/2900248": "https://www.drupal.org/files/issues/2019-05-07/2900248-16.patch",
+                "Allow states to check and uncheck checkboxes and radio buttons": "https://www.drupal.org/files/issues/drupal-994360-74-states-checkboxes-checked.patch",
+                "Allow Views pages to be marked as admin page": "https://www.drupal.org/files/issues/2018-09-01/2719797-69.patch",
+                "Fix datetime widget descriptions": "https://www.drupal.org/files/issues/2019-03-16/2791693-38.patch",
+                "PECL YAML errors at valid YAML file which only contains comments": "https://www.drupal.org/files/issues/2018-09-30/pecl_yaml_only_comments_error-3003300-4.patch",
+                "Incorrect translation status for duplicated entities. -- https://www.drupal.org/project/drupal/issues/3009016#comment-12828375": "https://www.drupal.org/files/issues/2018-10-25/3009016-6.patch",
+                "Media entities should not have path alias by default - https://www.drupal.org/project/drupal/issues/3067944": "https://www.drupal.org/files/issues/2019-07-15/drupal.3067944.2.patch",
+                "Problematic hreflang on frontpage entity": "https://www.drupal.org/files/issues/2020-07-22/problematic_hreflang_links-2796399-34.patch",
+                "Upload via Media Library field widget does not take all upload validators in account": "https://www.drupal.org/files/issues/2019-12-11/media_library---file---upload_form_not_getting_populated_with_image_size_validators-3008292-8.7.x.patch",
+                "Use title block when show title is selected for field blocks": "https://www.drupal.org/files/issues/2020-04-17/allow-field-blocks-to-display-label-in-layout-builder-3039185-22.patch",
+                "Allow synced Layout default Translations: translating labels and inline blocks": "https://www.drupal.org/files/issues/2020-06-25/3044993-12_plus_2946333-164-rerolled89x-29.patch",
+                "Combo patch: issue 3077734 and 3020876": "https://www.drupal.org/files/issues/2020-06-22/contextual_links_attributes_combo.patch",
+                "layout_builder_system_breadcrumb_alter doesn't check for a null route object": "https://www.drupal.org/files/issues/2020-01-08/3104980-2.patch"
             }
         },
         "installation-source": "dist",

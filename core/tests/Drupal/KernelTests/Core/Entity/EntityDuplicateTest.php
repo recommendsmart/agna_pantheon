@@ -2,7 +2,10 @@
 
 namespace Drupal\KernelTests\Core\Entity;
 
+use Drupal\Core\TypedData\TranslationStatusInterface;
+use Drupal\entity_test\Entity\EntityTestMul;
 use Drupal\entity_test\Entity\EntityTestRev;
+use Drupal\language\Entity\ConfigurableLanguage;
 
 /**
  * Test entity duplication.
@@ -10,6 +13,11 @@ use Drupal\entity_test\Entity\EntityTestRev;
  * @group Entity
  */
 class EntityDuplicateTest extends EntityKernelTestBase {
+
+  /**
+   * {@inheritdoc}
+   */
+  public static $modules = ['language', 'entity_test'];
 
   /**
    * @var \Drupal\Core\Entity\ContentEntityStorageInterface
@@ -21,7 +29,13 @@ class EntityDuplicateTest extends EntityKernelTestBase {
    */
   protected function setUp() {
     parent::setUp();
+
+    // Enable an additional language.
+    ConfigurableLanguage::createFromLangcode('de')->save();
+    ConfigurableLanguage::createFromLangcode('nl')->save();
+
     $this->installEntitySchema('entity_test_rev');
+    $this->installEntitySchema('entity_test_mul');
     $this->entityTestRevStorage = $this->container->get('entity_type.manager')->getStorage('entity_test_rev');
   }
 
@@ -50,6 +64,30 @@ class EntityDuplicateTest extends EntityKernelTestBase {
     $this->entityTestRevStorage->resetCache();
     $duplicate_first_revision = EntityTestRev::load($duplicate_first_revision->id());
     $this->assertEquals('Updated name', $duplicate_first_revision->label());
+  }
+
+  /**
+   * Tests that the translation status is changed when duplicating an entity.
+   */
+  public function testDuplicateEntityTranslationStatus() {
+    // Create a test entity with some translations.
+    $entity = EntityTestMul::create([
+      'name' => $this->randomString(),
+      'language' => 'en',
+    ]);
+    $entity->save();
+    $entity->addTranslation('de');
+    $entity->addTranslation('nl');
+    $entity->save();
+
+    // Verify that a removed translation is not affected.
+    $entity->removeTranslation('de');
+
+    $duplicate = $entity->createDuplicate();
+
+    $this->assertSame($duplicate->getTranslationStatus('en'), TranslationStatusInterface::TRANSLATION_CREATED, 'Language en has correct translation status after cloning.');
+    $this->assertSame($duplicate->getTranslationStatus('nl'), TranslationStatusInterface::TRANSLATION_CREATED, 'Language nl has correct translation status after cloning.');
+    $this->assertSame($duplicate->getTranslationStatus('de'), TranslationStatusInterface::TRANSLATION_REMOVED, 'Language de has correct translation status after cloning.');
   }
 
 }

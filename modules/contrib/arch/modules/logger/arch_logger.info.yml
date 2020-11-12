@@ -1,0 +1,13 @@
+name: Logger
+description: 'Collect and display log events for orders'
+core_version_requirement: ^8.8 || ^9
+type: module
+package: 'Arch'
+dependencies:
+  - arch:arch_cart
+  - arch:arch_order
+
+# Information added by Drupal.org packaging script on 2020-08-25
+version: '8.x-1.x-dev'
+project: 'arch'
+datestamp: 1598368233

@@ -9,6 +9,7 @@ use Drupal\Core\Entity\EntityInterface;
 use Drupal\Core\Entity\EntityRepositoryInterface;
 use Drupal\Core\Entity\EntityTypeBundleInfoInterface;
 use Drupal\Core\Form\FormStateInterface;
+use Drupal\layout_builder\LayoutEntityHelperTrait;
 use Drupal\layout_builder\LayoutTempstoreRepositoryInterface;
 use Drupal\layout_builder\OverridesSectionStorageInterface;
 use Drupal\layout_builder\Plugin\SectionStorage\OverridesSectionStorage;
@@ -24,6 +25,7 @@ use Symfony\Component\DependencyInjection\ContainerInterface;
 class OverridesEntityForm extends ContentEntityForm {
 
   use PreviewToggleTrait;
+  use LayoutEntityHelperTrait;
 
   /**
    * Layout tempstore repository.
@@ -82,7 +84,10 @@ class OverridesEntityForm extends ContentEntityForm {
     parent::init($form_state);
 
     $form_display = EntityFormDisplay::collectRenderDisplay($this->entity, $this->getOperation(), FALSE);
-    $form_display->setComponent(OverridesSectionStorage::FIELD_NAME, [
+    $field_name = static::isTranslation($this->sectionStorage) ?
+      OverridesSectionStorage::TRANSLATED_CONFIGURATION_FIELD_NAME :
+      OverridesSectionStorage::FIELD_NAME;
+    $form_display->setComponent($field_name, [
       'type' => 'layout_builder_widget',
       'weight' => -10,
       'settings' => [],
@@ -103,6 +108,7 @@ class OverridesEntityForm extends ContentEntityForm {
     //   restricts all access to the field, explicitly allow access here until
     //   https://www.drupal.org/node/2942975 is resolved.
     $form[OverridesSectionStorage::FIELD_NAME]['#access'] = TRUE;
+    $form[OverridesSectionStorage::TRANSLATED_CONFIGURATION_FIELD_NAME]['#access'] = TRUE;
 
     $form['layout_builder_message'] = $this->buildMessage($section_storage->getContextValue('entity'), $section_storage);
     return $form;
@@ -199,14 +205,16 @@ class OverridesEntityForm extends ContentEntityForm {
       '#submit' => ['::redirectOnSubmit'],
       '#redirect' => 'discard_changes',
     ];
-    // @todo This button should be conditionally displayed, see
-    //   https://www.drupal.org/node/2917777.
-    $actions['revert'] = [
-      '#type' => 'submit',
-      '#value' => $this->t('Revert to defaults'),
-      '#submit' => ['::redirectOnSubmit'],
-      '#redirect' => 'revert',
-    ];
+    if (!static::isTranslation($this->sectionStorage)) {
+      // @todo This button should be conditionally displayed, see
+      //   https://www.drupal.org/node/2917777.
+      $actions['revert'] = [
+        '#type' => 'submit',
+        '#value' => $this->t('Revert to defaults'),
+        '#submit' => ['::redirectOnSubmit'],
+        '#redirect' => 'revert',
+      ];
+    }
     $actions['preview_toggle'] = $this->buildContentPreviewToggle();
     return $actions;
   }

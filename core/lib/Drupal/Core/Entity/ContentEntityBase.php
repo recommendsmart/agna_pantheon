@@ -1151,6 +1151,13 @@ abstract class ContentEntityBase extends EntityBase implements \IteratorAggregat
       $duplicate->loadedRevisionId = NULL;
     }
 
+    // Change the status of the translations.
+    array_walk($duplicate->translations, function (&$translation) {
+      if ($translation['status'] === static::TRANSLATION_EXISTING) {
+        $translation['status'] = static::TRANSLATION_CREATED;
+      }
+    });
+
     return $duplicate;
   }
 

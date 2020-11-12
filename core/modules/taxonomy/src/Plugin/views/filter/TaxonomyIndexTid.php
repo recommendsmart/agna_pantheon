@@ -2,6 +2,7 @@
 
 namespace Drupal\taxonomy\Plugin\views\filter;
 
+use Drupal\Core\Cache\Cache;
 use Drupal\Core\Entity\Element\EntityAutocomplete;
 use Drupal\Core\Form\FormStateInterface;
 use Drupal\Core\Session\AccountInterface;
@@ -404,6 +405,21 @@ class TaxonomyIndexTid extends ManyToOne {
     $contexts[] = 'user';
 
     return $contexts;
+  }
+
+  /**
+   * {@inheritdoc}
+   */
+  public function getCacheTags() {
+    $tags = parent::getCacheTags();
+    $vocabulary = $this->vocabularyStorage->load($this->options['vid']);
+    if ($vocabulary) {
+      $tags = Cache::mergeTags($tags, $vocabulary->getCacheTags());
+    }
+    // There is no vocabulary specific tag for 'taxonomy_term_list' so we add
+    // the generic tag here to catch any updates to terms.
+    $tags = Cache::mergeTags($tags, ['taxonomy_term_list']);
+    return $tags;
   }
 
   /**
