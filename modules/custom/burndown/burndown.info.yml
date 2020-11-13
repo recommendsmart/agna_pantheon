@@ -1,0 +1,14 @@
+name: 'Burndown'
+type: module
+description: 'Burndown Project Management'
+core_version_requirement: ^8.8 || ^9
+package: 'Burndown'
+
+dependencies:
+  - field
+  - link
+
+# Information added by Drupal.org packaging script on 2020-11-13
+version: '1.0.9'
+project: 'burndown'
+datestamp: 1605241554

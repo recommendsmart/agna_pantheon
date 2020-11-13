@@ -1,0 +1,23 @@
+<div id="board" class="row">
+
+  {% for swimlane in data.swimlanes %}
+    <div class="col swimlane">
+      <span class="label">{{ swimlane.swimlane_name }}</span>
+      <span class="counter swimlane-{{ swimlane.swimlane_id }}-counter"></span>
+
+      <div
+        class="list-group swimlane-{{ swimlane.swimlane_id }}"
+        data-swimlane-id="{{ swimlane.swimlane_id }}">
+
+        {% for task in swimlane.tasks %}
+
+          {{ task }}
+
+        {% endfor %}
+      </div>
+      
+    </div>
+
+  {% endfor %}
+
+</div>
