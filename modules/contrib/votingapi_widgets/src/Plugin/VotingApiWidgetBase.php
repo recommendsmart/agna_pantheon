@@ -5,7 +5,7 @@ namespace Drupal\votingapi_widgets\Plugin;
 use Drupal\Component\Plugin\PluginBase;
 use Drupal\Core\Entity\ContentEntityInterface;
 use Drupal\field\Entity\FieldConfig;
-
+use Drupal\votingapi\Entity\Vote;
 use Drupal\votingapi\VoteResultFunctionManager;
 use Drupal\Core\Entity\EntityFormBuilderInterface;
 use Drupal\Core\Entity\EntityTypeManagerInterface;
@@ -204,7 +204,7 @@ abstract class VotingApiWidgetBase extends PluginBase implements VotingApiWidget
     $timestamp_offset = $this->getWindow('user_window', $entity_type, $entity_bundle, $field_name);
 
     if ($this->account->isAnonymous()) {
-      $voteData['vote_source'] = $this->requestStack->getCurrentRequest()->getClientIp();
+      $voteData['vote_source'] = Vote::getCurrentIp();
       $timestamp_offset = $this->getWindow('anonymous_window', $entity_type, $entity_bundle, $field_name);
     }
 

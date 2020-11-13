@@ -39,7 +39,7 @@ dependencies:
   - rocketship_content
   - rocketship_blocks
 
-# Information added by Drupal.org packaging script on 2020-09-29
-version: '5.0.0-alpha19'
+# Information added by Drupal.org packaging script on 2020-11-12
+version: '5.0.0-alpha20'
 project: 'rocketship_core'
-datestamp: 1601395145
+datestamp: 1605177096

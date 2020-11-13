@@ -4,11 +4,12 @@ namespace Drupal\votingapi_widgets;
 
 use Drupal\votingapi_widgets\Plugin\VotingApiWidgetManager;
 use Drupal\Core\Entity\EntityTypeManagerInterface;
+use Drupal\Core\Security\TrustedCallbackInterface;
 
 /**
  * Implements lazy loading.
  */
-class VotingApiLoader {
+class VotingApiLoader implements TrustedCallbackInterface {
 
   /**
    * The votingapi_widget widget manager.
@@ -49,6 +50,13 @@ class VotingApiLoader {
       return [];
     }
     return $plugin->buildForm($entity_type, $entity_bundle, $entity_id, $vote_type, $field_name, unserialize($settings));
+  }
+
+  /**
+   * {@inheritdoc}
+   */
+  public static function trustedCallbacks() {
+    return ['buildForm'];
   }
 
 }

@@ -53,7 +53,7 @@ class BaseRatingForm extends ContentEntityForm {
     $entity = $this->getEntity();
     $voted_entity_type = $entity->getVotedEntityType();
     $voted_entity_id = $entity->getVotedEntityId();
-    $voted_entity = $this->entityManager->getStorage($voted_entity_type)->load($voted_entity_id);
+    $voted_entity = $this->entityTypeManager->getStorage($voted_entity_type)->load($voted_entity_id);
 
     $additional_form_id_parts = [];
     $additional_form_id_parts[] = $voted_entity->getEntityTypeId();

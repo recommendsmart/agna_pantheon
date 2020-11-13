@@ -310,7 +310,7 @@ function rocketship_core_blazy_alter(array &$build, array $settings = []) {
       // if the media item is an image,
       // we need the entity title to build a descriptive aria-label
       // to output on the link around the image
-      $entity_title = $entity->getTitle();
+      $entity_title = $entity->label();
 
       // put that title in a variable the twig template can use
       $build['#build']['settings']['title'] = $entity_title;

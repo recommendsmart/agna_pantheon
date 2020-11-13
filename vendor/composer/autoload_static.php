@@ -164,6 +164,7 @@ class ComposerStaticInit65031d77c4d09eb8ad2aa625ea8e4c5c
             'Drush\\Internal\\' => 15,
             'Drush\\' => 6,
             'Drupal\\plugin\\' => 14,
+            'Drupal\\currency\\' => 16,
             'Drupal\\Driver\\' => 14,
             'Drupal\\Core\\' => 12,
             'Drupal\\Composer\\Plugin\\Scaffold\\' => 32,
@@ -190,6 +191,8 @@ class ComposerStaticInit65031d77c4d09eb8ad2aa625ea8e4c5c
             'Consolidation\\AnnotatedCommand\\' => 31,
             'Composer\\Semver\\' => 16,
             'Composer\\Installers\\' => 20,
+            'Commercie\\Currency\\' => 19,
+            'Commercie\\CurrencyExchange\\' => 27,
             'CommerceGuys\\Intl\\' => 18,
             'CommerceGuys\\Addressing\\' => 24,
         ),
@@ -473,6 +476,10 @@ class ComposerStaticInit65031d77c4d09eb8ad2aa625ea8e4c5c
         array (
             0 => __DIR__ . '/../..' . '/modules/contrib/plugin/src',
         ),
+        'Drupal\\currency\\' => 
+        array (
+            0 => __DIR__ . '/../..' . '/modules/contrib/currency/src',
+        ),
         'Drupal\\Driver\\' => 
         array (
             0 => __DIR__ . '/../..' . '/drivers/lib/Drupal/Driver',
@@ -564,6 +571,14 @@ class ComposerStaticInit65031d77c4d09eb8ad2aa625ea8e4c5c
         'Composer\\Installers\\' => 
         array (
             0 => __DIR__ . '/..' . '/composer/installers/src/Composer/Installers',
+        ),
+        'Commercie\\Currency\\' => 
+        array (
+            0 => __DIR__ . '/..' . '/commercie/currency/src',
+        ),
+        'Commercie\\CurrencyExchange\\' => 
+        array (
+            0 => __DIR__ . '/..' . '/commercie/currency-exchange/src',
         ),
         'CommerceGuys\\Intl\\' => 
         array (
