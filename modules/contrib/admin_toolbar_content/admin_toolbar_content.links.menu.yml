@@ -1,0 +1,2 @@
+admin_toolbar_content.admin_content:
+  deriver: \Drupal\admin_toolbar_content\Plugin\Derivative\NodeMenuLinkDerivative

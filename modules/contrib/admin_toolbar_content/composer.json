@@ -1,0 +1,15 @@
+{
+  "name": "calibrate/admin_toolbar_content",
+  "description": "Provides extra content admin enhancements in the admin toolbar.",
+  "type": "drupal-custom",
+  "keywords": ["Drupal 8","UX","Calibr8","Toolbar"],
+  "homepage": "https://ccr.calibrate.be/calibrate/admin_toolbar_content.git",
+  "license": "GPL-2.0+",
+  "authors": [
+    {
+      "name": "Kris Booghmans",
+      "email": "kris@calibrate.be",
+      "homepage": "http://www.calibrate.be"
+    }
+  ]
+}

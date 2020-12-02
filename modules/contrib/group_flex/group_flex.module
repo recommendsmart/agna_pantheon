@@ -1,0 +1,103 @@
+<?php
+
+/**
+ * @file
+ * Group flex module file.
+ */
+
+use Drupal\Core\Form\FormStateInterface;
+
+const GROUP_FLEX_TYPE_VIS_PUBLIC = 0;
+const GROUP_FLEX_TYPE_VIS_PRIVATE = 1;
+const GROUP_FLEX_TYPE_VIS_FLEX = 2;
+
+/**
+ * Implements hook_entity_type_alter().
+ *
+ * This overrides the GroupType Form provided by the Group module.
+ */
+function group_flex_entity_type_alter(array &$entity_types) {
+  $handlerClasses = $entity_types['group_type']->getHandlerClasses();
+  $formHandlerClasses = $handlerClasses['form'];
+  if (!isset($formHandlerClasses['default'])) {
+    // This needed because https://www.drupal.org/project/group/issues/2833054.
+    $formHandlerClasses['default'] = $formHandlerClasses['edit'];
+  }
+  $formHandlerClasses['add'] = 'Drupal\group_flex\Form\GroupTypeForm';
+  $formHandlerClasses['edit'] = 'Drupal\group_flex\Form\GroupTypeForm';
+  $entity_types['group_type']->setHandlerClass('form', $formHandlerClasses);
+}
+
+/**
+ * Implements hook_form_BASE_FORM_ID_alter().
+ *
+ * Altering group add and edit forms.
+ */
+function group_flex_form_group_form_alter(&$form, FormStateInterface $form_state, $form_id) {
+  /** @var \Drupal\group\Entity\GroupInterface $group */
+  $group = $form_state->getFormObject()->getEntity();
+  $group_type = $group->getGroupType();
+  if ($group_type) {
+    $group_flex_enable = $group_type->getThirdPartySetting('group_flex', 'group_flex_enabler', 0);
+    if ($group_flex_enable === 1) {
+      $group_flex_visibility = $group_type->getThirdPartySetting('group_flex', 'group_type_visibility', NULL);
+      $form['footer']['group_visibility'] = [
+        '#title' => t('Visibility'),
+        '#type' => 'item',
+        '#weight' => isset($form['actions']['#weight']) ? ($form['actions']['#weight'] - 1) : -1,
+      ];
+      $visibility_explanation = t('The @group_type_name will be viewed by anybody on the site', ['@group_type_name' => $group_type->label()]);
+      $visibility_value = t('Public');
+      if ($group_flex_visibility == GROUP_FLEX_TYPE_VIS_PRIVATE) {
+        $visibility_value = t('Private');
+        $visibility_explanation = t('The @group_type_name will be viewed by group members only', ['@group_type_name' => $group_type->label()]);
+      }
+      $visibility_description = t('The @group_type_name visibility is @visibility_value', [
+        '@group_type_name' => $group_type->label(),
+        '@visibility_value' => $visibility_value,
+      ]);
+      $form['footer']['group_visibility']['#markup'] = '<p>' . $visibility_description . ' (' . $visibility_explanation . ')' . '</p>';
+
+      if ($group_flex_visibility == GROUP_FLEX_TYPE_VIS_FLEX) {
+        unset($form['footer']['group_visibility']['#markup']);
+        $form['footer']['group_visibility']['#required'] = TRUE;
+        $form['footer']['group_visibility']['#type'] = 'radios';
+        $form['footer']['group_visibility']['#options'] = [
+          GROUP_FLEX_TYPE_VIS_PUBLIC => t('Public (The @group_type_name will be viewed by anybody on the site)', ['@group_type_name' => $group_type->label()]),
+          GROUP_FLEX_TYPE_VIS_PRIVATE => t('Private (The @group_type_name will be viewed by group members only)', ['@group_type_name' => $group_type->label()]),
+        ];
+        $form['footer']['group_visibility']['#default_value'] = GROUP_FLEX_TYPE_VIS_PUBLIC;
+
+        // If this is an existing group add default value based on permissions.
+        if ($group->id()) {
+          /** @var \Drupal\group_permissions\GroupPermissionsManager $group_permissions_manager */
+          $group_permissions_manager = \Drupal::service('group_permission.group_permissions_manager');
+          $group_permission = $group_permissions_manager->getCustomPermissions($group);
+          if (array_key_exists($group_type->getOutsiderRoleId(), $group_permission) &&
+            !in_array('view group', $group_permission[$group_type->getOutsiderRoleId()])) {
+            $form['footer']['group_visibility']['#default_value'] = GROUP_FLEX_TYPE_VIS_PRIVATE;
+          }
+        }
+
+        // Add submit handler.
+        $form['actions']['submit']['#submit'][] = '_group_flex_form_group_form_submit';
+      }
+    }
+  }
+}
+
+/**
+ * Save the correct group permissions.
+ */
+function _group_flex_form_group_form_submit($form, FormStateInterface $form_state) {
+  $group_visibility = $form_state->getValue('group_visibility', NULL);
+  if ($group_visibility !== NULL) {
+    /** @var \Drupal\group\Entity\GroupInterface $group */
+    $group = $form_state->getFormObject()->getEntity();
+    if ($group) {
+      /** @var \Drupal\group_flex\GroupFlexGroupSaver $group_flex_group_saver */
+      $group_flex_group_saver = \Drupal::service('group_flex.group_saver');
+      $group_flex_group_saver->saveGroup($group, $group_visibility);
+    }
+  }
+}
