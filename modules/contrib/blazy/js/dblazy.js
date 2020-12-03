@@ -319,7 +319,7 @@
   dBlazy.setAttrsWithSources = function (el, attr, remove) {
     var me = this;
     var parent = el.parentNode || null;
-    var isPicture = parent && me.equal(parent, 'picture');
+    var isPicture = parent && me.equal(el, 'picture');
     var targets = isPicture ? parent.getElementsByTagName('source') : el.getElementsByTagName('source');
 
     attr = attr || (isPicture ? 'srcset' : 'src');
