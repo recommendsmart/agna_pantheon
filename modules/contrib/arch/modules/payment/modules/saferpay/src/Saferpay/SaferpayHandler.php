@@ -144,8 +144,10 @@ class SaferpayHandler implements SaferpayHandlerInterface, ContainerInjectionInt
    *   - end_point.
    */
   private function getSettings() {
+    $settings = $this->configFactory->get(self::CONFIG_NAME);
     if ($this->state->get('arch_payment_saferpay_test', TRUE)) {
-      return [
+      // @todo Maybe these should be configurable.
+      $config = [
         'customer_id' => '401860',
         'terminal_id' => '17795278',
         'username' => 'API_401860_80003225',
@@ -153,17 +155,18 @@ class SaferpayHandler implements SaferpayHandlerInterface, ContainerInjectionInt
         'end_point' => 'https://test.saferpay.com/api',
       ];
     }
-
-    $config = $this->configFactory->get(self::CONFIG_NAME);
-
-    // Live mode settings.
-    return [
-      'customer_id' => $config->get('customer_id'),
-      'terminal_id' => $config->get('terminal_id'),
-      'username' => $config->get('username'),
-      'password' => $config->get('password'),
-      'end_point' => 'https://www.saferpay.com/api',
-    ];
+    else {
+      $config = [
+        'customer_id' => $settings->get('customer_id'),
+        'terminal_id' => $settings->get('terminal_id'),
+        'username' => $settings->get('username'),
+        'password' => $settings->get('password'),
+        'end_point' => 'https://www.saferpay.com/api',
+      ];
+    }
+    $config['spec_version'] = $settings->get('spec_version');
+    $config['force_sca'] = $settings->get('force_sca');
+    return $config;
   }
 
   /**
@@ -270,38 +273,41 @@ class SaferpayHandler implements SaferpayHandlerInterface, ContainerInjectionInt
       $error_url = Url::fromRoute('arch_payment_saferpay.error', [], $url_options)->toString(TRUE)->getGeneratedUrl();
       $cancel_url = Url::fromRoute('arch_payment_saferpay.cancel', [], $url_options)->toString(TRUE)->getGeneratedUrl();
 
+      $payload = [
+        'RequestHeader' => [
+          'SpecVersion' => $settings['spec_version'],
+          'CustomerId' => $settings['customer_id'],
+          'RequestId' => sha1($order_id . time()),
+          'RetryIndicator' => 0,
+          'ClientInfo' => [
+            'ShopInfo' => $domain,
+          ],
+        ],
+        'TerminalId' => $settings['terminal_id'],
+        'Payment' => [
+          'Amount' => [
+            'Value' => (int) $price,
+            'CurrencyCode' => $currency_code,
+          ],
+          'OrderId' => $order_number,
+          'Description' => $order_number,
+        ],
+        'Payer' => [
+          'LanguageCode' => $lang,
+        ],
+        'ReturnUrls' => [
+          'Success' => $succes_url,
+          'Fail' => $error_url,
+          'Abort' => $cancel_url,
+        ],
+      ];
+      if ($settings['force_sca']) {
+        $payload['Authentication'] = [
+          'ThreeDsChallenge' => 'FORCE',
+        ];
+      }
       /** @var \Psr\Http\Message\ResponseInterface $response */
-      $response = $this->processUrl(
-        '/Payment/v1/PaymentPage/Initialize',
-        [
-          'RequestHeader' => [
-            'SpecVersion' => "1.10",
-            'CustomerId' => $settings['customer_id'],
-            'RequestId' => sha1($order_id . time()),
-            'RetryIndicator' => 0,
-            'ClientInfo' => [
-              'ShopInfo' => $domain,
-            ],
-          ],
-          'TerminalId' => $settings['terminal_id'],
-          'Payment' => [
-            'Amount' => [
-              'Value' => (int) $price,
-              'CurrencyCode' => $currency_code,
-            ],
-            'OrderId' => $order_number,
-            'Description' => $order_number,
-          ],
-          'Payer' => [
-            'LanguageCode' => $lang,
-          ],
-          'ReturnUrls' => [
-            'Success' => $succes_url,
-            'Fail' => $error_url,
-            'Abort' => $cancel_url,
-          ],
-        ]
-      );
+      $response = $this->processUrl('/Payment/v1/PaymentPage/Initialize', $payload);
       if (!empty($response)) {
         $body = (array) Json::decode($response->getBody());
         if (!empty($body['Token'])) {
@@ -336,7 +342,7 @@ class SaferpayHandler implements SaferpayHandlerInterface, ContainerInjectionInt
         '/Payment/v1/PaymentPage/Assert',
         [
           'RequestHeader' => [
-            'SpecVersion' => "1.10",
+            'SpecVersion' => $settings['spec_version'],
             'CustomerId' => $settings['customer_id'],
             'RequestId' => sha1($order_id . time()),
             'RetryIndicator' => 0,
@@ -377,7 +383,7 @@ class SaferpayHandler implements SaferpayHandlerInterface, ContainerInjectionInt
         '/Payment/v1/Transaction/Capture',
         [
           'RequestHeader' => [
-            'SpecVersion' => "1.10",
+            'SpecVersion' => $settings['spec_version'],
             'CustomerId' => $settings['customer_id'],
             'RequestId' => sha1($order_id . time()),
             'RetryIndicator' => 0,

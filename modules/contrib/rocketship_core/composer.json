@@ -114,6 +114,9 @@
       },
       "drupal/simple_sitemap": {
         "https://www.drupal.org/files/issues/2020-04-02/simple_sitemap.3124526.3.5.patch": "https://www.drupal.org/files/issues/2020-04-02/simple_sitemap.3124526.3.5.patch"
+      },
+      "drupal/blazy": {
+        "https://www.drupal.org/project/blazy/issues/3167100": "https://www.drupal.org/files/issues/2020-11-24/srcset_required-3167100-7-21.patch"
       }
     }
   }

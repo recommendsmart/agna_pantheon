@@ -38,6 +38,8 @@ abstract class RocketshipCoreBaseLayout extends LayoutDefault implements PluginF
     $configuration = parent::defaultConfiguration();
     // Set default to layout title.
     $configuration['label'] = $this->getPluginDefinition()->getLabel();
+    $configuration['classes'] = NULL;
+    $configuration['bem-modifier'] = NULL;
     return $configuration;
   }
 

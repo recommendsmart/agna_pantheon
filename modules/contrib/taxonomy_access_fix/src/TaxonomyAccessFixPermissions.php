@@ -56,7 +56,7 @@ class TaxonomyAccessFixPermissions implements ContainerInjectionInterface {
         ]),
       ];
       $permissions['reorder terms in ' . $vocabulary->id()] = [
-        'title' => $this->t('View terms in %vocabulary', [
+        'title' => $this->t('Reorder terms in %vocabulary', [
           '%vocabulary' => $vocabulary->label(),
         ]),
       ];

@@ -6,7 +6,7 @@ package: 'Arch product'
 dependencies:
   - arch:arch_product
 
-# Information added by Drupal.org packaging script on 2020-08-25
-version: '8.x-1.x-dev'
+# Information added by Drupal.org packaging script on 2020-11-23
+version: '8.x-1.0-alpha1'
 project: 'arch'
-datestamp: 1598368233
+datestamp: 1606120272

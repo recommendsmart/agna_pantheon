@@ -4,13 +4,19 @@ arch_payment_saferpay.config:
   mapping:
     customer_id:
       type: string
-      label: 'Customer id'
+      label: 'Customer ID'
     terminal_id:
       type: string
-      label: 'Terminal id'
+      label: 'Terminal ID'
     username:
       type: string
       label: 'Username'
     password:
       type: string
       label: 'Password'
+    spec_version:
+      type: string
+      label: 'SpecVersion'
+    force_sca:
+      type: boolean
+      label: 'Force SCA'

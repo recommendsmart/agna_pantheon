@@ -165,6 +165,21 @@ class Saferpay extends ConfigurablePaymentMethodBase implements ConfigurableArch
       '#required' => TRUE,
     ];
 
+    $form['arch_payment_saferpay']['spec_version'] = [
+      '#type' => 'textfield',
+      '#title' => $this->t('SpecVersion', [], ['context' => 'arch_payment_saferpay']),
+      '#default_value' => $config->get('spec_version'),
+      '#required' => TRUE,
+    ];
+    $form['arch_payment_saferpay']['force_sca'] = [
+      '#type' => 'checkbox',
+      '#title' => $this->t('Force SCA', [], ['context' => 'arch_payment_saferpay']),
+      '#default_value' => $config->get('force_sca'),
+      '#description' => $this->t('For detailed description about PSD2 and SCA see: <a href=":link">:link</a>', [
+        ':link' => 'https://saferpay.github.io/sndbx/psd2.html',
+      ]),
+    ];
+
     return $form;
   }
 
@@ -184,6 +199,8 @@ class Saferpay extends ConfigurablePaymentMethodBase implements ConfigurableArch
       ->set('terminal_id', $form_state->getValue(['arch_payment_saferpay', 'terminal_id']))
       ->set('username', $form_state->getValue(['arch_payment_saferpay', 'username']))
       ->set('password', $form_state->getValue(['arch_payment_saferpay', 'password']))
+      ->set('spec_version', $form_state->getValue(['arch_payment_saferpay', 'spec_version']))
+      ->set('force_sca', $form_state->getValue(['arch_payment_saferpay', 'force_sca']))
       ->save();
 
     if ($form_state->getValue(['arch_payment_saferpay', 'test_mode'])) {

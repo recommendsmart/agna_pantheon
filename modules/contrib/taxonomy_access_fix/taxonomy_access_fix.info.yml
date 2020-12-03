@@ -7,7 +7,7 @@ package: Taxonomy
 dependencies:
   - drupal:taxonomy
 
-# Information added by Drupal.org packaging script on 2020-06-26
-version: '8.x-3.0'
+# Information added by Drupal.org packaging script on 2020-11-15
+version: '8.x-3.1'
 project: 'taxonomy_access_fix'
-datestamp: 1593187507
+datestamp: 1605457890

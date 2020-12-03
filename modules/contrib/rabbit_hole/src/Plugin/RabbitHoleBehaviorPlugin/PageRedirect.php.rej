@@ -1,0 +1,151 @@
+--- src/Plugin/RabbitHoleBehaviorPlugin/PageRedirect.php
++++ src/Plugin/RabbitHoleBehaviorPlugin/PageRedirect.php
+@@ -123,8 +123,59 @@ class PageRedirect extends RabbitHoleBehaviorPluginBase implements ContainerFact
+    * {@inheritdoc}
+    */
+   public function performAction(EntityInterface $entity, Response $current_response = NULL) {
++    $target = $this->getActionTarget($entity)->toString();
++    $response_code = $this->getActionResponseCode($entity);
++
++    switch ($response_code) {
++      case self::REDIRECT_MOVED_PERMANENTLY:
++      case self::REDIRECT_FOUND:
++      case self::REDIRECT_SEE_OTHER:
++      case self::REDIRECT_TEMPORARY_REDIRECT:
++        if ($current_response === NULL) {
++          return new TrustedRedirectResponse($target, $response_code);
++        }
++        else {
++          // If a response already exists we don't need to do anything with it.
++          return $current_response;
++        }
++        // TODO: I don't think this is the correct way to handle a 304 response.
++      case self::REDIRECT_NOT_MODIFIED:
++        if ($current_response === NULL) {
++          $not_modified_response = new Response();
++          $not_modified_response->setStatusCode(self::REDIRECT_NOT_MODIFIED);
++          $not_modified_response->headers->set('Location', $target);
++          return $not_modified_response;
++        }
++        else {
++          // If a response already exists we don't need to do anything with it.
++          return $current_response;
++        }
++        // TODO: I have no idea if this is actually the correct way to handle a
++        // 305 response in Symfony/D8. Documentation on it seems a bit sparse.
++      case self::REDIRECT_USE_PROXY:
++        if ($current_response === NULL) {
++          $use_proxy_response = new Response();
++          $use_proxy_response->setStatusCode(self::REDIRECT_USE_PROXY);
++          $use_proxy_response->headers->set('Location', $target);
++          return $use_proxy_response;
++        }
++        else {
++          // If a response already exists we don't need to do anything with it.
++          return $current_response;
++        }
++      default:
++        throw new InvalidRedirectResponseException();
++    }
++  }
++
++  /**
++   * Returns the action target URL object.
++   *
++   * @param EntityInterface $entity
++   * @return Url
++   */
++  public function getActionTarget(EntityInterface $entity){
+     $target = $entity->get('rh_redirect')->value;
+-    $response_code = NULL;
+ 
+     $bundle_entity_type = $entity->getEntityType()->getBundleEntityType();
+     $bundle_settings = $this->rhBehaviorSettingsManager
+@@ -134,10 +185,6 @@ class PageRedirect extends RabbitHoleBehaviorPluginBase implements ContainerFact
+ 
+     if (empty($target)) {
+       $target = $bundle_settings->get('redirect');
+-      $response_code = $bundle_settings->get('redirect_code');
+-    }
+-    else {
+-      $response_code = $entity->get('rh_redirect_response')->value;
+     }
+ 
+     // Replace any tokens if applicable.
+@@ -167,49 +214,36 @@ class PageRedirect extends RabbitHoleBehaviorPluginBase implements ContainerFact
+     // If non-absolute URI, pass URL through Drupal's URL generator to
+     // handle languages etc.
+     if (!UrlHelper::isExternal($target)) {
+-      $target = Url::fromUserInput($target)->toString();
++      $target = Url::fromUserInput($target);
+     }
+ 
+-    switch ($response_code) {
+-      case self::REDIRECT_MOVED_PERMANENTLY:
+-      case self::REDIRECT_FOUND:
+-      case self::REDIRECT_SEE_OTHER:
+-      case self::REDIRECT_TEMPORARY_REDIRECT:
+-        if ($current_response === NULL) {
+-          return new TrustedRedirectResponse($target, $response_code);
+-        }
+-        else {
+-          // If a response already exists we don't need to do anything with it.
+-          return $current_response;
+-        }
+-        // TODO: I don't think this is the correct way to handle a 304 response.
+-      case self::REDIRECT_NOT_MODIFIED:
+-        if ($current_response === NULL) {
+-          $not_modified_response = new Response();
+-          $not_modified_response->setStatusCode(self::REDIRECT_NOT_MODIFIED);
+-          $not_modified_response->headers->set('Location', $target);
+-          return $not_modified_response;
+-        }
+-        else {
+-          // If a response already exists we don't need to do anything with it.
+-          return $current_response;
+-        }
+-        // TODO: I have no idea if this is actually the correct way to handle a
+-        // 305 response in Symfony/D8. Documentation on it seems a bit sparse.
+-      case self::REDIRECT_USE_PROXY:
+-        if ($current_response === NULL) {
+-          $use_proxy_response = new Response();
+-          $use_proxy_response->setStatusCode(self::REDIRECT_USE_PROXY);
+-          $use_proxy_response->headers->set('Location', $target);
+-          return $use_proxy_response;
+-        }
+-        else {
+-          // If a response already exists we don't need to do anything with it.
+-          return $current_response;
+-        }
+-      default:
+-        throw new InvalidRedirectResponseException();
++    return $target;
++  }
++
++  /**
++   * Returns the action response code.
++   *
++   * @param EntityInterface $entity
++   * @return int
++   */
++  public function getActionResponseCode(EntityInterface $entity){
++    $target = $entity->get('rh_redirect')->value;
++    $response_code = NULL;
++
++    $bundle_entity_type = $entity->getEntityType()->getBundleEntityType();
++    $bundle_settings = $this->rhBehaviorSettingsManager
++      ->loadBehaviorSettingsAsConfig(
++        $bundle_entity_type ?: $entity->getEntityType()->id(),
++        $bundle_entity_type ? $entity->bundle() : NULL);
++
++    if (empty($target)) {
++      $response_code = $bundle_settings->get('redirect_code');
++    }
++    else {
++      $response_code = $entity->get('rh_redirect_response')->value;
+     }
++
++    return $response_code;
+   }
+ 
+   /**

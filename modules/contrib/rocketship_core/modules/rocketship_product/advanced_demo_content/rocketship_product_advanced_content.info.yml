@@ -12,7 +12,7 @@ dependencies:
   - migrate_source_csv:migrate_source_csv
   - rocketship_product:rocketship_product_advanced
 
-# Information added by Drupal.org packaging script on 2020-11-12
-version: '5.0.0-alpha20'
+# Information added by Drupal.org packaging script on 2020-11-24
+version: '5.0.0-alpha22'
 project: 'rocketship_core'
-datestamp: 1605177096
+datestamp: 1606227021
