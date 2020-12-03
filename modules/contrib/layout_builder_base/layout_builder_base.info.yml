@@ -1,0 +1,14 @@
+name: Layout Builder Base
+description: Module that provides flexible layouts to extend in order to build complex pages.
+package: Layout Builder
+type: module
+core: 8.x
+core_version_requirement: ^8 || ^9
+dependencies:
+  - drupal:layout_builder
+  - drupal:layout_discovery
+
+# Information added by Drupal.org packaging script on 2020-12-01
+version: '8.x-1.0-beta15'
+project: 'layout_builder_base'
+datestamp: 1606834311
