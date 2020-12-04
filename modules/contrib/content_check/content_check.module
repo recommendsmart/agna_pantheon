@@ -1,0 +1,23 @@
+<?php
+
+/**
+ * @file
+ * Drupal integrations for the content_check module.
+ */
+
+/**
+ * Implements hook_entity_type_alter().
+ */
+function content_check_entity_type_alter(array &$entity_types) {
+  /** @var $entity_types \Drupal\Core\Entity\EntityTypeInterface[] */
+  foreach ($entity_types as $entity_type) {
+    if ($entity_type->hasLinkTemplate('canonical')) {
+
+      // Provide default route names for the check paths.
+      if (!$entity_type->hasLinkTemplate('drupal:content-check-overview')) {
+        $path = $entity_type->getLinkTemplate('canonical') . '/check';
+        $entity_type->setLinkTemplate('drupal:content-check-overview', $path);
+      }
+    }
+  }
+}

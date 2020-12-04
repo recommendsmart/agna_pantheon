@@ -1,0 +1,9 @@
+name: Content Check
+description: 'Provides ability to audit entities with plugins.'
+core_version_requirement: ^8.8 || ^9
+type: module
+
+# Information added by Drupal.org packaging script on 2020-12-04
+version: '2.0.0-rc1'
+project: 'content_check'
+datestamp: 1607053777

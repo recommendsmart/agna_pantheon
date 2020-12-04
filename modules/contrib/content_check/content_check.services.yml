@@ -1,0 +1,12 @@
+services:
+  content_check.checker:
+    class: Drupal\content_check\ContentChecker
+    arguments: ['@plugin.manager.content_check.content_check']
+
+  plugin.manager.content_check.content_check:
+    class: Drupal\content_check\Plugin\ContentCheckPluginManager
+    parent: default_plugin_manager
+
+  plugin.manager.content_check.content_check_input:
+    class: Drupal\content_check\Plugin\ContentCheckInputPluginManager
+    parent: default_plugin_manager
