@@ -10,7 +10,6 @@
         "drupal/core-project-message": "^8.8",
         "drupal/core-recommended": "^8.8",
         "drupal/currency": "^3.3",
-        "drupal/geocoder": "^3.14",
         "drupal/rocketship_core": "^5.0@alpha",
         "drush/drush": "^10",
         "linnovate/openideal": "^3",
