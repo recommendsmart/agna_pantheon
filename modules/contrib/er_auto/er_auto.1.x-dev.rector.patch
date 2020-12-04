@@ -1,0 +1,22 @@
+diff --git a/er_auto.info.yml b/er_auto.info.yml
+index e65897e..d8155e5 100644
+--- a/er_auto.info.yml
++++ b/er_auto.info.yml
+@@ -3,3 +3,4 @@ name: 'Entity Reference Automation'
+ description: 'Automation of field input elements based on entity references.'
+ package: Field types
+ core: 8.x
++core_version_requirement: ^8 || ^9
+diff --git a/er_auto.module b/er_auto.module
+index d932ab8..d85ec67 100644
+--- a/er_auto.module
++++ b/er_auto.module
+@@ -117,7 +117,7 @@ function er_auto_form_field_config_edit_form_alter(&$form, FormStateInterface $f
+     ];
+ 
+     // Get the list of Entity Type labels for use in the form.
+-    $type_labels = \Drupal::entityManager()->getEntityTypeLabels();
++    $type_labels = \Drupal::service('entity_type.repository')->getEntityTypeLabels();
+ 
+     $host_type = $form_field->getTargetEntityTypeId();
+     $host_bundle = $form_field->getTargetBundle();
