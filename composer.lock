@@ -3096,8 +3096,7 @@
             "homepage": "https://www.drupal.org/project/ckeditor_mentions",
             "support": {
                 "source": "https://git.drupalcode.org/project/ckeditor_mentions"
-            },
-            "time": "2020-11-26T20:13:06+00:00"
+            }
         },
         {
             "name": "drupal/colorbox",
@@ -10380,8 +10379,7 @@
             "support": {
                 "source": "http://cgit.drupalcode.org/votingapi_widgets",
                 "issues": "https://www.drupal.org/project/issues/votingapi_widgets"
-            },
-            "time": "2020-10-27T21:11:37+00:00"
+            }
         },
         {
             "name": "drupal/webform",
