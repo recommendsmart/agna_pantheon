@@ -1,0 +1,18 @@
+name: 'Commerce Product Bundles'
+type: module
+description: 'Commerce Product Bundles'
+core_version_requirement: ^8.8 || ^9
+package: 'drupal'
+dependencies:
+  - drupal:commerce (>=8.x-2.19)
+  - commerce:commerce_product (>=8.x-2.19)
+  - commerce:commerce_cart (>=8.x-2.19)
+  - commerce:commerce_checkout (>=8.x-2.19)
+  - drupal:commerce_currencies_price
+  - drupal:commerce_currency_resolver
+  - drupal:select2
+
+# Information added by Drupal.org packaging script on 2020-11-18
+version: '8.x-1.1'
+project: 'commerce_product_bundles'
+datestamp: 1605731798

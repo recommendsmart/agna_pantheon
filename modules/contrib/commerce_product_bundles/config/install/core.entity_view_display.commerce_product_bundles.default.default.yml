@@ -1,0 +1,40 @@
+langcode: en
+status: true
+dependencies:
+  config:
+    - commerce_product_bundles.commerce_product_bundles_type.default
+  module:
+    - commerce_product_bundles
+    - text
+id: commerce_product_bundles.default.default
+targetEntityType: commerce_product_bundles
+bundle: default
+mode: default
+content:
+  body:
+    label: above
+    type: text_default
+    region: content
+    weight: 1
+    settings: {  }
+    third_party_settings: {  }
+  bundle_variations:
+    type: commerce_bundle_add_to_cart
+    weight: 2
+    region: content
+    label: above
+    settings:
+      combine: 0
+    third_party_settings: {  }
+  title:
+    label: above
+    type: string
+    weight: 0
+    region: content
+    settings:
+      link_to_entity: false
+    third_party_settings: {  }
+hidden:
+  created: true
+  stores: true
+  uid: true

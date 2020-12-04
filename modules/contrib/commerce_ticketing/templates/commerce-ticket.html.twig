@@ -1,0 +1,89 @@
+{#
+/**
+ * @file
+ * Default theme implementation to present a commerce ticket entity.
+ *
+ *
+ * Available variables:
+ * - content: A list of content items. Use 'content' to print all content, or
+ *   print a subset such as 'content.title'.
+ * - attributes: HTML attributes for the container element.
+ *
+ * @see template_preprocess_commerce_ticket()
+ */
+#}
+
+{% set agbText = 'This ticket is non-refundable and only valid for the service listed. The ticket will be checked electronically to allow one-time admission.' %}
+
+
+{{ attach_library('commerce_ticketing_pdf/ticket') }}
+
+<div class="ticket__wrapper">
+  <table class="ticket__table" cellpadding="0" cellspacing="0">
+
+    <tr>
+      <td colspan="5" style="height: 22px;">&nbsp;</td>
+    </tr>
+
+    <tr>
+      <td class="ticket__table__space">&nbsp;</td>
+      <td colspan="3" class="ticket__table__center">
+        <div class="ticket__overline--large">{{ content.site_name }}</div>
+        <div class="ticket__title--large">{{ elements['#commerce_ticket'].getOrderItem.getPurchasedEntity.getProduct.label }}</div>
+      </td>
+      <td class="ticket__table__end">&nbsp;</td>
+    </tr>
+
+    <tr>
+      <td colspan="5" style="height:39.8px;" >&nbsp;</td>
+    </tr>
+
+    <tr>
+      <td colspan="2" class="ticket__table__first">&nbsp;</td>
+      <td class="ticket__table__second"><div class="ticket__overline--medium">{{ 'Date of visit'|t }}</div><div class="ticket__title--medium">{{ elements['#commerce_ticket'].getOrderItem.field_visit_date.date|date("d.m.Y") }}</div></td>
+      <td colspan="2" class="ticket__table__third"><div class="ticket__overline--medium">{{ 'Price category'|t }}</div><div class="ticket__title--medium">{{ elements['#commerce_ticket'].field_attribute_ref.entity.label }}</div></td>
+    </tr>
+
+    <tr>
+      <td colspan="5" style="height:12px;" >&nbsp;</td>
+    </tr>
+
+    <tr>
+      <td colspan="2" class="ticket__table__first">&nbsp;</td>
+      <td class="ticket__table__second"><div class="ticket__overline--small">{{ 'Date of purchase'|t }}</div><div class="ticket__title--small">{{ elements['#commerce_ticket'].getOrder.created.value|date("d.m.Y")  }}</div></td>
+      <td class="ticket__table__third" ><div class="ticket__overline--small">{{ 'Order number'|t }}</div><div class="ticket__title--small">{{ elements['#commerce_ticket'].getOrder.getOrderNumber() }}</div></td>
+      <td class="ticket__table__third" ><div class="ticket__overline--small">{{ 'Ticket number'|t }}</div><div class="ticket__title--small">{{ elements['#commerce_ticket'].getTicketNumber() }}</div></td>
+    </tr>
+
+    <tr>
+      <td colspan="5" style="height:11.5px;" >&nbsp;</td>
+    </tr>
+
+    <tr>
+      <td colspan="2"></td>
+      <td colspan="2"><span class="ticket__overline--small-disclaier">{{ 'Disclaimer'|t }}:</span><div class="ticket__text--small">{{ agbText|t }}</div></td>
+      <td class="ticket__table__end">&nbsp;</td>
+    </tr>
+
+    <tr>
+      <td colspan="2" class="ticket__table__first">
+        <table class="ticket__table">
+          <tr>
+            <td class="ticket__id-table__space"></td>
+            <td style="height: 10px;"></td>
+          </tr>
+          <tr>
+            <td class="ticket__id-table__space"></td>
+            <td><div class="ticket__id">{{ content.ticket_uuid_short }}</div></td>
+          </tr>
+        </table>
+      </td>
+      <td colspan="3"></td>
+    </tr>
+
+    <tr>
+      <td colspan="5" style="height:0px" ></td>
+    </tr>
+  </table>
+
+</div>

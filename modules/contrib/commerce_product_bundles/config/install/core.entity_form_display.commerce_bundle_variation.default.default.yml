@@ -1,0 +1,54 @@
+langcode: en
+status: true
+dependencies:
+  config:
+    - commerce_product_bundles.commerce_bundle_variation_type.default
+    - field.field.commerce_bundle_variation.default.field_bundle_image
+    - image.style.thumbnail
+  module:
+    - commerce_currencies_price
+    - commerce_product_bundles
+id: commerce_bundle_variation.default.default
+targetEntityType: commerce_bundle_variation
+bundle: default
+mode: default
+content:
+  field_bundle_image:
+    weight: 3
+    settings:
+      progress_indicator: throbber
+      preview_image_style: thumbnail
+    third_party_settings: {  }
+    type: bundle_image_image
+    region: content
+  price:
+    type: commerce_currencies_price_default
+    settings:
+      required_prices: true
+    weight: 1
+    region: content
+    third_party_settings: {  }
+  product_variation_id:
+    type: product_bundle_field_default
+    weight: 2
+    region: content
+    settings: {  }
+    third_party_settings: {  }
+  status:
+    type: boolean_checkbox
+    settings:
+      display_label: true
+    weight: 4
+    region: content
+    third_party_settings: {  }
+  title:
+    type: string_textfield
+    weight: 0
+    region: content
+    settings:
+      size: 60
+      placeholder: ''
+    third_party_settings: {  }
+hidden:
+  created: true
+  uid: true

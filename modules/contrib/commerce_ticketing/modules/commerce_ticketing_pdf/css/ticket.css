@@ -1,0 +1,135 @@
+table, table td, table tr, div {
+  margin: 0;
+  padding: 0;
+  vertical-align: top;
+}
+
+.ticket__wrapper {
+  line-height: .75;
+}
+
+.ticket__table td {
+  vertical-align: top;
+  padding: 0;
+}
+
+.ticket__table__space--small {
+  width: 1%;
+}
+
+.ticket__table__space {
+  width: 3%;
+}
+
+.ticket__table__end {
+  width: 5%;
+}
+
+.ticket__table__center {
+  width: 92%;
+}
+
+.ticket__table__first {
+  width: 31.3%;
+  vertical-align: top;
+}
+
+.ticket__table__second {
+  width: 23%;
+  vertical-align: top;
+}
+
+.ticket__table__third {
+  width: 23%;
+  vertical-align: top;
+}
+
+
+.ticket__overline--large {
+  font-size: 11px;
+  color: #71706F;
+  line-height: .55;
+
+}
+
+.ticket__overline--medium {
+  font-size: 10px;
+  color: #71706F;
+  line-height: .55;
+
+}
+
+.ticket__overline--small {
+  color: #71706F;
+  font-size: 7px;
+  line-height: 0.55;
+}
+
+.ticket__title--large {
+  font-size: 20px;
+
+}
+
+.ticket__title--medium {
+  font-size: 10.5px;
+}
+
+.ticket__title--small {
+  font-size: 9px;
+  line-height: 0.55;
+}
+
+.ticket__overline--small-disclaier {
+  color: #71706F;
+  font-size: 7px;
+  line-height: 0.55;
+}
+
+.ticket__text--small {
+  font-size: 7px;
+  line-height: 1;
+}
+
+.ticket__id-table__space {
+  width: 10px;
+}
+
+.ticket__id {
+  font-size: 7px;
+  line-height: 0.1;
+}
+
+.ticket__slogan {
+  font-size: 8px;
+  padding: 10px 20px 0px 0px;
+  color: #71706F;
+  text-align: right;
+}
+
+
+.info__wrapper {
+  line-height: 1.2;
+  border-top: .3px solid #71706F;
+}
+
+.info__table {
+  line-height: 1;
+  font-size: 11px;
+}
+
+.info__title {
+  text-transform: uppercase;
+  font-size: 10px;
+}
+
+.info__text {
+  font-size: 10px;
+  line-height: 20px;
+}
+
+.info__link {
+  color: #BE3144;
+  font-size: 10px;
+  color: #BE3144;
+}
+

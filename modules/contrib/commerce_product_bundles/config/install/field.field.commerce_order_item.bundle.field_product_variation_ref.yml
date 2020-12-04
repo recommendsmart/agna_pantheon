@@ -1,0 +1,23 @@
+langcode: en
+status: true
+dependencies:
+  config:
+    - commerce_order.commerce_order_item_type.bundle
+    - field.storage.commerce_order_item.field_product_variation_ref
+  module:
+    - commerce_product_bundles
+id: commerce_order_item.bundle.field_product_variation_ref
+field_name: field_product_variation_ref
+entity_type: commerce_order_item
+bundle: bundle
+label: 'Product Variation Reference'
+description: ''
+required: true
+translatable: false
+default_value:
+  -
+    product_var_id: null
+    quantity: null
+default_value_callback: ''
+settings: {  }
+field_type: bundle_ref_var_field

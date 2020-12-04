@@ -1,0 +1,18 @@
+commerce_ticket.configuration:
+  title: 'Tickets'
+  route_name: commerce_ticketing.configuration
+  parent: 'commerce.configuration'
+  weight: -5
+
+entity.commerce_ticket_type.collection:
+  title: 'Ticket types'
+  route_name: entity.commerce_ticket_type.collection
+  parent: 'commerce_ticket.configuration'
+  description: 'Manage fields, form and display settings for your tickets.'
+  weight: -10
+
+commerce_ticket_type_add:
+  title: 'Add Commerce Ticket Type'
+  route_name: entity.commerce_ticket_type.add_form
+  description: 'Create Commerce Ticket Type'
+  parent: entity.commerce_ticket_type.collection

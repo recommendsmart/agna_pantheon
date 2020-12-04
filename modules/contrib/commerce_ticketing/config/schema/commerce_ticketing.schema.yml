@@ -1,0 +1,10 @@
+commerce_product.commerce_product_variation_type.*:
+  type: commerce_config_entity_bundle
+  label: 'Product variation type'
+  mapping:
+    autoCreateTicket:
+      type: boolean
+      label: 'Auto create ticket'
+    orderWorkflowState:
+      type: string
+      label: 'Create the ticket when the order is in the following state.'

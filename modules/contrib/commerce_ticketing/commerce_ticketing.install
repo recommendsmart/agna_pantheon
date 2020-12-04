@@ -1,0 +1,10 @@
+<?php
+
+/**
+ * Update commerce_ticket entity definitions.
+ */
+function commerce_ticketing_update_8001() {
+  $definition_update_manager = \Drupal::entityDefinitionUpdateManager();
+  $entity_type = $definition_update_manager->getEntityType('commerce_ticket');
+  $definition_update_manager->updateEntityType($entity_type);
+}

@@ -1,0 +1,24 @@
+ticket_default:
+  id: ticket_default
+  group: commerce_ticketing
+  label: 'Default'
+  states:
+    created:
+      label: Created
+    active:
+      label: Active
+    canceled:
+      label: Canceled
+  transitions:
+    activate:
+      label: 'Activate ticket'
+      from: [created]
+      to: active
+    cancel:
+      label: 'Cancel ticket'
+      from: [created, active]
+      to:   canceled
+    reactivate:
+      label: 'Reactivate ticket'
+      from: [canceled]
+      to: active

@@ -1,0 +1,43 @@
+langcode: en
+status: true
+dependencies:
+  config:
+    - commerce_product_bundles.commerce_bundle_variation_type.default
+    - field.field.commerce_bundle_variation.default.field_bundle_image
+  module:
+    - commerce_product_bundles
+id: commerce_bundle_variation.default.default
+targetEntityType: commerce_bundle_variation
+bundle: default
+mode: default
+content:
+  field_bundle_image:
+    weight: 2
+    label: above
+    settings:
+      image_style: ''
+      image_link: ''
+    third_party_settings: {  }
+    type: bundle_image
+    region: content
+  price:
+    label: above
+    type: commerce_bundle_price_calculated
+    settings:
+      strip_trailing_zeroes: true
+      currency_display: symbol
+      adjustment_types: {  }
+    weight: 1
+    region: content
+    third_party_settings: {  }
+  title:
+    type: string
+    weight: 0
+    region: content
+    label: above
+    settings:
+      link_to_entity: false
+    third_party_settings: {  }
+hidden:
+  product_bundle_id: true
+  product_variation_id: true

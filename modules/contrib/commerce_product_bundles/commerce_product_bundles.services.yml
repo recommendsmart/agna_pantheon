@@ -1,0 +1,52 @@
+services:
+  commerce_product_bundles.bundle_variation_field_renderer:
+    class: Drupal\commerce_product_bundles\Service\ProductBundleVariationFieldRenderer
+    arguments: ['@entity_type.manager']
+
+  access_check.product_bundle_variation_collection:
+    class: Drupal\commerce_product_bundles\Access\ProductBundleVariationCollectionAccessCheck
+    arguments: ['@entity_type.manager']
+    tags:
+      - { name: access_check, applies_to: _bundle_variation_collection_access }
+
+  access_check.bundle_variation_create:
+    class: Drupal\commerce_product_bundles\Access\BundleVariationCreateAccessCheck
+    arguments: ['@entity_type.manager']
+    tags:
+      - { name: access_check, applies_to: _bundle_variation_create_access }
+
+  commerce_product_bundles.lazy_builders:
+    class: Drupal\commerce_product_bundles\ProductBundleLazyBuilders
+    arguments: ['@entity_type.manager', '@form_builder', '@entity.repository']
+
+  commerce_bundle_price.chain_price_resolver:
+    class: Drupal\commerce_product_bundles\Resolver\BundleChainPriceResolver
+    tags:
+      - { name: service_collector, call: addResolver, tag: commerce_bundle_price.price_resolver }
+
+  commerce_bundle_currency_resolver.price_resolver:
+    class: Drupal\commerce_product_bundles\Resolver\CommerceBundleCurrencyResolver
+    arguments: ['@commerce_currency_resolver.current_currency', '@commerce_currency_resolver.calculator', '@config.factory']
+    tags:
+      - { name: commerce_bundle_price.price_resolver, priority: 100 }
+
+  commerce_product_bundles.product_route_context:
+    class: Drupal\commerce_product_bundles\ContextProvider\ProductBundleRouteContext
+    arguments: ['@current_route_match']
+    tags:
+      - { name: 'context_provider' }
+
+  commerce_product_bundles.bundle_variation_mapper:
+    class: Drupal\commerce_product_bundles\Service\ProductBundleVariationFieldManager
+    arguments: []
+
+  commerce_product_bundles.bundle_variation_service:
+    class: Drupal\commerce_product_bundles\Service\ProductBundleVariationService
+    arguments: ['@commerce_product_bundles.bundle_variation_mapper', '@commerce_store.current_store', '@current_user',
+                '@commerce_price.chain_price_resolver', '@commerce_order.price_calculator']
+
+  commerce_product_bundles.bundle_cart_subscriber:
+    class: Drupal\commerce_product_bundles\EventSubscriber\BundleCartSubscriber
+    arguments: []
+    tags:
+      - { name: event_subscriber }

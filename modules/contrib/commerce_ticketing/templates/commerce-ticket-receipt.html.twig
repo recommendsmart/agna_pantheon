@@ -1,0 +1,74 @@
+{#
+/**
+ * @file
+ * Template for the order receipt.
+ *
+ * Available variables:
+ * - ticket: The ticket entity.
+ * - order_entity: The order entity.
+ * - billing_information: The billing information.
+ * - shipping_information: The shipping information.
+ * - payment_method: The payment method.
+ * - totals: An array of order totals values with the following keys:
+ *   - subtotal: The order subtotal price.
+ *   - adjustments: An array of adjustment totals:
+ *     - type: The adjustment type.
+ *     - label: The adjustment label.
+ *     - total: The adjustment total price.
+ *     - weight: The adjustment weight, taken from the adjustment type.
+ *   - total: The order total price.
+ *
+ * @ingroup themeable
+ */
+#}
+<table style="margin: 15px auto 0 auto; max-width: 768px; font-family: arial,sans-serif">
+  <tbody>
+  <tr>
+    <td>
+      <table style="margin-left: auto; margin-right: auto; max-width: 768px; text-align: center;">
+        <tbody>
+        <tr>
+          <td>
+            <a href="{{ url('<front>') }}"
+               style="color: #0e69be; text-decoration: none; font-weight: bold; margin-top: 15px;">{{ order_entity.getStore.label }}</a>
+          </td>
+        </tr>
+        </tbody>
+      </table>
+      <table
+          style="text-align: center; min-width: 450px; margin: 5px auto 0 auto; border: 1px solid #cccccc; border-radius: 5px; padding: 40px 30px 30px 30px;">
+        <tbody>
+        <tr>
+          <td style="font-size: 30px; padding-bottom: 30px">
+            {% block ticket_receipt_title %}
+              {{ 'Ticket Receipt @ticket_number '|t({'@ticket_number': ticket.getTicketNumber}) }}
+            {% endblock %}
+          </td>
+        </tr>
+        <tr>
+          <td style="font-weight: bold; padding-top:15px; padding-bottom: 15px; text-align: left; border-top: 1px solid #cccccc; border-bottom: 1px solid #cccccc">
+            {% block ticket_receipt_subtitle %}
+              {{ 'Your ticket @ticket_number for order #@number.'|t({'@ticket_number': ticket.getTicketNumber, '@number': order_entity.getOrderNumber}) }}
+            {% endblock %}
+          </td>
+        </tr>
+        <tr>
+          <td>
+            {% block ticket_information %}
+              {{ 'Attached you can find your ticket.'|t }}
+            {% endblock %}
+          </td>
+        </tr>
+        <tr>
+          <td>
+            {% block additional_information %}
+              {{ 'Thank you for your order!'|t }}
+            {% endblock %}
+          </td>
+        </tr>
+        </tbody>
+      </table>
+    </td>
+  </tr>
+  </tbody>
+</table>

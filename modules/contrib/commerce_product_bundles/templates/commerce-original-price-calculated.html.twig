@@ -1,0 +1,17 @@
+{#
+/**
+ * @file
+ * Default commerce_original_price_calculated template.
+ *
+ * Available variables:
+ * - result: The calculated price result
+ * - base_price: The base price.
+ * - calculated_price: The calculated price.
+ * - adjustments: An array of adjustments.
+ *
+ * @ingroup themeable
+ */
+#}
+<div{{ attributes }}>
+  {{ 'Original Price: '|trans }}{{- calculated_price -}}
+</div>

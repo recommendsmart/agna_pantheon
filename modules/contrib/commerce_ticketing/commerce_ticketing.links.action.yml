@@ -1,0 +1,11 @@
+commerce_ticket.type_add:
+  route_name: entity.commerce_ticket_type.add_form
+  title: 'Add commerce ticket type'
+  appears_on:
+    - entity.commerce_ticket_type.collection
+
+commerce_ticket.add_page:
+  route_name: entity.commerce_ticket.add_page
+  title: 'Add commerce ticket'
+  appears_on:
+    - entity.commerce_ticket.collection

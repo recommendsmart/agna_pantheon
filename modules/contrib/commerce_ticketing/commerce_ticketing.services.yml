@@ -1,0 +1,38 @@
+services:
+  logger.channel.commerce_ticketing:
+    parent: logger.channel_base
+    arguments: ['commerce_ticketing']
+
+  commerce_ticketing.order_number_subscriber:
+    class: Drupal\commerce_ticketing\EventSubscriber\TicketNumberSubscriber
+    arguments: ['@entity_type.manager']
+    tags:
+      - { name: event_subscriber }
+
+  commerce_ticketing.ticket_subscriber:
+    class: Drupal\commerce_ticketing\EventSubscriber\TicketSubscriber
+    arguments: ['@entity_type.manager']
+    tags:
+      - { name: event_subscriber }
+
+  commerce_ticketing.order_subscriber:
+    class: Drupal\commerce_ticketing\EventSubscriber\OrderEventSubscriber
+    arguments: ['@entity_type.manager', '@lock']
+    tags:
+      - { name: event_subscriber }
+
+  commerce_ticketing.ticket_receipt_mail:
+    class: Drupal\commerce_ticketing\Mail\TicketReceiptMail
+    arguments: ['@commerce.mail_handler', '@module_handler', '@logger.channel.commerce_ticketing']
+
+  commerce_ticketing.ticket_access:
+    class: Drupal\commerce_ticketing\Access\TicketViewAccessCheck
+    arguments: ['@entity_type.manager']
+    tags:
+      - { name: access_check, applies_to: _ticket_view_access }
+
+  commerce_ticketing.uuid_param_converter:
+    class: Drupal\commerce_ticketing\Routing\UuidParamConverter
+    arguments: ['@entity_type.manager']
+    tags:
+      - { name: paramconverter }

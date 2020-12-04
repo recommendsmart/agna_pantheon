@@ -1,0 +1,14 @@
+name: Commerce Cost
+type: module
+description: 'Add functionality for working with product costs in Drupal Commerce.'
+package: Commerce (contrib)
+# core: 8.x
+dependencies:
+  - commerce
+  - commerce:commerce_promotion
+
+# Information added by Drupal.org packaging script on 2019-04-11
+version: '8.x-1.0-rc4'
+core: '8.x'
+project: 'commerce_cost'
+datestamp: 1555007287

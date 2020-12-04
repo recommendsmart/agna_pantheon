@@ -1,0 +1,165 @@
+### Commerce conditions schema:
+commerce.commerce_condition.plugin.order_bundle_product:
+  type: commerce_condition_configuration
+  mapping:
+    product_bundles:
+      type: sequence
+      label: 'Product Bundles'
+      sequence:
+        type: mapping
+        mapping:
+          product_bundle:
+            type: uuid
+            label: 'Product Bundle'
+
+commerce.commerce_condition.plugin.order_bundle_item_product:
+  type: commerce.commerce_condition.plugin.order_bundle_product
+
+commerce.commerce_condition.plugin.order_product_bundle_type:
+  type: commerce_condition_configuration
+  mapping:
+    product_bundle_types:
+      type: sequence
+      label: 'Product Bundle types'
+      orderby: value
+      sequence:
+        type: string
+        label: 'Product Bundle type'
+
+commerce.commerce_condition.plugin.order_item_bundle_product_type:
+  type: commerce.commerce_condition.plugin.order_product_bundle_type
+
+commerce.commerce_condition.plugin.order_product_bundle_variation:
+  type: commerce_condition_configuration
+  mapping:
+    bundle_variations:
+      type: sequence
+      label: 'Product bundle variation types'
+      orderby: value
+      sequence:
+        type: string
+        label: 'Product bundle variation type'
+    negate:
+      type: boolean
+      label: 'Negate'
+
+commerce.commerce_condition.plugin.order_item_product_bundle_variation:
+  type: commerce.commerce_condition.plugin.order_product_bundle_variation
+
+commerce.commerce_condition.plugin.order_bundle_variation_type:
+  type: commerce_condition_configuration
+  mapping:
+    bundle_variation_types:
+      type: sequence
+      label: 'Product bundle variation types'
+      orderby: value
+      sequence:
+        type: string
+        label: 'Product bundle variation type'
+
+commerce.commerce_condition.plugin.order_item_bundle_variation_type:
+  type: commerce.commerce_condition.plugin.order_bundle_variation_type
+
+### Entity schema:
+commerce_product_bundles.commerce_product_bundles_type.*:
+  type: commerce_config_entity_bundle
+  label: 'Product bundle type'
+  mapping:
+    description:
+      type: text
+      label: 'Description'
+    bundleVariationType:
+      type: string
+      label: 'Bundle variation item type'
+    multipleBundleVariations:
+      type: bool
+      label: 'Multiple bundle variations'
+    injectBundleVariationFields:
+      type: string
+      label: 'Inject Bundle Variation Fields'
+
+commerce_product_bundles.commerce_product_bundles_variation_type.*:
+  type: commerce_config_entity_bundle
+  label: 'Product bundle variation type'
+  mapping:
+    orderItemType:
+      type: string
+      label: 'Order item type'
+    generateTitle:
+      type: boolean
+      label: 'Generate variation titles based on attribute values'
+
+### Field value schema:
+field.value.bundle_ref_var_field:
+  type: mapping
+  label: 'Default value'
+  mapping:
+    product_var_id:
+      type: integer
+      label: 'Product'
+    quantity:
+      type: integer
+      label: 'Quantity'
+
+### Field formatters schema:
+field.formatter.settings.commerce_bundle_add_to_cart:
+  type: mapping
+  mapping:
+    show_quantity:
+      type: boolean
+      label: 'Whether to display a quantity input field on the bundle add to cart form.'
+    default_quantity:
+      type: string
+      label: 'Default quantity'
+    combine:
+      type: boolean
+      label: 'Whether to attempt to combine order items containing the same product bundle variation'
+
+### Field formatters schema:
+field.formatter.settings.order_item_title_formatter:
+  type: mapping
+  mapping:
+    include_ref:
+      type: boolean
+      label: 'Whether to include bundle contains referenced variations in title.'
+
+field.formatter.settings.product_bundle_overview:
+  type: mapping
+  mapping:
+    view_mode:
+      type: string
+      label: 'View mode'
+
+field.formatter.settings.bundle_price_field_formatter:
+  type: field.formatter.settings.commerce_price_default
+
+field.formatter.settings.bundle_image:
+  type: field.formatter.settings.image
+
+field.formatter.settings.commerce_bundle_price_calculated:
+  type: field.formatter.settings.commerce_price_calculated
+
+### Field widgets schema:
+field.widget.settings.bundle_image_image:
+  type: mapping
+  label: 'Image field display format settings'
+  mapping:
+    progress_indicator:
+      type: string
+      label: 'Progress indicator'
+    preview_image_style:
+      type: string
+      label: 'Preview image style'
+
+### Actions schema:
+action.configuration.commerce_publish_product_bundle:
+  type: action_configuration_default
+  label: 'Configuration for the Publish product bundle action'
+
+action.configuration.commerce_unpublish_product_bundle:
+  type: action_configuration_default
+  label: 'Configuration for the Unpublish product bundle action'
+
+### Views schema:
+views.field.commerce_bundle_variation_view_link:
+  type: views.field.entity_link

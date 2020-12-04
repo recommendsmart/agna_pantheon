@@ -1,0 +1,23 @@
+commerce_product_bundles.configuration:
+  title: 'Product Bundles'
+  route_name: 'commerce_product_bundles.configuration'
+  parent: 'commerce.configuration'
+  weight: -16
+
+entity.commerce_product_bundles.collection:
+  title: 'Product Bundles'
+  route_name: 'entity.commerce_product_bundles.collection'
+  parent: 'commerce.admin_commerce'
+  description: 'Manage your products bundles.'
+
+entity.commerce_product_bundles_type.collection:
+  title: 'Product bundle types'
+  route_name: 'entity.commerce_product_bundles_type.collection'
+  parent: 'commerce_product_bundles.configuration'
+  description: 'Manage fields, form and display settings for your products bundles.'
+
+entity.commerce_bundle_variation_type.collection:
+  title: 'Product bundle variation types'
+  route_name: 'entity.commerce_bundle_variation_type.collection'
+  parent: 'commerce_product_bundles.configuration'
+  description: 'Manage fields, form and display settings for your product bundle variations.'

@@ -1,0 +1,10 @@
+langcode: en
+status: true
+dependencies:
+  module:
+    - commerce_product_bundles
+id: commerce_unpublish_product_bundle
+label: 'Unpublish product bundle'
+type: commerce_product_bundles
+plugin: commerce_unpublish_product_bundle
+configuration: {  }

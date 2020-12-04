@@ -1,0 +1,37 @@
+entity.commerce_ticket.view:
+  title: View
+  route_name: entity.commerce_ticket.canonical
+  base_route: entity.commerce_ticket.canonical
+
+entity.commerce_ticket.edit_form:
+  title: Edit
+  route_name: entity.commerce_ticket.edit_form
+  base_route: entity.commerce_ticket.canonical
+
+entity.commerce_ticket.order_tickets:
+  title: Order Tickets
+  route_name: commerce_ticketing.collection_redirect
+  base_route: entity.commerce_ticket.canonical
+  weight: 10
+
+entity.commerce_ticket.delete_form:
+  title: Delete
+  route_name: entity.commerce_ticket.delete_form
+  base_route: entity.commerce_ticket.canonical
+  weight: 20
+
+entity.commerce_ticket.collection:
+  title: Tickets
+  route_name: entity.commerce_ticket.collection
+  base_route: entity.commerce_order.canonical
+  weight: 11
+
+entity.commerce_ticket_type.edit_form:
+  title: Edit
+  route_name: entity.commerce_ticket_type.edit_form
+  base_route: entity.commerce_ticket_type.edit_form
+
+entity.commerce_ticket_type.collection:
+  title: List
+  route_name: entity.commerce_ticket_type.collection
+  base_route: entity.commerce_ticket_type.collection

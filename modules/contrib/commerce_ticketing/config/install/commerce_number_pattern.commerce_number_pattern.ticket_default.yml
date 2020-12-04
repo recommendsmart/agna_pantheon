@@ -1,0 +1,15 @@
+langcode: en
+status: true
+id: ticket_default
+label: Ticket Number Pattern
+targetEntityType: commerce_ticket
+plugin: infinite
+configuration:
+  pattern: 'TICKET-[pattern:number]'
+  initial_number: 1
+  padding: 0
+  per_store_sequence: true
+dependencies:
+  enforced:
+    module:
+      - commerce_ticketing

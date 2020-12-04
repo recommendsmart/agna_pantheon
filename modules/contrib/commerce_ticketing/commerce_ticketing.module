@@ -1,0 +1,277 @@
+<?php
+
+/**
+ * @file
+ * Provides a commerce ticket entity type.
+ */
+
+use Drupal\commerce\EntityHelper;
+use Drupal\commerce_order\Entity\OrderInterface;
+use Drupal\commerce_order\Entity\OrderItemType;
+use Drupal\commerce_order\Entity\OrderType;
+use Drupal\Core\Entity\EntityInterface;
+use Drupal\Core\Form\FormStateInterface;
+use Drupal\Core\Render\Element;
+use Drupal\Core\Url;
+use Drupal\entity\BundleFieldDefinition;
+
+/**
+ * Implements hook_theme().
+ */
+function commerce_ticketing_theme() {
+  return [
+    'commerce_ticket' => [
+      'render element' => 'elements',
+    ],
+    'commerce_ticket_receipt' => [
+      'variables' => [
+        'order_entity' => NULL,
+        'ticket' => NULL,
+      ],
+    ],
+  ];
+}
+
+/**
+ * Prepares variables for commerce ticket templates.
+ *
+ * Default template: commerce-ticket.html.twig.
+ *
+ * @param array $variables
+ *   An associative array containing:
+ *   - elements: An associative array containing the commerce ticket information and any
+ *     fields attached to the entity.
+ *   - attributes: HTML attributes for the containing element.
+ */
+function template_preprocess_commerce_ticket(array &$variables) {
+  foreach (Element::children($variables['elements']) as $key) {
+    $variables['content'][$key] = $variables['elements'][$key];
+  }
+
+  $ticket = $variables['elements']['#commerce_ticket'];
+  $variables['content']['site_name'] = \Drupal::config('system.site')->get('name');
+  $variables['content']['ticket_uuid_short'] = strtoupper(substr($ticket->uuid(), -7));
+
+}
+
+/**
+ * Implements hook_form_FORM_ID_alter() for 'commerce_order_type_form'.
+ */
+function commerce_ticketing_form_commerce_product_variation_type_form_alter(array &$form, FormStateInterface $form_state) {
+  /** @var \Drupal\commerce_product\Entity\ProductVariationType $variation_type */
+  $variation_type = $form_state->getFormObject()->getEntity();
+
+  /** @var \Drupal\commerce_order\Entity\OrderItemType $order_item_type */
+  $order_item_type = OrderItemType::load($variation_type->getOrderItemTypeId());
+  /** @var \Drupal\commerce_order\Entity\OrderType $order_type */
+  $order_type = OrderType::load($order_item_type->getOrderTypeId());
+  $workflow_manager = \Drupal::service('plugin.manager.workflow');
+  $workflow_type = $workflow_manager->createInstance($order_type->getWorkflowId());
+  $order_workflow_states = $workflow_type->getStates();
+  $options = [];
+  foreach ($order_workflow_states as $key => $state) {
+    $options[$key] = $state->getLabel();
+  }
+
+  $auto_create_ticket = $variation_type->getThirdPartySetting('commerce_ticketing', 'auto_create_ticket');
+  $auto_activate_ticket = $variation_type->getThirdPartySetting('commerce_ticketing', 'auto_activate_ticket');
+  $order_state = $variation_type->getThirdPartySetting('commerce_ticketing', 'order_state');
+
+  $form['commerce_ticketing'] = [
+    '#type' => 'details',
+    '#title' => t('Ticketing settings'),
+    '#weight' => 1,
+    '#open' => TRUE,
+    '#description' => t('IMPORTANT: Please make sure that you enabled ticketing on the relevant order type.'),
+    '#states' => [
+      'visible' => [
+        ':input[name="traits[purchasable_entity_ticket]"]' => ['checked' => TRUE],
+      ],
+    ],
+  ];
+  $form['commerce_ticketing']['auto_create_ticket'] = [
+    '#type' => 'checkbox',
+    '#title' => t('Automatically create a ticket for every order line item.'),
+    '#default_value' => !empty($auto_create_ticket),
+  ];
+  $form['commerce_ticketing']['auto_activate_ticket'] = [
+    '#type' => 'checkbox',
+    '#title' => t('Automatically activate ticket for this variation type.'),
+    '#default_value' => !empty($auto_activate_ticket),
+  ];
+  $form['commerce_ticketing']['order_state'] = [
+    '#type' => 'select',
+    '#title' => t('Activate ticket on order state'),
+    '#options' => $options,
+    '#default_value' => $order_state ?: 'completed',
+    '#required' => TRUE,
+    '#states' => [
+      'visible' => [
+        ':input[name="auto_activate_ticket"]' => ['checked' => TRUE],
+      ],
+    ],
+  ];
+  $form['actions']['submit']['#submit'][] = 'commerce_ticketing_variation_type_form_submit';
+
+}
+
+/**
+ * Submission handler for commerce_ticketing_form_commerce_product_variation_type_form_alter().
+ */
+function commerce_ticketing_variation_type_form_submit(array $form, FormStateInterface $form_state) {
+  /** @var \Drupal\commerce_product\Entity\ProductVariationType $variation_type */
+  $variation_type = $form_state->getFormObject()->getEntity();
+
+  $auto_create_ticket = !empty($form_state->getValue('auto_create_ticket')) ? $form_state->getValue('auto_create_ticket') : FALSE;
+  $auto_activate_ticket = !empty($form_state->getValue('auto_activate_ticket')) ? $form_state->getValue('auto_activate_ticket') : FALSE;
+  $order_state = !empty($form_state->getValue('order_state')) ? $form_state->getValue('order_state') : '';
+
+  $variation_type->setThirdPartySetting('commerce_ticketing', 'auto_create_ticket', $auto_create_ticket);
+  $variation_type->setThirdPartySetting('commerce_ticketing', 'auto_activate_ticket', $auto_activate_ticket);
+  $variation_type->setThirdPartySetting('commerce_ticketing', 'order_state', $order_state);
+  $variation_type->save();
+}
+
+/**
+ * Implements hook_form_FORM_ID_alter() for 'commerce_order_type_form'.
+ */
+function commerce_ticketing_form_commerce_order_type_form_alter(array &$form, FormStateInterface $form_state) {
+  /** @var \Drupal\commerce_order\Entity\OrderTypeInterface $order_type */
+  $order_type = $form_state->getFormObject()->getEntity();
+  $enable_ticketing = $order_type->getThirdPartySetting('commerce_ticketing', 'enable_ticketing');
+
+  // Prepare a list of ticket types.
+  $ticket_type_storage = \Drupal::entityTypeManager()->getStorage('commerce_ticket_type');
+  $ticket_types = $ticket_type_storage->loadMultiple();
+  $ticket_type = $order_type->getThirdPartySetting('commerce_ticketing', 'ticket_type');
+
+  $form['commerce_ticketing'] = [
+    '#type' => 'container',
+    '#weight' => 4,
+    '#element_validate' => ['commerce_ticketing_order_type_form_validate'],
+  ];
+  $form['commerce_ticketing']['enable_ticketing'] = [
+    '#type' => 'checkbox',
+    '#title' => t('Enable tickets for this order type'),
+    '#default_value' => !empty($enable_ticketing),
+  ];
+  $form['commerce_ticketing']['ticket_type'] = [
+    '#type' => 'select',
+    '#title' => t('Ticket type'),
+    '#options' => EntityHelper::extractLabels($ticket_types),
+    '#default_value' => $ticket_type ?: '',
+    '#required' => TRUE,
+    '#states' => [
+      'visible' => [
+        ':input[name="commerce_ticketing[enable_ticketing]"]' => ['checked' => TRUE],
+      ],
+    ],
+  ];
+  $form['actions']['submit']['#submit'][] = 'commerce_ticketing_order_type_form_submit';
+}
+
+/**
+ * Validation handler for commerce_shipping_form_commerce_order_type_form_alter().
+ */
+function commerce_ticketing_order_type_form_validate(array $element, FormStateInterface $form_state) {
+  /** @var \Drupal\commerce_order\Entity\OrderTypeInterface $order_type */
+  $order_type = $form_state->getFormObject()->getEntity();
+  $previous_value = $order_type->getThirdPartySetting('commerce_ticketing', 'enable_ticketing');
+  $settings = $form_state->getValue(['commerce_ticketing']);
+  /** @var \Drupal\commerce\ConfigurableFieldManagerInterface $configurable_field_manager */
+  $configurable_field_manager = \Drupal::service('commerce.configurable_field_manager');
+
+  // Don't allow shipping to be disabled if there's data in the field.
+  if ($previous_value && !$settings['enable_ticketing']) {
+    $field_definition = commerce_ticketing_build_ticketing_field_definition($order_type->id());
+    if ($configurable_field_manager->hasData($field_definition)) {
+      $form_state->setError($element['enable_ticketing'], t('Ticketing cannot be disabled until all orders with ticketing data are deleted.'));
+    }
+  }
+}
+
+/**
+ * Submission handler for commerce_shipping_form_commerce_order_type_form_alter().
+ */
+function commerce_ticketing_order_type_form_submit(array $form, FormStateInterface $form_state) {
+  /** @var \Drupal\commerce_order\Entity\OrderTypeInterface $order_type */
+  $order_type = $form_state->getFormObject()->getEntity();
+  $previous_value = $order_type->getThirdPartySetting('commerce_ticketing', 'enable_ticketing');
+  $settings = $form_state->getValue(['commerce_ticketing']);
+  /** @var \Drupal\commerce\ConfigurableFieldManagerInterface $configurable_field_manager */
+  $configurable_field_manager = \Drupal::service('commerce.configurable_field_manager');
+
+  $field_definition = commerce_ticketing_build_ticketing_field_definition($order_type->id());
+  if (!$previous_value && $settings['enable_ticketing']) {
+    $configurable_field_manager->createField($field_definition);
+  }
+  elseif ($previous_value && !$settings['enable_ticketing']) {
+    $configurable_field_manager->deleteField($field_definition);
+  }
+
+  $ticketing_enabled = $settings['enable_ticketing'] ? $settings['enable_ticketing'] : '';
+  $ticket_type = $settings['ticket_type'] ? $settings['ticket_type'] : '';
+  $order_type->setThirdPartySetting('commerce_ticketing', 'enable_ticketing', $ticketing_enabled);
+  $order_type->setThirdPartySetting('commerce_ticketing', 'ticket_type', $ticket_type);
+  $order_type->save();
+}
+
+/**
+ * Builds the $order->tickets field definition.
+ *
+ * @param string $order_type_id
+ *   The order type ID.
+ *
+ * @return \Drupal\entity\BundleFieldDefinition
+ *   The field definition.
+ */
+function commerce_ticketing_build_ticketing_field_definition($order_type_id) {
+  $field_definition = BundleFieldDefinition::create('entity_reference')
+    ->setTargetEntityTypeId('commerce_order')
+    ->setTargetBundle($order_type_id)
+    ->setName('tickets')
+    ->setLabel('Tickets')
+    ->setCardinality(BundleFieldDefinition::CARDINALITY_UNLIMITED)
+    ->setSetting('target_type', 'commerce_ticket')
+    ->setSetting('handler', 'default');
+
+  return $field_definition;
+}
+
+/**
+ * Implements hook_ENTITY_TYPE_delete().
+ */
+function commerce_ticketing_commerce_order_delete(OrderInterface $order) {
+  if ($order->hasField('tickets') && !$order->get('tickets')->isEmpty()) {
+    $ticket_storage = \Drupal::entityTypeManager()->getStorage('commerce_ticket');
+    $ticket_storage->delete($order->get('tickets')->referencedEntities());
+  }
+}
+
+/**
+ * Implements hook_entity_operation().
+ */
+function commerce_ticketing_entity_operation(EntityInterface $entity) {
+
+  // Only show the "Tickets" operation link for commerce_order entities.
+  if ($entity->getEntityTypeId() !== 'commerce_order') {
+    return;
+  }
+  // Do not show for a "cart" order.
+  if ($entity->hasField('cart') && $entity->get('cart')->value) {
+    return;
+  }
+  // Only show if the user has the "access commerce ticket overview" permission.
+  if (!\Drupal::currentUser()->hasPermission('administer commerce_ticketing')) {
+    return;
+  }
+  $operations = [];
+  $operations['tickets'] = [
+    'title' => t('Tickets'),
+    'url' => Url::fromRoute('entity.commerce_ticket.collection', [
+      'commerce_order' => $entity->id(),
+    ]),
+    'weight' => 60,
+  ];
+  return $operations;
+}

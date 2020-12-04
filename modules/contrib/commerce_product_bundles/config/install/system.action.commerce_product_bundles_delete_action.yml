@@ -1,0 +1,14 @@
+langcode: en
+status: true
+dependencies:
+  enforced:
+    module:
+      - commerce_product_bundles
+  module:
+    - commerce_product_bundles
+    - entity
+id: commerce_product_bundles_delete_action
+label: 'Delete product bundle'
+type: commerce_product_bundles
+plugin: 'entity_delete_action:commerce_product_bundles'
+configuration: {  }

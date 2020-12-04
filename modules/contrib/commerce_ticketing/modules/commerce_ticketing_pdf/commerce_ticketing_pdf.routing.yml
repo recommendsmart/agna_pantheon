@@ -1,0 +1,23 @@
+commerce_ticketing_pdf.download_pdf:
+  path: '/commerce_ticket/{ticket}/pdf'
+  defaults:
+    _controller: '\Drupal\commerce_ticketing_pdf\Controller\PDFController::renderPdf'
+    _title: 'Download PDF'
+  requirements:
+    _permission: 'view commerce ticket'
+  options:
+    parameters:
+      ticket:
+        type: entity-uuid
+
+commerce_ticketing_pdf.download_pdf_redirect:
+  path: '/admin/commerce/orders/{commerce_ticket}/pdf'
+  defaults:
+    _controller: '\Drupal\commerce_ticketing_pdf\Controller\PDFController::redirectPdf'
+    _title: 'Download PDF'
+  requirements:
+    _permission: 'administer commerce_ticketing'
+  options:
+    parameters:
+      commerce_ticket:
+        type: entity:commerce_ticket

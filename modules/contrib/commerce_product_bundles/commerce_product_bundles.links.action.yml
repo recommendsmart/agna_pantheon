@@ -1,0 +1,23 @@
+entity.commerce_product_bundles.add_page:
+  route_name: entity.commerce_product_bundles.add_page
+  title: 'Add product bundle'
+  appears_on:
+    - entity.commerce_product_bundles.collection
+
+entity.commerce_product_bundles_type.add_form:
+  route_name: entity.commerce_product_bundles_type.add_form
+  title: 'Add product bundle type'
+  appears_on:
+    - entity.commerce_product_bundles_type.collection
+
+entity.commerce_bundle_variation_type.add_form:
+  route_name: entity.commerce_bundle_variation_type.add_form
+  title: 'Add product bundle variation type'
+  appears_on:
+    - entity.commerce_bundle_variation_type.collection
+
+entity.commerce_bundle_variation.add_form:
+  route_name: entity.commerce_bundle_variation.add_form
+  title: 'Add bundle variation'
+  appears_on:
+    - entity.commerce_bundle_variation.collection

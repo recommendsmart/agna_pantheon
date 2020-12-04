@@ -1,0 +1,33 @@
+<?php
+
+use Drupal\Core\Entity\EntityInterface;
+use Drupal\Core\Url;
+
+/**
+ * Implements hook_entity_operation().
+ */
+function commerce_ticketing_pdf_entity_operation(EntityInterface $entity) {
+
+  // Only show the operations for commerce_ticket entities.
+  if ($entity->getEntityTypeId() !== 'commerce_ticket') {
+    return;
+  }
+  // Only show if the user has the "access commerce ticket overview" permission.
+  if (!\Drupal::currentUser()->hasPermission('administer commerce_ticketing')) {
+    return;
+  }
+
+  /** @var \Drupal\commerce_ticketing\CommerceTicketInterface $entity */
+
+  $operations = [];
+  if ($entity->getState()->getId() == 'active') {
+    $operations['pdf'] = [
+      'title' => t('Download PDF'),
+      'url' => Url::fromRoute('commerce_ticketing_pdf.download_pdf', [
+        'ticket' => $entity->uuid(),
+      ]),
+      'weight' => 21,
+    ];
+  }
+  return $operations;
+}

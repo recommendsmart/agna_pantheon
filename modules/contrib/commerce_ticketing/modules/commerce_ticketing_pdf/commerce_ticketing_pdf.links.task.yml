@@ -1,0 +1,5 @@
+entity.commerce_ticket.download_pdf:
+  title: PDF
+  route_name: commerce_ticketing_pdf.download_pdf_redirect
+  base_route: entity.commerce_ticket.canonical
+  weight: 10

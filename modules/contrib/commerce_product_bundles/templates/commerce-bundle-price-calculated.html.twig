@@ -1,0 +1,25 @@
+{#
+/**
+ * @file
+ * Default commerce_bundle_price_calculated template.
+ *
+ * Available variables:
+ * - bundle_price: The bundle Price.
+ * - original_price: The original price.
+ * - savings_price: The savings price.
+ *
+ * @ingroup themeable
+ */
+#}
+<div class="bundle-price-wrapper">
+  <label>{{ 'Bundle Price'|trans }}</label>
+  <div class="bundle-price-wrap">
+    <div class="bundle-price-amounts">
+      {{- original_price -}}
+      {{- bundle_price -}}
+    </div>
+    <div class="savings">
+      {{- savings_price -}}
+    </div>
+  </div>
+</>

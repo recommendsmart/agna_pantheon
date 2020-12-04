@@ -1,0 +1,5 @@
+entity.commerce_bundle_variation.collection:
+  route_name: entity.commerce_bundle_variation.collection
+  base_route: entity.commerce_product_bundles.canonical
+  title: Bundle Variations
+  weight: 15

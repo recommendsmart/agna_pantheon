@@ -1,0 +1,12 @@
+langcode: en
+status: true
+dependencies:
+  module:
+    - commerce_order
+  enforced:
+    module:
+      - commerce_product_bundles
+id: commerce_order_item.add_to_cart_bundle
+label: 'Add to cart Bundle'
+targetEntityType: commerce_order_item
+cache: true

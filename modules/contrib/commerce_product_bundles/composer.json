@@ -1,0 +1,20 @@
+{
+  "name": "drupal/commerce_product_bundles",
+  "type": "drupal-module",
+  "description": "Commerce Product Bundles",
+  "keywords": ["Drupal"],
+  "license": "GPL-2.0+",
+  "homepage": "http://drupal.org/project/commerce_product_bundles",
+  "minimum-stability": "dev",
+  "require": {
+    "php": ">=7.0.8",
+    "ext-bcmath": "*",
+    "drupal/core": "^8.8 || ^9",
+    "drupal/commerce": "^2.19",
+    "drupal/commerce_currency_resolver": "^1.51",
+    "drupal/select2": "^1.6"
+  },
+  "require-dev": {
+    "drupal/commerce_currencies_price": "^1.x-dev"
+  }
+}

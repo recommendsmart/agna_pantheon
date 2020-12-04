@@ -1,0 +1,9 @@
+langcode: en
+status: true
+dependencies: {  }
+id: default
+label: Default
+orderItemType: bundle
+generateTitle: null
+traits: {  }
+locked: false

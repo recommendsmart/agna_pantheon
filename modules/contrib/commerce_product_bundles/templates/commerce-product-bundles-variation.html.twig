@@ -1,0 +1,25 @@
+{#
+/**
+ * @file
+ *
+ * Default template for product bundle variations.
+ *
+ * Available variables:
+ * - attributes: HTML attributes for the wrapper.
+ * - product_bundle_variation: The rendered product bundle variation fields.
+ *   Use 'product_bundle_variation' to print them all, or print a subset such as
+ *   'product_bundle_variation.title'. Use the following code to exclude the
+ *   printing of a given field:
+ *   @code
+ *   {{ product_bundle_variation|without('title') }}
+ *   @endcode
+ * - product_bundle_variation_entity: The product bundle variation entity.
+ * - product_bundle_url: The product bundle URL.
+ *
+ * @ingroup themeable
+ * @see template_preprocess_commerce_product_bundles_variation()
+ */
+#}
+<div{{ attributes }}>
+  {{- product_bundle_variation -}}
+</div>

@@ -1,0 +1,9 @@
+langcode: en
+status: true
+dependencies: {  }
+label: Bundle
+id: bundle
+purchasableEntityType: commerce_bundle_variation
+orderType: default
+traits: {  }
+locked: false

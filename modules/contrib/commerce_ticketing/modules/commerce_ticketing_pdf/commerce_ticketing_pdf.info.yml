@@ -1,0 +1,13 @@
+name: Commerce Ticketing PDF
+type: module
+description: 'Provides a commerce ticket pdf output.'
+package: Liip
+core: 8.x
+core_version_requirement: ^8 || ^9
+dependencies:
+  - commerce_ticketing:commerce_ticketing
+
+# Information added by Drupal.org packaging script on 2020-10-06
+version: '1.0.2'
+project: 'commerce_ticketing'
+datestamp: 1601976826

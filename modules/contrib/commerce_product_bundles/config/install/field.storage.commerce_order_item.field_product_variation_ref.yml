@@ -1,0 +1,18 @@
+langcode: en
+status: true
+dependencies:
+  module:
+    - commerce_order
+    - commerce_product_bundles
+id: commerce_order_item.field_product_variation_ref
+field_name: field_product_variation_ref
+entity_type: commerce_order_item
+type: bundle_ref_var_field
+settings: {  }
+module: commerce_product_bundles
+locked: true
+cardinality: -1
+translatable: true
+indexes: {  }
+persist_with_no_fields: false
+custom_storage: false

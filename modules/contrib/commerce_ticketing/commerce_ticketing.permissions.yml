@@ -1,0 +1,16 @@
+administer commerce ticket types:
+  title: 'Administer commerce ticket types'
+  description: 'Maintain the types of commerce ticket entity.'
+  restrict access: true
+access commerce ticket overview:
+  title: 'Access commerce ticket overview page'
+delete commerce ticket:
+  title: Delete commerce ticket
+create commerce ticket:
+  title: Create commerce ticket
+view commerce ticket:
+  title: View commerce ticket
+edit commerce ticket:
+  title: Edit commerce ticket
+administer commerce ticketing:
+  title: 'Administer tickets'
