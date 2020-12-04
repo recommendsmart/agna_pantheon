@@ -1,0 +1,5 @@
+entity.node.content_check_overview:
+  route_name: entity.node.content_check_overview
+  base_route: entity.node.canonical
+  title: 'Check'
+  weight: 100

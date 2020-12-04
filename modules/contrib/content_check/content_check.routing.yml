@@ -1,0 +1,12 @@
+entity.node.content_check_overview:
+  path: '/node/{node}/content-check'
+  defaults:
+    _title: 'Check'
+    _controller: '\Drupal\content_check\Controller\ContentCheckController::overview'
+  requirements:
+    _entity_access: 'node.update'
+  options:
+    _node_operation_route: TRUE
+    parameters:
+      node:
+        type: 'entity:node'
