@@ -1,0 +1,150 @@
+<?php
+
+/**
+ * @file
+ * Contains template_entities.module.
+ */
+
+use Drupal\Core\Database\Query\AlterableInterface;
+use Drupal\Core\Entity\EntityForm;
+use Drupal\Core\Routing\RouteMatchInterface;
+use Drupal\template_entities\EntityTypeInfo;
+use Drupal\template_entities\ViewsQueryAlter;
+use Drupal\views\Plugin\views\query\QueryPluginBase;
+use Drupal\views\ViewExecutable;
+
+/**
+ * Implements hook_help().
+ */
+function template_entities_help($route_name, RouteMatchInterface $route_match) {
+  switch ($route_name) {
+    // Main module help for the template_entities module.
+    case 'help.page.template_entities':
+      $output = '';
+      $output .= '<h3>' . t('About') . '</h3>';
+      $output .= '<p>' . t('In generic terms, the Template Entities module allows entities of different types to be used as templates to create new entities.') . '</p>';
+      return $output;
+
+    default:
+      return '';
+  }
+}
+
+/**
+ * Implements hook_views_query_alter().
+ */
+function template_entities_views_query_alter(ViewExecutable $view, QueryPluginBase $query) {
+  return Drupal::service('class_resolver')
+    ->getInstanceFromDefinition(ViewsQueryAlter::class)
+    ->alterQuery($view, $query);
+}
+
+/**
+ * Implements hook_query_alter().
+ */
+function template_entities_query_alter(AlterableInterface $query) {
+  // Give all template plugins a chance to alter queries.
+  /** @var \Drupal\template_entities\TemplateManagerInterface $template_manager */
+  $template_manager = Drupal::service('template_entities.manager');
+  $template_manager->alterQuery($query);
+}
+
+/**
+ * Implements hook_theme().
+ */
+function template_entities_theme() {
+  $theme = [];
+  $theme['template'] = [
+    'render element' => 'elements',
+    'file' => 'template.page.inc',
+    'template' => 'template',
+  ];
+  $theme['template_content_add_list'] = [
+    'variables' => ['content' => NULL],
+    'file' => 'template.page.inc',
+  ];
+
+  // Added from previous implementation.
+  $theme['template_entities'] = [
+    'render element' => 'children',
+  ];
+
+  return $theme;
+}
+
+/**
+ * Implements hook_theme_suggestions_HOOK().
+ */
+function template_entities_theme_suggestions_template(array $variables) {
+  $suggestions = [];
+  $entity = $variables['elements']['#template'];
+  $sanitized_view_mode = strtr($variables['elements']['#view_mode'], '.', '_');
+
+  $suggestions[] = 'template__' . $sanitized_view_mode;
+  $suggestions[] = 'template__' . $entity->bundle();
+  $suggestions[] = 'template__' . $entity->bundle() . '__' . $sanitized_view_mode;
+  $suggestions[] = 'template__' . $entity->id();
+  $suggestions[] = 'template__' . $entity->id() . '__' . $sanitized_view_mode;
+  return $suggestions;
+}
+
+/**
+ * Implements hook_entity_type_alter().
+ */
+function template_entities_entity_type_alter(array &$entity_types) {
+  return Drupal::service('class_resolver')
+    ->getInstanceFromDefinition(EntityTypeInfo::class)
+    ->entityTypeAlter($entity_types);
+}
+
+/**
+ * Implements hook_entity_insert().
+ */
+function template_entities_entity_insert(Drupal\Core\Entity\EntityInterface $entity) {
+  // Give all template plugins a chance to alter queries.
+  /** @var \Drupal\template_entities\TemplateManagerInterface $template_manager */
+  $template_manager = Drupal::service('template_entities.manager');
+  $template_manager->entityInsert($entity);
+
+}
+
+/**
+ * Implements hook_entity_presave().
+ */
+function template_entities_entity_presave(Drupal\Core\Entity\EntityInterface $entity) {
+  // Give all template plugins a chance to alter queries.
+  /** @var \Drupal\template_entities\TemplateManagerInterface $template_manager */
+  $template_manager = Drupal::service('template_entities.manager');
+  $template_manager->entityPresave($entity);
+}
+
+/**
+ * Implements hook_form_alter().
+ */
+function template_entities_form_alter(&$form, \Drupal\Core\Form\FormStateInterface $form_state, $form_id) {
+  // Give all template plugins a chance to alter the new entity form.
+  /** @var \Drupal\template_entities\TemplateManagerInterface $template_manager */
+  $template_manager = Drupal::service('template_entities.manager');
+  $form_object = $form_state->getFormObject();
+  if ($form_object instanceof EntityForm) {
+    $entity = $form_object->getEntity();
+    if (isset($entity->template)) {
+      $template_manager->alterNewEntityForm($form, $form_state, $entity);
+    }
+  }
+}
+
+/**
+ * Implements hook_module_implements_alter().
+ */
+function template_entities_module_implements_alter(&$implementations, $hook) {
+  switch ($hook) {
+    // Move our hook_form_alter() implementation to the end of the list
+    // specifically so it fires after content_translation_form_alter.
+    case 'form_alter':
+      $group = $implementations['template_entities'];
+      unset($implementations['template_entities']);
+      $implementations['template_entities'] = $group;
+      break;
+  }
+}

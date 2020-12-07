@@ -1,0 +1,12 @@
+<?php
+
+/**
+ * Implements hook_menu_local_tasks_alter().
+ */
+function template_entities_content_starter_menu_local_tasks_alter(&$data, $route_name, \Drupal\Core\Cache\RefinableCacheableDependencyInterface &$cacheability) {
+  // Avoid duplicate "default" content overview tabs.
+  if (isset($data['tabs'][1]['content_moderation.content'])
+    && isset($data['tabs'][1]['template_entities_content_starter.content'])) {
+    unset($data['tabs'][1]['template_entities_content_starter.content']);
+  }
+}

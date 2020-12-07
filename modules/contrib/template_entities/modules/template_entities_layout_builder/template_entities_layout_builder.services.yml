@@ -1,0 +1,5 @@
+services:
+  template_entities_layout_builder.route_subscriber:
+    class: Drupal\template_entities_layout_builder\Routing\RouteSubscriber
+    tags:
+      - { name: event_subscriber }

@@ -1,0 +1,14 @@
+services:
+  template_entities_book.book.outline_storage:
+    decorates: book.outline_storage
+    class: Drupal\template_entities_book\BookOutlineStorageDecorator
+    arguments: ['@database']
+    public: false
+    decoration_priority: 50
+    tags:
+      - { name: backend_overridable }
+  template_entities_book.access_check.book_pages:
+    class: \Drupal\template_entities_book\Access\BookTemplatePageAccessCheck
+    parent: template_entities.access_check.entities
+    tags:
+      - { name: access_check, applies_to: _entity_access }

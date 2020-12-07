@@ -1,0 +1,7 @@
+template_entities.template_plugin.settings.book:
+  type: template_entities.template_plugin_base.settings
+  label: Book plugin settings
+  mapping:
+    add_child_from_template:
+      type: boolean
+      label: 'Add child from template link'

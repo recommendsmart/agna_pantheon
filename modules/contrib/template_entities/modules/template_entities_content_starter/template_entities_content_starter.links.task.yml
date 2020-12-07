@@ -1,0 +1,10 @@
+template_entities_content_starter.content:
+  title: 'Overview'
+  route_name: system.admin_content
+  parent_id: system.admin_content
+
+template_entities_content_starter.content_templates:
+  title: 'Templates'
+  route_name: view.content_templates.page_1
+  parent_id: system.admin_content
+  weight: 1

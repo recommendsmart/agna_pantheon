@@ -1,0 +1,17 @@
+view.content_block_library.page_1:
+  title: 'Content blocks'
+  route_name: view.content_block_library.page_1
+  base_route: system.admin_content
+
+view.content_block_library.page_1.list_sub:
+  title: 'Overview'
+  route_name: view.content_block_library.page_1
+  base_route: system.admin_content
+  parent_id: view.content_block_library.page_1
+
+template_entities_content_starter.block_templates:
+  title: 'Templates'
+  route_name: view.content_block_templates.page_1
+  base_route: system.admin_content
+  parent_id: view.content_block_library.page_1
+  weight: 1

@@ -1,0 +1,47 @@
+langcode: en
+status: true
+dependencies:
+  config:
+    - template_entities.template_type.content
+id: template.content.default
+targetEntityType: template
+bundle: content
+mode: default
+content:
+  description:
+    type: string_textfield
+    weight: 0
+    settings:
+      size: 80
+      placeholder: ''
+    region: content
+    third_party_settings: {  }
+  name:
+    type: string_textfield
+    weight: -4
+    region: content
+    settings:
+      size: 60
+      placeholder: ''
+    third_party_settings: {  }
+  template_entity_id:
+    type: entity_reference_autocomplete
+    weight: 5
+    settings:
+      match_operator: CONTAINS
+      match_limit: 10
+      size: 60
+      placeholder: ''
+    region: content
+    third_party_settings: {  }
+  user_id:
+    type: entity_reference_autocomplete
+    weight: 5
+    settings:
+      match_operator: CONTAINS
+      size: 60
+      placeholder: ''
+      match_limit: 10
+    region: content
+    third_party_settings: {  }
+hidden: {  }

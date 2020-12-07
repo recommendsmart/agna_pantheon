@@ -1,0 +1,11 @@
+name: 'Template Entities'
+type: module
+description: 'Mark entities as templates and use them to create new entities.'
+core: 8.x
+core_version_requirement: ^8 || ^9
+package: 'Template Entities'
+
+# Information added by Drupal.org packaging script on 2020-12-07
+version: '1.0.0-alpha10'
+project: 'template_entities'
+datestamp: 1607340771

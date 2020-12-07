@@ -1,0 +1,60 @@
+<?php
+
+use Drupal\book\BookManager;
+use Drupal\Component\Utility\UrlHelper;
+use Drupal\Core\Url;
+use Drupal\node\NodeInterface;
+
+/**
+ * Implements hook_node_links_alter().
+ */
+function template_entities_node_links_alter(array &$links, NodeInterface $node, array &$context) {
+  if ($context['view_mode'] != 'rss') {
+    $book_links = [];
+    $account = \Drupal::currentUser();
+
+    if (isset($node->book['depth'])) {
+      if ($context['view_mode'] == 'full' && node_is_page($node)) {
+        $child_type = \Drupal::config('book.settings')->get('child_type');
+        $access_control_handler = \Drupal::entityTypeManager()->getAccessControlHandler('node');
+
+        /** @var \Drupal\template_entities\TemplateManagerInterface $template_manager */
+        $template_manager = \Drupal::service('template_entities.manager');
+
+        $template_types = $template_manager->getTemplateTypesForEntityType('node', $child_type);
+
+        /** @var \Drupal\Core\Routing\RedirectDestinationInterface $redirect_destination */
+        $redirect_destination = \Drupal::service('redirect.destination');
+
+        $destination = UrlHelper::parse($redirect_destination->get());
+        $destination['query'] += ['parent' => $node->id()];
+        if (($account->hasPermission('add content to books') || $account->hasPermission('administer book outlines')) && $access_control_handler->createAccess($child_type) && $node->isPublished() && $node->book['depth'] < BookManager::BOOK_MAX_DEPTH) {
+          foreach ($template_types as $template_type_id => $template_type) {
+            if ($template_type->getTemplatePlugin()->getConfiguration()['add_child_from_template']) {
+              $book_links['book_add_child_from_template'] = [
+                'title' => t('Add page/section from @template_type template', ['@template_type' => $template_type->label()]),
+                'url' => Url::fromRoute("template.$template_type_id.new_from_template_page", [], [
+                  'query' => [
+                    'destination' => Url::fromUri('internal:' . $destination['path'], $destination)->toString(),
+                  ]]),
+              ];
+            }
+          }
+        }
+      }
+    }
+
+    if (!empty($book_links)) {
+      if (!empty($links['book']['#links'])) {
+        $links['book']['#links'] += $book_links;
+      }
+      else {
+        $links['book'] = [
+          '#theme' => 'links__node__book',
+          '#links' => $book_links,
+          '#attributes' => ['class' => ['links', 'inline']],
+        ];
+      }
+    }
+  }
+}

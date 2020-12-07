@@ -1,0 +1,18 @@
+entity.template.add_form:
+  route_name: entity.template.add_page
+  title: 'Add Template'
+  appears_on:
+    - entity.template.collection
+entity.template.new_from_template:
+  route_name: entity.template.new_from_template
+  title: 'New from template'
+  appears_on:
+    - entity.template.canonical
+entity.template_type.add_form:
+  route_name: entity.template_type.add_form
+  title: 'Add Template type'
+  appears_on:
+    - entity.template_type.collection
+
+entity_templates_ui:
+  deriver: '\Drupal\template_entities\Plugin\Deriver\EntityTemplateActionLinkDeriver'

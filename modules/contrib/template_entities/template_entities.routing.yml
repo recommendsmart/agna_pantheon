@@ -1,0 +1,2 @@
+route_callbacks:
+  - 'template_entities.route_subscriber:routes'

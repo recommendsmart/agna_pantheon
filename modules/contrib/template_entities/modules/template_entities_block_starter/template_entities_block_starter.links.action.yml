@@ -1,0 +1,7 @@
+template_entities_block_starter_add_action:
+  route_name: block_content.add_page
+  title: 'Add custom block'
+  weight: -1
+  appears_on:
+    - view.content_block_library.page_1
+  class: \Drupal\template_entities_block_starter\Plugin\Menu\LocalAction\BlockContentAddLocalAction

@@ -1,0 +1,32 @@
+@startuml
+
+class Template <<content entity>>
+class TemplateType <<config entity>>
+
+TemplateType --> Template : "bundle of"
+TemplateType --> TemplatePluginInterface : "has"
+Template --> TemplatePluginInterface : "uses"
+
+class TemplatePluginBase
+interface TemplatePluginInterface <<plugin>>
+
+note bottom of TemplatePluginInterface
+  One plugin per supported entity
+  type responsible for entity type
+  specific template processing.
+end note
+
+TemplatePluginInterface <|-- TemplatePluginBase
+
+class EntityTemplatePluginDeriver
+
+EntityTemplatePluginDeriver --> TemplatePluginBase : "provides implementations"
+
+note top of EntityTemplatePluginDeriver
+  Derives plugins for all
+  entity types that have a
+  canonical link template
+end note
+
+
+@enduml

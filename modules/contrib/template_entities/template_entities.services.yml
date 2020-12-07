@@ -1,0 +1,28 @@
+services:
+  logger.channel.template_entities:
+    parent: logger.channel_base
+    arguments: [ 'template_entities' ]
+  template_entities.manager:
+    class: Drupal\template_entities\TemplateManager
+    arguments: [ '@request_stack', '@entity_type.manager', '@current_user', '@state', '@logger.channel.template_entities', '@class_resolver' ]
+  plugin.manager.template_plugin:
+    class: Drupal\template_entities\Plugin\TemplatePluginManager
+    parent: default_plugin_manager
+  template_entities.route_subscriber:
+    class: Drupal\template_entities\Routing\RouteSubscriber
+    arguments: [ '@entity_type.manager', '@template_entities.manager' ]
+    tags:
+      - { name: event_subscriber }
+  access_check.entity.templates:
+    class: Drupal\template_entities\Access\LinkedTemplatesAccessCheck
+    tags:
+      - { name: access_check, applies_to: _has_linked_templates }
+  access_check.entity.new_from_template:
+    class: Drupal\template_entities\Access\NewFromTemplateAccessCheck
+    tags:
+      - { name: access_check, applies_to: _new_from_template }
+  template_entities.access_check.entities:
+    class: \Drupal\template_entities\Access\EntityAccessCheck
+    arguments: ['@template_entities.manager']
+    tags:
+      - { name: access_check, applies_to: _entity_access }

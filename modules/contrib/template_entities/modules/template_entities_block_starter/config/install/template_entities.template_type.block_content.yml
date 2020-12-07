@@ -1,0 +1,18 @@
+langcode: en
+status: true
+dependencies:
+  module:
+    - block_content
+third_party_settings:
+  template_entities_lbl:
+    override_library_layout: false
+id: block_content
+label: 'Block content'
+type: 'canonical_entities:block_content'
+description: 'General purpose content block template type.'
+collection_pages: /admin/content/blocks
+add_action_link: true
+listing_pages: /admin/content/blocks/templates
+bundles: {  }
+settings:
+  translation_policy: 0

@@ -1,0 +1,34 @@
+{#
+/**
+ * @file
+ * Default theme implementation to list templates available for adding content.
+ *
+ * Markup is based on the seven admin theme.
+ *
+ * Available variables:
+ * - templates: A list of templates, each with the following properties:
+ *   - new_link: Link to create a piece of content from this template.
+ *   - description: Description of this template.
+ *
+ * @see template_preprocess_template_content_add_list()
+ *
+ * @ingroup themeable
+ */
+#}
+{% if content %}
+  <dl class="node-type-list admin-list">
+    {% for template in templates %}
+      <div class="admin-item">
+        <dt class="admin-item__title">{{ template.new_link }}</dt>
+        <dd class="admin-item__description">{{ template.description }}</dd>
+      </div>
+    {% endfor %}
+  </dl>
+{% else %}
+  <p>
+    {% set create_template = path('entity.template.add_page') %}
+    {% trans %}
+      There are no templates available yet. Go to the <a href="{{ create_template }}">template creation page</a> to add a new template.
+    {% endtrans %}
+  </p>
+{% endif %}

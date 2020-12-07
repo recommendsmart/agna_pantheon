@@ -1,0 +1,14 @@
+name: 'Book Templates'
+type: module
+description: 'Mark books as templates and use them to create new books.'
+core: 8.x
+core_version_requirement: ^8 || ^9
+package: 'Template Entities'
+dependencies:
+  - drupal:book
+  - template_entities:template_entities
+
+# Information added by Drupal.org packaging script on 2020-12-07
+version: '1.0.0-alpha10'
+project: 'template_entities'
+datestamp: 1607340771

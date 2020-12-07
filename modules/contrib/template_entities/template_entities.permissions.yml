@@ -1,0 +1,6 @@
+administer template entities:
+  title: 'Administer all templates and template types'
+  restrict access: true
+
+permission_callbacks:
+  - \Drupal\template_entities\TemplatePermissions::templateTypePermissions

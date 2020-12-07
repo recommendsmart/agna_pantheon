@@ -1,0 +1,25 @@
+template_entities_layout_builder.add_block_from_template:
+  path: '/template_entities_layout_builder/add/block/{section_storage_type}/{section_storage}/{delta}/{region}/{template_id}'
+  defaults:
+    _form: '\Drupal\template_entities_layout_builder\Form\AddBlockFromTemplateForm'
+    _title: 'Configure block'
+  requirements:
+    _layout_builder_access: 'view'
+  options:
+    _admin_route: TRUE
+    parameters:
+      section_storage:
+        layout_builder_tempstore: TRUE
+
+template_entities_layout_builder.choose_inline_block_template:
+  path: '/template_entities_layout_builder/choose/inline-block/{section_storage_type}/{section_storage}/{delta}/{region}/{template_type_id}'
+  defaults:
+    _controller: '\Drupal\template_entities_layout_builder\Controller\ChooseBlockTemplateController::inlineBlockTemplateList'
+    _title: 'Add a new custom block from template'
+  requirements:
+    _layout_builder_access: 'view'
+  options:
+    _admin_route: TRUE
+    parameters:
+      section_storage:
+        layout_builder_tempstore: TRUE

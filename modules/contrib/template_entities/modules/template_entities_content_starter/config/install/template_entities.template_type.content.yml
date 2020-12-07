@@ -1,0 +1,18 @@
+langcode: en
+status: true
+dependencies:
+  module:
+    - node
+third_party_settings:
+  template_entities_lbl:
+    override_library_layout: false
+id: content
+label: Content
+type: 'canonical_entities:node'
+description: 'General content (node) template type.'
+collection_pages: /admin/content
+add_action_link: true
+listing_pages: /admin/content/templates
+bundles:
+settings:
+  translation_policy: 0

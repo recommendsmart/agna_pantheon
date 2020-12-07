@@ -1,0 +1,15 @@
+{
+    "name": "drupal/template_entities",
+    "type": "drupal-module",
+    "description": "Save entities as templates and use them to create new entities.",
+    "keywords": [
+        "Drupal"
+    ],
+    "license": "GPL-2.0+",
+    "homepage": "https://www.drupal.org/project/template_entities",
+    "minimum-stability": "dev",
+    "support": {
+        "issues": "https://www.drupal.org/project/issues/template_entities",
+        "source": "http://cgit.drupalcode.org/template_entities"
+    }
+}

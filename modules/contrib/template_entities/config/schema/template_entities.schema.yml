@@ -1,0 +1,45 @@
+template_entities.template_plugin_base.settings:
+  type: mapping
+  label: Base plugin settings
+  mapping:
+    translation_policy:
+      type: integer
+      label: 'Translation policy'
+
+template_entities.template_plugin.settings.canonical_entities:*:
+  type: template_entities.template_plugin_base.settings
+  label: Derived plugin settings
+
+template_entities.template_type.*:
+  type: config_entity
+  label: 'Template type config'
+  mapping:
+    id:
+      type: string
+      label: 'ID'
+    label:
+      type: label
+      label: 'Label'
+    type:
+      type: string
+      label: 'Type'
+    description:
+      type: text
+      label: 'Description'
+    collection_pages:
+      type: text
+      label: 'Collection pages'
+    add_action_link:
+      type: boolean
+      label: 'Add action link'
+    bundles:
+      type: sequence
+      label: 'Bundles'
+      sequence:
+        type: string
+        label: 'Bundle'
+    settings:
+      type: template_entities.template_plugin.settings.[%parent.type]
+      label: 'Plugin settings'
+    uuid:
+      type: string

@@ -1,0 +1,9 @@
+# Template menu items definition
+entity.template.collection:
+  title: 'Templates'
+  route_name: entity.template.collection
+  description: 'List and manage templates'
+  parent: system.admin_structure
+  weight: 100
+
+

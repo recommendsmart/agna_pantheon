@@ -1,0 +1,33 @@
+# Template type task definition
+entity.template_type.collection:
+  title: 'Template types'
+  route_name: entity.template_type.collection
+  description: 'Create and manage template types'
+  base_route: entity.template.collection
+  weight: 99
+
+# Per theme block layout pages.
+entity.template.collection:
+  title: 'Templates'
+  route_name: entity.template.collection
+  base_route: entity.template.collection
+
+# Template routing definition
+entity.template.canonical:
+  route_name: entity.template.canonical
+  base_route: entity.template.canonical
+  title: 'View'
+
+entity.template.edit_form:
+  route_name: entity.template.edit_form
+  base_route: entity.template.canonical
+  title: 'Edit'
+
+entity.template.delete_form:
+  route_name: entity.template.delete_form
+  base_route: entity.template.canonical
+  title: Delete
+  weight: 10
+
+entity_templates_ui:
+  deriver: '\Drupal\template_entities\Plugin\Deriver\EntityTemplateLocalTaskDeriver'

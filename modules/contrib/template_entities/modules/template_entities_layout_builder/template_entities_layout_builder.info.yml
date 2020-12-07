@@ -1,0 +1,14 @@
+name: 'Layout Builder Block Templates'
+type: module
+description: 'Use block content templates in the layout builder.'
+core: 8.x
+core_version_requirement: ^8 || ^9
+package: 'Template Entities'
+dependencies:
+  - drupal:layout_builder
+  - template_entities:template_entities
+
+# Information added by Drupal.org packaging script on 2020-12-07
+version: '1.0.0-alpha10'
+project: 'template_entities'
+datestamp: 1607340771

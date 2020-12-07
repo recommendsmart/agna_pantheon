@@ -1,0 +1,13 @@
+name: 'Template Entities Content Block Starter Kit'
+type: module
+description: 'Provides a number of features to enhance use of templates entities with creating content blocks.'
+core: 8.x
+core_version_requirement: ^8 || ^9
+package: 'Template Entities'
+dependencies:
+  - template_entities:template_entities
+
+# Information added by Drupal.org packaging script on 2020-12-07
+version: '1.0.0-alpha10'
+project: 'template_entities'
+datestamp: 1607340771

@@ -1,0 +1,19 @@
+{
+    "name": "drupal/entity_reference_views",
+    "type": "drupal-module",
+    "description": "Provides functionality for entity reference field type value to render using views.",
+    "homepage": "http://drupal.org/project/entity_reference_views",
+    "license": "GPL-2.0-or-later",
+    "authors": [
+        {
+            "name": "Vijaya Chandran Mani (vijaycs85)",
+            "homepage": "https://www.drupal.org/u/vijaycs85",
+            "role": "Maintainer"
+        },
+        {
+            "name": "Parker Brown (pbrown063)",
+            "homepage": "https://www.drupal.org/u/pbrown063",
+            "role": "Maintainer"
+        }
+    ]
+}

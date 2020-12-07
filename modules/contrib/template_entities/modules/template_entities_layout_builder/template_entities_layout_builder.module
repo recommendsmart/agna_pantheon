@@ -1,0 +1,46 @@
+<?php
+/**
+ * @file
+ * Contains template_entities_layout_builder.module.
+ */
+
+use Drupal\template_entities\Entity\Template;
+
+/**
+ * Implements hook_plugin_filter_TYPE__CONSUMER_alter().
+ *
+ * Limit the block content entities listed for selection in the layout builder
+ * to exclude any used in a template.
+ */
+function template_entities_layout_builder_plugin_filter_block__layout_builder_alter(array &$definitions, array $extra) {
+  /** @var \Drupal\template_entities\TemplateManagerInterface $template_manager */
+  $template_manager = Drupal::service('template_entities.manager');
+
+  $templates = $template_manager->getTemplatesForEntityType('block_content');
+  if (!empty($templates)) {
+    $template_uuids = array_flip(array_map(function (Template $v) {
+      return 'block_content:' . $v->getSourceEntity()->uuid();
+    }, $templates));
+
+    $definitions = array_diff_key($definitions, $template_uuids);
+  }
+}
+
+/**
+ * Implements hook_plugin_filter_TYPE_alter().
+ *
+ * Copy of functionaility in layout_builder_plugin_filter_block_alter().
+ *
+ * @see layout_builder_plugin_filter_block_alter()
+ */
+function template_entities_layout_builder_plugin_filter_block_alter(array &$definitions, array $extra, $consumer) {
+  // @todo Determine the 'inline_block' blocks should be allowed outside
+  //   of layout_builder https://www.drupal.org/node/2979142.
+  if ($consumer !== 'layout_builder' || !isset($extra['list']) || $extra['list'] !== 'inline_template_blocks') {
+    foreach ($definitions as $id => $definition) {
+      if ($definition['id'] === 'inline_template_block') {
+        unset($definitions[$id]);
+      }
+    }
+  }
+}
