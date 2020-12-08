@@ -69,7 +69,7 @@ class TemplatePluginBase extends PluginBase implements TemplatePluginInterface, 
    *
    * @var \Drupal\Core\Entity\EntityTypeManagerInterface
    */
-  protected EntityTypeManagerInterface $entityTypeManager;
+  protected $entityTypeManager;
 
   /**
    * The router.
