@@ -62,7 +62,7 @@ class TemplatePluginBase extends PluginBase implements TemplatePluginInterface, 
    *
    * @var \Drupal\Core\Entity\EntityTypeInterface
    */
-  protected EntityTypeInterface $entityType;
+  protected $entityType;
 
   /**
    * The entity type manager.

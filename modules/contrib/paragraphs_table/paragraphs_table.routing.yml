@@ -1,0 +1,51 @@
+paragraphs_item.ajax:
+  path: '/paragraphs_item/ajax/{field_name}/{host_type}/{host_id}'
+  defaults:
+    _controller: '\Drupal\paragraphs_table\Controller\AjaxController::ajax'
+  methods:  [GET]
+  requirements:
+    _permission: 'access content'
+paragraphs_item.json:
+  path: '/paragraphs_item/json/{field_name}/{host_type}/{host_id}'
+  defaults:
+    _controller: '\Drupal\paragraphs_table\Controller\AjaxController::json'
+  methods:  [GET]
+  requirements:
+    _permission: 'access content'
+paragraphs_item.jsonData:
+  path: '/paragraphs_item/jsondata/{field_name}/{host_type}/{host_id}'
+  defaults:
+    _controller: '\Drupal\paragraphs_table\Controller\AjaxController::jsondata'
+  methods:  [GET]
+  requirements:
+    _permission: 'access content'
+
+entity.paragraphs_item.canonical:
+  path: '/paragraphs_item/{paragraphs_item}'
+  defaults:
+    _controller: '\Drupal\paragraphs_table\Controller\ParagraphsItemController::page'
+    _title_callback: '\Drupal\paragraphs_table\Controller\ParagraphsItemController::pageTitle'
+  requirements:
+    _access_paragraphs_item_host: 'view'
+
+paragraphs_item.add_page:
+  path: '/paragraphs_item/add/{paragraphs}/{host_type}/{host_id}'
+  defaults:
+    _controller: '\Drupal\paragraphs_table\Controller\ParagraphsItemController::add'
+    _title_callback: '\Drupal\paragraphs_table\Controller\ParagraphsItemController::addPageTitle'
+  requirements:
+    _access_add_paragraphs_item_to_host: '{host_type}:{host_id}'
+
+entity.paragraphs_item.edit_form:
+  path: '/paragraphs_item/{paragraphs_item}/edit'
+  defaults:
+    _entity_form: 'paragraphs_item.edit'
+  requirements:
+    _access_paragraphs_item_host: 'update'
+
+entity.paragraphs_item.delete_form:
+  path: '/paragraphs_item/{paragraphs_item}/delete'
+  defaults:
+    _entity_form: 'paragraphs_item.delete'
+  requirements:
+    _access_paragraphs_item_host: 'update'

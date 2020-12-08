@@ -48,7 +48,7 @@ class DynamicEntityReferenceWidget extends EntityReferenceAutocompleteWidget {
 
     $settings = $this->getFieldSettings();
     $labels = \Drupal::service('entity_type.repository')->getEntityTypeLabels();
-    $available = DynamicEntityReferenceItem::getTargetTypes($settings);
+    $available = DynamicEntityReferenceItem::getTargetTypes($settings, TRUE);
     $cardinality = $items->getFieldDefinition()->getFieldStorageDefinition()->getCardinality();
     $target_type = $items->get($delta)->target_type ?: reset($available);
 

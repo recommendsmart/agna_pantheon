@@ -1,0 +1,54 @@
+datatables_core:
+  version: 1.10.22
+  js:
+    //cdn.datatables.net/1.10.22/js/jquery.dataTables.min.js: { type: external, minified: true }
+    //cdn.datatables.net/1.10.22/js/dataTables.bootstrap4.min.js: { type: external, minified: true }
+  css:
+    component:
+      //cdn.datatables.net/1.10.22/css/dataTables.bootstrap4.min.css: { type: external, minified: true }
+  dependencies:
+    - core/jquery
+datatables:
+  version: 1.x
+  js:
+    js/datatables.js: {}
+  dependencies:
+    - core/jquery
+    - core/jquery.once
+    - core/drupal
+    - core/drupalSettings
+
+bootstrapTable:
+  version: 1.18.0
+  js:
+    //unpkg.com/bootstrap-table@1.18.0/dist/bootstrap-table.min.js: {type: external, minified: true }
+  css:
+    component:
+      //unpkg.com/bootstrap-table@1.18.0/dist/bootstrap-table.min.css: { type: external, minified: true }
+bootstrapTable_fontawesome:
+  license: &fontawesome_webfonts_license
+    name: SIL OFL 1.1
+    url: https://fontawesome.com/license
+    gpl-compatible: true
+  version: 5.15.1
+  css:
+    theme:
+      //cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.1/css/all.min.css: { type: external, minified: true }
+
+googleCharts:
+  js:
+    //www.gstatic.com/charts/loader.js: { type: external }
+    js/googlecharts.js: {}
+
+paste-clipboard:
+  js:
+    js/paste-clipboard.js: {}
+
+paragraphsTable:
+  js:
+    js/paragraphsTable.js: {}
+  dependencies:
+    - core/jquery
+    - core/jquery.once
+    - core/drupal
+    - core/drupalSettings

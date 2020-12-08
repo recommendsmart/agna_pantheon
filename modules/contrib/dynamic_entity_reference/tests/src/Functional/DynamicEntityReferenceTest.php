@@ -7,7 +7,6 @@ use Drupal\Core\Field\FieldStorageDefinitionInterface;
 use Drupal\Core\Language\LanguageInterface;
 use Drupal\Core\Site\Settings;
 use Drupal\Core\Url;
-use Drupal\dynamic_entity_reference\Plugin\Field\FieldType\DynamicEntityReferenceItem;
 use Drupal\entity_test\Entity\EntityTest;
 use Drupal\entity_test\Entity\EntityTestBundle;
 use Drupal\field\Entity\FieldConfig;
@@ -46,6 +45,7 @@ class DynamicEntityReferenceTest extends BrowserTestBase {
     'field_ui',
     'dynamic_entity_reference',
     'entity_test',
+    'config_test',
   ];
 
   /**
@@ -95,8 +95,6 @@ class DynamicEntityReferenceTest extends BrowserTestBase {
       'new_storage_type' => 'dynamic_entity_reference',
     ];
     $this->submitForm($edit, t('Save and continue'));
-    $assert_session->optionNotExists('settings[entity_type_ids][]', 'settings[entity_test_no_id][handler_settings][target_bundles][entity_test_no_id]');
-    $assert_session->optionNotExists('settings[entity_type_ids][]', 'settings[entity_test_no_id][handler_settings][target_bundles][entity_test_string_id]');
     $this->submitForm([
       'cardinality' => FieldStorageDefinitionInterface::CARDINALITY_UNLIMITED,
       'settings[entity_type_ids][]' => ['user', 'entity_test_label'],
@@ -105,16 +103,18 @@ class DynamicEntityReferenceTest extends BrowserTestBase {
     $assert_session->optionExists('default_value_input[field_foobar][0][target_type]', 'entity_test');
     $assert_session->optionNotExists('default_value_input[field_foobar][0][target_type]', 'user');
 
+    // Ensure no configuration entities are exposed to the UI.
     $labels = $this->container->get('entity_type.repository')->getEntityTypeLabels(TRUE);
+    foreach (array_keys($labels[(string) t('Configuration')]) as $entity_type) {
+      $assert_session->fieldNotExists('settings[' . $entity_type . '][handler]');
+    }
     $edit = [];
     $excluded_entity_type_ids = [
       'user',
       'file',
       'path_alias',
       'entity_test_label',
-      'entity_test_no_id',
       'entity_test_no_bundle',
-      'entity_test_string_id',
       'entity_test_computed_field',
       'entity_test_map_field',
     ];
@@ -142,14 +142,10 @@ class DynamicEntityReferenceTest extends BrowserTestBase {
       'settings[entity_type_ids][]' => [],
     ], t('Save field settings'));
     $assert_session->pageTextContains('Select at least one entity type ID.');
-    $options = array_filter(array_keys($labels[(string) t('Content', [], ['context' => 'Entity type group'])]), function ($entity_type_id) {
-      return DynamicEntityReferenceItem::entityHasIntegerId($entity_type_id);
-    });
-    unset($options['entity_test_no_id']);
     $this->submitForm([
       'cardinality' => FieldStorageDefinitionInterface::CARDINALITY_UNLIMITED,
       'settings[exclude_entity_types]' => TRUE,
-      'settings[entity_type_ids][]' => $options,
+      'settings[entity_type_ids][]' => array_keys($labels[(string) t('Content', [], ['context' => 'Entity type group'])]),
     ], t('Save field settings'));
     $assert_session->pageTextContains('Select at least one entity type ID.');
     $this->submitForm([
@@ -201,22 +197,16 @@ class DynamicEntityReferenceTest extends BrowserTestBase {
       'new_storage_type' => 'dynamic_entity_reference',
     ];
     $this->submitForm($edit, t('Save and continue'));
-    $assert_session->optionNotExists('settings[entity_type_ids][]', 'settings[entity_test_no_id][handler_settings][target_bundles][entity_test_no_id]');
-    $assert_session->optionNotExists('settings[entity_type_ids][]', 'settings[entity_test_no_id][handler_settings][target_bundles][entity_test_string_id]');
     $this->submitForm([
       'cardinality' => FieldStorageDefinitionInterface::CARDINALITY_UNLIMITED,
     ], t('Save field settings'));
-    $assert_session->fieldNotExists('settings[entity_test_no_id][handler_settings][target_bundles][entity_test_no_id]');
-    $assert_session->fieldNotExists('settings[entity_test_string_id][handler_settings][target_bundles][entity_test_string_id]');
     $labels = $this->container->get('entity_type.repository')->getEntityTypeLabels(TRUE);
     $edit = [];
     $excluded_entity_type_ids = [
       'user',
       'file',
       'path_alias',
-      'entity_test_no_id',
       'entity_test_no_bundle',
-      'entity_test_string_id',
       'entity_test_computed_field',
       'entity_test_map_field',
     ];
@@ -479,7 +469,6 @@ class DynamicEntityReferenceTest extends BrowserTestBase {
     $assert_session->pageTextContains($this->adminUser->label());
     $assert_session->pageTextContains('tag');
     $assert_session->pageTextContains($term->label());
-
   }
 
   /**
