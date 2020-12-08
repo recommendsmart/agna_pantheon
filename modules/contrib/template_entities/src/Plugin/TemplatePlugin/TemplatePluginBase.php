@@ -76,14 +76,14 @@ class TemplatePluginBase extends PluginBase implements TemplatePluginInterface, 
    *
    * @var \Drupal\Core\Routing\Router
    */
-  protected Router $router;
+  protected $router;
 
   /**
    * The entity type bundle info service.
    *
    * @var \Drupal\Core\Entity\EntityTypeBundleInfoInterface
    */
-  protected EntityTypeBundleInfoInterface $entityTypeBundleInfo;
+  protected $entityTypeBundleInfo;
 
   /**
    * The content translation manager service.
