@@ -22,7 +22,7 @@ class EntityAccessCheck implements AccessInterface {
    *
    * @var \Drupal\template_entities\TemplateManagerInterface
    */
-  protected TemplateManagerInterface $templateManager;
+  protected $templateManager;
 
   /**
    * EntityAccessCheck constructor.
