@@ -1,0 +1,19 @@
+entity_recycle.entity.restore:
+  path: "/entity_recycle/restore/{entity_type}/{id}"
+  defaults:
+    _form: 'Drupal\entity_recycle\Form\RestoreEntityForm'
+    _title: "Restore item from recycle bin"
+  options:
+    _admin_route: TRUE
+  requirements:
+    _permission: "restore entity recycle bin items"
+
+entity_recycle.settings:
+  path: '/admin/config/content/entity_recycle'
+  defaults:
+    _form: '\Drupal\entity_recycle\Form\EntityRecycleSettingsForm'
+    _title: 'Entity recycle settings'
+  requirements:
+    _permission: 'administer entity_recycle'
+  options:
+    _admin_route: TRUE

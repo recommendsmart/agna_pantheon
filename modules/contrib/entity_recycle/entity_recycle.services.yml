@@ -1,0 +1,12 @@
+services:
+  entity_recycle.manager:
+    class: Drupal\entity_recycle\EntityRecycleManager
+    arguments: ['@config.factory', '@entity_type.manager', '@entity_field.manager', '@logger.factory']
+  entity_recycle.view.manager:
+    class: Drupal\entity_recycle\EntityRecycleViewManager
+    arguments: ['@current_user', '@entity_recycle.manager']
+  entity_recycle.route_subscriber:
+    class: Drupal\entity_recycle\Routing\RouteSubscriber
+    arguments: ['@entity_recycle.manager']
+    tags:
+      - { name: event_subscriber, priority: -100 }

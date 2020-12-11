@@ -1,0 +1,111 @@
+<?php
+
+/**
+ * @file
+ * entity_recycle.module
+ */
+
+use Drupal\Core\Access\AccessResult;
+use Drupal\Core\Entity\Display\EntityViewDisplayInterface;
+use Drupal\Core\Entity\EntityInterface;
+use Drupal\Core\Session\AccountInterface;
+use Drupal\Core\Url;
+
+/**
+ * Implements hook_cron().
+ */
+function entity_recycle_cron() {
+  $entity_recycle_manager = \Drupal::service('entity_recycle.manager');
+  $purge_time = $entity_recycle_manager->getSetting('purge_time');
+  if (!$purge_time) {
+    return;
+  }
+
+  $items = $entity_recycle_manager->getAllItems();
+  $items = array_filter($items);
+  foreach ($items as $entity) {
+    $entity_recycle_manager->purge($entity);
+  }
+}
+
+/**
+ * Implements hook_entity_access().
+ */
+function entity_recycle_entity_access(EntityInterface $entity, $op, AccountInterface $account) {
+  switch ($op) {
+    case 'view':
+      return \Drupal::service('entity_recycle.view.manager')->entityAccess($entity, $account);
+
+    default:
+      return AccessResult::neutral();
+  }
+}
+
+/**
+ * Implements hook_entity_view().
+ */
+function entity_recycle_entity_view(array &$build, EntityInterface $entity, EntityViewDisplayInterface $display, $view_mode) {
+  $inRecycleBin = \Drupal::service('entity_recycle.manager')->inRecycleBin($entity, $entity->bundle());
+  if ($inRecycleBin) {
+    \Drupal::messenger()->addWarning(t(
+      "This item is in the recycle bin, so it's only seen by users with a correct permission.")
+    );
+
+    $purge_time = \Drupal::service('entity_recycle.manager')->getPurgeTime($entity);
+    if (!$purge_time) {
+      return;
+    }
+
+    if ($purge_time < 0) {
+      \Drupal::messenger()->addWarning(t(
+        "This item will be permanently deleted on the next cron run.")
+      );
+
+      return;
+    }
+
+    \Drupal::messenger()->addWarning(t(
+      "This item will be permanently deleted in @time minutes.", ['@time' => $purge_time])
+    );
+  }
+}
+
+/**
+ * Implements hook_entity_operation().
+ */
+function entity_recycle_entity_operation(EntityInterface $entity) {
+  $operations = [];
+
+  $inRecycleBin = \Drupal::service('entity_recycle.manager')->inRecycleBin($entity, $entity->bundle());
+  if ($inRecycleBin) {
+    $operations['restore'] = [
+      'title' => t('Restore'),
+      'url' => Url::fromRoute('entity_recycle.entity.restore', [
+        'entity_type' => $entity->getEntityTypeId(),
+        'id' => $entity->id(),
+      ]),
+      'weight' => 50,
+    ];
+  }
+
+  return $operations;
+}
+
+/**
+ * Implements hook_entity_operation_alter().
+ */
+function entity_recycle_entity_operation_alter(array &$operations, EntityInterface $entity) {
+  $inRecycleBin = \Drupal::service('entity_recycle.manager')->inRecycleBin($entity, $entity->bundle());
+  if (!$inRecycleBin) {
+    return;
+  }
+
+  if (!isset($operations['delete'])) {
+    return;
+  }
+
+  $canDelete = \Drupal::service('entity_recycle.view.manager')->checkDeletePermission();
+  if (!$canDelete) {
+    unset($operations['delete']);
+  }
+}

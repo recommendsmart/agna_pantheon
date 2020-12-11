@@ -1,0 +1,15 @@
+entity_recycle.settings:
+  type: config_object
+  mapping:
+    purge_time:
+      type: integer
+      label: 'Purge Time'
+    types:
+      type: sequence
+      label: 'Types'
+      sequence:
+        type: sequence
+        label: 'Entity type'
+        sequence:
+          type: string
+          label: 'Bundle type'

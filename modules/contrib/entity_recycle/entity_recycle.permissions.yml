@@ -1,0 +1,11 @@
+view entity recycle bin items:
+  title: "View entity recycle bin items"
+add entity recycle bin items:
+  title: "Add items to entity recycle bin"
+restore entity recycle bin items:
+  title: "Restore entity recycle bin items"
+delete entity recycle bin items:
+  title: "Delete entity recycle bin items"
+administer entity recycle bin:
+  title: 'Administer Recycle Bin settings'
+  description: 'Set on which entity type entity recycle bin is enabled'

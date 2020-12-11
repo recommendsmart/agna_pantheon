@@ -1,0 +1,26 @@
+<?php
+
+/**
+ * @file
+ * Install, update and uninstall functions for the entity_recycle module.
+ */
+
+/**
+ * Implements hook_install().
+ */
+function entity_recycle_install() {
+  // Add recycle bin field to all nodes.
+  $bundles = \Drupal::entityTypeManager()
+    ->getStorage('node_type')
+    ->loadMultiple();
+
+  $entity_recycle_settings = \Drupal::service('entity_recycle.manager')->getSettings();
+
+  foreach ($bundles as $bundle) {
+    \Drupal::service('entity_recycle.manager')->createField('node', $bundle->id());
+    $entity_recycle_settings->set('types.node', $bundle->id());
+  }
+
+  $entity_recycle_settings->save();
+  drupal_flush_all_caches();
+}

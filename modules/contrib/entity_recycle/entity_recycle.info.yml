@@ -1,0 +1,12 @@
+name: Entity Recycle
+type: module
+description: "Adds the ability to restore deleted entities."
+core: 8.x
+package: Other
+core_version_requirement: ^8 || ^9
+configure: entity_recycle.settings
+
+# Information added by Drupal.org packaging script on 2020-12-08
+version: '8.x-1.x-dev'
+project: 'entity_recycle'
+datestamp: 1607431460
