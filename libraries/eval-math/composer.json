@@ -1,0 +1,26 @@
+{
+	"name" : "tramasec/eval-math",
+	"description" : "EvalMath",
+	"license": "BSD",
+	"type" : "library",
+	"keywords" : [
+		"EvalMath"
+	],
+	"require": {
+		"php": "^5.6 || ^7"
+	},
+	"require-dev": {
+		"phpunit/phpunit": "^5",
+		"php-coveralls/php-coveralls": "^2"
+	},
+	"autoload" : {
+		"psr-4" : {
+			"Tramasec\\Util\\EvalMath\\" : "src/"
+		}
+	},
+    "extra": {
+        "branch-alias": {
+            "dev-master": "2.x-dev"
+        }
+    }
+}
