@@ -1,4 +1,0 @@
-services:
-  rocketship_social_widgets.manager:
-    class: Drupal\rocketship_social_widgets\SocialShareLinkManager
-    arguments: ['@entity_type.manager']

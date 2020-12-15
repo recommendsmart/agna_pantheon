@@ -1,4 +1,0 @@
-services:
-  node_keep_token.helper:
-    class: Drupal\node_keep_token\NodeKeepTokenService
-    arguments: ['@entity_type.manager']

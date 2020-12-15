@@ -1,6 +1,0 @@
-rocketship_cookie_policy.cookiepolicyconfig:
-   type: config_object
-   mapping:
-    link_text:
-      type: label
-      label: 'Link text'

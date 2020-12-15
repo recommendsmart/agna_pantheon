@@ -1,9 +1,0 @@
-langcode: en
-status: true
-dependencies: {  }
-id: dba_content
-label: 'Blog Advanced Content'
-description: 'Migrates advanced blog content'
-source_type: ''
-module: null
-shared_configuration: null

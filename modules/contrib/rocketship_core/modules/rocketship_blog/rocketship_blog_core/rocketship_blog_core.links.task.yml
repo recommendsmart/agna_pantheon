@@ -1,5 +1,0 @@
-features.content_list:
-  route_name: features.collection
-  title: 'Rocketship Features'
-  base_route: features.settings
-  weight: 99

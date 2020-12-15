@@ -1,9 +1,0 @@
-langcode: en
-status: true
-dependencies: {  }
-id: dpc_content
-label: 'Product Core Demo Content'
-description: 'Migrates core product content'
-source_type: ''
-module: null
-shared_configuration: null
