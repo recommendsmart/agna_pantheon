@@ -1,0 +1,16 @@
+# Schema for the configuration files of the Entity Reference Views module.
+
+views.display.entity_reference_field_attachment:
+  type: views.display.attachment
+  label: 'Field attachment display options'
+
+field.widget.settings.entity_reference_views_autocomplete:
+  type: field.widget.settings.entity_reference_autocomplete
+  label: 'Entity reference autocomplete display format settings'
+  mapping:
+    view:
+      type: string
+      label: 'View'
+    is_active:
+      type: boolean
+      label: 'Is active'

@@ -2,9 +2,7 @@
 
 namespace Drupal\entity_reference_views\Plugin\views\display;
 
-use Drupal\Core\Form\FormStateInterface;
 use Drupal\views\Plugin\views\display\Attachment;
-use Drupal\views\ViewExecutable;
 
 /**
  * The plugin that handles an field attachment display.

@@ -13,8 +13,8 @@ use Drupal\views\Views;
  * @FieldWidget(
  *   id = "entity_reference_views_autocomplete",
  *   label = @Translation("Autocomplete (Views)"),
- *   description = @Translation("An autocomplete text field with views to render."),
- *   field_types = {
+ *   description = @Translation("An autocomplete text field with views to
+ *   render."), field_types = {
  *     "entity_reference"
  *   }
  * )
@@ -26,8 +26,9 @@ class AutocompleteViewsWidget extends EntityReferenceAutocompleteWidget {
    */
   public static function defaultSettings() {
     return [
-      'view' => NULL,
-    ] + parent::defaultSettings();
+        'view' => NULL,
+        'is_active' => FALSE,
+      ] + parent::defaultSettings();
   }
 
   /**
@@ -35,11 +36,23 @@ class AutocompleteViewsWidget extends EntityReferenceAutocompleteWidget {
    */
   public function settingsForm(array $form, FormStateInterface $form_state) {
     $element = parent::settingsForm($form, $form_state);
+
+    $element['is_active'] = [
+      '#type' => 'checkbox',
+      '#title' => $this->t('Display corresponding view'),
+      '#default_value' => !empty($this->getSetting('is_active')),
+    ];
+
     $element['view'] = [
       '#type' => 'select',
       '#options' => $this->getViewsList(),
       '#title' => $this->t('View'),
       '#default_value' => $this->getSetting('view'),
+      '#states' => [
+        'visible' => [
+          ':input[name="fields[offer_group][settings_edit_form][settings][is_active]"]' => ['checked' => TRUE],
+        ],
+      ],
     ];
 
     return $element;
@@ -50,14 +63,20 @@ class AutocompleteViewsWidget extends EntityReferenceAutocompleteWidget {
    */
   public function settingsSummary() {
     $summary = parent::settingsSummary();
-    $view_id = $this->getSetting('view');
-    if (!empty($view_id)) {
-      $summary[] = t('View: @view', ['@view' => $view_id]);
-    }
-    else {
-      $summary[] = t('No view');
+    if (empty($this->getSetting('is_active'))) {
+      $summary[] = t('View display is not active');
+      return $summary;
     }
 
+    $summary[] = t('View display is active');
+    $view_id = $this->getSetting('view');
+
+    if (empty($view_id)) {
+      $summary[] = t('No view');
+      return $summary;
+    }
+
+    $summary[] = t('View: @view', ['@view' => $view_id]);
     return $summary;
   }
 
@@ -68,9 +87,14 @@ class AutocompleteViewsWidget extends EntityReferenceAutocompleteWidget {
     $referenced_entities = $items->referencedEntities();
     $element = parent::formElement($items, $delta, $element, $form, $form_state);
 
-    $elements  = [
-      'target_id' => $element
+    if (empty($this->getSetting('is_active'))) {
+      return $element;
+    }
+
+    $elements = [
+      'target_id' => $element,
     ];
+
     if (!empty($referenced_entities[$delta]) && !empty($this->getSetting('view'))) {
       [$view_id, $display_id] = explode(':', $this->getSetting('view'));
       $view = Views::getView($view_id);
@@ -105,7 +129,10 @@ class AutocompleteViewsWidget extends EntityReferenceAutocompleteWidget {
     foreach ($displays as $data) {
       [$view_id, $display_id] = $data;
       $view = $view_storage->load($view_id);
-      if (in_array($view->get('base_table'), [$entity_type->getBaseTable(), $entity_type->getDataTable()])) {
+      if (in_array($view->get('base_table'), [
+        $entity_type->getBaseTable(),
+        $entity_type->getDataTable(),
+      ])) {
         $display = $view->get('display');
         $options[$view_id . ':' . $display_id] = $view_id . ' - ' . $display[$display_id]['display_title'];
       }
