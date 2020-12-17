@@ -1,0 +1,8 @@
+lottie_player:
+  remote: https://github.com/LottieFiles/lottie-player
+  license:
+    name: MIT
+    url: https://github.com/LottieFiles/lottie-player/blob/master/LICENSE
+    gpl-compatible: true
+  js:
+    https://unpkg.com/@lottiefiles/lottie-player@latest/dist/lottie-player.js: { type: external, minified: true }

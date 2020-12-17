@@ -1,0 +1,10 @@
+name: Field List Details
+type: module
+description: Display additional details about fields on the list of fields for any entity type.
+package: Fields
+core_version_requirement: ^8 || ^9
+
+# Information added by Drupal.org packaging script on 2020-12-16
+version: '2.4.0'
+project: 'field_list_details'
+datestamp: 1608112208

@@ -1,0 +1,19 @@
+field.formatter.settings.file_lottie_player:
+  type: file.formatter.media
+  label: 'Lottie file display format settings'
+  mapping:
+    background:
+      type: string
+      label: 'Background'
+    hover:
+      type: boolean
+      label: 'Hover'
+    mode:
+      type: string
+      label: 'Mode'
+    speed:
+      type: integer
+      label: 'Speed'
+    count:
+      type: integer
+      label: 'Count'

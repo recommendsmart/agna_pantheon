@@ -1,0 +1,34 @@
+<?php
+
+/**
+ * @file
+ * Hook implementations for media_entity_lottie module.
+ */
+
+use Drupal\Core\Routing\RouteMatchInterface;
+
+/**
+ * Implements hook_help().
+ */
+function media_entity_lottie_help($route_name, RouteMatchInterface $route_match) {
+  switch ($route_name) {
+    case 'help.page.media_entity_lottie':
+      $output = '';
+      $output .= '<h3>' . t('About') . '</h3>';
+      $output .= '<p>' . t('This module provides Lottie integration for Media entity (i.e. media type provider plugin)') . '</p>';
+      return $output;
+  }
+}
+
+/**
+ * Implements hook_theme().
+ */
+function media_entity_lottie_theme() {
+  return [
+    'file_lottie_player' => [
+      'variables' => [
+        'attributes' => NULL,
+      ],
+    ],
+  ];
+}
