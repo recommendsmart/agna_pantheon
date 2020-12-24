@@ -2,11 +2,11 @@ langcode: en
 status: true
 dependencies:
   module:
-    - openideal_footer
+    - openfarm_footer
   theme:
-    - openideal_theme
+    - openfarm_theme
 id: poweredby
-theme: openideal_theme
+theme: openfarm_theme
 region: footer
 weight: -9
 provider: null
@@ -14,8 +14,8 @@ plugin: openidel_footer_powered_by
 settings:
   id: openidel_footer_powered_by
   label: 'Powered by'
-  provider: openideal_footer
+  provider: openfarm_footer
   label_display: '0'
   button_set: null
-  openideal_official_site: 'https://www.openidealapp.com/'
+  openfarm_official_site: 'https://www.openidealapp.com/'
 visibility: {  }

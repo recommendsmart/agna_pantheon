@@ -61,7 +61,7 @@ function dynamic_entity_reference_entity_bundle_delete($entity_type_id, $bundle)
 }
 
 /**
- * Implements hook_ENTITY_TYPE_presave().
+ * Implements hook_ENTITY_TYPE_presave() for 'field_config'.
  *
  * @todo Clean this up once field_field_config_save is more accommodating.
  */

@@ -1,6 +1,6 @@
 {
     "name": "linnovate/openideal",
-    "description": "The OpenideaL distribution profile",
+    "description": "The OpenFarm distribution profile",
     "type": "drupal-profile",
     "license": "GPL-2.0-or-later",
     "minimum-stability": "dev",
@@ -253,7 +253,7 @@
         "sort-packages": true
     },
     "extra": {
-        "installer-name": "idea",
+        "installer-name": "farm",
         "patches": {
             "drupal/core": {
                 "Combined Fields Filter does not work with body summary": "https://www.drupal.org/files/issues/2020-08-28/3049502-27.patch",

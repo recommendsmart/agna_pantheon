@@ -1,0 +1,26 @@
+langcode: en
+status: true
+dependencies:
+  module:
+    - openfarm_statistics
+    - route_condition
+  theme:
+    - openfarm_theme
+id: records_per_day_chart
+theme: openfarm_theme
+region: content
+weight: -8
+provider: null
+plugin: openfarm_statistics_per_day_charts_block
+settings:
+  id: openfarm_statistics_per_day_charts_block
+  label: 'Records created per day'
+  provider: openfarm_statistics
+  label_display: visible
+  entity: node
+visibility:
+  route:
+    id: route
+    routes: openfarm_statistics.graphs_reports
+    negate: false
+    context_mapping: {  }

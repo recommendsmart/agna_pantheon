@@ -4,9 +4,9 @@ dependencies:
   module:
     - system
   theme:
-    - openideal_theme
+    - openfarm_theme
 id: content_site_branding
-theme: openideal_theme
+theme: openfarm_theme
 region: content
 weight: -15
 provider: null

@@ -1,0 +1,15 @@
+<?php
+
+/**
+ * @file
+ * Installation functions for Openfarm Idea module.
+ */
+
+/**
+ * Implements hook_install().
+ */
+function openfarm_record_install() {
+  // Assign a fairly low weight to ensure our implementation of
+  // hook_entity_type_build() is run among the last ones.
+  module_set_weight('openfarm_record', 10);
+}

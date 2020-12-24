@@ -2,12 +2,12 @@ langcode: en
 status: true
 dependencies:
   module:
-    - openideal_statistics
+    - openfarm_statistics
     - route_condition
   theme:
-    - openideal_theme
+    - openfarm_theme
 id: site_wide_statistics_block
-theme: openideal_theme
+theme: openfarm_theme
 region: content
 weight: -16
 provider: null
@@ -15,11 +15,11 @@ plugin: site_wide_statistics_block
 settings:
   id: site_wide_statistics_block
   label: 'Site wide statistics block'
-  provider: openideal_statistics
+  provider: openfarm_statistics
   label_display: '0'
 visibility:
   route:
     id: route
-    routes: "view.challenges.all_challenges_page\r\nview.ideas.all_ideas_page\r\nview.news.all_news_page\r\nview.user_admin_people.community_page\r\nview.frontpage.front_page"
+    routes: "view.holdings.all_holdings_page\r\nview.records.all_records_page\r\nview.news.all_news_page\r\nview.user_admin_people.community_page\r\nview.frontpage.front_page"
     negate: false
     context_mapping: {  }

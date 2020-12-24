@@ -247,22 +247,6 @@ class DynamicEntityReferenceBaseFieldTest extends EntityKernelTestBase {
     $this->assertEquals($entity->der[0]->entity->id(), $referenced_entity_mul->id());
     $this->assertEquals($entity->der[0]->entity->uuid(), $referenced_entity_mul->uuid());
 
-    // Check the data in DB columns.
-    $database = $this->container
-      ->get('database');
-    $int_column = $database->query('SELECT dynamic_references__target_id_int FROM {entity_test}')->fetchCol();
-    $str_column = $database->query('SELECT dynamic_references__target_id FROM {entity_test}')->fetchCol();
-    $this->assertSame($int_column, $str_column);
-    $int_column = $database->query('SELECT der__target_id_int FROM {entity_test}')->fetchCol();
-    $str_column = $database->query('SELECT der__target_id FROM {entity_test}')->fetchCol();
-    $this->assertSame($int_column, $str_column);
-    $int_column = $database->query('SELECT dynamic_references__target_id_int FROM {entity_test_mul_property_data}')->fetchCol();
-    $str_column = $database->query('SELECT dynamic_references__target_id FROM {entity_test_mul_property_data}')->fetchCol();
-    $this->assertSame($int_column, $str_column);
-    $int_column = $database->query('SELECT der__target_id_int FROM {entity_test_mul_property_data}')->fetchCol();
-    $str_column = $database->query('SELECT der__target_id FROM {entity_test_mul_property_data}')->fetchCol();
-    $this->assertSame($int_column, $str_column);
-
     $entity = EntityTestMul::create();
     $entity->der[] = $referenced_entity;
     $entity->dynamic_references[] = $referenced_entity_mul;
@@ -286,58 +270,6 @@ class DynamicEntityReferenceBaseFieldTest extends EntityKernelTestBase {
     $this->assertEquals($entity->der[0]->entity->getName(), $referenced_entity->getName());
     $this->assertEquals($entity->der[0]->entity->id(), $referenced_entity->id());
     $this->assertEquals($entity->der[0]->entity->uuid(), $referenced_entity->uuid());
-
-    // Check the data in DB columns.
-    $int_column = $database->query('SELECT dynamic_references__target_id_int FROM {entity_test}')->fetchCol();
-    $str_column = $database->query('SELECT dynamic_references__target_id FROM {entity_test}')->fetchCol();
-    $this->assertSame($int_column, $str_column);
-    $int_column = $database->query('SELECT der__target_id_int FROM {entity_test}')->fetchCol();
-    $str_column = $database->query('SELECT der__target_id FROM {entity_test}')->fetchCol();
-    $this->assertSame($int_column, $str_column);
-    $int_column = $database->query('SELECT dynamic_references__target_id_int FROM {entity_test_mul_property_data}')->fetchCol();
-    $str_column = $database->query('SELECT dynamic_references__target_id FROM {entity_test_mul_property_data}')->fetchCol();
-    $this->assertSame($int_column, $str_column);
-    $int_column = $database->query('SELECT der__target_id_int FROM {entity_test_mul_property_data}')->fetchCol();
-    $str_column = $database->query('SELECT der__target_id FROM {entity_test_mul_property_data}')->fetchCol();
-    $this->assertSame($int_column, $str_column);
-
-    // Verify an index is created on the _int columns.
-    $this->assertTrue(\Drupal::database()->schema()->indexExists('entity_test', 'dynamic_references__target_id_int'));
-  }
-
-  /**
-   * Test entity field query with normal entity reference and DER base fields.
-   */
-  public function testEntityFieldQuery() {
-    \Drupal::state()->set('dynamic_entity_reference_entity_test_with_two_base_fields', TRUE);
-    \Drupal::state()->set('dynamic_entity_reference_entity_test_with_normal', TRUE);
-    $this->enableModules(['dynamic_entity_reference_entity_test']);
-    $this->installEntitySchema('entity_test_mul');
-
-    // Add some users and test entities.
-    $accounts = $entities = [];
-    foreach (range(1, 3) as $i) {
-      $accounts[$i] = $this->createUser();
-      $entity = EntityTestMul::create();
-
-      // Add reference to user 2 for entities 2 and 3.
-      if ($i > 1) {
-        $entity->normal_reference = $accounts[2];
-      }
-
-      $entity->save();
-      $entities[$i] = $entity;
-    }
-
-    $result = \Drupal::entityTypeManager()->getStorage('entity_test_mul')->getQuery()
-      ->condition('normal_reference.entity:user.status', 1)
-      ->sort('id')
-      ->execute();
-    $expected = [
-      $entities[2]->id() => $entities[2]->id(),
-      $entities[3]->id() => $entities[3]->id(),
-    ];
-    $this->assertSame($expected, $result);
   }
 
 }

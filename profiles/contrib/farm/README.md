@@ -1,4 +1,4 @@
-# OpenideaL - ideas and innovation management system
+# OpenFarm - Dairy and Agri management system
 
 
 ![OpenideaL logo](https://www.openidealapp.com/wp-content/uploads/2018/02/logo_OpenideaL.png)

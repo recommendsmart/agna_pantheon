@@ -5,9 +5,9 @@ dependencies:
     - node
     - rrssb
   theme:
-    - openideal_theme
+    - openfarm_theme
 id: ridiculously_responsive_social_share_buttons_footer
-theme: openideal_theme
+theme: openfarm_theme
 region: mobile_share
 weight: 0
 provider: null
@@ -22,9 +22,9 @@ visibility:
   node_type:
     id: node_type
     bundles:
-      idea: idea
+      record: record
       article: article
-      challenge: challenge
+      holding: holding
     negate: false
     context_mapping:
       node: '@node.node_route_context:node'

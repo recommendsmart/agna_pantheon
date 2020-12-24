@@ -8,9 +8,9 @@ dependencies:
     - route_condition
     - views
   theme:
-    - openideal_theme
+    - openfarm_theme
 id: views_block__followers_co_authors_block
-theme: openideal_theme
+theme: openfarm_theme
 region: sidebar
 weight: -3
 provider: null
@@ -27,7 +27,7 @@ visibility:
   node_type:
     id: node_type
     bundles:
-      idea: idea
+      record: record
     negate: false
     context_mapping:
       node: '@node.node_route_context:node'

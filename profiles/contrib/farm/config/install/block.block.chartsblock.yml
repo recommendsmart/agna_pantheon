@@ -2,24 +2,24 @@ langcode: en
 status: true
 dependencies:
   module:
-    - openideal_statistics
+    - openfarm_statistics
     - route_condition
   theme:
-    - openideal_theme
+    - openfarm_theme
 id: chartsblock
-theme: openideal_theme
+theme: openfarm_theme
 region: content
 weight: -9
 provider: null
-plugin: openideal_statistics_charts_block
+plugin: openfarm_statistics_charts_block
 settings:
-  id: openideal_statistics_charts_block
+  id: openfarm_statistics_charts_block
   label: Demographic
-  provider: openideal_statistics
+  provider: openfarm_statistics
   label_display: visible
 visibility:
   route:
     id: route
-    routes: openideal_statistics.graphs_reports
+    routes: openfarm_statistics.graphs_reports
     negate: false
     context_mapping: {  }

@@ -1,0 +1,39 @@
+<?php
+
+/**
+ * @file
+ * Install, update and uninstall functions for the farm install profile.
+ */
+
+use Drupal\user\Entity\User;
+
+/**
+ * Implements hook_install().
+ *
+ * Perform actions to set up the site for this profile.
+ *
+ * @see system_install()
+ */
+function farm_install() {
+  // Assign user 1 the "administrator" role.
+  // @see standard_install().
+  $user = User::load(1);
+  $user->roles[] = 'administrator';
+  $user->save();
+
+  // Install 'openideal_content' module.
+  \Drupal::service('module_installer')->install(['openideal_content']);
+
+  // Force set the administerusersbyrole configuration in fact
+  // the module change it during installation of profile.
+  // @Todo: Further investigation.
+  \Drupal::configFactory()->getEditable('administerusersbyrole.settings')->set('roles', ['manager' => 'safe'])->save();
+
+  // To avoid issues with importing of configurations set system.site
+  // config programmatically.
+  \Drupal::configFactory()->getEditable('system.site')
+    ->set('name', 'OpenFarm')
+    ->set('slogan', 'Dairy, Agri, Communities')
+    ->set('page', ['front' => '/home'])
+    ->save();
+}

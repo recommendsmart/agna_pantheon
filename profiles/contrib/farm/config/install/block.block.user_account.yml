@@ -2,19 +2,19 @@ langcode: en
 status: true
 dependencies:
   module:
-    - openideal_user
+    - openfarm_user
   theme:
-    - openideal_theme
+    - openfarm_theme
 id: user_account
-theme: openideal_theme
+theme: openfarm_theme
 region: user
 weight: 0
 provider: null
-plugin: openideal_user_user_account_block
+plugin: openfarm_user_user_account_block
 settings:
-  id: openideal_user_user_account_block
+  id: openfarm_user_user_account_block
   label: 'User account'
-  provider: openideal_user
+  provider: openfarm_user
   label_display: '0'
   context_mapping:
     user: '@user.current_user_context:current_user'

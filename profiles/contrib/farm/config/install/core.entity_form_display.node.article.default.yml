@@ -2,7 +2,7 @@ langcode: en
 status: true
 dependencies:
   config:
-    - entity_browser.browser.openideal_images_browser
+    - entity_browser.browser.openfarm_images_browser
     - field.field.node.article.body
     - field.field.node.article.field_attached_docs
     - field.field.node.article.field_images
@@ -38,7 +38,7 @@ content:
   field_attached_docs:
     weight: 7
     settings:
-      entity_browser: openideal_file_browser
+      entity_browser: openfarm_file_browser
       field_widget_remove: true
       field_widget_replace: true
       selection_mode: selection_append
@@ -52,7 +52,7 @@ content:
   field_images:
     weight: 6
     settings:
-      entity_browser: openideal_images_browser
+      entity_browser: openfarm_images_browser
       field_widget_remove: true
       field_widget_replace: true
       selection_mode: selection_append

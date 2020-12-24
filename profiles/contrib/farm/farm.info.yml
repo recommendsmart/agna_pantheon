@@ -1,6 +1,6 @@
 name: OpenFarm - Dairy and Agri management system
 type: profile
-description: 'Manage Dairy and Agri communities'
+description: 'Manage Dairy, Agri and communities'
 core: 8.x
 core_version_requirement: ^8 || ^9
 
@@ -112,17 +112,18 @@ dependencies:
   - votingapi_reaction:votingapi_reaction
   - drupal:views
   - paragraphs:paragraphs
-  # Custom modules
-  - openideal_challenge:openideal_challenge
+    # Custom modules
+  - openfarm_holding:openfarm_holding
   - openideal_faq:openideal_faq
   - openideal_toolbar:openideal_toolbar
-  - openideal_idea:openideal_idea
+  - openfarm_record:openfarm_record
   - openideal_user:openideal_user
   - openideal_slideshow:openideal_slideshow
   - openideal_comment:openideal_comment
   - openideal_footer:openideal_footer
   - openideal_statistics:openideal_statistics
-
+  
 themes:
   - adminimal_theme
+  - openfarm_theme
   - openideal_theme
