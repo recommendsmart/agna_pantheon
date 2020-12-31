@@ -19,14 +19,14 @@ dependencies:
     - text
     - user
   theme:
-    - openideal_theme
+    - openfarm_theme
 third_party_settings:
   layout_builder:
     allow_custom: false
     enabled: true
     sections:
       -
-        layout_id: openideal_card_with_footer
+        layout_id: openfarm_card_with_footer
         layout_settings:
           label: Content
         components:

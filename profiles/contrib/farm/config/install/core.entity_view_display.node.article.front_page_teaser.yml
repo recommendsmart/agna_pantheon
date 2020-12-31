@@ -16,18 +16,18 @@ dependencies:
     - image
     - layout_builder
     - metatag
-    - openideal_idea
+    - openfarm_record
     - text
     - user
   theme:
-    - openideal_theme
+    - openfarm_theme
 third_party_settings:
   layout_builder:
     allow_custom: false
     enabled: true
     sections:
       -
-        layout_id: openideal_three_columns
+        layout_id: openfarm_three_columns
         layout_settings:
           label: ''
           main_class: front-page-teaser
@@ -119,9 +119,9 @@ third_party_settings:
             uuid: c3f0384d-5481-4ecd-aa10-586fe59b9a6e
             region: first
             configuration:
-              id: openidel_idea_node_bundle
+              id: openidel_record_node_bundle
               label: 'Entity bundle'
-              provider: openideal_idea
+              provider: openfarm_record
               label_display: '0'
               context_mapping:
                 entity: layout_builder.entity

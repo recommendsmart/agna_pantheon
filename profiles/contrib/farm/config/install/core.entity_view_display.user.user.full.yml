@@ -17,19 +17,19 @@ dependencies:
     - image
     - layout_builder
     - layout_discovery
-    - openideal_user
+    - openfarm_user
     - options
     - user
     - views
   theme:
-    - openideal_theme
+    - openfarm_theme
 third_party_settings:
   layout_builder:
     allow_custom: false
     enabled: true
     sections:
       -
-        layout_id: openideal_user_top_section
+        layout_id: openfarm_user_top_section
         layout_settings:
           label: ''
           main_class: user-top
@@ -49,7 +49,7 @@ third_party_settings:
               label_display: '0'
               formatter:
                 label: hidden
-                type: openideal_user_user_image
+                type: openfarm_user_user_image
                 settings:
                   image_style: user_account_image
                   image_link: content
@@ -71,7 +71,7 @@ third_party_settings:
                 label: inline
                 type: timestamp
                 settings:
-                  date_format: openideal_short_full_date
+                  date_format: openfarm_short_full_date
                   custom_date_format: ''
                   timezone: ''
                 third_party_settings: {  }
@@ -84,9 +84,9 @@ third_party_settings:
             uuid: e6212a57-39a4-43b1-867d-34b8d8fa501e
             region: second
             configuration:
-              id: openideal_user_user_name_block
+              id: openfarm_user_user_name_block
               label: 'User name'
-              provider: openideal_user
+              provider: openfarm_user
               label_display: '0'
               hide_label: 1
               context_mapping:
@@ -110,9 +110,9 @@ third_party_settings:
             uuid: f534cd47-9b18-4fa5-b825-645cf9816699
             region: second
             configuration:
-              id: openideal_user_logout_block
+              id: openfarm_user_logout_block
               label: 'User logout'
-              provider: openideal_user
+              provider: openfarm_user
               label_display: '0'
               context_mapping:
                 user: layout_builder.entity
@@ -142,7 +142,7 @@ third_party_settings:
             uuid: d4f485be-72b9-4acc-b786-e1282cb53e2f
             region: content
             configuration:
-              id: 'views_block:user_content-my_ideas_block'
+              id: 'views_block:user_content-my_records_block'
               label: ''
               provider: views
               label_display: visible
@@ -168,7 +168,7 @@ third_party_settings:
             uuid: 8e868078-9987-4237-a8d4-455b7ea522a2
             region: content
             configuration:
-              id: 'views_block:user_content-my_draft_ideas_block'
+              id: 'views_block:user_content-my_draft_records_block'
               label: ''
               provider: views
               label_display: visible
@@ -178,7 +178,7 @@ third_party_settings:
             additional:
               visibility:
                 a22558a7-2a19-411b-ba09-80d263406ef6:
-                  id: openideal_user_page
+                  id: openfarm_user_page
                   is_profile_page: 1
                   negate: 0
                   uuid: a22558a7-2a19-411b-ba09-80d263406ef6

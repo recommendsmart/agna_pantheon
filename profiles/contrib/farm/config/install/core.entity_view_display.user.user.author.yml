@@ -15,7 +15,7 @@ dependencies:
     - image
     - layout_builder
     - layout_discovery
-    - openideal_user
+    - openfarm_user
     - user
 third_party_settings:
   layout_builder:
@@ -32,9 +32,9 @@ third_party_settings:
             uuid: ce4d89cd-30de-4071-8a7b-dcfc7280e187
             region: content
             configuration:
-              id: openideal_user_user_name_block
+              id: openfarm_user_user_name_block
               label: 'User name'
-              provider: openideal_user
+              provider: openfarm_user
               label_display: '0'
               context_mapping:
                 user: layout_builder.entity
@@ -51,7 +51,7 @@ third_party_settings:
               label_display: '0'
               formatter:
                 label: hidden
-                type: openideal_user_user_image
+                type: openfarm_user_user_image
                 settings:
                   image_style: ''
                   image_link: content

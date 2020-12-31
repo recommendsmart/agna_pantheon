@@ -16,8 +16,8 @@ dependencies:
     - layout_builder
     - layout_discovery
     - metatag
-    - openideal_idea
-    - openideal_slideshow
+    - openfarm_record
+    - openfarm_slideshow
     - text
     - user
   theme:
@@ -41,9 +41,9 @@ third_party_settings:
             uuid: e75f04f1-3776-4a7e-b47a-9d36904b7521
             region: content
             configuration:
-              id: openideal_idea_go_back_block
+              id: openfarm_record_go_back_block
               label: 'Go back'
-              provider: openideal_idea
+              provider: openfarm_record
               label_display: '0'
               context_mapping: {  }
             additional: {  }
@@ -65,7 +65,7 @@ third_party_settings:
             configuration:
               id: openidel_slideshow_block
               label: Slideshow
-              provider: openideal_slideshow
+              provider: openfarm_slideshow
               label_display: '0'
               image_style: slideshow_large
               context_mapping:
@@ -196,9 +196,9 @@ third_party_settings:
             uuid: 4bdbe2b4-4a31-41b9-a87a-8b0e2b1f3f0e
             region: second
             configuration:
-              id: openideal_idea_info_block
+              id: openfarm_record_info_block
               label: 'Idea info'
-              provider: openideal_idea
+              provider: openfarm_record
               label_display: '0'
               context_mapping:
                 node: layout_builder.entity
@@ -210,9 +210,9 @@ third_party_settings:
             uuid: bfb33572-2f22-43fb-98d8-593359b4b883
             region: second
             configuration:
-              id: openideal_rrssb_block
+              id: openfarm_rrssb_block
               label: Share
-              provider: openideal_idea
+              provider: openfarm_record
               label_display: visible
               button_set: default
               context_mapping:

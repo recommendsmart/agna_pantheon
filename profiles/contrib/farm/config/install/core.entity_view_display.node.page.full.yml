@@ -11,7 +11,7 @@ dependencies:
     - file
     - image
     - layout_builder
-    - openideal_slideshow
+    - openfarm_slideshow
     - text
     - user
   theme:
@@ -76,7 +76,7 @@ third_party_settings:
             configuration:
               id: openidel_slideshow_block
               label: Slideshow
-              provider: openideal_slideshow
+              provider: openfarm_slideshow
               label_display: '0'
               image_style: slideshow_large
               context_mapping:
