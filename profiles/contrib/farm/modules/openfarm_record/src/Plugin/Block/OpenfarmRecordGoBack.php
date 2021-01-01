@@ -1,6 +1,6 @@
 <?php
 
-namespace Drupal\openideal_idea\Plugin\Block;
+namespace Drupal\openfarm_record\Plugin\Block;
 
 use Drupal\Core\Block\BlockBase;
 use Drupal\Core\Plugin\ContainerFactoryPluginInterface;
@@ -13,11 +13,11 @@ use Symfony\Component\DependencyInjection\ContainerInterface;
  * Provides a 'Go back' block.
  *
  * @Block(
- *  id = "openideal_idea_go_back_block",
+ *  id = "openfarm_record_go_back_block",
  *  admin_label = @Translation("Go back"),
  * )
  */
-class OpenidealIdeaGoBack extends BlockBase implements ContainerFactoryPluginInterface {
+class OpenfarmRecordGoBack extends BlockBase implements ContainerFactoryPluginInterface {
 
   /**
    * Current route match service.
@@ -27,7 +27,7 @@ class OpenidealIdeaGoBack extends BlockBase implements ContainerFactoryPluginInt
   protected $currentRouteMatch;
 
   /**
-   * Constructs a new OpenidealIdeaGoBack object.
+   * Constructs a new OpenfarmRecordGoBack object.
    *
    * @param array $configuration
    *   A configuration array containing information about the plugin instance.
@@ -70,12 +70,12 @@ class OpenidealIdeaGoBack extends BlockBase implements ContainerFactoryPluginInt
       $bundle = $node->bundle();
 
       switch ($bundle) {
-        case 'idea':
-          $url = Url::fromRoute('view.ideas.all_ideas_page');
+        case 'record':
+          $url = Url::fromRoute('view.records.all_records_page');
           break;
 
-        case 'challenge':
-          $url = Url::fromRoute('view.challenges.all_challenges_page');
+        case 'holding':
+          $url = Url::fromRoute('view.holdings.all_holdings_page');
           break;
 
         case 'article':

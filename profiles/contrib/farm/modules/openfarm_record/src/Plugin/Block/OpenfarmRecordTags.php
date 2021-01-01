@@ -1,15 +1,15 @@
 <?php
 
-namespace Drupal\openideal_idea\Plugin\Block;
+namespace Drupal\openfarm_record\Plugin\Block;
 
 use Drupal\Core\Block\BlockBase;
-use Drupal\openideal_challenge\OpenidealContextEntityTrait;
+use Drupal\openfarm_holding\OpenfarmContextEntityTrait;
 
 /**
  * Provides a 'Node tags' block.
  *
  * @Block(
- *  id = "openideal_idea_tags_block",
+ *  id = "openfarm_record_tags_block",
  *  admin_label = @Translation("Node tags"),
  *   context = {
  *      "node" = @ContextDefinition(
@@ -20,9 +20,9 @@ use Drupal\openideal_challenge\OpenidealContextEntityTrait;
  *   }
  * )
  */
-class OpenidealIdeaTags extends BlockBase {
+class OpenfarmRecordTags extends BlockBase {
 
-  use OpenidealContextEntityTrait;
+  use OpenfarmContextEntityTrait;
 
   /**
    * {@inheritdoc}
@@ -30,7 +30,7 @@ class OpenidealIdeaTags extends BlockBase {
   public function build() {
     $build = [];
     if ($node = $this->getEntity($this->getContexts())) {
-      $field = $node->bundle() == 'idea' ? 'field_idea_tags' : 'field_tags';
+      $field = $node->bundle() == 'record' ? 'field_record_tags' : 'field_tags';
       // In case when field is empty do not need to render anything at all.
       $build['#cache']['tags'] = $node->getCacheTags();
       if ($node->{$field}->isEmpty()) {
@@ -40,7 +40,7 @@ class OpenidealIdeaTags extends BlockBase {
       $build = [
         '#theme' => 'item_list',
         '#title' => $this->t('Tags'),
-        '#attributes' => ['class' => ['idea-tags']],
+        '#attributes' => ['class' => ['record-tags']],
       ];
       $items = [];
       // @Todo: Unify field names.

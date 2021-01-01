@@ -1,24 +1,24 @@
 <?php
 
-namespace Drupal\openideal_idea\Plugin\Field\FieldFormatter;
+namespace Drupal\openfarm_record\Plugin\Field\FieldFormatter;
 
 use Drupal\Core\Field\FieldDefinitionInterface;
 use Drupal\Core\Field\Plugin\Field\FieldFormatter\EntityReferenceFormatterBase;
 use Drupal\Core\Field\FieldItemListInterface;
 
 /**
- * Plugin implementation of the 'openideal_duplicate_of_idea' formatter.
+ * Plugin implementation of the 'openfarm_duplicate_of_record' formatter.
  *
  * @FieldFormatter(
- *   id = "openideal_duplicate_of_idea",
- *   label = @Translation("Openideal Duplicate Idea"),
- *   description = @Translation("Display the link for a duplicate idea."),
+ *   id = "openfarm_duplicate_of_record",
+ *   label = @Translation("Openfarm Duplicate Record"),
+ *   description = @Translation("Display the link for a duplicate record."),
  *   field_types = {
  *     "entity_reference"
  *   }
  * )
  */
-class OpenidealDuplicateOfIdeaFormatter extends EntityReferenceFormatterBase {
+class OpenfarmDuplicateOfRecordFormatter extends EntityReferenceFormatterBase {
 
   /**
    * {@inheritdoc}
@@ -29,7 +29,7 @@ class OpenidealDuplicateOfIdeaFormatter extends EntityReferenceFormatterBase {
     if (\Drupal::routeMatch()->getRouteName() != 'layout_builder.defaults.node.view') {
       foreach ($this->getEntitiesToView($items, $langcode) as $delta => $entity) {
         if ($entity) {
-          $field_text = $this->t('This idea was merged with <a href="@link">@title</a> idea.', [
+          $field_text = $this->t('This record was merged with <a href="@link">@title</a> record.', [
             '@link' => $entity->toUrl()->toString(),
             '@title' => $entity->label(),
           ]);
@@ -51,10 +51,10 @@ class OpenidealDuplicateOfIdeaFormatter extends EntityReferenceFormatterBase {
    * {@inheritdoc}
    */
   public static function isApplicable(FieldDefinitionInterface $field_definition) {
-    // This formatter is only available for idea content type nodes.
+    // This formatter is only available for record content type nodes.
     $target_type = $field_definition->getFieldStorageDefinition()
       ->getSetting('target_type');
-    return $target_type == 'node' && $field_definition->get('bundle') == 'idea';
+    return $target_type == 'node' && $field_definition->get('bundle') == 'record';
   }
 
 }

@@ -1,6 +1,6 @@
 <?php
 
-namespace Drupal\openideal_idea\Plugin\Block;
+namespace Drupal\openfarm_record\Plugin\Block;
 
 use Drupal\Core\Block\BlockBase;
 use Drupal\Core\Datetime\DateFormatter;
@@ -10,15 +10,15 @@ use Drupal\Core\Plugin\ContainerFactoryPluginInterface;
 use Drupal\Core\Session\AccountProxy;
 use Drupal\datetime\Plugin\Field\FieldType\DateTimeItem;
 use Drupal\node\NodeInterface;
-use Drupal\openideal_challenge\OpenidealContextEntityTrait;
-use Drupal\openideal_idea\OpenidealHelper;
+use Drupal\openfarm_holding\OpenfarmContextEntityTrait;
+use Drupal\openfarm_record\OpenfarmHelper;
 use Symfony\Component\DependencyInjection\ContainerInterface;
 
 /**
  * Provides a 'Node info' block.
  *
  * @Block(
- *  id = "openideal_idea_info_block",
+ *  id = "openfarm_record_info_block",
  *  admin_label = @Translation("Node info"),
  *   context = {
  *      "node" = @ContextDefinition(
@@ -29,9 +29,9 @@ use Symfony\Component\DependencyInjection\ContainerInterface;
  *   }
  * )
  */
-class OpenidealIdeaUpdateInfo extends BlockBase implements ContainerFactoryPluginInterface {
+class OpenfarmRecordUpdateInfo extends BlockBase implements ContainerFactoryPluginInterface {
 
-  use OpenidealContextEntityTrait;
+  use OpenfarmContextEntityTrait;
 
   /**
    * Date formatter.
@@ -41,9 +41,9 @@ class OpenidealIdeaUpdateInfo extends BlockBase implements ContainerFactoryPlugi
   protected $dateFormatter;
 
   /**
-   * Openideal helper.
+   * Openfarm helper.
    *
-   * @var \Drupal\openideal_idea\OpenidealHelper
+   * @var \Drupal\openfarm_record\OpenfarmHelper
    */
   protected $helper;
 
@@ -62,7 +62,7 @@ class OpenidealIdeaUpdateInfo extends BlockBase implements ContainerFactoryPlugi
     $plugin_id,
     $plugin_definition,
     DateFormatter $date_formatter,
-    OpenidealHelper $helper,
+    OpenfarmHelper $helper,
     AccountProxy $currentUser
   ) {
     parent::__construct($configuration, $plugin_id, $plugin_definition);
@@ -80,7 +80,7 @@ class OpenidealIdeaUpdateInfo extends BlockBase implements ContainerFactoryPlugi
       $plugin_id,
       $plugin_definition,
       $container->get('date.formatter'),
-      $container->get('openideal_idea.helper'),
+      $container->get('openfarm_record.helper'),
       $container->get('current_user')
     );
   }
@@ -91,12 +91,12 @@ class OpenidealIdeaUpdateInfo extends BlockBase implements ContainerFactoryPlugi
   public function build() {
     $build = [];
     if ($node = $this->getEntity($this->getContexts())) {
-      $build = ['#theme' => 'openideal_idea_info_block'];
-      $created = $this->dateFormatter->format($node->getCreatedTime(), 'openideal_date');
-      $changed = $this->dateFormatter->format($node->getChangedTime(), 'openideal_date');
-      if ($node->bundle() == 'challenge') {
-        $status = $this->getChallengeStatus($node) + ['access' => $this->configuration['use_schedule']];
-        $build['#content']['challenge_status'] = $status;
+      $build = ['#theme' => 'openfarm_record_info_block'];
+      $created = $this->dateFormatter->format($node->getCreatedTime(), 'openfarm_date');
+      $changed = $this->dateFormatter->format($node->getChangedTime(), 'openfarm_date');
+      if ($node->bundle() == 'holding') {
+        $status = $this->getHoldingStatus($node) + ['access' => $this->configuration['use_schedule']];
+        $build['#content']['holding_status'] = $status;
       }
 
       $build['#content']['created'] = [
@@ -111,7 +111,7 @@ class OpenidealIdeaUpdateInfo extends BlockBase implements ContainerFactoryPlugi
       ];
 
       $member = $this->helper->getGroupMember($this->currentUser, $node);
-      if ($member && $member->hasPermission('update any group_node:idea entity')) {
+      if ($member && $member->hasPermission('update any group_node:record entity')) {
         $link = Link::createFromRoute($this->t('Edit'), 'entity.node.edit_form', ['node' => $node->id()])->toString();
         $build['#content']['edit'] = $link;
       }
@@ -146,8 +146,8 @@ class OpenidealIdeaUpdateInfo extends BlockBase implements ContainerFactoryPlugi
     ];
     $form['node_dates_info']['use_schedule'] = [
       '#type' => 'checkbox',
-      '#title' => $this->t('Challenge status'),
-      '#description' => $this->t('Challenge schedule status (only for challenge)'),
+      '#title' => $this->t('Holding status'),
+      '#description' => $this->t('Holding schedule status (only for holding)'),
       '#default_value' => $this->configuration['use_schedule'],
     ];
     return $form;
@@ -175,15 +175,15 @@ class OpenidealIdeaUpdateInfo extends BlockBase implements ContainerFactoryPlugi
   }
 
   /**
-   * Get Challenge status.
+   * Get Holding status.
    *
    * @param \Drupal\node\NodeInterface $node
-   *   Challenge.
+   *   Holding.
    *
    * @return array|array[]
    *   Randarable array.
    */
-  protected function getChallengeStatus(NodeInterface $node) {
+  protected function getHoldingStatus(NodeInterface $node) {
     $settings = [
       'label' => 'hidden',
       'settings' => [
@@ -195,25 +195,25 @@ class OpenidealIdeaUpdateInfo extends BlockBase implements ContainerFactoryPlugi
     $is_open = $node->field_is_open->value;
     if ($is_open && !$node->field_schedule_close->isEmpty()) {
       $view = $node->field_schedule_close->view($settings);
-      $view['#attributes']['class'][] = 'challenge-status--deadline';
+      $view['#attributes']['class'][] = 'holding-status--deadline';
       return [
-        'title' => $this->t('Challenge deadline'),
+        'title' => $this->t('Holding deadline'),
         'value' => $view,
       ];
     }
     elseif (!$is_open && !$node->field_schedule_open->isEmpty()) {
       $view = $node->field_schedule_open->view($settings);
-      $view['#attributes']['class'][] = 'challenge_status--opening';
+      $view['#attributes']['class'][] = 'holding_status--opening';
 
       return [
-        'title' => $this->t('Challenge opening'),
+        'title' => $this->t('Holding opening'),
         'value' => $view,
       ];
     }
     else {
       $value = $is_open ? $this->t('Open') : $this->t('Close');
       return [
-        'title' => $this->t('Challenge status'),
+        'title' => $this->t('Holding status'),
         'value' => $value,
       ];
 

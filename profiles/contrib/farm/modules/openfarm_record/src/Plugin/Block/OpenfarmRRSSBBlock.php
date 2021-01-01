@@ -1,16 +1,16 @@
 <?php
 
-namespace Drupal\openideal_idea\Plugin\Block;
+namespace Drupal\openfarm_record\Plugin\Block;
 
-use Drupal\openideal_challenge\OpenidealContextEntityTrait;
+use Drupal\openfarm_holding\OpenfarmContextEntityTrait;
 use Drupal\rrssb\Plugin\Block\RRSSBBlock;
 
 /**
- * Provides a 'OpenidealRRSSBBlock' block.
+ * Provides a 'OpenfarmRRSSBBlock' block.
  *
  * @Block(
- *   id = "openideal_rrssb_block",
- *   admin_label = @Translation("Openideal RRSSB block with ability to set contextual entity"),
+ *   id = "openfarm_rrssb_block",
+ *   admin_label = @Translation("Openfarm RRSSB block with ability to set contextual entity"),
  *   category = @Translation("RRSSB"),
  *   context = {
  *      "node" = @ContextDefinition(
@@ -21,9 +21,9 @@ use Drupal\rrssb\Plugin\Block\RRSSBBlock;
  *   }
  * )
  */
-class OpenidealRRSSBBlock extends RRSSBBlock {
+class OpenfarmRRSSBBlock extends RRSSBBlock {
 
-  use OpenidealContextEntityTrait;
+  use OpenfarmContextEntityTrait;
 
   /**
    * {@inheritdoc}

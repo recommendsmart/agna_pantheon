@@ -1,6 +1,6 @@
 <?php
 
-namespace Drupal\openideal_idea\Plugin\Block;
+namespace Drupal\openfarm_record\Plugin\Block;
 
 use Drupal\Core\Block\BlockBase;
 use Drupal\Core\Cache\Cache;
@@ -8,14 +8,14 @@ use Drupal\Core\Form\FormStateInterface;
 use Drupal\Core\Plugin\ContainerFactoryPluginInterface;
 use Drupal\Core\Session\AccountProxy;
 use Drupal\flag\FlagLinkBuilderInterface;
-use Drupal\openideal_challenge\OpenidealContextEntityTrait;
+use Drupal\openfarm_holding\OpenfarmContextEntityTrait;
 use Symfony\Component\DependencyInjection\ContainerInterface;
 
 /**
  * Provides a 'FlagAndLike' block.
  *
  * @Block(
- *  id = "openideal_idea_flag_and_like_block",
+ *  id = "openfarm_record_flag_and_like_block",
  *  admin_label = @Translation("Flag and Like block"),
  *   context = {
  *      "node" = @ContextDefinition(
@@ -26,9 +26,9 @@ use Symfony\Component\DependencyInjection\ContainerInterface;
  *   }
  * )
  */
-class OpenidealIdeaFlagAndLikeBlock extends BlockBase implements ContainerFactoryPluginInterface {
+class OpenfarmRecordFlagAndLikeBlock extends BlockBase implements ContainerFactoryPluginInterface {
 
-  use OpenidealContextEntityTrait;
+  use OpenfarmContextEntityTrait;
 
   /**
    * Flag link builder service.
@@ -95,7 +95,7 @@ class OpenidealIdeaFlagAndLikeBlock extends BlockBase implements ContainerFactor
       if ($this->currentUser->isAnonymous()) {
         return $build;
       }
-      $build['#theme'] = 'openideal_idea_flag_and_like_block';
+      $build['#theme'] = 'openfarm_record_flag_and_like_block';
       $flag_link = $this->flagLinkBuilder->build($node->getEntityTypeId(), $node->id(), 'follow');
       $build['#follow'] = $flag_link;
       $build['#main_class'] = $this->configuration['main_class'];

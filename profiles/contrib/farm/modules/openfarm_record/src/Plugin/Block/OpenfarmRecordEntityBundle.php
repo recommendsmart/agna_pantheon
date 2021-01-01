@@ -1,17 +1,17 @@
 <?php
 
-namespace Drupal\openideal_idea\Plugin\Block;
+namespace Drupal\openfarm_record\Plugin\Block;
 
 use Drupal\Core\Block\BlockBase;
-use Drupal\openideal_challenge\OpenidealContextEntityTrait;
+use Drupal\openfarm_holding\OpenfarmContextEntityTrait;
 
 /**
- * Provides a OpenidealIdeaEntityBundle class.
+ * Provides a OpenfarmRecordEntityBundle class.
  *
  * @Block(
- *   id = "openidel_idea_node_bundle",
+ *   id = "openidel_record_node_bundle",
  *   admin_label = @Translation("Entity bundle"),
- *   category = @Translation("Openideal"),
+ *   category = @Translation("Openfarm"),
  *   context = {
  *      "entity" = @ContextDefinition(
  *       "entity",
@@ -21,9 +21,9 @@ use Drupal\openideal_challenge\OpenidealContextEntityTrait;
  *   }
  * )
  */
-class OpenidealIdeaEntityBundle extends BlockBase {
+class OpenfarmRecordEntityBundle extends BlockBase {
 
-  use OpenidealContextEntityTrait;
+  use OpenfarmContextEntityTrait;
 
   /**
    * {@inheritDoc}
