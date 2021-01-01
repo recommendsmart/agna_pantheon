@@ -8,8 +8,8 @@ dependencies:
     - gnode
     - node
 id: record-group_node-record
-label: 'Idea: Group node (Idea)'
-description: 'Adds <em class="placeholder">Idea</em> content to groups both publicly and privately.'
+label: 'Record: Group node (Record)'
+description: 'Adds <em class="placeholder">Record</em> content to groups both publicly and privately.'
 group_type: record
 content_plugin: 'group_node:record'
 plugin_config:
