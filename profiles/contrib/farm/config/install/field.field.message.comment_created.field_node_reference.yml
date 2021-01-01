@@ -4,7 +4,7 @@ dependencies:
   config:
     - field.storage.message.field_node_reference
     - message.template.comment_created
-    - node.type.challenge
+    - node.type.holding
     - node.type.record
 id: message.comment_created.field_node_reference
 field_name: field_node_reference
@@ -20,10 +20,10 @@ settings:
   handler: 'default:node'
   handler_settings:
     target_bundles:
-      challenge: challenge
+      holding: holding
       record: record
     sort:
       field: _none
     auto_create: false
-    auto_create_bundle: challenge
+    auto_create_bundle: holding
 field_type: entity_reference

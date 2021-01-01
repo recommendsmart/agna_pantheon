@@ -2,11 +2,11 @@ langcode: en
 status: true
 dependencies:
   config:
-    - node.type.idea
-id: node.idea.status
+    - node.type.record
+id: node.record.status
 field_name: status
 entity_type: node
-bundle: idea
+bundle: record
 label: Published
 description: ''
 required: false
