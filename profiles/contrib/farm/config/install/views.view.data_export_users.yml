@@ -30,7 +30,7 @@ display:
       access:
         type: perm
         options:
-          perm: 'access activity pages openideal'
+          perm: 'access activity pages openfarm'
       cache:
         type: tag
         options: {  }
@@ -829,14 +829,14 @@ display:
     position: 1
     display_options:
       display_extenders: {  }
-      path: admin/openideal/activity/user
+      path: admin/openfarm/activity/user
       display_description: ''
       menu:
         type: normal
         title: Users
         description: ''
         expanded: false
-        parent: openideal_toolbar.activity
+        parent: openfarm_toolbar.activity
         weight: 3
         context: '0'
         menu_name: admin

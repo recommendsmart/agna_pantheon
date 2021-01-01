@@ -5,7 +5,7 @@ dependencies:
     - field.storage.message.field_node_reference
     - message.template.comment_created
     - node.type.challenge
-    - node.type.idea
+    - node.type.record
 id: message.comment_created.field_node_reference
 field_name: field_node_reference
 entity_type: message
@@ -21,7 +21,7 @@ settings:
   handler_settings:
     target_bundles:
       challenge: challenge
-      idea: idea
+      record: record
     sort:
       field: _none
     auto_create: false

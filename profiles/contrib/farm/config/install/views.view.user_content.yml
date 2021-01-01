@@ -279,8 +279,8 @@ display:
           admin_label: 'Content group content'
           required: false
           group_content_plugins:
-            'group_node:challenge': 'group_node:challenge'
-            'group_node:idea': 'group_node:idea'
+            'group_node:holding': 'group_node:holding'
+            'group_node:record': 'group_node:record'
             'group_node:article': '0'
             'group_node:faq': '0'
             'group_node:page': '0'
@@ -320,9 +320,9 @@ display:
           group_content_plugins:
             group_membership: group_membership
             'group_node:article': '0'
-            'group_node:challenge': '0'
+            'group_node:holding': '0'
             'group_node:faq': '0'
-            'group_node:idea': '0'
+            'group_node:record': '0'
             'group_node:page': '0'
           entity_type: group
           plugin_id: group_to_group_content
@@ -336,9 +336,9 @@ display:
           required: false
           group_content_plugins:
             'group_node:article': '0'
-            'group_node:challenge': '0'
+            'group_node:holding': '0'
             'group_node:faq': '0'
-            'group_node:idea': '0'
+            'group_node:record': '0'
             'group_node:page': '0'
           entity_type: group_content
           plugin_id: group_content_to_entity
@@ -381,15 +381,15 @@ display:
         - 'user.node_grants:view'
         - user.permissions
       tags: {  }
-  my_draft_ideas_block:
+  my_draft_records_block:
     display_plugin: block
-    id: my_draft_ideas_block
-    display_title: 'My Draft ideas (block)'
+    id: my_draft_records_block
+    display_title: 'My Draft records (block)'
     position: 3
     display_options:
       display_extenders: {  }
       display_description: ''
-      title: 'Draft Ideas'
+      title: 'Draft Records'
       defaults:
         title: false
         relationships: false
@@ -399,7 +399,7 @@ display:
         group_by: false
         arguments: false
         empty: false
-      block_description: 'My Draft ideas'
+      block_description: 'My Draft records'
       relationships:
         group_content:
           id: group_content
@@ -410,9 +410,9 @@ display:
           admin_label: 'Content group content'
           required: false
           group_content_plugins:
-            'group_node:idea': 'group_node:idea'
+            'group_node:record': 'group_node:record'
             'group_node:article': '0'
-            'group_node:challenge': '0'
+            'group_node:holding': '0'
             'group_node:faq': '0'
             'group_node:page': '0'
           entity_type: node
@@ -439,9 +439,9 @@ display:
           group_content_plugins:
             group_membership: group_membership
             'group_node:article': '0'
-            'group_node:challenge': '0'
+            'group_node:holding': '0'
             'group_node:faq': '0'
-            'group_node:idea': '0'
+            'group_node:record': '0'
             'group_node:page': '0'
           entity_type: group
           plugin_id: group_to_group_content
@@ -795,15 +795,15 @@ display:
         - user.permissions
       tags:
         - 'config:field.storage.group_content.group_roles'
-  my_ideas_block:
+  my_records_block:
     display_plugin: block
-    id: my_ideas_block
-    display_title: 'My ideas (block)'
+    id: my_records_block
+    display_title: 'My records (block)'
     position: 3
     display_options:
       display_extenders: {  }
       display_description: ''
-      title: Ideas
+      title: Records
       defaults:
         title: false
         relationships: false
@@ -813,7 +813,7 @@ display:
         group_by: false
         arguments: false
         empty: false
-      block_description: 'My ideas'
+      block_description: 'My records'
       relationships:
         group_content:
           id: group_content
@@ -824,9 +824,9 @@ display:
           admin_label: 'Content group content'
           required: false
           group_content_plugins:
-            'group_node:idea': 'group_node:idea'
+            'group_node:record': 'group_node:record'
             'group_node:article': '0'
-            'group_node:challenge': '0'
+            'group_node:holding': '0'
             'group_node:faq': '0'
             'group_node:page': '0'
           entity_type: node
@@ -853,9 +853,9 @@ display:
           group_content_plugins:
             group_membership: group_membership
             'group_node:article': '0'
-            'group_node:challenge': '0'
+            'group_node:holding': '0'
             'group_node:faq': '0'
-            'group_node:idea': '0'
+            'group_node:record': '0'
             'group_node:page': '0'
           entity_type: group
           plugin_id: group_to_group_content
@@ -1260,9 +1260,9 @@ display:
           admin_label: 'Content group content'
           required: false
           group_content_plugins:
-            'group_node:idea': 'group_node:idea'
+            'group_node:record': 'group_node:record'
             'group_node:article': '0'
-            'group_node:challenge': '0'
+            'group_node:holding': '0'
             'group_node:faq': '0'
             'group_node:page': '0'
           entity_type: node
@@ -1289,9 +1289,9 @@ display:
           group_content_plugins:
             group_membership: group_membership
             'group_node:article': '0'
-            'group_node:challenge': '0'
+            'group_node:holding': '0'
             'group_node:faq': '0'
-            'group_node:idea': '0'
+            'group_node:record': '0'
             'group_node:page': '0'
           entity_type: group
           plugin_id: group_to_group_content
@@ -1508,19 +1508,19 @@ display:
         - 'config:core.entity_view_display.node.article.message'
         - 'config:core.entity_view_display.node.article.rss'
         - 'config:core.entity_view_display.node.article.teaser'
-        - 'config:core.entity_view_display.node.challenge.default'
-        - 'config:core.entity_view_display.node.challenge.front_page_teaser'
-        - 'config:core.entity_view_display.node.challenge.full'
-        - 'config:core.entity_view_display.node.challenge.message'
-        - 'config:core.entity_view_display.node.challenge.teaser'
+        - 'config:core.entity_view_display.node.holding.default'
+        - 'config:core.entity_view_display.node.holding.front_page_teaser'
+        - 'config:core.entity_view_display.node.holding.full'
+        - 'config:core.entity_view_display.node.holding.message'
+        - 'config:core.entity_view_display.node.holding.teaser'
         - 'config:core.entity_view_display.node.faq.default'
         - 'config:core.entity_view_display.node.faq.message'
         - 'config:core.entity_view_display.node.faq.teaser'
-        - 'config:core.entity_view_display.node.idea.default'
-        - 'config:core.entity_view_display.node.idea.front_page_teaser'
-        - 'config:core.entity_view_display.node.idea.full'
-        - 'config:core.entity_view_display.node.idea.message'
-        - 'config:core.entity_view_display.node.idea.teaser'
+        - 'config:core.entity_view_display.node.record.default'
+        - 'config:core.entity_view_display.node.record.front_page_teaser'
+        - 'config:core.entity_view_display.node.record.full'
+        - 'config:core.entity_view_display.node.record.message'
+        - 'config:core.entity_view_display.node.record.teaser'
         - 'config:core.entity_view_display.node.page.default'
         - 'config:core.entity_view_display.node.page.message'
         - 'config:core.entity_view_display.node.page.teaser'

@@ -1,0 +1,24 @@
+langcode: en
+status: true
+dependencies:
+  config:
+    - field.storage.node.field_holding
+    - node.type.record
+id: node.record.field_holding
+field_name: field_holding
+entity_type: node
+bundle: record
+label: Challenge
+description: ''
+required: false
+translatable: false
+default_value: {  }
+default_value_callback: ''
+settings:
+  handler: views
+  handler_settings:
+    view:
+      view_name: list_of_holdings
+      display_name: holdings_entity_reference
+      arguments: {  }
+field_type: entity_reference

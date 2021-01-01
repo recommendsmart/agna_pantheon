@@ -450,7 +450,7 @@ display:
           click_sort_column: value
           type: timestamp
           settings:
-            date_format: openideal_date_time
+            date_format: openfarm_date_time
             custom_date_format: ''
             timezone: ''
           group_column: value
@@ -517,7 +517,7 @@ display:
           click_sort_column: value
           type: timestamp
           settings:
-            date_format: openideal_date_time
+            date_format: openfarm_date_time
             custom_date_format: ''
             timezone: ''
           group_column: value

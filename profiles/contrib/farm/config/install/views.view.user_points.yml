@@ -1342,7 +1342,7 @@ display:
         title: Transactions
         description: ''
         expanded: false
-        parent: openideal_toolbar.user_points
+        parent: openfarm_toolbar.user_points
         weight: 0
         context: '0'
         menu_name: admin
@@ -1576,7 +1576,7 @@ display:
         title: Total
         description: ''
         expanded: false
-        parent: openideal_toolbar.user_points
+        parent: openfarm_toolbar.user_points
         weight: 0
         context: '0'
         menu_name: admin

@@ -2,7 +2,7 @@ langcode: en
 status: true
 dependencies:
   config:
-    - node.type.idea
+    - node.type.record
     - workflows.workflow.life_cycle_phases
   enforced:
     module:
@@ -180,15 +180,15 @@ display:
           action_title: Action
           include_exclude: include
           selected_actions:
-            - change_idea_status_to_approved
-            - change_idea_status_to_draft
-            - change_idea_status_to_expert_review
-            - change_idea_status_to_ideation
-            - change_idea_status_to_launched
-            - change_idea_status_to_needs_work
-            - change_idea_status_to_postponed
-            - change_idea_status_to_rejected
-            - change_idea_status_to_send_to_approval
+            - change_record_status_to_approved
+            - change_record_status_to_draft
+            - change_record_status_to_expert_review
+            - change_record_status_to_recordation
+            - change_record_status_to_launched
+            - change_record_status_to_needs_work
+            - change_record_status_to_postponed
+            - change_record_status_to_rejected
+            - change_record_status_to_send_to_approval
           entity_type: node
           plugin_id: node_bulk_form
         title:
@@ -500,7 +500,7 @@ display:
           click_sort_column: value
           type: timestamp
           settings:
-            date_format: openideal_date_time
+            date_format: openfarm_date_time
             custom_date_format: ''
             timezone: ''
           group_column: value
@@ -829,7 +829,7 @@ display:
           entity_type: node
           plugin_id: moderation_state_filter
       sorts: {  }
-      title: Ideas
+      title: Records
       header: {  }
       footer: {  }
       empty:
@@ -884,14 +884,14 @@ display:
         - user.permissions
       tags:
         - 'config:workflow_list'
-  ideas_page:
+  records_page:
     display_plugin: page
-    id: ideas_page
-    display_title: 'Ideas (page)'
+    id: records_page
+    display_title: 'Records (page)'
     position: 1
     display_options:
       display_extenders: {  }
-      path: admin/content/ideas
+      path: admin/content/records
       display_description: ''
       fields:
         node_bulk_form:
@@ -945,15 +945,15 @@ display:
           action_title: Action
           include_exclude: include
           selected_actions:
-            - change_idea_status_to_approved
-            - change_idea_status_to_draft
-            - change_idea_status_to_expert_review
-            - change_idea_status_to_ideation
-            - change_idea_status_to_launched
-            - change_idea_status_to_needs_work
-            - change_idea_status_to_postponed
-            - change_idea_status_to_rejected
-            - change_idea_status_to_send_to_approval
+            - change_record_status_to_approved
+            - change_record_status_to_draft
+            - change_record_status_to_expert_review
+            - change_record_status_to_recordation
+            - change_record_status_to_launched
+            - change_record_status_to_needs_work
+            - change_record_status_to_postponed
+            - change_record_status_to_rejected
+            - change_record_status_to_send_to_approval
           entity_type: node
           plugin_id: node_bulk_form
         title:
@@ -1265,7 +1265,7 @@ display:
           click_sort_column: value
           type: timestamp
           settings:
-            date_format: openideal_date_time
+            date_format: openfarm_date_time
             custom_date_format: ''
             timezone: ''
           group_column: value
@@ -1606,7 +1606,7 @@ display:
           admin_label: ''
           operator: in
           value:
-            idea: idea
+            record: record
           group: 1
           exposed: false
           expose:

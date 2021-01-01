@@ -5,7 +5,7 @@ id: create_a_message_after_user_joined_the_site
 label: 'Create a message after user joined the site'
 events:
   -
-    event_name: openideal_user.user_joined_site
+    event_name: openfarm_user.user_joined_site
 description: ''
 tags: {  }
 config_version: '3'
@@ -46,4 +46,4 @@ expression:
           template:
             rules_tokens: {  }
         provides_mapping: {  }
-        action_id: openideal_message_action
+        action_id: openfarm_message_action

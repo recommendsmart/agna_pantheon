@@ -26,7 +26,7 @@ expression:
         weight: -50
         context_values:
           operation: '=='
-          value: idea
+          value: record
         context_mapping:
           data: comment.entity_id.entity.type.target_id
         context_processors:
@@ -43,10 +43,10 @@ expression:
         weight: -48
         context_values: {  }
         context_mapping:
-          idea_id: comment.entity_id.entity.nid.value
+          record_id: comment.entity_id.entity.nid.value
         context_processors: {  }
         provides_mapping: {  }
-        condition_id: 'openideal_idea_state:draft'
+        condition_id: 'openfarm_record_state:draft'
         negate: true
       -
         id: rules_condition
@@ -54,10 +54,10 @@ expression:
         weight: 0
         context_values: {  }
         context_mapping:
-          idea_id: comment.entity_id.entity.nid.value
+          record_id: comment.entity_id.entity.nid.value
         context_processors: {  }
         provides_mapping: {  }
-        condition_id: 'openideal_idea_state:draft_approval'
+        condition_id: 'openfarm_record_state:draft_approval'
         negate: true
   actions:
     id: rules_action_set
@@ -88,7 +88,7 @@ expression:
           transaction_field_log_message: ''
         context_mapping:
           target_entity: entity_fetched
-          transaction_field_amount: '@openideal_user.user_points_context:points.comment'
+          transaction_field_amount: '@openfarm_user.user_points_context:points.comment'
         context_processors:
           transaction_type_id:
             rules_tokens: {  }

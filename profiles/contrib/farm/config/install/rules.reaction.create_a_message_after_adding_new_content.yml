@@ -24,7 +24,7 @@ expression:
         weight: -50
         context_values:
           type: node
-          bundle: idea
+          bundle: record
         context_mapping:
           entity: node
         context_processors:
@@ -58,7 +58,7 @@ expression:
         weight: -48
         context_values:
           type: node
-          bundle: challenge
+          bundle: holding
         context_mapping:
           entity: node
         context_processors:
@@ -97,4 +97,4 @@ expression:
           template:
             rules_tokens: {  }
         provides_mapping: {  }
-        action_id: openideal_message_action
+        action_id: openfarm_message_action

@@ -1,10 +1,10 @@
 langcode: en
 status: true
 dependencies: {  }
-id: idea
+id: record
 label: Idea
-description: 'It provides an idea group type.'
+description: 'It provides an record group type.'
 creator_membership: false
 creator_wizard: false
 creator_roles:
-  - idea-author
+  - record-author

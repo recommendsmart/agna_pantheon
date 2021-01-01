@@ -44,7 +44,7 @@ expression:
           entity: vote
         context_processors: {  }
         provides_mapping: {  }
-        condition_id: openideal_voted_entity_is_published
+        condition_id: openfarm_voted_entity_is_published
         negate: false
   actions:
     id: rules_action_set
@@ -63,4 +63,4 @@ expression:
           template:
             rules_tokens: {  }
         provides_mapping: {  }
-        action_id: openideal_message_action
+        action_id: openfarm_message_action

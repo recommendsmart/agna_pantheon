@@ -2,7 +2,7 @@ langcode: en
 status: true
 dependencies:
   config:
-    - node.type.idea
+    - node.type.record
   module:
     - content_moderation
 id: life_cycle_phases
@@ -46,7 +46,7 @@ type_settings:
       label: Postponed
       weight: 2
     published:
-      label: Ideation
+      label: Recordation
       published: true
       default_revision: true
       weight: -2
@@ -76,7 +76,7 @@ type_settings:
       from:
         - draft
     draft_approval:
-      label: Ideation
+      label: Recordation
       from:
         - draft_approval
         - published
@@ -125,5 +125,5 @@ type_settings:
       weight: 4
   entity_types:
     node:
-      - idea
+      - record
   default_moderation_state: draft

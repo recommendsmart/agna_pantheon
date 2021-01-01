@@ -52,4 +52,4 @@ expression:
           template:
             rules_tokens: {  }
         provides_mapping: {  }
-        action_id: openideal_message_action
+        action_id: openfarm_message_action

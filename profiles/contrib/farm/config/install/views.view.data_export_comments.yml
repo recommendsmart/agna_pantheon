@@ -30,7 +30,7 @@ display:
       access:
         type: perm
         options:
-          perm: 'access activity pages openideal'
+          perm: 'access activity pages openfarm'
       cache:
         type: tag
         options: {  }
@@ -563,7 +563,7 @@ display:
         title: Comments
         description: ''
         expanded: false
-        parent: openideal_toolbar.activity
+        parent: openfarm_toolbar.activity
         weight: 4
         context: '0'
         menu_name: admin

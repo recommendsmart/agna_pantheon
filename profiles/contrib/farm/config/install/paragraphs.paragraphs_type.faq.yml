@@ -2,7 +2,7 @@ langcode: en
 status: true
 dependencies:
   module:
-    - openideal_faq
+    - openfarm_faq
 id: faq
 label: FAQ
 icon_uuid: null

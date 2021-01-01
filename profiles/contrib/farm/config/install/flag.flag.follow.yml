@@ -6,8 +6,8 @@ dependencies:
 id: follow
 label: Follow
 bundles:
-  - challenge
-  - idea
+  - holding
+  - record
 entity_type: node
 global: false
 weight: 0

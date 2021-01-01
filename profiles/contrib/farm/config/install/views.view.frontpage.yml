@@ -8,8 +8,8 @@ dependencies:
     - field.storage.node.body
     - field.storage.node.field_category
     - node.type.article
-    - node.type.challenge
-    - node.type.idea
+    - node.type.holding
+    - node.type.record
     - system.menu.main
   module:
     - better_exposed_filters
@@ -649,8 +649,8 @@ display:
           admin_label: ''
           operator: in
           value:
-            challenge: challenge
-            idea: idea
+            holding: holding
+            record: record
             article: article
           group: 1
           exposed: false
@@ -894,19 +894,19 @@ display:
         - 'config:core.entity_view_display.node.article.message'
         - 'config:core.entity_view_display.node.article.rss'
         - 'config:core.entity_view_display.node.article.teaser'
-        - 'config:core.entity_view_display.node.challenge.default'
-        - 'config:core.entity_view_display.node.challenge.front_page_teaser'
-        - 'config:core.entity_view_display.node.challenge.full'
-        - 'config:core.entity_view_display.node.challenge.message'
-        - 'config:core.entity_view_display.node.challenge.teaser'
+        - 'config:core.entity_view_display.node.holding.default'
+        - 'config:core.entity_view_display.node.holding.front_page_teaser'
+        - 'config:core.entity_view_display.node.holding.full'
+        - 'config:core.entity_view_display.node.holding.message'
+        - 'config:core.entity_view_display.node.holding.teaser'
         - 'config:core.entity_view_display.node.faq.default'
         - 'config:core.entity_view_display.node.faq.message'
         - 'config:core.entity_view_display.node.faq.teaser'
-        - 'config:core.entity_view_display.node.idea.default'
-        - 'config:core.entity_view_display.node.idea.front_page_teaser'
-        - 'config:core.entity_view_display.node.idea.full'
-        - 'config:core.entity_view_display.node.idea.message'
-        - 'config:core.entity_view_display.node.idea.teaser'
+        - 'config:core.entity_view_display.node.record.default'
+        - 'config:core.entity_view_display.node.record.front_page_teaser'
+        - 'config:core.entity_view_display.node.record.full'
+        - 'config:core.entity_view_display.node.record.message'
+        - 'config:core.entity_view_display.node.record.teaser'
         - 'config:core.entity_view_display.node.page.default'
         - 'config:core.entity_view_display.node.page.full'
         - 'config:core.entity_view_display.node.page.message'

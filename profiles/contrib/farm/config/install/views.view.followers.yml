@@ -246,7 +246,7 @@ display:
           entity_field: nid
           plugin_id: node_nid
       display_extenders: {  }
-      css_class: idea-followers-block
+      css_class: record-followers-block
     cache_metadata:
       max-age: -1
       contexts:
@@ -334,7 +334,7 @@ display:
           group_type: group
           admin_label: ''
           operator: '='
-          value: idea-co_author
+          value: record-co_author
           group: 1
           exposed: false
           expose:
@@ -379,9 +379,9 @@ display:
           admin_label: 'Content group content'
           required: false
           group_content_plugins:
-            'group_node:idea': 'group_node:idea'
+            'group_node:record': 'group_node:record'
             'group_node:article': '0'
-            'group_node:challenge': '0'
+            'group_node:holding': '0'
             'group_node:faq': '0'
             'group_node:page': '0'
           entity_type: node
@@ -408,9 +408,9 @@ display:
           group_content_plugins:
             group_membership: group_membership
             'group_node:article': '0'
-            'group_node:challenge': '0'
+            'group_node:holding': '0'
             'group_node:faq': '0'
-            'group_node:idea': '0'
+            'group_node:record': '0'
             'group_node:page': '0'
           entity_type: group
           plugin_id: group_to_group_content
