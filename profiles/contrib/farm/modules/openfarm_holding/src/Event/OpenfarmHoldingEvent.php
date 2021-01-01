@@ -19,7 +19,7 @@ class OpenfarmHoldingEvent extends Event {
    *
    * @var string
    */
-  const CHALLENGE_OPEN = 'openfarm_holding.open';
+  const HOLDING_OPEN = 'openfarm_holding.open';
 
   /**
    * The event triggered after closing a holding node via cron.
@@ -28,7 +28,7 @@ class OpenfarmHoldingEvent extends Event {
    *
    * @var string
    */
-  const CHALLENGE_CLOSE = 'openfarm_holding.close';
+  const HOLDING_CLOSE = 'openfarm_holding.close';
 
   /**
    * Node object.

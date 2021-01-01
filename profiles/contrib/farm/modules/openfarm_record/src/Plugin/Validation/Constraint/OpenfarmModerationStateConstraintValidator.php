@@ -1,6 +1,6 @@
 <?php
 
-namespace Drupal\openideal_idea\Plugin\Validation\Constraint;
+namespace Drupal\openfarm_record\Plugin\Validation\Constraint;
 
 use Drupal\content_moderation\Plugin\Validation\Constraint\ModerationStateConstraintValidator;
 use Drupal\Core\Validation\Plugin\Validation\Constraint\NotNullConstraint;
@@ -12,7 +12,7 @@ use Symfony\Component\Validator\Constraint;
  * Override default moderation state validator, to implemented additional
  * logic if the previous state equal new state then do not restrict access.
  */
-class OpenidealModerationStateConstraintValidator extends ModerationStateConstraintValidator {
+class OpenfarmModerationStateConstraintValidator extends ModerationStateConstraintValidator {
 
   /**
    * {@inheritdoc}

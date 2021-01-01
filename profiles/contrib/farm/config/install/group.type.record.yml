@@ -2,7 +2,7 @@ langcode: en
 status: true
 dependencies: {  }
 id: record
-label: Idea
+label: Record
 description: 'It provides an record group type.'
 creator_membership: false
 creator_wizard: false
