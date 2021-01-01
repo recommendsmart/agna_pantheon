@@ -1,0 +1,26 @@
+openfarm_toolbar.help:
+  title: 'Openfarm'
+  route_name: openfarm_toolbar.system
+  menu_name: admin
+  parent: system.admin
+  weight: -50
+
+openfarm_toolbar.user_points:
+  title: 'Points'
+  route_name: view.user_points.user_total_points_page
+  description: 'User points details.'
+  parent: openfarm_toolbar.help
+  weight: 1
+
+openfarm_toolbar.configuration:
+  title: 'Configuration'
+  route_name: openfarm_toolbar.configuration
+  parent: openfarm_toolbar.help
+  weight: 2
+
+openfarm_toolbar.activity:
+  title: 'Activity'
+  route_name: openfarm_toolbar.activity
+  description: 'Data export pages.'
+  parent: openfarm_toolbar.help
+  weight: 3

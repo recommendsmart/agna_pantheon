@@ -1,0 +1,15 @@
+langcode: en
+status: true
+dependencies:
+  config:
+    - group.type.record
+id: record-anonymous
+label: Anonymous
+weight: -102
+internal: true
+audience: anonymous
+group_type: record
+permissions_ui: true
+permissions:
+  - 'view group'
+  - 'view group_node:record entity'

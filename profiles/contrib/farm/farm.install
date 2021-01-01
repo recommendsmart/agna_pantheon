@@ -22,7 +22,7 @@ function farm_install() {
   $user->save();
 
   // Install 'openfarm_content' module.
-  \Drupal::service('module_installer')->install(['openideal_content']);
+  \Drupal::service('module_installer')->install(['openfarm_content']);
   
   // Force set the administerusersbyrole configuration in fact
   // the module change it during installation of profile.

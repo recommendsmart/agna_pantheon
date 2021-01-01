@@ -114,14 +114,14 @@ dependencies:
   - paragraphs:paragraphs
     # Custom modules
   - openfarm_holding:openfarm_holding
-  - openideal_faq:openideal_faq
-  - openideal_toolbar:openideal_toolbar
+  - openfarm_faq:openfarm_faq
+  - openfarm_toolbar:openfarm_toolbar
   - openfarm_record:openfarm_record
-  - openideal_user:openideal_user
-  - openideal_slideshow:openideal_slideshow
-  - openideal_comment:openideal_comment
-  - openideal_footer:openideal_footer
-  - openideal_statistics:openideal_statistics
+  - openfarm_user:openfarm_user
+  - openfarm_slideshow:openfarm_slideshow
+  - openfarm_comment:openfarm_comment
+  - openfarm_footer:openfarm_footer
+  - openfarm_statistics:openfarm_statistics
   
 themes:
   - adminimal_theme

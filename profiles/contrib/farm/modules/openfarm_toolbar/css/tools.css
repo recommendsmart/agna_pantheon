@@ -1,0 +1,9 @@
+.toolbar-icon-openfarm-toolbar-help:before {
+  /** @Todo: Replace with .svg icon */
+  background-image: url(../misc/icons/openfarm_logo.png);
+}
+
+.toolbar-icon-openfarm-toolbar-help:active:before,
+.toolbar-icon-openfarm-toolbar-help.active:before {
+  background-image: url(../misc/icons/openfarm_logo.png);
+}

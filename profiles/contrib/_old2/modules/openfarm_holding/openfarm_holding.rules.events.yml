@@ -1,0 +1,14 @@
+openfarm_holding.open:
+  label: 'After opening a holding'
+  category: 'Holding'
+  context_definitions:
+    entity:
+      type: 'entity:node'
+      label: 'Opened holding'
+openfarm_holding.close:
+  label: 'After closing a holding'
+  category: 'Holding'
+  context_definitions:
+    entity:
+      type: 'entity:node'
+      label: 'Closed holding'
