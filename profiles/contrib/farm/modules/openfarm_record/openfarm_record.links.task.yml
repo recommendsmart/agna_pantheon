@@ -1,5 +1,5 @@
 openfarm_record.moderated_records:
-  title: 'Ideas'
+  title: 'Records'
   route_name: view.moderated_content.records_page
   parent_id: system.admin_content
   weight: 1
