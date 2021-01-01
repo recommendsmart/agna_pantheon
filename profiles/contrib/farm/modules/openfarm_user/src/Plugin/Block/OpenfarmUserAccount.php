@@ -6,7 +6,7 @@ use Drupal\Core\Block\BlockBase;
 use Drupal\Core\Entity\EntityTypeManager;
 use Drupal\Core\Plugin\ContainerFactoryPluginInterface;
 use Drupal\Core\Url;
-use Drupal\openfarm_challenge\OpenfarmContextEntityTrait;
+use Drupal\openfarm_holding\OpenfarmContextEntityTrait;
 use Symfony\Component\DependencyInjection\ContainerInterface;
 
 /**
