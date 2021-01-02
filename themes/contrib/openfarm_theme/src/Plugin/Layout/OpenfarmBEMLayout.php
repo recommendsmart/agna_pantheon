@@ -8,7 +8,7 @@ use Drupal\Core\Layout\LayoutDefault;
 /**
  * OpenfarmBEMLayout class of layouts with two columns.
  */
-class OpenidealBEMLayout extends LayoutDefault {
+class OpenfarmBEMLayout extends LayoutDefault {
 
   /**
    * {@inheritdoc}
