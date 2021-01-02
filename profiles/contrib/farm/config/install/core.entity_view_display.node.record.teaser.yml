@@ -79,7 +79,7 @@ third_party_settings:
             uuid: e6fbf796-ef1f-49f6-943a-7539d1a9e648
             region: first
             configuration:
-              id: openidel_record_node_bundle
+              id: openfarm_record_node_bundle
               label: 'Entity bundle'
               provider: openfarm_record
               label_display: '0'
@@ -162,7 +162,7 @@ third_party_settings:
             region: second
             configuration:
               id: openfarm_statistics_record_statistics
-              label: 'Idea statistics block'
+              label: 'Record statistics block'
               provider: openfarm_statistics
               label_display: '0'
               context_mapping:
