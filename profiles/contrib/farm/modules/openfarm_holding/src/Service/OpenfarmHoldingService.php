@@ -131,7 +131,7 @@ class OpenfarmHoldingService implements OpenfarmHoldingServiceInterface {
   /**
    * {@inheritdoc}
    */
-  public function getCountOfIdeas($holding_id) {
+  public function getCountOfRecords($holding_id) {
     $query = $this->entityTypeManager
       ->getStorage('node')
       ->getQuery();
