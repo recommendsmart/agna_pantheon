@@ -105,7 +105,7 @@ function openfarm_holding_entity_insert(EntityInterface $entity) {
   if ($entity instanceof NodeInterface && $entity->bundle() == 'holding') {
     $event_dispatcher = \Drupal::service('event_dispatcher');
     $event = new OpenfarmHoldingEvent($entity);
-    $event_dispatcher->dispatch($entity->field_is_open->value ? OpenfarmHoldingEvent::CHALLENGE_OPEN : OpenfarmHoldingEvent::CHALLENGE_CLOSE, $event);
+    $event_dispatcher->dispatch($entity->field_is_open->value ? OpenfarmHoldingEvent::HOLDING_OPEN : OpenfarmHoldingEvent::HOLDING_CLOSE, $event);
   }
 }
 
@@ -120,7 +120,7 @@ function openfarm_holding_entity_update(EntityInterface $entity) {
     if (($entity->isPublished() && ($entity->original->isPublished() != $entity->isPublished()))
       || ($entity->original->get('field_is_open')->value != $entity->get('field_is_open')->value)) {
       $event = new OpenfarmHoldingEvent($entity);
-      $event_dispatcher->dispatch($entity->get('field_is_open')->value ? OpenfarmHoldingEvent::CHALLENGE_OPEN : OpenfarmHoldingEvent::CHALLENGE_CLOSE, $event);
+      $event_dispatcher->dispatch($entity->get('field_is_open')->value ? OpenfarmHoldingEvent::HOLDING_OPEN : OpenfarmHoldingEvent::HOLDING_CLOSE, $event);
     }
   }
 }
