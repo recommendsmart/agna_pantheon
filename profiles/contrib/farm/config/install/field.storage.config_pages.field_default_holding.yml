@@ -4,8 +4,8 @@ dependencies:
   module:
     - config_pages
     - node
-id: config_pages.field_default_challenge
-field_name: field_default_challenge
+id: config_pages.field_default_holding
+field_name: field_default_holding
 entity_type: config_pages
 type: entity_reference
 settings:
