@@ -1,6 +1,6 @@
 /**
  * @file
- * Attaches behaviors for the Openfarm Challenge module's schedule widget.
+ * Attaches behaviors for the Openfarm Holding module's schedule widget.
  */
 
 (function ($, Drupal, drupalSettings) {
@@ -35,7 +35,7 @@
    * @prop {Drupal~behaviorAttach} attach
    *   Attach local time to the schedule widget.
    */
-  Drupal.behaviors.openfarmChallengeSchedule = {
+  Drupal.behaviors.openfarmHoldingSchedule = {
     attach: function (context, settings) {
       $('.holding-schedule-local-machine-time').once('openfarm_holding_schedule').each(function () {
         // Format the date.
@@ -56,7 +56,7 @@
    * @prop {Drupal~behaviorAttach} attach
    *   Attach dynamic format change to date.
    */
-  Drupal.behaviors.openfarmChallengeHMTL5Date = {
+  Drupal.behaviors.openfarmHoldingHMTL5Date = {
     attach: function (context, settings) {
       $('input[type="date"]').once('openfarm_holding_html5_date').each(function () {
         $(this).on('change', function () {
