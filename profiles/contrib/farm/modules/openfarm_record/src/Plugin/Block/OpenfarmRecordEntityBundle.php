@@ -9,7 +9,7 @@ use Drupal\openfarm_holding\OpenfarmContextEntityTrait;
  * Provides a OpenfarmRecordEntityBundle class.
  *
  * @Block(
- *   id = "openidel_record_node_bundle",
+ *   id = "openfarm_record_node_bundle",
  *   admin_label = @Translation("Entity bundle"),
  *   category = @Translation("Openfarm"),
  *   context = {
