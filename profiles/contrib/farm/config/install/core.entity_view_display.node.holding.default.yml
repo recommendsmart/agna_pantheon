@@ -182,7 +182,7 @@ third_party_settings:
             uuid: cd8cd925-5cff-41ff-9da0-f7c8305f248b
             region: content
             configuration:
-              id: openidel_holding_add_record
+              id: openfarm_holding_add_record
               label: 'Add record button'
               provider: openfarm_holding
               label_display: visible
