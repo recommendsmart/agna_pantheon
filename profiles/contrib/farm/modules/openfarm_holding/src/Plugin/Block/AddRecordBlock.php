@@ -14,12 +14,12 @@ use Symfony\Component\DependencyInjection\ContainerInterface;
  * Provides a button "Add your record".
  *
  * @Block(
- *   id = "openidel_holding_add_record",
+ *   id = "openfarm_holding_add_record",
  *   admin_label = @Translation("Add record button"),
  *   category = @Translation("Openfarm")
  * )
  */
-class AddIdeaBlock extends BlockBase implements ContainerFactoryPluginInterface {
+class AddRecordBlock extends BlockBase implements ContainerFactoryPluginInterface {
 
   /**
    * Current route match service.
@@ -91,7 +91,7 @@ class AddIdeaBlock extends BlockBase implements ContainerFactoryPluginInterface 
       ],
     ];
 
-    // Display "Add Idea" link only for open holdings.
+    // Display "Add Record" link only for open holdings.
     if ($node->get('field_is_open')->value && $this->currentUser->isAuthenticated()) {
       $build += [
         '#type' => 'link',
