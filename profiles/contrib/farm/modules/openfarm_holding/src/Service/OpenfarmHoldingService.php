@@ -73,7 +73,7 @@ class OpenfarmHoldingService implements OpenfarmHoldingServiceInterface {
   protected function holdingsOperation($operation) {
     $result = FALSE;
     $operation_field_name = $operation == 'open' ? 'field_schedule_open' : 'field_schedule_close';
-    $event_name = $operation == 'open' ? OpenfarmHoldingEvent::CHALLENGE_OPEN : OpenfarmHoldingEvent::CHALLENGE_CLOSE;
+    $event_name = $operation == 'open' ? OpenfarmHoldingEvent:: HOLDING_OPEN : OpenfarmHoldingEvent:: HOLDING_CLOSE;
 
     // Select all nodes of the holding type that are enabled for scheduled
     // closing/opening and where close_on/open_on is less than or equal
@@ -103,7 +103,7 @@ class OpenfarmHoldingService implements OpenfarmHoldingServiceInterface {
       $node->set($operation_field_name, NULL);
       $node->save();
 
-      // Trigger the CHALLENGE_CLOSE event so that modules can react after the
+      // Trigger the HOLDING_CLOSE event so that modules can react after the
       // node is closed.
       $event = new OpenfarmHoldingEvent($node);
       $this->eventDispatcher->dispatch($event_name, $event);
