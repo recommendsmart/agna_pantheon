@@ -6,10 +6,10 @@ use Drupal\Core\Block\BlockBase;
 use Drupal\openfarm_holding\OpenfarmContextEntityTrait;
 
 /**
- * Class HoldingIdeasTitleWithCount.
+ * Class HoldingRecordsTitleWithCount.
  *
  * @Block(
- *   id = "openidel_holding_holding_records_title",
+ *   id = "openfarm_holding_holding_records_title",
  *   admin_label = @Translation("Holding records title with records count"),
  *   category = @Translation("Openfarm"),
  *   context = {
@@ -21,7 +21,7 @@ use Drupal\openfarm_holding\OpenfarmContextEntityTrait;
  *   }
  * )
  */
-class HoldingIdeasTitleWithCount extends BlockBase {
+class HoldingRecordsTitleWithCount extends BlockBase {
 
   use OpenfarmContextEntityTrait;
 
@@ -43,7 +43,7 @@ class HoldingIdeasTitleWithCount extends BlockBase {
           '#markup' => ' (',
         ],
         'count' => [
-          '#lazy_builder' => ['openfarm_statistics.lazy_builder:getHoldingIdeas', [$node->id()]],
+          '#lazy_builder' => ['openfarm_statistics.lazy_builder:getHoldingRecords', [$node->id()]],
           '#create_placeholder' => TRUE,
         ],
         'suffix' => [
