@@ -26,6 +26,6 @@ interface OpenfarmHoldingServiceInterface {
    * @return string
    *   The count of records.
    */
-  public function getCountOfIdeas($holding_id);
+  public function getCountOfRecords($holding_id);
 
 }
