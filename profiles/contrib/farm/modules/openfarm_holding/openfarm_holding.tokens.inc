@@ -49,7 +49,7 @@ function openfarm_holding_tokens($type, $tokens, array $data, array $options, Bu
         case 'count-of-records':
           /** @var \Drupal\openfarm_holding\Service\OpenfarmHoldingServiceInterface $holding_service */
           $holding_service = \Drupal::service('openfarm_holding.holding_service');
-          $replacements[$original] = $holding_service->getCountOfIdeas($holding->id());
+          $replacements[$original] = $holding_service->getCountOfRecords($holding->id());
           $bubbleable_metadata->addCacheableDependency($holding);
           break;
       }
