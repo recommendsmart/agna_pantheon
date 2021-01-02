@@ -119,7 +119,7 @@ third_party_settings:
             uuid: c3f0384d-5481-4ecd-aa10-586fe59b9a6e
             region: first
             configuration:
-              id: openidel_record_node_bundle
+              id: openfarm_record_node_bundle
               label: 'Entity bundle'
               provider: openfarm_record
               label_display: '0'
