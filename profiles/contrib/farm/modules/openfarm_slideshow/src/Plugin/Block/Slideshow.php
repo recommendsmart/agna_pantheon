@@ -9,7 +9,7 @@ use Drupal\Core\Form\FormStateInterface;
  * Provides a 'Slideshow' block.
  *
  * @Block(
- *   id = "openidel_slideshow_block",
+ *   id = "openfarm_slideshow_block",
  *   admin_label = @Translation("Slideshow"),
  *   category = @Translation("Openfarm"),
  *   context = {
