@@ -63,7 +63,7 @@ third_party_settings:
             uuid: 3e86a84b-00e9-4b28-85bf-28914f2bc390
             region: first
             configuration:
-              id: openidel_slideshow_block
+              id: openfarm_slideshow_block
               label: Slideshow
               provider: openfarm_slideshow
               label_display: '0'
@@ -197,7 +197,7 @@ third_party_settings:
             region: second
             configuration:
               id: openfarm_record_info_block
-              label: 'Idea info'
+              label: 'Record info'
               provider: openfarm_record
               label_display: '0'
               context_mapping:
