@@ -65,7 +65,7 @@ third_party_settings:
             uuid: becf61b1-092e-4ce8-b3ec-4be7e0fcee61
             region: first
             configuration:
-              id: openidel_slideshow_block
+              id: openfarm_slideshow_block
               label: Slideshow
               provider: openfarm_slideshow
               label_display: visible
