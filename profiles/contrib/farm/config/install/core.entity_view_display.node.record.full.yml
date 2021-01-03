@@ -58,13 +58,13 @@ third_party_settings:
       -
         layout_id: barrio_cardtopimage
         layout_settings:
-          label: Idea
+          label: Record
         components:
           be8ef95e-34af-401a-a2dd-c82aebdfed35:
             uuid: be8ef95e-34af-401a-a2dd-c82aebdfed35
             region: first
             configuration:
-              id: openidel_slideshow_block
+              id: openfarm_slideshow_block
               label: Slideshow
               provider: openfarm_slideshow
               label_display: '0'
@@ -202,7 +202,7 @@ third_party_settings:
             region: second
             configuration:
               id: openfarm_record_info_block
-              label: 'Idea info'
+              label: 'Record info'
               provider: openfarm_record
               label_display: '0'
               context_mapping: {  }
