@@ -5,7 +5,7 @@ Description: Bootstrap 4 with Sass
 */
 /* IMPORTS */
 /* VARIABLES */
-/** OpenrecordL workflow colors */
+/** Openrecord workflow colors */
 /* TYPOGRAPHY */
 /*!
  * Bootstrap v4.5.2 (https://getbootstrap.com/)
@@ -13962,13 +13962,13 @@ nav.tabs {
     background-color: #1e7697;
     text-decoration: none; }
 
-.block-openidel-record-node-bundle {
+.block-openfarm-record-node-bundle {
   position: absolute;
   height: 24px;
   bottom: 0;
   left: 0;
   z-index: 3; }
-  .block-openidel-record-node-bundle .entity_bundle_label {
+  .block-openfarm-record-node-bundle .entity_bundle_label {
     position: absolute;
     font-weight: bold;
     color: #fff;
@@ -13980,7 +13980,7 @@ nav.tabs {
     text-transform: uppercase;
     font-size: 15px;
     line-height: 20px; }
-    .block-openidel-record-node-bundle .entity_bundle_label:after {
+    .block-openfarm-record-node-bundle .entity_bundle_label:after {
       border-bottom: 26px solid #1294ca;
       content: '';
       display: block;
@@ -13992,23 +13992,23 @@ nav.tabs {
       border-right: 8px solid red;
       border-top-left-radius: 111px;
       border-right: 13px solid transparent; }
-    .block-openidel-record-node-bundle .entity_bundle_label--record, .block-openidel-record-node-bundle .entity_bundle_label--article {
+    .block-openfarm-record-node-bundle .entity_bundle_label--record, .block-openfarm-record-node-bundle .entity_bundle_label--article {
       border-top-right-radius: 6px; }
-      .block-openidel-record-node-bundle .entity_bundle_label--record:after, .block-openidel-record-node-bundle .entity_bundle_label--article:after {
+      .block-openfarm-record-node-bundle .entity_bundle_label--record:after, .block-openfarm-record-node-bundle .entity_bundle_label--article:after {
         right: -7px;
         border-top-left-radius: 100%;
         border-right: 10px solid transparent; }
-    .block-openidel-record-node-bundle .entity_bundle_label--record {
+    .block-openfarm-record-node-bundle .entity_bundle_label--record {
       background: #64C45C; }
-      .block-openidel-record-node-bundle .entity_bundle_label--record:after {
+      .block-openfarm-record-node-bundle .entity_bundle_label--record:after {
         border-bottom: 26px solid #64C45C; }
-    .block-openidel-record-node-bundle .entity_bundle_label--article {
+    .block-openfarm-record-node-bundle .entity_bundle_label--article {
       background: #F85B85; }
-      .block-openidel-record-node-bundle .entity_bundle_label--article:after {
+      .block-openfarm-record-node-bundle .entity_bundle_label--article:after {
         border-bottom: 26px solid #F85B85; }
-    .block-openidel-record-node-bundle .entity_bundle_label--holding {
+    .block-openfarm-record-node-bundle .entity_bundle_label--holding {
       background: #1294CA; }
-      .block-openidel-record-node-bundle .entity_bundle_label--holding:after {
+      .block-openfarm-record-node-bundle .entity_bundle_label--holding:after {
         border-bottom: 26px solid #1294CA; }
 
 .comments {
