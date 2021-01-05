@@ -1,8 +1,0 @@
-langcode: en
-status: true
-dependencies: {  }
-id: group_type_record
-action: openfarm_group_page_redirect
-allow_override: 1
-redirect: ''
-redirect_code: 301

@@ -1,7 +1,0 @@
-services:
-  openfarm_holding.holding_service:
-    class: Drupal\openfarm_holding\Service\OpenfarmHoldingService
-    arguments:
-      - '@entity_type.manager'
-      - '@event_dispatcher'
-      - '@datetime.time'
