@@ -1,0 +1,6 @@
+openfarm_footer.openfarm_footer_links_config_form:
+  title: 'Openfarm social links configuration'
+  route_name: openfarm_footer.openfarm_footer_links_config_form
+  parent: openfarm_toolbar.configuration
+  description: 'Openfarm social links configuration'
+  weight: 2

@@ -1,0 +1,4 @@
+openfarm_toolbar.icon:
+  css:
+    theme:
+      css/tools.css: {}

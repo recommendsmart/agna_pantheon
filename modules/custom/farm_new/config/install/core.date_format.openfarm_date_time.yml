@@ -1,0 +1,7 @@
+langcode: en
+status: true
+dependencies: {  }
+id: openfarm_date_time
+label: 'Openfarm Date Time'
+locked: false
+pattern: 'd/m/Y - H:i'

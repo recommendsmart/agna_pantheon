@@ -1,0 +1,9 @@
+openfarm_footer.openfarm_footer_links_config_form:
+  path: '/admin/config/openfarm_footer/social_configuration'
+  defaults:
+    _form: '\Drupal\openfarm_footer\Form\OpenfarmFooterConfigForm'
+    _title: 'Openfarm Social Links Configuration'
+  requirements:
+    _permission: 'access to configuration forms'
+  options:
+    _admin_route: TRUE

@@ -1,0 +1,10 @@
+langcode: en
+status: true
+dependencies:
+  config:
+    - transaction.type.user_points
+id: earn_points_on_record_create
+label: 'New record'
+transaction_type: user_points
+description: 'Record reward'
+details: {  }

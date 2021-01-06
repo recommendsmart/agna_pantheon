@@ -1,0 +1,10 @@
+name: 'Openfarm Comment'
+type: module
+description: 'Provides main features/functionality for Openfarm comment module.'
+package: Openfarm
+core: 8.x
+core_version_requirement: ^8 || ^9
+
+dependencies:
+  - ajax_comments:ajax_comments
+  - drupal:comment

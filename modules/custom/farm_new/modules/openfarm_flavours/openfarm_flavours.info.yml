@@ -1,0 +1,10 @@
+name: 'Openfarm Flavours'
+type: module
+description: 'Provides "Private" mode for Openfarm project.'
+package: 'Openfarm'
+
+core: 8.x
+core_version_requirement: ^8 || ^9
+
+dependencies:
+  - group:gnode

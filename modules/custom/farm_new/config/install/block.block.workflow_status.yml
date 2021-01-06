@@ -1,0 +1,36 @@
+langcode: en
+status: true
+dependencies:
+  module:
+    - node
+    - openfarm_statistics
+    - route_condition
+  theme:
+    - openfarm_theme
+id: workflow_status
+theme: openfarm_theme
+region: sidebar
+weight: -6
+provider: null
+plugin: openfarm_statistics_status
+settings:
+  id: openfarm_statistics_status
+  label: Status
+  provider: openfarm_statistics
+  label_display: visible
+  show_all_states: true
+  context_mapping:
+    node: '@node.node_route_context:node'
+visibility:
+  node_type:
+    id: node_type
+    bundles:
+      record: record
+    negate: false
+    context_mapping:
+      node: '@node.node_route_context:node'
+  route:
+    id: route
+    routes: entity.node.canonical
+    negate: false
+    context_mapping: {  }

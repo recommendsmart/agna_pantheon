@@ -1,0 +1,20 @@
+services:
+  openfarm_user.event_subscriber:
+    class: Drupal\openfarm_user\EventSubscriber\OpenfarmUserEventSubscriber
+    arguments:
+      - '@event_dispatcher'
+      - '@entity_type.manager'
+    tags:
+      - { name: event_subscriber }
+
+  cache_context.user.is_user_profile_page:
+    class: Drupal\openfarm_user\IsUserProfilePageCacheContext
+    arguments: ['@current_user', '@current_route_match']
+    tags:
+      - { name: cache.context }
+
+  openfarm_user.user_points_context:
+    class: Drupal\openfarm_user\ContextProvider\UserPointsContext
+    arguments: [ '@config.factory' ]
+    tags:
+      - { name: context_provider }

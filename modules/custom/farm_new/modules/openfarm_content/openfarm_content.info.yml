@@ -1,0 +1,10 @@
+name: 'Openfarm Content'
+type: module
+description: 'Provides main features/functionality with content for Openfarm project.'
+core: 8.x
+core_version_requirement: ^8 || ^9
+
+package: 'Openfarm'
+
+dependencies:
+  - default_content:default_content

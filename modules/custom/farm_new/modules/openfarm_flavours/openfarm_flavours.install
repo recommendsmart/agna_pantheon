@@ -1,0 +1,47 @@
+<?php
+
+/**
+ * @file
+ * Contains install and update functions for openfarm_flavour.
+ */
+
+/**
+ * Implements hook_install().
+ */
+function openfarm_flavours_install() {
+  // Delete grant with id 0 - 'deny all'.
+  node_access_rebuild();
+
+  // Remove from 'outsider' role (any not a group member)
+  // permission "View content entities".
+  $config = \Drupal::configFactory()
+    ->getEditable('group.role.record-outsider');
+  $permissions = $config->get('permissions');
+  if (($key = array_search('view group_node:record entity', $permissions)) !== FALSE) {
+    unset($permissions[$key]);
+    $config->set('permissions', $permissions)
+      ->save();
+  }
+
+  drupal_flush_all_caches();
+}
+
+/**
+ * Implements hook_uninstall().
+ */
+function openfarm_flavours_uninstall() {
+  node_access_rebuild();
+
+  // Add the permission "View content entities" to the 'outsider'.
+  $config = \Drupal::configFactory()
+    ->getEditable('group.role.record-outsider');
+  $permissions = $config->get('permissions');
+
+  if (!in_array('view group_node:record entity', $permissions)) {
+    $permissions[] = 'view group_node:record entity';
+    $config->set('permissions', $permissions)
+      ->save();
+  }
+
+  drupal_flush_all_caches();
+}

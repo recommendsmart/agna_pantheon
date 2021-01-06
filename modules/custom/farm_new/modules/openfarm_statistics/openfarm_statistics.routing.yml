@@ -1,0 +1,7 @@
+openfarm_statistics.graphs_reports:
+  path: '/reports'
+  defaults:
+    _controller: '\Drupal\openfarm_statistics\Controller\ChartsAndStatisticsController::charts'
+    _title: 'Graphs & Reports'
+  requirements:
+    _permission: 'access content'

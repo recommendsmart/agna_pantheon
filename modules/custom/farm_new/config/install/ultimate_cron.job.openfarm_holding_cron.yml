@@ -1,0 +1,28 @@
+langcode: en
+status: true
+dependencies:
+  module:
+    - openfarm_holding
+title: 'Default cron handler'
+id: openfarm_holding_cron
+weight: 0
+module: openfarm_holding
+callback: openfarm_holding_cron
+scheduler:
+  id: simple
+  configuration:
+    rules:
+      - '* * * * *'
+launcher:
+  id: serial
+  configuration:
+    timeouts:
+      lock_timeout: 3600
+    launcher:
+      thread: 0
+logger:
+  id: database
+  configuration:
+    method: '3'
+    expire: 1209600
+    retain: 1000
