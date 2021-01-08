@@ -1,0 +1,9 @@
+name: "Form Filter Fields"
+description: "Manage field dependencies. Allows the ability to filter a field based off of a selection from another field."
+package: Fields
+type: module
+core: 8.x
+# Information added by Drupal.org packaging script on 2021-01-07
+version: '8.x-1.x-dev'
+project: 'form_filter_fields'
+datestamp: 1610054137

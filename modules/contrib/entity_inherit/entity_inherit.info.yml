@@ -1,0 +1,16 @@
+---
+name: Entity Inherit
+type: module
+description: >-
+  Allow entities to inherit certain fields from other entities. Fields' values
+  are updated every time an entity is saved.
+core: 8.x
+core_version_requirement: ^8 || ^9
+php: '7.x'
+dependencies:
+  - drupal:entity_reference
+
+# Information added by Drupal.org packaging script on 2021-01-08
+version: '1.0.0-beta2'
+project: 'entity_inherit'
+datestamp: 1610074903
