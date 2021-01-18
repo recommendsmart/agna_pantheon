@@ -1,7 +1,0 @@
-services:
-  openfarm_comment.subscriber:
-    class: Drupal\openfarm_comment\EventSubscriber\OpenfarmCommentEventSubscriber
-    arguments:
-      - '@entity_type.manager'
-    tags:
-      - { name: event_subscriber }

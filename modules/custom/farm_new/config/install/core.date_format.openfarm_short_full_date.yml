@@ -1,7 +1,0 @@
-langcode: en
-status: true
-dependencies: {  }
-id: openfarm_short_full_date
-label: 'Openfarm Short Full Date'
-locked: false
-pattern: 'F Y'

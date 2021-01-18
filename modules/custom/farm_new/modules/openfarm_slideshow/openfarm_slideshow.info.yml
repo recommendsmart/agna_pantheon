@@ -1,9 +1,0 @@
-name: 'Openfarm Slideshow'
-type: module
-description: 'Provides main slideshow functionality for Openfarm.'
-core: 8.x
-core_version_requirement: ^8 || ^9
-package: 'Openfarm'
-
-dependencies:
-  - drupal:layout_builder

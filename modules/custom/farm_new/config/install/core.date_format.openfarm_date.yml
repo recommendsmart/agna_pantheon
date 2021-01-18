@@ -1,7 +1,0 @@
-langcode: en
-status: true
-dependencies: {  }
-id: openfarm_date
-label: 'Openfarm Date'
-locked: false
-pattern: d/m/Y

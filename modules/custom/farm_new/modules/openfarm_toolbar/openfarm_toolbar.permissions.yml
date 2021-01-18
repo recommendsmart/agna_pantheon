@@ -1,6 +1,0 @@
-access activity pages openfarm:
-  title: 'Access activity pages'
-  description: 'Allow to view and export the site data'
-
-access openfarm toolbar:
-  title: 'Access Openfarm toolbar'

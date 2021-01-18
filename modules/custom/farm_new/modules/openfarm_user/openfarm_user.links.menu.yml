@@ -1,5 +1,0 @@
-openfarm_user.user_points_configuration_form:
-  title: 'User points configuration'
-  route_name: openfarm_user.user_points_configuration_form
-  parent: openfarm_toolbar.configuration
-  weight: 3
