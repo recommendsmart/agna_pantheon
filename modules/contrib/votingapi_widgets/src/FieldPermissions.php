@@ -17,7 +17,7 @@ class FieldPermissions implements ContainerInjectionInterface {
   /**
    * The FieldPermissionsService.
    *
-   * @var Drupal\field_permissions\FieldPermissionsService
+   * @var \Drupal\field_permissions\FieldPermissionsService
    */
   protected $fieldManager;
 
@@ -36,7 +36,7 @@ class FieldPermissions implements ContainerInjectionInterface {
   }
 
   /**
-   * Get implemets permissions invoke in field_permissions.permissions.yml.
+   * Implements permissions callback for field_permissions.permissions.yml.
    *
    * @return array
    *   Add custom permissions.

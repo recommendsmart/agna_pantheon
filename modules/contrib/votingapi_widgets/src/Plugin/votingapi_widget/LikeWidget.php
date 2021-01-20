@@ -51,7 +51,7 @@ class LikeWidget extends VotingApiWidgetBase {
    */
   public function getInitialVotingElement(array &$form) {
     $form['value']['#prefix'] = '<div class="votingapi-widgets like">';
-    $form['value']['#attached']  = [
+    $form['value']['#attached'] = [
       'library' => ['votingapi_widgets/like'],
     ];
     $form['value']['#suffix'] = '</div>';

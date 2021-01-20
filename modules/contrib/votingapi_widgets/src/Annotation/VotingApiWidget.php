@@ -24,7 +24,7 @@ class VotingApiWidget extends Plugin {
   /**
    * The minimal vote.
    *
-   * @var min
+   * @var int
    */
   public $values;
 

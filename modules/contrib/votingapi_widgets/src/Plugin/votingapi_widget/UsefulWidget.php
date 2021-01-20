@@ -10,7 +10,7 @@ use Drupal\Core\StringTranslation\StringTranslationTrait;
  *
  * @VotingApiWidget(
  *   id = "useful",
- *   label = @Translation("Usefull rating"),
+ *   label = @Translation("Useful rating"),
  *   values = {
  *    -1 = @Translation("Not useful"),
  *    1 = @Translation("Useful"),
@@ -52,7 +52,7 @@ class UsefulWidget extends VotingApiWidgetBase {
    */
   public function getInitialVotingElement(array &$form) {
     $form['value']['#prefix'] = '<div class="votingapi-widgets useful">';
-    $form['value']['#attached']  = [
+    $form['value']['#attached'] = [
       'library' => ['votingapi_widgets/useful'],
     ];
     $form['value']['#suffix'] = '</div>';

@@ -5,7 +5,7 @@ namespace Drupal\votingapi_widgets\Plugin;
 use Drupal\Component\Plugin\PluginBase;
 use Drupal\Core\Entity\ContentEntityInterface;
 use Drupal\field\Entity\FieldConfig;
-
+use Drupal\votingapi\Entity\Vote;
 use Drupal\votingapi\VoteResultFunctionManager;
 use Drupal\Core\Entity\EntityFormBuilderInterface;
 use Drupal\Core\Entity\EntityTypeManagerInterface;
@@ -26,18 +26,25 @@ abstract class VotingApiWidgetBase extends PluginBase implements VotingApiWidget
    * @var \Drupal\Core\Entity\EntityTypeManagerInterface
    */
   protected $entityTypeManager;
+
   /**
-   * @var VoteResultFunctionManager $votingapiResult
+   * Vote result function manager service.
+   *
+   * @var \Drupal\votingapi\VoteResultFunctionManager
    */
   protected $votingapiResult;
 
   /**
+   * The entity form builder service.
+   *
    * @var \Drupal\Core\Entity\EntityFormBuilderInterface
    */
   protected $entityFormBuilder;
 
   /**
-   * @var AccountInterface $account
+   * The user account.
+   *
+   * @var \Drupal\Core\Session\AccountInterface
    */
   protected $account;
 
@@ -67,11 +74,11 @@ abstract class VotingApiWidgetBase extends PluginBase implements VotingApiWidget
    * @param \Drupal\Core\Entity\EntityTypeManagerInterface $entity_type_manager
    *   Entity type manager service.
    * @param \Drupal\votingapi\VoteResultFunctionManager $vote_result
-   *   Vote result function service.
+   *   Vote result function manager service.
    * @param \Drupal\Core\Entity\EntityFormBuilderInterface $form_builder
    *   The form builder service.
    * @param \Drupal\Core\Session\AccountInterface $account
-   *   The account service.
+   *   The user account.
    * @param \Symfony\Component\HttpFoundation\RequestStack $request_stack
    *   The request stack.
    * @param \Drupal\Core\Config\ConfigFactoryInterface $config_factory
@@ -121,21 +128,22 @@ abstract class VotingApiWidgetBase extends PluginBase implements VotingApiWidget
   /**
    * Gets the widget form as configured for given parameters.
    *
-   * @return \Drupal\Core\Form\FormInterface
-   *   configured vote form
+   * @return array
+   *   Configured vote form.
    */
   public function getForm($entity_type, $entity_bundle, $entity_id, $vote_type, $field_name, $settings) {
     $vote = $this->getEntityForVoting($entity_type, $entity_bundle, $entity_id, $vote_type, $field_name);
     /*
-     * @TODO: remove custom entity_form_builder once
-     *   https://www.drupal.org/node/766146 is fixed.
+     * @todo Remove custom entity_form_builder once
+     * https://www.drupal.org/node/766146 is fixed.
      */
 
     return $this->entityFormBuilder->getForm($vote, 'votingapi_' . $this->getPluginId(), [
       'options' => $this->getPluginDefinition()['values'],
       'settings' => $settings,
       'plugin' => $this,
-      // @TODO: following keys can be removed once #766146 is fixed.
+      // @todo The following keys can be removed once #766146 is fixed.
+      // @see https://www.drupal.org/node/766146
       'entity_type' => $entity_type,
       'entity_bundle' => $entity_bundle,
       'entity_id' => $entity_id,
@@ -181,7 +189,7 @@ abstract class VotingApiWidgetBase extends PluginBase implements VotingApiWidget
    * instead of adding a new one.
    *
    * @return \Drupal\votingapi\Entity\Vote
-   *  Vote entity
+   *   The Vote entity.
    */
   public function getEntityForVoting($entity_type, $entity_bundle, $entity_id, $vote_type, $field_name) {
     $storage = $this->entityTypeManager->getStorage('vote');
@@ -196,7 +204,7 @@ abstract class VotingApiWidgetBase extends PluginBase implements VotingApiWidget
     $timestamp_offset = $this->getWindow('user_window', $entity_type, $entity_bundle, $field_name);
 
     if ($this->account->isAnonymous()) {
-      $voteData['vote_source'] = $this->requestStack->getCurrentRequest()->getClientIp();
+      $voteData['vote_source'] = Vote::getCurrentIp();
       $timestamp_offset = $this->getWindow('anonymous_window', $entity_type, $entity_bundle, $field_name);
     }
 
@@ -261,9 +269,7 @@ abstract class VotingApiWidgetBase extends PluginBase implements VotingApiWidget
 
     $window = $window_field_setting;
     if ($use_site_default) {
-      /*
-       * @var \Drupal\Core\Config\ImmutableConfig $voting_configuration
-       */
+      /** @var \Drupal\Core\Config\ImmutableConfig $voting_configuration */
       $voting_configuration = $this->configFactory->get('votingapi.settings');
       $window = $voting_configuration->get($window_type);
     }

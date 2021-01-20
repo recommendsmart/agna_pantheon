@@ -1657,11 +1657,11 @@ display:
   moderated_content:
     display_plugin: page
     id: moderated_content
-    display_title: Ideas
+    display_title: 'Moderated content'
     position: 1
     display_options:
       display_extenders: {  }
-      path: admin/content/ideas
+      path: admin/content/moderated
       display_description: ''
       enabled: false
     cache_metadata:

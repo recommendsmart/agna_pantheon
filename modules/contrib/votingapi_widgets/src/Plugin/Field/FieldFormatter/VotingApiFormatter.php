@@ -39,12 +39,16 @@ class VotingApiFormatter extends FormatterBase implements ContainerFactoryPlugin
   }
 
   /**
-   * @var VoteResultFunctionManager $votingapiResult
+   * Vote result function manager service.
+   *
+   * @var \Drupal\votingapi\VoteResultFunctionManager
    */
   protected $votingapiResult;
 
   /**
-   * @var VotingApiWidgetManager $votingapiWidgetProcessor
+   * The votingapi_widget widget manager.
+   *
+   * @var \Drupal\votingapi_widgets\Plugin\VotingApiWidgetManager
    */
   protected $votingapiWidgetProcessor;
 
@@ -68,7 +72,7 @@ class VotingApiFormatter extends FormatterBase implements ContainerFactoryPlugin
    * @param \Drupal\votingapi\VoteResultFunctionManager $vote_result
    *   Vote result function.
    * @param \Drupal\votingapi_widgets\Plugin\VotingApiWidgetManager $widget_manager
-   *   Voting Api Widget Manager.
+   *   The votingapi_widget widget manager.
    */
   public function __construct($plugin_id, $plugin_definition, FieldDefinitionInterface $field_definition, array $settings, $label, $view_mode, array $third_party_settings, VoteResultFunctionManager $vote_result, VotingApiWidgetManager $widget_manager) {
     parent::__construct($plugin_id, $plugin_definition, $field_definition, $settings, $label, $view_mode, $third_party_settings);
@@ -160,6 +164,12 @@ class VotingApiFormatter extends FormatterBase implements ContainerFactoryPlugin
     $elements = [];
 
     $entity = $items->getEntity();
+
+    // Do not continue if the entity is being previewed.
+    if (!empty($entity->in_preview)) {
+      return $elements;
+    }
+
     $field_settings = $this->getFieldSettings();
     $field_name = $this->fieldDefinition->getName();
 
@@ -179,7 +189,7 @@ class VotingApiFormatter extends FormatterBase implements ContainerFactoryPlugin
             $entity->id(),
             $vote_type,
             $field_name,
-            serialize($this->getSettings())
+            serialize($this->getSettings()),
           ],
         ],
         '#create_placeholder' => TRUE,

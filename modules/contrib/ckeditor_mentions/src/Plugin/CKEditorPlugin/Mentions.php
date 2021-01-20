@@ -14,8 +14,7 @@ use Drupal\ckeditor\CKEditorPluginCssInterface;
  *
  * @CKEditorPlugin(
  *   id = "mentions",
- *   label = @Translation("Mentions"),
- *   module = "ckeditor_mentions"
+ *   label = @Translation("Mentions")
  * )
  */
 class Mentions extends CKEditorPluginBase implements CKEditorPluginConfigurableInterface, CKEditorPluginContextualInterface, CKEditorPluginCssInterface {
@@ -24,7 +23,7 @@ class Mentions extends CKEditorPluginBase implements CKEditorPluginConfigurableI
    * {@inheritdoc}
    */
   public function getDependencies(Editor $editor) {
-    return ['autocomplete', 'textmatch', 'ajax', 'xml', 'textwatcher'];
+    return [];
   }
 
   /**
@@ -42,13 +41,9 @@ class Mentions extends CKEditorPluginBase implements CKEditorPluginConfigurableI
 
     return [
       'mentions' => [
-        [
-          'throttle' => $settings['plugins']['mentions']['timeout'],
-          'minChars' => $settings['plugins']['mentions']['charcount'],
-          'feed' => '/ckeditor-mentions/ajax/{encodedQuery}',
-          'itemTemplate' => '<li data-id="{id}">' . $settings['plugins']['mentions']['item_template'] . '</li>',
-          'outputTemplate' => $settings['plugins']['mentions']['output_template'],
-        ],
+        'image' => !empty($settings['plugins']['mentions']['image']) ? $settings['plugins']['mentions']['image'] : FALSE,
+        'charcount' => !empty($settings['plugins']['mentions']['charcount']) ? $settings['plugins']['mentions']['charcount'] : 3,
+        'timeout' => !empty($settings['plugins']['mentions']['timeout']) ? $settings['plugins']['mentions']['timeout'] : 500,
       ],
     ];
   }
@@ -57,7 +52,7 @@ class Mentions extends CKEditorPluginBase implements CKEditorPluginConfigurableI
    * {@inheritdoc}
    */
   public function getFile() {
-    return 'libraries/ckeditor/plugins/mentions/plugin.js';
+    return drupal_get_path('module', 'ckeditor_mentions') . '/js/plugins/mentions/plugin.js';
   }
 
   /**
@@ -65,15 +60,25 @@ class Mentions extends CKEditorPluginBase implements CKEditorPluginConfigurableI
    */
   public function isEnabled(Editor $editor) {
     $settings = $editor->getSettings();
-
-    return (isset($settings['plugins']['mentions']['enable']) && (bool) $settings['plugins']['mentions']['enable']);
+    return isset($settings['plugins']['mentions']) ? $settings['plugins']['mentions']['enable'] : FALSE;
   }
 
   /**
    * {@inheritdoc}
    */
   public function getCssFiles(Editor $editor) {
-    return [];
+    return [
+      drupal_get_path('module', 'ckeditor_mentions') . '/css/plugins/mentions/ckeditor_mentions.css',
+    ];
+  }
+
+  /**
+   * {@inheritdoc}
+   */
+  public function getLibraries(Editor $editor) {
+    return [
+      'ckeditor_mentions/drupal.ckeditor.plugins.mentions',
+    ];
   }
 
   /**
@@ -88,11 +93,17 @@ class Mentions extends CKEditorPluginBase implements CKEditorPluginConfigurableI
       '#default_value' => !empty($settings['plugins']['mentions']['enable']) ? $settings['plugins']['mentions']['enable'] : FALSE,
     ];
 
+    $form['image'] = [
+      '#type' => 'checkbox',
+      '#title' => $this->t('Enable User Icon'),
+      '#default_value' => !empty($settings['plugins']['mentions']['image']) ? $settings['plugins']['mentions']['image'] : FALSE,
+    ];
+
     $form['charcount'] = [
       '#type' => 'textfield',
       '#title' => $this->t('Character Count'),
       '#description' => $this->t('Enter minimum number of characters that must be typed to trigger mention match.'),
-      '#default_value' => !empty($settings['plugins']['mentions']['charcount']) ? $settings['plugins']['mentions']['charcount'] : 0,
+      '#default_value' => !empty($settings['plugins']['mentions']['charcount']) ? $settings['plugins']['mentions']['charcount'] : 3,
     ];
 
     $form['timeout'] = [
@@ -102,23 +113,7 @@ class Mentions extends CKEditorPluginBase implements CKEditorPluginConfigurableI
       '#default_value' => !empty($settings['plugins']['mentions']['timeout']) ? $settings['plugins']['mentions']['timeout'] : 500,
     ];
 
-    $form['item_template'] = [
-      '#type' => 'textfield',
-      '#title' => $this->t("The panel's item template used to render matches in the dropdown."),
-      '#description' => $this->t('Placeholders you can put into template: user_page (entity.canonical page), account_name, realname, email, avatar (user picture url), id.
-      The placeholder should wrapped by curly braces - {placeholder}. <br/>
-      Example: &lt;a href="{user_page}"&gt;{first_name}&lt;/a&gt;'),
-      '#default_value' => $settings['plugins']['mentions']['item_template'] ?? '<img class="photo" src="{avatar}" /><strong class="realname">{realname}</strong>',
-    ];
-
-    $form['output_template'] = [
-      '#type' => 'textfield',
-      '#title' => $this->t('Template of markup to be inserted as the autocomplete item gets committed.'),
-      '#description' => $this->t('Can be used same placeholders as in item template. Always put the "data-mention" attribute with id placeholder.'),
-      '#default_value' => $settings['plugins']['mentions']['output_template'] ?? '<a data-mention="{id}" href="{user_page}">@{realname}</a><span>&nbsp;</span>',
-    ];
-
-    $form['charcount']['#element_validate'][] = [$this, 'isPositiveOrZeroNumber'];
+    $form['charcount']['#element_validate'][] = [$this, 'isPositiveNumber'];
     $form['timeout']['#element_validate'][] = [$this, 'isPositiveNumber'];
 
     return $form;
@@ -134,21 +129,7 @@ class Mentions extends CKEditorPluginBase implements CKEditorPluginConfigurableI
    */
   public function isPositiveNumber(array $element, FormStateInterface $form_state) {
     if (!is_numeric($element['#value']) || $element['#value'] < 1) {
-      $form_state->setError($element, $this->t('Value must be a positive integer.'));
-    }
-  }
-
-  /**
-   * Check if value is positive or zero.
-   *
-   * @param array $element
-   *   The Form element.
-   * @param \Drupal\Core\Form\FormStateInterface $form_state
-   *   The FormState Object.
-   */
-  public function isPositiveOrZeroNumber(array $element, FormStateInterface $form_state) {
-    if (!is_numeric($element['#value']) || $element['#value'] < 0) {
-      $form_state->setError($element, $this->t('Value must be a positive integer or zero.'));
+      $form_state->setError($element, 'Value must be a positive integer.');
     }
   }
 
