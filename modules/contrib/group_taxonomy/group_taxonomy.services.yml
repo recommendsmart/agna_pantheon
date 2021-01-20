@@ -1,0 +1,10 @@
+services:
+  group_taxonomy.route_subscriber:
+    class: Drupal\group_taxonomy\Routing\RouteSubscriber
+    tags:
+      - { name: event_subscriber }
+
+  group_taxonomy.taxonomy:
+    class: Drupal\group_taxonomy\GroupTaxonomyService
+    arguments: ['@entity_type.manager', '@current_user', '@group.membership_loader']
+

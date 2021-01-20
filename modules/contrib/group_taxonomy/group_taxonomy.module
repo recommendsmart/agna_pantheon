@@ -1,0 +1,74 @@
+<?php
+
+/**
+ * @file
+ */
+
+use Drupal\Core\Access\AccessResult;
+use Drupal\Core\Entity\EntityInterface;
+use Drupal\Core\Session\AccountInterface;
+use Drupal\taxonomy\TermInterface;
+use Drupal\taxonomy\VocabularyInterface;
+
+/**
+ * Alter vocabulary list builder.
+ *
+ * This alter is necessary to update taxonomy list and display only the
+ * vocabularies that user has permission to. It is based on group permissions.
+ *
+ * @param array $entity_types
+ */
+function group_taxonomy_entity_type_alter(array &$entity_types) {
+  /* @var $entity_types \Drupal\Core\Entity\EntityTypeInterface[] */
+  $entity_types['taxonomy_vocabulary']->setHandlerClass('list_builder', 'Drupal\group_taxonomy\VocabularyListBuilder');
+}
+
+/**
+ * Custom entity access check for terms and vocabularies.
+ *
+ * @param \Drupal\Core\Entity\EntityInterface $entity
+ *
+ * @return \Drupal\Core\Access\AccessResult
+ *   Neutral in case entity is not VocabularyInterface or TermInterface.
+ *   Allowed/Denied - Check user permission to edit the vocabulary.
+ */
+function group_taxonomy_entity_access(EntityInterface $entity, $op, AccountInterface $account) {
+  if ($entity instanceof VocabularyInterface) {
+    return \Drupal::service('group_taxonomy.taxonomy')->taxonomyVocabularyAccess($op, $entity, $account);
+  }
+  else if ($entity instanceof TermInterface) {
+    return \Drupal::service('group_taxonomy.taxonomy')->taxonomyTermAccess($op, $entity, $account);
+  }
+
+  return AccessResult::neutral();
+}
+
+/**
+ * Check create access permissions for taxonomy terms.
+ *
+ * This hook is necessary for taxonomy_manager module to work properly
+ * when applying patch from issue #2991079
+ * https://www.drupal.org/project/taxonomy_manager/issues/2991079
+ *
+ * @param AccountInterface $account
+ *  The current logged in account.
+ * @param array $context
+ *  Contains entity_type_id and langcode.
+ * @param $entity_bundle
+ *  The entity bundle/parent container.
+ *
+ * @return \Drupal\Core\Access\AccessResult
+ *   Neutral in case it is not taxonomy_term.
+ *   Allowed/Denied - Check user permission against parent vocabulary.
+ */
+function group_taxonomy_entity_create_access(\Drupal\Core\Session\AccountInterface $account, array $context, $entity_bundle) {
+  if ($context['entity_type_id'] !== 'taxonomy_term') {
+    return AccessResult::neutral();
+  }
+
+  // If user has permission to update the parent vocabulary the they have
+  // permission to create terms in this vocabulary.
+  $vocabulary = \Drupal::entityTypeManager()->getStorage('taxonomy_vocabulary')
+    ->load($entity_bundle);
+  return \Drupal::service('group_taxonomy.taxonomy')->taxonomyVocabularyAccess('update', $vocabulary, $account);
+}

@@ -2,7 +2,7 @@ name: 'Group Flex'
 description: 'Makes the creation of your groups and group types more flexible'
 package: Group
 type: module
-core_version_requirement: ^9
+core_version_requirement: ^8 || ^9
 dependencies:
   - group
   - group_permissions

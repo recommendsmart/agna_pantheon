@@ -1,0 +1,13 @@
+name: 'Group Taxonomy'
+type: module
+description: 'Allows adding taxonomy vocabulary to a group'
+package: Group
+core_version_requirement: ^8 || ^9
+dependencies:
+  - group:group
+  - drupal:taxonomy
+
+# Information added by Drupal.org packaging script on 2020-08-28
+version: '8.x-1.0-beta6'
+project: 'group_taxonomy'
+datestamp: 1598595111
