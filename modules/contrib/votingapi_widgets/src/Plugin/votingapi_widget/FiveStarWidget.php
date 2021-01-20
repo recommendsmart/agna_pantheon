@@ -14,9 +14,9 @@ use Drupal\Core\StringTranslation\StringTranslationTrait;
  *   values = {
  *    1 = @Translation("Poor"),
  *    2 = @Translation("Not so poor"),
- *    3 = @Translation("Average"),
- *    4 = @Translation("Good"),
- *    5 = @Translation("Very good"),
+ *    3 = @Translation("average"),
+ *    4 = @Translation("good"),
+ *    5 = @Translation("very good"),
  *   },
  * )
  */

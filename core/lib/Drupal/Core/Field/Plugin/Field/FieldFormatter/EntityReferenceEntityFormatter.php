@@ -143,7 +143,7 @@ class EntityReferenceEntityFormatter extends EntityReferenceFormatterBase implem
    * {@inheritdoc}
    */
   public function settingsSummary() {
-    $summary = parent::settingsSummary();
+    $summary = [];
 
     $view_modes = $this->entityDisplayRepository->getViewModeOptions($this->getFieldSetting('target_type'));
     $view_mode = $this->getSetting('view_mode');

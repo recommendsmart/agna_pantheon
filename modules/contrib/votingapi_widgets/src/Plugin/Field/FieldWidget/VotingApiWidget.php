@@ -33,36 +33,17 @@ class VotingApiWidget extends WidgetBase implements ContainerFactoryPluginInterf
   }
 
   /**
-   * The votingapi_widget widget manager.
-   *
-   * @var \Drupal\votingapi_widgets\Plugin\VotingApiWidgetManager
+   * @var VotingApiWidgetManager $votingapiWidgetProcessor
    */
   protected $votingapiWidgetProcessor;
 
   /**
-   * The user account.
-   *
-   * @var \Drupal\Core\Session\AccountInterface
+   * @var AccountInterface $account
    */
   protected $account;
 
   /**
-   * Constructs the VotingApiWidget object.
-   *
-   * @param string $plugin_id
-   *   The plugin ID for the widget.
-   * @param mixed $plugin_definition
-   *   The plugin implementation definition.
-   * @param \Drupal\Core\Field\FieldDefinitionInterface $field_definition
-   *   The definition of the field to which the widget is associated.
-   * @param array $settings
-   *   The widget settings.
-   * @param array $third_party_settings
-   *   Any third party settings.
-   * @param \Drupal\votingapi_widgets\Plugin\VotingApiWidgetManager $widget_manager
-   *   The votingapi_widget widget manager.
-   * @param \Drupal\Core\Session\AccountInterface $account
-   *   The user account.
+   * {@inheritdoc}
    */
   public function __construct($plugin_id, $plugin_definition, FieldDefinitionInterface $field_definition, array $settings, array $third_party_settings, VotingApiWidgetManager $widget_manager, AccountInterface $account) {
     parent::__construct($plugin_id, $plugin_definition, $field_definition, $settings, $third_party_settings);
@@ -102,15 +83,16 @@ class VotingApiWidget extends WidgetBase implements ContainerFactoryPluginInterf
    */
   public function formElement(FieldItemListInterface $items, $delta, array $element, array &$form, FormStateInterface $form_state) {
     $entity = $items->getEntity();
-    $element['status'] = [
+    $field_label = $this->fieldDefinition->getLabel();
+    $element['status'] = array(
       '#type' => 'radios',
-      '#title' => $this->fieldDefinition->getLabel(),
+      '#title' => $this->t($field_label),
       '#default_value' => isset($items->getValue('status')[0]['status']) ? $items->getValue('status')[0]['status'] : 1,
-      '#options' => [
+      '#options' => array(
         1 => $this->t('Open'),
         0 => $this->t('Closed'),
-      ],
-    ];
+      ),
+    );
     $entity_type = $this->fieldDefinition->getTargetEntityTypeId();
     $bundle = $this->fieldDefinition->getTargetBundle();
     $field_name = $this->fieldDefinition->getName();
@@ -118,7 +100,9 @@ class VotingApiWidget extends WidgetBase implements ContainerFactoryPluginInterf
     $element['status']['#access'] = $this->account->hasPermission($permission);
 
     $plugin = $this->fieldDefinition->getSetting('vote_plugin');
-    /** @var \Drupal\votingapi_widgets\Plugin\VotingApiWidgetBase $plugin */
+    /**
+     * @var VotingApiWidgetBase $plugin
+     */
     $plugin = $this->votingapiWidgetProcessor->createInstance($plugin);
 
     $permission = 'vote on ' . $entity_type . ':' . $bundle . ':' . $field_name;

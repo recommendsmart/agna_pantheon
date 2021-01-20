@@ -48,7 +48,7 @@ abstract class NumericFormatterBase extends FormatterBase {
    * {@inheritdoc}
    */
   public function settingsSummary() {
-    $summary = parent::settingsSummary();
+    $summary = [];
 
     $summary[] = $this->numberFormat(1234.1234567890);
     if ($this->getSetting('prefix_suffix')) {

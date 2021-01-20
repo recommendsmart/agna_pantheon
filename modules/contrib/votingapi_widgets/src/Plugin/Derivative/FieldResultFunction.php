@@ -13,11 +13,9 @@ use Drupal\Core\Plugin\Discovery\ContainerDeriverInterface;
 class FieldResultFunction extends DeriverBase implements ContainerDeriverInterface {
 
   /**
-   * The entity field manager service.
-   *
-   * @var \Drupal\Core\Entity\EntityFieldManagerInterface
+   * @var EntityFieldManagerInterface $entityField
    */
-  protected $entityFieldManager;
+  protected $entityField;
 
   /**
    * Constructs a FieldResultFunction instance.
@@ -26,7 +24,7 @@ class FieldResultFunction extends DeriverBase implements ContainerDeriverInterfa
    *   The entity field manager.
    */
   public function __construct(EntityFieldManagerInterface $entity_field_manager) {
-    $this->entityFieldManager = $entity_field_manager;
+    $this->entityField = $entity_field_manager;
   }
 
   /**
@@ -42,7 +40,7 @@ class FieldResultFunction extends DeriverBase implements ContainerDeriverInterfa
    * {@inheritdoc}
    */
   public function getDerivativeDefinitions($base_plugin_definition) {
-    $instances = $this->entityFieldManager->getFieldMapByFieldType('voting_api_field');
+    $instances = $this->entityField->getFieldMapByFieldType('voting_api_field');
     $this->derivatives = [];
     foreach ($instances as $entity_type => $fields) {
       foreach (array_keys($fields) as $field_name) {

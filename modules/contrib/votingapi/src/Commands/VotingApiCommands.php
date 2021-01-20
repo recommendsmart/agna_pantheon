@@ -48,7 +48,10 @@ class VotingApiCommands extends DrushCommands {
 
     $this->generateVotes($entity_type, $vote_type, $options);
 
-    $this->logger->success(dt('Generated @vtype votes for @etype entities.', ['@vtype' => $vote_type, '@etype' => $entity_type]));
+    $this->logger->success(dt('Generated @vtype votes for @etype entities.', [
+      '@vtype' => $vote_type,
+      '@etype' => $entity_type,
+    ]));
   }
 
   /**

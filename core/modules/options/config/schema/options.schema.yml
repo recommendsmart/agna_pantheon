@@ -100,11 +100,11 @@ field.value.list_string:
       label: 'Value'
 
 field.formatter.settings.list_default:
-  type: base_field_formatter_settings
+  type: mapping
   label: 'Options list default display settings'
 
 field.formatter.settings.list_key:
-  type: base_field_formatter_settings
+  type: mapping
   label: 'Key format settings'
 
 field.widget.settings.options_buttons:

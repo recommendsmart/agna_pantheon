@@ -98,7 +98,13 @@ function drush_votingapi_generate_votes($entity_type = 'node', $vote_type = 'per
 
   votingapi_generate_votes($entity_type, $vote_type, $options);
 
-  drush_log(dt('Generated @vtype votes for @etype entities.', ['@vtype' => $vote_type, '@etype' => $entity_type]), 'success');
+  drush_log(
+    dt('Generated @vtype votes for @etype entities.', [
+      '@vtype' => $vote_type,
+      '@etype' => $entity_type,
+    ]),
+    'success'
+  );
 }
 
 /**

@@ -93,13 +93,6 @@ class Page extends PathPluginBase {
     // Explicitly set HTML as the format for Page displays.
     $route->setRequirement('_format', 'html');
 
-    // Add the _admin_route option only if always_use_admin_theme display option
-    // is TRUE. Otherwise, let other modules or alters to make a decision.
-    // @see \Drupal\system\EventSubscriber\AdminRouteSubscriber::alterRoutes()
-    if ($this->getOption('always_use_admin_theme')) {
-      $route->setOption('_admin_route', TRUE);
-    }
-
     return $route;
   }
 
@@ -158,7 +151,6 @@ class Page extends PathPluginBase {
         'weight' => ['default' => 0],
       ],
     ];
-    $options['always_use_admin_theme'] = ['default' => FALSE];
 
     return $options;
   }
@@ -240,13 +232,6 @@ class Page extends PathPluginBase {
       $options['menu']['setting'] = $this->t('Parent menu item');
       $options['menu']['links']['tab_options'] = $this->t('Change settings for the parent menu');
     }
-
-    $options['always_use_admin_theme'] = [
-      'category' => 'page',
-      'title' => $this->t('Admin page'),
-      'value' => $this->getOption('always_use_admin_theme') ? $this->t('Yes') : $this->t('No'),
-      'desc' => $this->t('Show this display using the administrative theme.'),
-    ];
   }
 
   /**
@@ -460,14 +445,6 @@ class Page extends PathPluginBase {
           ],
         ];
         break;
-      case 'always_use_admin_theme':
-        $form['always_use_admin_theme'] = [
-          '#type' => 'checkbox',
-          '#title' => $this->t('Always use admin theme'),
-          '#description' => $this->t('Paths starting with "admin/" use the admin theme even when this option is not checked.'),
-          '#default_value' => $this->getOption('always_use_admin_theme'),
-        ];
-        break;
     }
   }
 
@@ -517,9 +494,6 @@ class Page extends PathPluginBase {
 
       case 'tab_options':
         $this->setOption('tab_options', $form_state->getValue('tab_options'));
-        break;
-      case 'always_use_admin_theme':
-        $this->setOption('always_use_admin_theme', $form_state->getValue('always_use_admin_theme'));
         break;
     }
   }

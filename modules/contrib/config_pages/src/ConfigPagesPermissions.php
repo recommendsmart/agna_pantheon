@@ -48,6 +48,9 @@ class ConfigPagesPermissions implements ContainerInjectionInterface {
     $permissions = [];
     $config_pages = $this->storage->loadMultiple();
     foreach ($config_pages as $config_page) {
+      $permissions['view ' . $config_page->id() . ' config page entity'] = [
+        'title' => $this->t('View the @label config page entity', ['@label' => $config_page->label()]),
+      ];
       $permissions['edit ' . $config_page->id() . ' config page entity'] = [
         'title' => $this->t('Edit the @label config page entity', ['@label' => $config_page->label()]),
       ];

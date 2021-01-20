@@ -138,7 +138,7 @@ class LinkFormatter extends FormatterBase implements ContainerFactoryPluginInter
    * {@inheritdoc}
    */
   public function settingsSummary() {
-    $summary = parent::settingsSummary();
+    $summary = [];
 
     $settings = $this->getSettings();
 

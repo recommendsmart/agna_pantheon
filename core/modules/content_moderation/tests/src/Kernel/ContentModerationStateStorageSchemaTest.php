@@ -2,8 +2,6 @@
 
 namespace Drupal\Tests\content_moderation\Kernel;
 
-use Drupal\block_content\Entity\BlockContent;
-use Drupal\block_content\Entity\BlockContentType;
 use Drupal\content_moderation\Entity\ContentModerationState;
 use Drupal\KernelTests\KernelTestBase;
 use Drupal\node\Entity\Node;
@@ -30,7 +28,7 @@ class ContentModerationStateStorageSchemaTest extends KernelTestBase {
     'system',
     'text',
     'workflows',
-    'block_content',
+    'entity_test',
   ];
 
   /**
@@ -41,7 +39,7 @@ class ContentModerationStateStorageSchemaTest extends KernelTestBase {
 
     $this->installSchema('node', 'node_access');
     $this->installEntitySchema('node');
-    $this->installEntitySchema('block_content');
+    $this->installEntitySchema('entity_test');
     $this->installEntitySchema('user');
     $this->installEntitySchema('content_moderation_state');
     $this->installConfig('content_moderation');
@@ -49,15 +47,8 @@ class ContentModerationStateStorageSchemaTest extends KernelTestBase {
     NodeType::create([
       'type' => 'example',
     ])->save();
-
-    BlockContentType::create([
-      'label' => 'Test',
-      'id' => 'example',
-    ])->save();
-
     $workflow = $this->createEditorialWorkflow();
     $workflow->getTypePlugin()->addEntityTypeAndBundle('node', 'example');
-    $workflow->getTypePlugin()->addEntityTypeAndBundle('block_content', 'example');
     $workflow->save();
   }
 
@@ -99,22 +90,18 @@ class ContentModerationStateStorageSchemaTest extends KernelTestBase {
     ], FALSE);
 
     // Different entity types should not trigger an exception.
-    $block_content = BlockContent::create([
-      'info' => 'Test block',
-      'type' => 'example',
-      'moderation_state' => 'draft',
-    ]);
-    $block_content->save();
-    $this->assertEquals($block_content->id(), $node->id());
-    $this->assertEquals($block_content->getRevisionId(), $node->getRevisionId());
+    $this->assertStorageException([
+      'content_entity_type_id' => 'entity_test',
+      'content_entity_id' => $node->id(),
+      'content_entity_revision_id' => $node->getRevisionId(),
+    ], FALSE);
 
     // Different entity and revision IDs should not trigger an exception.
-    $second_node = Node::create([
-      'title' => 'Test title',
-      'type' => 'example',
-      'moderation_state' => 'draft',
-    ]);
-    $second_node->save();
+    $this->assertStorageException([
+      'content_entity_type_id' => $node->getEntityTypeId(),
+      'content_entity_id' => 9999,
+      'content_entity_revision_id' => 9999,
+    ], FALSE);
 
     // Creating a version of the entity with a previously used, but not current
     // revision ID should trigger an exception.

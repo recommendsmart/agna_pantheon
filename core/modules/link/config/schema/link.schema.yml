@@ -1,7 +1,7 @@
 # Schema for the configuration files of the Link module.
 
 field.formatter.settings.link:
-  type: base_field_formatter_settings
+  type: mapping
   label: 'Link format settings'
   mapping:
     trim_length:

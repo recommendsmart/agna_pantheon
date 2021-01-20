@@ -143,19 +143,9 @@ core.entity_form_display.*.*.*:
         type: boolean
         label: 'Component'
 
-base_field_formatter_settings:
-  type: mapping
-  mapping:
-    offset:
-      type: integer
-      label: 'Offset'
-    limit:
-      type: integer
-      label: 'Limit'
-
 # Default schema for entity display field with undefined type.
 field.formatter.settings.*:
-  type: base_field_formatter_settings
+  type: mapping
 
 # Default schema for entity form display field with undefined type.
 field.widget.settings.*:
@@ -272,7 +262,7 @@ field.widget.settings.entity_reference_autocomplete:
       label: 'Placeholder'
 
 field.formatter.settings.boolean:
-  type: base_field_formatter_settings
+  type: mapping
   mapping:
     format:
       type: string
@@ -285,7 +275,7 @@ field.formatter.settings.boolean:
       label: 'Custom output for TRUE'
 
 field.formatter.settings.string:
-  type: base_field_formatter_settings
+  type: mapping
   mapping:
     link_to_entity:
       type: boolean
@@ -299,7 +289,7 @@ field.formatter.settings.language:
       label: 'Display in native language'
 
 field.formatter.settings.number_decimal:
-  type: base_field_formatter_settings
+  type: mapping
   label: 'Number decimal display format settings'
   mapping:
     thousand_separator:
@@ -316,7 +306,7 @@ field.formatter.settings.number_decimal:
       label: 'Display prefix and suffix.'
 
 field.formatter.settings.number_integer:
-  type: base_field_formatter_settings
+  type: mapping
   label: 'Number integer display format settings'
   mapping:
     thousand_separator:
@@ -327,15 +317,15 @@ field.formatter.settings.number_integer:
       label: 'Display prefix and suffix.'
 
 field.formatter.settings.number_unformatted:
-  type: base_field_formatter_settings
+  type: mapping
   label: 'Number unformatted display format settings'
 
 field.formatter.settings.uri_link:
-  type: base_field_formatter_settings
+  type: mapping
   label: 'URI as link display format settings'
 
 field.formatter.settings.timestamp:
-  type: base_field_formatter_settings
+  type: mapping
   label: 'Timestamp display format settings'
   mapping:
     date_format:
@@ -349,7 +339,7 @@ field.formatter.settings.timestamp:
       label: 'Time zone'
 
 field.formatter.settings.timestamp_ago:
-  type: base_field_formatter_settings
+  type: mapping
   label: 'Timestamp ago display format settings'
   mapping:
     future_format:
@@ -363,7 +353,7 @@ field.formatter.settings.timestamp_ago:
       label: 'Granularity'
 
 field.formatter.settings.entity_reference_entity_view:
-  type: base_field_formatter_settings
+  type: mapping
   label: 'Entity reference rendered entity display format settings'
   mapping:
     view_mode:
@@ -374,11 +364,11 @@ field.formatter.settings.entity_reference_entity_view:
       label: 'Show links'
 
 field.formatter.settings.entity_reference_entity_id:
-  type: base_field_formatter_settings
+  type: mapping
   label: 'Entity reference entity ID display format settings'
 
 field.formatter.settings.entity_reference_label:
-  type: base_field_formatter_settings
+  type: mapping
   label: 'Entity reference label display format settings'
   mapping:
     link:

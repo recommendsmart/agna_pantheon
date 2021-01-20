@@ -6,10 +6,6 @@ services:
     class: Drupal\layout_builder\Access\LayoutBuilderAccessCheck
     tags:
       - { name: access_check, applies_to: _layout_builder_access }
-  access_check.entity.layout_builder_translation_access:
-    class: Drupal\layout_builder\Access\LayoutBuilderTranslationAccessCheck
-    tags:
-      - { name: access_check, applies_to: _layout_builder_translation_access }
   access_check.entity.layout:
     # Deprecated in Drupal 8.7.0 and will be removed before Drupal 9.0.0. Use
     # access_check.entity.layout_builder_access instead. See
@@ -49,22 +45,12 @@ services:
     arguments: ['@current_user']
     tags:
       - { name: event_subscriber }
-  layout_builder.translate_block_component_subscriber:
-    class: Drupal\layout_builder\EventSubscriber\ComponentPluginTranslate
-    arguments: ['@language_manager', '@current_route_match']
-    tags:
-      - { name: event_subscriber }
   logger.channel.layout_builder:
     parent: logger.channel_base
     arguments: ['layout_builder']
   inline_block.usage:
     class: Drupal\layout_builder\InlineBlockUsage
     arguments: ['@database']
-  layout_builder.component_visibility_subscriber:
-    class: Drupal\layout_builder\EventSubscriber\SectionComponentVisibility
-    arguments: ['@context.handler', '@plugin.manager.condition']
-    tags:
-      - { name: event_subscriber }
   layout_builder.controller.entity_form:
     # Override the entity form controller to handle the entity layout_builder
     # operation.

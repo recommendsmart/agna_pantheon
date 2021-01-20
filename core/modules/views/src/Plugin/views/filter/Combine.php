@@ -74,15 +74,7 @@ class Combine extends StringFilter {
       if (!empty($field->field_alias) && !empty($field->field_alias)) {
         $fields[] = "$field->tableAlias.$field->realField";
       }
-
-      if ($field->additional_fields) {
-        $fieldFull = array_map(function ($additional_fields) use ($field) {
-          return "$field->tableAlias.$additional_fields";
-        }, $field->additional_fields);
-        $fields += $fieldFull;
-      }
     }
-
     if ($fields) {
       // We do not use the CONCAT_WS operator when there is only a single field.
       // Using the CONCAT_WS operator with a single field is not a problem for

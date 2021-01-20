@@ -39,20 +39,6 @@ class LayoutBuilderEntityViewDisplay extends BaseEntityViewDisplay implements La
   protected $entityFieldManager;
 
   /**
-   * The translation mapper manager.
-   *
-   * @var \Drupal\config_translation\ConfigMapperManagerInterface
-   */
-  protected $translationMapperManager;
-
-  /**
-   * The route builder.
-   *
-   * @var \Drupal\Core\Routing\RouteBuilderInterface
-   */
-  protected $routeBuilder;
-
-  /**
    * {@inheritdoc}
    */
   public function __construct(array $values, $entity_type) {
@@ -61,12 +47,6 @@ class LayoutBuilderEntityViewDisplay extends BaseEntityViewDisplay implements La
     // $entityFieldManager.
     $this->entityFieldManager = \Drupal::service('entity_field.manager');
     parent::__construct($values, $entity_type);
-
-    if (\Drupal::hasService('plugin.manager.config_translation.mapper')) {
-      $this->routeBuilder = \Drupal::service('router.builder');
-      $this->translationMapperManager = \Drupal::service('plugin.manager.config_translation.mapper');
-    }
-
   }
 
   /**
@@ -171,13 +151,6 @@ class LayoutBuilderEntityViewDisplay extends BaseEntityViewDisplay implements La
         foreach ($components as $name => $component) {
           $this->setComponent($name, $component);
         }
-
-        if ($this->translationMapperManager) {
-          // Ensure the translation mapper will be available.
-          $this->routeBuilder->setRebuildNeeded();
-          $this->translationMapperManager->clearCachedDefinitions();
-        }
-
       }
       else {
         // When being disabled, remove all existing section data.
@@ -242,41 +215,6 @@ class LayoutBuilderEntityViewDisplay extends BaseEntityViewDisplay implements La
         'label' => t('Layout'),
       ]);
       $field->setTranslatable(FALSE);
-      $field->save();
-    }
-    $this->addTranslationField($entity_type_id, $bundle, OverridesSectionStorage::TRANSLATED_CONFIGURATION_FIELD_NAME);
-  }
-
-  /**
-   * Adds a layout translation field to a given bundle.
-   *
-   * @param string $entity_type_id
-   *   The entity type ID.
-   * @param string $bundle
-   *   The bundle.
-   * @param string $field_name
-   *   The name for the translation field.
-   */
-  protected function addTranslationField($entity_type_id, $bundle, $field_name) {
-    $field = FieldConfig::loadByName($entity_type_id, $bundle, $field_name);
-    if (!$field) {
-      $field_storage = FieldStorageConfig::loadByName($entity_type_id, $field_name);
-      if (!$field_storage) {
-        $field_storage = FieldStorageConfig::create([
-          'entity_type' => $entity_type_id,
-          'field_name' => $field_name,
-          'type' => 'layout_translation',
-          'locked' => TRUE,
-        ]);
-        $field_storage->setTranslatable(TRUE);
-        $field_storage->save();
-      }
-
-      $field = FieldConfig::create([
-        'field_storage' => $field_storage,
-        'bundle' => $bundle,
-        'label' => t('Layout Labels'),
-      ]);
       $field->save();
     }
   }
@@ -589,9 +527,9 @@ class LayoutBuilderEntityViewDisplay extends BaseEntityViewDisplay implements La
       // Builder component. It follows the structure prescribed by the
       // documentation of hook_quickedit_render_field().
       if (count($parts) === 6 && $parts[0] === 'layout_builder') {
-        list($view_mode, $delta, $component_uuid, $entity_id) = QuickEditIntegration::deconstructViewModeId($original_mode);
+        list(, $delta, $component_uuid, $entity_id) = QuickEditIntegration::deconstructViewModeId($original_mode);
         $entity = $this->entityTypeManager()->getStorage($this->getTargetEntityTypeId())->load($entity_id);
-        $sections = $this->getEntitySections($entity, $view_mode);
+        $sections = $this->getEntitySections($entity);
         if (isset($sections[$delta])) {
           $component = $sections[$delta]->getComponent($component_uuid);
           $plugin = $component->getPlugin();

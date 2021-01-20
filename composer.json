@@ -12,7 +12,7 @@
         "drupal/core-recommended": "^8.8",
         "drupal/currency": "^3.3",
         "drush/drush": "^10",
-        "linnovate/openideal": "^3",
+        "linnovate/openideal": "3",
         "wikimedia/composer-merge-plugin": "^1.4"
     },
     "minimum-stability": "dev",
@@ -58,10 +58,6 @@
         {
             "type": "composer",
             "url": "https://packages.drupal.org/8"
-        },
-        {
-            "type": "composer",
-            "url": "https://asset-packagist.org"
         },
         {
             "type": "package",

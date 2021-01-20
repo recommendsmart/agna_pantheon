@@ -27,3 +27,9 @@ nodetype:
   dependencies:
     - core/jquery
     - core/drupal
+
+demo:
+  version: VERSION
+  js:
+    rrssb.demo.js: {}
+

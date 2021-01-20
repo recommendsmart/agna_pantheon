@@ -3,7 +3,6 @@
 namespace Drupal\rrssb\Plugin\Block;
 
 use Drupal\Core\Block\BlockBase;
-use Drupal\Core\Block\BlockPluginInterface;
 use Drupal\Core\Form\FormStateInterface;
 
 /**
@@ -15,7 +14,7 @@ use Drupal\Core\Form\FormStateInterface;
  *   category = @Translation("RRSSB")
  * )
  */
-class RRSSBBlock extends BlockBase implements BlockPluginInterface {
+class RRSSBBlock extends BlockBase {
 
   /**
    * {@inheritdoc}

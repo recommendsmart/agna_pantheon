@@ -327,12 +327,7 @@ class EntityAutocomplete extends Textfield {
     if (empty($entities)) {
       if ($strict) {
         // Error if there are no entities available for a required field.
-        if(isset($element['#title'])){
-          $form_state->setError($element, t('Invalid value "%value" chosen for "%field_name".', $params + ['%field_name' => $element['#title']]));
-        }
-        else{
-          $form_state->setError($element, t('There are no entities matching "%value".', $params));
-        }
+        $form_state->setError($element, t('There are no entities matching "%value".', $params));
       }
     }
     elseif (count($entities) > 5) {

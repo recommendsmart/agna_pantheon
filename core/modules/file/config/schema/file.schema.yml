@@ -106,7 +106,7 @@ field.formatter.settings.file_video:
       label: 'Height'
 
 field.formatter.settings.file_default:
-  type: base_field_formatter_settings
+  type: mapping
   label: 'Generic file format settings'
   mapping:
     use_description_as_link_text:
@@ -114,7 +114,7 @@ field.formatter.settings.file_default:
       label: 'Replace the file name by its description when available'
 
 field.formatter.settings.file_rss_enclosure:
-  type: base_field_formatter_settings
+  type: mapping
   label: 'RSS enclosure format settings'
 
 field.formatter.settings.file_table:
@@ -122,7 +122,7 @@ field.formatter.settings.file_table:
   label: 'Table of files format settings'
 
 field.formatter.settings.file_url_plain:
-  type: base_field_formatter_settings
+  type: mapping
   label: 'URL to file format settings'
 
 field.widget.settings.file_generic:

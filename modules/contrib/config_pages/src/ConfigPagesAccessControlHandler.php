@@ -19,7 +19,12 @@ class ConfigPagesAccessControlHandler extends EntityAccessControlHandler {
    */
   protected function checkAccess(EntityInterface $entity, $operation, AccountInterface $account) {
     if ($operation === 'view') {
-      return AccessResult::allowed();
+      if ($entity->getEntityTypeId() === 'config_pages' && $account->hasPermission('view config_pages entity')) {
+        return AccessResult::allowed()->cachePerPermissions();
+      }
+      if ($entity->getEntityTypeId() === 'config_pages' && $account->hasPermission('view ' . $entity->bundle() . ' config page entity')) {
+        return AccessResult::allowed()->cachePerPermissions();
+      }
     }
     if ($operation == 'update') {
       if ($account->hasPermission('edit config_pages entity'))

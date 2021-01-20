@@ -98,8 +98,7 @@ function path_entity_base_field_info_alter(&$fields, EntityTypeInterface $entity
  * Implements hook_entity_base_field_info().
  */
 function path_entity_base_field_info(EntityTypeInterface $entity_type) {
-  if (in_array($entity_type->id(), ['taxonomy_term', 'node'], TRUE) ||
-    ($entity_type->id() === 'media' && \Drupal::configFactory()->get('media.settings')->get('standalone_url'))) {
+  if (in_array($entity_type->id(), ['taxonomy_term', 'node', 'media'], TRUE)) {
     $fields['path'] = BaseFieldDefinition::create('path')
       ->setLabel(t('URL alias'))
       ->setTranslatable(TRUE)

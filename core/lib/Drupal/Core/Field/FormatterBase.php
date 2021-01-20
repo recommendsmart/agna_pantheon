@@ -119,85 +119,23 @@ abstract class FormatterBase extends PluginSettingsBase implements FormatterInte
   }
 
   /**
-   * Returns the cardinality setting of the field instance.
-   */
-  protected function getCardinality() {
-    return $this->fieldDefinition->getFieldStorageDefinition()->getCardinality();
-  }
-
-  /**
-   * {@inheritdoc}
-   */
-  public static function defaultSettings() {
-    return array(
-      'offset' => 0,
-      'limit' => 0,
-    ) + parent::defaultSettings();
-  }
-
-  /**
    * {@inheritdoc}
    */
   public function settingsForm(array $form, FormStateInterface $form_state) {
-    if ($this->getCardinality() == 1) {
-      return [];
-    }
-
-    $element['offset'] = [
-      '#type' => 'number',
-      '#title' => $this->t('Skip items'),
-      '#default_value' => $this->getSetting('offset'),
-      '#required' => TRUE,
-      '#min' => 0,
-      '#description' => $this->t('Number of items to skip from the beginning.')
-    ];
-
-    $element['limit'] = [
-      '#type' => 'number',
-      '#title' => $this->t('Display items'),
-      '#default_value' => $this->getSetting('limit'),
-      '#required' => TRUE,
-      '#min' => 0,
-      '#description' => $this->t('Number of items to display. Set to 0 to display all items.')
-    ];
-
-    return $element;
+    return [];
   }
 
   /**
    * {@inheritdoc}
    */
   public function settingsSummary() {
-    $summary = [];
-    $limit =  $this->getSetting('limit');
-
-    if ($this->getCardinality() == 1 || empty($limit)) {
-      return $summary;
-    }
-
-    $offset = $this->getSetting('offset');
-    $summary[] = $this->t('Display %limit items, skip %offset item(s).', [
-      '%limit' => $limit,
-      '%offset' => $offset
-    ]);
-
-    return $summary;
+    return [];
   }
 
   /**
    * {@inheritdoc}
    */
-  public function prepareView(array $entities_items) {
-    foreach ($entities_items as $items) {
-      if ($this->getCardinality() != 0) {
-        $offset = $this->getSetting('offset');
-        $limit = $this->getSetting('limit');
-        if (!empty($offset) || !empty($limit)) {
-          $items->setValue(array_slice($items->getValue(), $offset, empty($limit) ? NULL : $limit));
-        }
-      }
-    }
-  }
+  public function prepareView(array $entities_items) {}
 
   /**
    * Returns the array of field settings.

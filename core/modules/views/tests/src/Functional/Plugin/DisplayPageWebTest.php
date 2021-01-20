@@ -153,30 +153,6 @@ class DisplayPageWebTest extends ViewTestBase {
   }
 
   /**
-   * Tests the 'admin_theme' page display option.
-   */
-  public function testAdminTheme() {
-    $account = $this->drupalCreateUser(['view the administration theme']);
-    $this->drupalLogin($account);
-
-    // Use distinct default and administrative themes for this test.
-    $this->container->get('theme_handler')->install(['seven']);
-    $this->config('system.theme')->set('admin', 'seven')->save();
-
-    // Check that the page has been served with the default theme.
-    $this->drupalGet('test_page_display_200');
-    $this->assertSession()->responseNotContains('seven/css/base/elements.css');
-
-    $view = $this->config('views.view.test_page_display');
-    $view->set('display.page_3.display_options.always_use_admin_theme', TRUE)->save();
-    $this->container->get('router.builder')->rebuild();
-
-    // Check that the page was served with the administrative theme.
-    $this->drupalGet('test_page_display_200');
-    $this->assertSession()->responseContains('seven/css/base/elements.css');
-  }
-
-  /**
    * Tests that we can successfully change a view page display path.
    *
    * @param string $path

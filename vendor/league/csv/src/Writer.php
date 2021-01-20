@@ -1,317 +1,170 @@
 <?php
-
 /**
- * League.Csv (https://csv.thephpleague.com)
- *
- * (c) Ignace Nyamagana Butera <nyamsprod@gmail.com>
- *
- * For the full copyright and license information, please view the LICENSE
- * file that was distributed with this source code.
- */
-
-declare(strict_types=1);
-
+* This file is part of the League.csv library
+*
+* @license http://opensource.org/licenses/MIT
+* @link https://github.com/thephpleague/csv/
+* @version 8.2.3
+* @package League.csv
+*
+* For the full copyright and license information, please view the LICENSE
+* file that was distributed with this source code.
+*/
 namespace League\Csv;
 
-use function array_reduce;
-use function implode;
-use function preg_match;
-use function preg_quote;
-use function str_replace;
-use function strlen;
-use const PHP_VERSION_ID;
-use const SEEK_CUR;
-use const STREAM_FILTER_WRITE;
+use InvalidArgumentException;
+use League\Csv\Modifier\RowFilter;
+use League\Csv\Modifier\StreamIterator;
+use ReflectionMethod;
+use RuntimeException;
+use SplFileObject;
+use Traversable;
 
 /**
- * A class to insert records into a CSV Document.
+ *  A class to manage data insertion into a CSV
+ *
+ * @package League.csv
+ * @since  4.0.0
+ *
  */
 class Writer extends AbstractCsv
 {
-    /**
-     * callable collection to format the record before insertion.
-     *
-     * @var callable[]
-     */
-    protected $formatters = [];
+    use RowFilter;
 
     /**
-     * callable collection to validate the record before insertion.
-     *
-     * @var callable[]
-     */
-    protected $validators = [];
-
-    /**
-     * newline character.
-     *
-     * @var string
-     */
-    protected $newline = "\n";
-
-    /**
-     * Insert records count for flushing.
-     *
-     * @var int
-     */
-    protected $flush_counter = 0;
-
-    /**
-     * Buffer flush threshold.
-     *
-     * @var int|null
-     */
-    protected $flush_threshold;
-
-    /**
-     * {@inheritdoc}
+     * @inheritdoc
      */
     protected $stream_filter_mode = STREAM_FILTER_WRITE;
 
     /**
-     * Regular expression used to detect if RFC4180 formatting is necessary.
+     * The CSV object holder
      *
-     * @var string
+     * @var SplFileObject|StreamIterator
      */
-    protected $rfc4180_regexp;
+    protected $csv;
 
     /**
-     * double enclosure for RFC4180 compliance.
+     * fputcsv method from SplFileObject or StreamIterator
      *
-     * @var string
+     * @var ReflectionMethod
      */
-    protected $rfc4180_enclosure;
+    protected $fputcsv;
 
     /**
-     * {@inheritdoc}
-     */
-    protected function resetProperties(): void
-    {
-        parent::resetProperties();
-        $characters = preg_quote($this->delimiter, '/').'|'.preg_quote($this->enclosure, '/');
-        $this->rfc4180_regexp = '/[\s|'.$characters.']/x';
-        $this->rfc4180_enclosure = $this->enclosure.$this->enclosure;
-    }
-
-    /**
-     * Returns the current newline sequence characters.
-     */
-    public function getNewline(): string
-    {
-        return $this->newline;
-    }
-
-    /**
-     * Get the flush threshold.
+     * Nb parameters for SplFileObject::fputcsv method
      *
-     * @return int|null
+     * @var integer
      */
-    public function getFlushThreshold()
-    {
-        return $this->flush_threshold;
-    }
+    protected $fputcsv_param_count;
 
     /**
-     * Adds multiple records to the CSV document.
+     * Adds multiple lines to the CSV document
      *
-     * @see Writer::insertOne
+     * a simple wrapper method around insertOne
+     *
+     * @param Traversable|array $rows a multidimensional array or a Traversable object
+     *
+     * @throws InvalidArgumentException If the given rows format is invalid
+     *
+     * @return static
      */
-    public function insertAll(iterable $records): int
+    public function insertAll($rows)
     {
-        $bytes = 0;
-        foreach ($records as $record) {
-            $bytes += $this->insertOne($record);
+        if (!is_array($rows) && !$rows instanceof Traversable) {
+            throw new InvalidArgumentException(
+                'the provided data must be an array OR a `Traversable` object'
+            );
         }
 
-        $this->flush_counter = 0;
-        $this->document->fflush();
-
-        return $bytes;
-    }
-
-    /**
-     * Adds a single record to a CSV document.
-     *
-     * A record is an array that can contains scalar types values, NULL values
-     * or objects implementing the __toString method.
-     *
-     * @throws CannotInsertRecord If the record can not be inserted
-     */
-    public function insertOne(array $record): int
-    {
-        $method = 'addRecord';
-        if (70400 > PHP_VERSION_ID && '' === $this->escape) {
-            $method = 'addRFC4180CompliantRecord';
+        foreach ($rows as $row) {
+            $this->insertOne($row);
         }
 
-        $record = array_reduce($this->formatters, [$this, 'formatRecord'], $record);
-        $this->validateRecord($record);
-        $bytes = $this->$method($record);
-        if (false === $bytes || 0 >= $bytes) {
-            throw CannotInsertRecord::triggerOnInsertion($record);
+        return $this;
+    }
+
+    /**
+     * Adds a single line to a CSV document
+     *
+     * @param string[]|string $row a string, an array or an object implementing to '__toString' method
+     *
+     * @return static
+     */
+    public function insertOne($row)
+    {
+        if (!is_array($row)) {
+            $row = str_getcsv($row, $this->delimiter, $this->enclosure, $this->escape);
+        }
+        $row = $this->formatRow($row);
+        $this->validateRow($row);
+        $this->addRow($row);
+
+        return $this;
+    }
+
+    /**
+     * Add new record to the CSV document
+     *
+     * @param array $row record to add
+     */
+    protected function addRow(array $row)
+    {
+        $this->initCsv();
+        if (!$this->fputcsv->invokeArgs($this->csv, $this->getFputcsvParameters($row))) {
+            throw new RuntimeException('Unable to write record to the CSV document.');
         }
 
-        return $bytes + $this->consolidate();
-    }
-
-    /**
-     * Adds a single record to a CSV Document using PHP algorithm.
-     *
-     * @see https://php.net/manual/en/function.fputcsv.php
-     *
-     * @return int|false
-     */
-    protected function addRecord(array $record)
-    {
-        return $this->document->fputcsv($record, $this->delimiter, $this->enclosure, $this->escape);
-    }
-
-    /**
-     * Adds a single record to a CSV Document using RFC4180 algorithm.
-     *
-     * @see https://php.net/manual/en/function.fputcsv.php
-     * @see https://php.net/manual/en/function.fwrite.php
-     * @see https://tools.ietf.org/html/rfc4180
-     * @see http://edoceo.com/utilitas/csv-file-format
-     *
-     * String conversion is done without any check like fputcsv.
-     *
-     *     - Emits E_NOTICE on Array conversion (returns the 'Array' string)
-     *     - Throws catchable fatal error on objects that can not be converted
-     *     - Returns resource id without notice or error (returns 'Resource id #2')
-     *     - Converts boolean true to '1', boolean false to the empty string
-     *     - Converts null value to the empty string
-     *
-     * Fields must be delimited with enclosures if they contains :
-     *
-     *     - Embedded whitespaces
-     *     - Embedded delimiters
-     *     - Embedded line-breaks
-     *     - Embedded enclosures.
-     *
-     * Embedded enclosures must be doubled.
-     *
-     * The LF character is added at the end of each record to mimic fputcsv behavior
-     *
-     * @return int|false
-     */
-    protected function addRFC4180CompliantRecord(array $record)
-    {
-        foreach ($record as &$field) {
-            $field = (string) $field;
-            if (1 === preg_match($this->rfc4180_regexp, $field)) {
-                $field = $this->enclosure.str_replace($this->enclosure, $this->rfc4180_enclosure, $field).$this->enclosure;
-            }
-        }
-        unset($field);
-
-        return $this->document->fwrite(implode($this->delimiter, $record)."\n");
-    }
-
-    /**
-     * Format a record.
-     *
-     * The returned array must contain
-     *   - scalar types values,
-     *   - NULL values,
-     *   - or objects implementing the __toString() method.
-     */
-    protected function formatRecord(array $record, callable $formatter): array
-    {
-        return $formatter($record);
-    }
-
-    /**
-     * Validate a record.
-     *
-     * @throws CannotInsertRecord If the validation failed
-     */
-    protected function validateRecord(array $record): void
-    {
-        foreach ($this->validators as $name => $validator) {
-            if (true !== $validator($record)) {
-                throw CannotInsertRecord::triggerOnValidation($name, $record);
-            }
-        }
-    }
-
-    /**
-     * Apply post insertion actions.
-     */
-    protected function consolidate(): int
-    {
-        $bytes = 0;
         if ("\n" !== $this->newline) {
-            $this->document->fseek(-1, SEEK_CUR);
-            /** @var int $newlineBytes */
-            $newlineBytes = $this->document->fwrite($this->newline, strlen($this->newline));
-            $bytes =  $newlineBytes - 1;
+            $this->csv->fseek(-1, SEEK_CUR);
+            $this->csv->fwrite($this->newline, strlen($this->newline));
+        }
+    }
+
+    /**
+     * Initialize the CSV object and settings
+     */
+    protected function initCsv()
+    {
+        if (null !== $this->csv) {
+            return;
         }
 
-        if (null === $this->flush_threshold) {
-            return $bytes;
-        }
-
-        ++$this->flush_counter;
-        if (0 === $this->flush_counter % $this->flush_threshold) {
-            $this->flush_counter = 0;
-            $this->document->fflush();
-        }
-
-        return $bytes;
+        $this->csv = $this->getIterator();
+        $this->fputcsv = new ReflectionMethod(get_class($this->csv), 'fputcsv');
+        $this->fputcsv_param_count = $this->fputcsv->getNumberOfParameters();
     }
 
     /**
-     * Adds a record formatter.
-     */
-    public function addFormatter(callable $formatter): self
-    {
-        $this->formatters[] = $formatter;
-
-        return $this;
-    }
-
-    /**
-     * Adds a record validator.
-     */
-    public function addValidator(callable $validator, string $validator_name): self
-    {
-        $this->validators[$validator_name] = $validator;
-
-        return $this;
-    }
-
-    /**
-     * Sets the newline sequence.
-     */
-    public function setNewline(string $newline): self
-    {
-        $this->newline = $newline;
-
-        return $this;
-    }
-
-    /**
-     * Set the flush threshold.
+     * returns the parameters for SplFileObject::fputcsv
      *
+     * @param array $fields The fields to be add
      *
-     * @param  ?int      $threshold
-     * @throws Exception if the threshold is a integer lesser than 1
+     * @return array
      */
-    public function setFlushThreshold(?int $threshold): self
+    protected function getFputcsvParameters(array $fields)
     {
-        if ($threshold === $this->flush_threshold) {
-            return $this;
+        $parameters = [$fields, $this->delimiter, $this->enclosure];
+        if (4 == $this->fputcsv_param_count) {
+            $parameters[] = $this->escape;
         }
 
-        if (null !== $threshold && 1 > $threshold) {
-            throw new InvalidArgument(__METHOD__.'() expects 1 Argument to be null or a valid integer greater or equal to 1');
-        }
+        return $parameters;
+    }
 
-        $this->flush_threshold = $threshold;
-        $this->flush_counter = 0;
-        $this->document->fflush();
+    /**
+     *  {@inheritdoc}
+     */
+    public function isActiveStreamFilter()
+    {
+        return parent::isActiveStreamFilter() && null === $this->csv;
+    }
 
-        return $this;
+    /**
+     *  {@inheritdoc}
+     */
+    public function __destruct()
+    {
+        $this->csv = null;
+        parent::__destruct();
     }
 }

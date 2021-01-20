@@ -59,7 +59,7 @@ class TextTrimmedFormatter extends FormatterBase implements TrustedCallbackInter
    * {@inheritdoc}
    */
   public function settingsSummary() {
-    $summary = parent::settingsSummary();
+    $summary = [];
     $summary[] = t('Trimmed limit: @trim_length characters', ['@trim_length' => $this->getSetting('trim_length')]);
     return $summary;
   }

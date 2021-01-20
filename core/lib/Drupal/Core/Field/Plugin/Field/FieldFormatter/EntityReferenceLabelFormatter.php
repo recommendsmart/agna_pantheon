@@ -47,7 +47,7 @@ class EntityReferenceLabelFormatter extends EntityReferenceFormatterBase {
    * {@inheritdoc}
    */
   public function settingsSummary() {
-    $summary = parent::settingsSummary();
+    $summary = [];
     $summary[] = $this->getSetting('link') ? t('Link to the referenced entity') : t('No link');
     return $summary;
   }

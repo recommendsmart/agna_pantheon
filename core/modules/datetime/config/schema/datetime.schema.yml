@@ -24,7 +24,7 @@ field.value.datetime:
       label: 'Default date value'
 
 field.formatter.settings.datetime_base:
-  type: base_field_formatter_settings
+  type: mapping
   mapping:
     timezone_override:
       type: string
@@ -51,7 +51,7 @@ field.formatter.settings.datetime_custom:
       label: 'Date/time format'
 
 field.formatter.settings.datetime_time_ago:
-  type: base_field_formatter_settings
+  type: mapping
   label: 'Datetime time ago display format settings'
   mapping:
     future_format:

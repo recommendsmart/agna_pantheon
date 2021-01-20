@@ -106,7 +106,7 @@ class HandlerFilterUserNameTest extends ViewTestBase {
       'options[value]' => implode(', ', $users),
     ];
     $this->drupalPostForm($path, $edit, t('Apply'));
-    $this->assertRaw(t('Invalid value "%value" chosen for "%field_name".', ['%value' => implode(', ', $users), '%field_name' => 'Usernames']));
+    $this->assertRaw(t('There are no entities matching "%value".', ['%value' => implode(', ', $users)]));
 
     // Pass in an invalid username and a valid username.
     $random_name = $this->randomMachineName();
@@ -117,7 +117,7 @@ class HandlerFilterUserNameTest extends ViewTestBase {
     ];
     $users = [$users[0]];
     $this->drupalPostForm($path, $edit, t('Apply'));
-    $this->assertRaw(t('Invalid value "%value" chosen for "%field_name".', ['%value' => implode(', ', $users), '%field_name' => 'Usernames']));
+    $this->assertRaw(t('There are no entities matching "%value".', ['%value' => implode(', ', $users)]));
 
     // Pass in just valid usernames.
     $users = $this->names;

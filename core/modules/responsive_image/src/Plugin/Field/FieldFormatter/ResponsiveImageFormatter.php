@@ -167,7 +167,7 @@ class ResponsiveImageFormatter extends ImageFormatterBase implements ContainerFa
    * {@inheritdoc}
    */
   public function settingsSummary() {
-    $summary = parent::settingsSummary();
+    $summary = [];
 
     $responsive_image_style = $this->responsiveImageStyleStorage->load($this->getSetting('responsive_image_style'));
     if ($responsive_image_style) {

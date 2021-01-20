@@ -172,7 +172,7 @@ class EntityReferenceAdminTest extends BrowserTestBase {
     $this->drupalPostForm('node/add/' . $this->type, $edit, t('Save'));
 
     // Assert that entity reference autocomplete field is validated.
-    $this->assertText(t('Invalid value "@value" chosen for "@field_name".', ['@value' => 'Test', '@field_name' => 'Test Entity Reference Field (value 1)']));
+    $this->assertText(t('There are no entities matching "@entity"', ['@entity' => 'Test']));
 
     $edit = [
       'title[0][value]' => 'Test',

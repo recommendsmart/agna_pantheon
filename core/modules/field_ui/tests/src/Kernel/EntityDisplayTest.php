@@ -94,8 +94,6 @@ class EntityDisplayTest extends KernelTestBase {
       'weight' => -5,
       'settings' => [
         'link_to_entity' => FALSE,
-        'offset' => 0,
-        'limit' => 0,
       ],
       'third_party_settings' => [],
       'region' => 'content',

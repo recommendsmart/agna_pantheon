@@ -117,8 +117,6 @@ abstract class EntityReferenceFormatterBase extends FormatterBase {
    * viewed.
    */
   public function prepareView(array $entities_items) {
-    parent::prepareView($entities_items);
-
     // Collect entity IDs to load. For performance, we want to use a single
     // "multiple entity load" to load all the entities for the multiple
     // "entity reference item lists" being displayed. We thus cannot use

@@ -32,5 +32,5 @@ taxonomy.vocabulary.*:
       label: 'Weight'
 
 field.formatter.settings.entity_reference_rss_category:
-  type: base_field_formatter_settings
+  type: mapping
   label: 'Taxonomy format settings'

@@ -302,12 +302,11 @@ class CommentController extends ControllerBase {
 
     $account = $this->currentUser();
 
-    // Check if the user has the proper 'create' permissions.
-    $field = $entity->{$field_name};
-    $access = $field->access('create', $account, TRUE);
+    // Check if the user has the proper permissions.
+    $access = AccessResult::allowedIfHasPermission($account, 'post comments');
 
     // If commenting is open on the entity.
-    $status = $status = $field->status;
+    $status = $entity->{$field_name}->status;
     $access = $access->andIf(AccessResult::allowedIf($status == CommentItemInterface::OPEN)
       ->addCacheableDependency($entity))
       // And if user has access to the host entity.
@@ -315,14 +314,11 @@ class CommentController extends ControllerBase {
 
     // $pid indicates that this is a reply to a comment.
     if ($pid) {
+      // Check if the user has the proper permissions.
+      $access = $access->andIf(AccessResult::allowedIfHasPermission($account, 'access comments'));
+
       // Load the parent comment.
       $comment = $this->entityTypeManager()->getStorage('comment')->load($pid);
-      // Check if the user has the proper permissions to view parent comment.
-      // If there is no valid comment, than do not allow action.
-      $access = AccessResult::forbidden();
-      if (!empty($comment)) {
-        $access = $comment->access('view', $account, TRUE);
-      }
       // Check if the parent comment is published and belongs to the entity.
       $access = $access->andIf(AccessResult::allowedIf($comment && $comment->isPublished() && $comment->getCommentedEntityId() == $entity->id()));
       if ($comment) {

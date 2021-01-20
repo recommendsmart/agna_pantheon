@@ -45,9 +45,9 @@ class CommentDefaultFormatter extends FormatterBase implements ContainerFactoryP
    */
   public static function defaultSettings() {
     return [
-        'view_mode' => 'default',
-        'pager_id' => 0,
-      ] + parent::defaultSettings();
+      'view_mode' => 'default',
+      'pager_id' => 0,
+    ] + parent::defaultSettings();
   }
 
   /**
@@ -176,14 +176,13 @@ class CommentDefaultFormatter extends FormatterBase implements ContainerFactoryP
       // $entity->get($field_name)->comment_count, but unpublished comments
       // should display if the user is an administrator.
       $elements['#cache']['contexts'][] = 'user.permissions';
-      if ($items->access('view only', $this->currentUser) || $this->currentUser->hasPermission('administer comments')) {
+      if ($this->currentUser->hasPermission('access comments') || $this->currentUser->hasPermission('administer comments')) {
         $output['comments'] = [];
 
-        if ($items->comment_count || $this->currentUser->hasPermission('administer comments')) {
+        if ($entity->get($field_name)->comment_count || $this->currentUser->hasPermission('administer comments')) {
           $mode = $comment_settings['default_mode'];
           $comments_per_page = $comment_settings['per_page'];
           $comments = $this->storage->loadThread($entity, $field_name, $mode, $comments_per_page, $this->getSetting('pager_id'));
-
           if ($comments) {
             $build = $this->viewBuilder->viewMultiple($comments, $this->getSetting('view_mode'));
             $build['pager']['#type'] = 'pager';
@@ -206,7 +205,7 @@ class CommentDefaultFormatter extends FormatterBase implements ContainerFactoryP
       if ($status == CommentItemInterface::OPEN && $comment_settings['form_location'] == CommentItemInterface::FORM_BELOW && $this->viewMode != 'print') {
         // Only show the add comment form if the user has permission.
         $elements['#cache']['contexts'][] = 'user.roles';
-        if ($items->access('create', $this->currentUser)) {
+        if ($this->currentUser->hasPermission('post comments')) {
           $output['comment_form'] = [
             '#lazy_builder' => [
               'comment.lazy_builders:renderForm',
@@ -223,11 +222,11 @@ class CommentDefaultFormatter extends FormatterBase implements ContainerFactoryP
       }
 
       $elements[] = $output + [
-          '#comment_type' => $this->getFieldSetting('comment_type'),
-          '#comment_display_mode' => $this->getFieldSetting('default_mode'),
-          'comments' => [],
-          'comment_form' => [],
-        ];
+        '#comment_type' => $this->getFieldSetting('comment_type'),
+        '#comment_display_mode' => $this->getFieldSetting('default_mode'),
+        'comments' => [],
+        'comment_form' => [],
+      ];
     }
 
     return $elements;

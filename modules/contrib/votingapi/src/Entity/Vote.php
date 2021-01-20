@@ -29,6 +29,9 @@ use Drupal\votingapi\VoteInterface;
  *   handlers = {
  *     "storage" = "Drupal\votingapi\VoteStorage",
  *     "access" = "Drupal\votingapi\VoteAccessControlHandler",
+ *     "form" = {
+ *       "delete" = "Drupal\votingapi\Form\VoteDeleteConfirm"
+ *     },
  *     "views_data" = "Drupal\votingapi\Entity\VoteViewsData",
  *   },
  *   base_table = "votingapi_vote",
@@ -37,7 +40,10 @@ use Drupal\votingapi\VoteInterface;
  *     "id" = "id",
  *     "uuid" = "uuid",
  *     "bundle" = "type",
- *   }
+ *   },
+ *   links = {
+ *     "delete-form" = "/admin/vote/{vote}/delete",
+ *   },
  * )
  */
 class Vote extends ContentEntityBase implements VoteInterface {

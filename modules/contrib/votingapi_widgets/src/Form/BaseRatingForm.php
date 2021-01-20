@@ -19,9 +19,7 @@ use Drupal\votingapi\VoteResultFunctionManager;
 class BaseRatingForm extends ContentEntityForm {
 
   /**
-   * The voting result function manager.
-   *
-   * @var \Drupal\votingapi\VoteResultFunctionManager
+   * @var VoteResultFunctionManager $votingapiResult
    */
   protected $votingapiResult;
 
@@ -45,15 +43,12 @@ class BaseRatingForm extends ContentEntityForm {
     );
   }
 
-  /**
-   * {@inheritdoc}
-   */
   public function getFormId() {
     $form_id = parent::getFormId();
     $entity = $this->getEntity();
     $voted_entity_type = $entity->getVotedEntityType();
     $voted_entity_id = $entity->getVotedEntityId();
-    $voted_entity = $this->entityTypeManager->getStorage($voted_entity_type)->load($voted_entity_id);
+    $voted_entity = $this->entityManager->getStorage($voted_entity_type)->load($voted_entity_id);
 
     $additional_form_id_parts = [];
     $additional_form_id_parts[] = $voted_entity->getEntityTypeId();
@@ -64,6 +59,8 @@ class BaseRatingForm extends ContentEntityForm {
     $form_id = implode('_', $additional_form_id_parts) . '__' . $form_id;
     return $form_id;
   }
+
+  public $plugin;
 
   /**
    * {@inheritdoc}
@@ -124,7 +121,7 @@ class BaseRatingForm extends ContentEntityForm {
     $form['submit'] += [
       '#type' => 'button',
       '#ajax' => [
-        'callback' => [$this, 'ajaxSubmit'],
+        'callback' => array($this, 'ajaxSubmit'),
         'event' => 'click',
         'wrapper' => $form_id,
         'progress' => [

@@ -5,13 +5,10 @@ namespace Drupal\layout_builder\Form;
 use Drupal\Core\Entity\EntityInterface;
 use Drupal\Core\Field\FieldDefinitionInterface;
 use Drupal\Core\Form\FormStateInterface;
-use Drupal\Core\Url;
 use Drupal\field_ui\Form\EntityViewDisplayEditForm;
 use Drupal\layout_builder\Entity\LayoutEntityDisplayInterface;
 use Drupal\layout_builder\Plugin\SectionStorage\OverridesSectionStorage;
 use Drupal\layout_builder\SectionStorageInterface;
-use Drupal\layout_builder\TranslatableSectionStorageInterface;
-use Symfony\Component\DependencyInjection\ContainerInterface;
 
 /**
  * Edit form for the LayoutBuilderEntityViewDisplay entity type.
@@ -34,22 +31,6 @@ class LayoutBuilderEntityViewDisplayForm extends EntityViewDisplayEditForm {
    * @var \Drupal\layout_builder\DefaultsSectionStorageInterface
    */
   protected $sectionStorage;
-
-  /**
-   * The language manager.
-   *
-   * @var \Drupal\Core\Language\LanguageManagerInterface
-   */
-  protected $languageManager;
-
-  /**
-   * {@inheritdoc}
-   */
-  public static function create(ContainerInterface $container) {
-    $class = parent::create($container);
-    $class->languageManager = $container->get('language_manager');
-    return $class;
-  }
 
   /**
    * {@inheritdoc}
@@ -76,10 +57,6 @@ class LayoutBuilderEntityViewDisplayForm extends EntityViewDisplayEditForm {
       $form['#fields'] = [];
       $form['#extra'] = [];
     }
-    $is_translatable =
-      $this->sectionStorage instanceof TranslatableSectionStorageInterface
-      && $this->languageManager->isMultilingual()
-      && $this->moduleHandler->moduleExists('config_translation');
 
     $form['manage_layout'] = [
       '#type' => 'link',
@@ -88,17 +65,6 @@ class LayoutBuilderEntityViewDisplayForm extends EntityViewDisplayEditForm {
       '#attributes' => ['class' => ['button']],
       '#url' => $this->sectionStorage->getLayoutBuilderUrl(),
       '#access' => $is_enabled,
-    ];
-
-    $form['translate_layout'] = [
-      '#type' => 'link',
-      '#title' => $this->t('Translate layout'),
-      '#weight' => -9,
-      '#attributes' => ['class' => ['button']],
-      '#url' => Url::fromUserInput(
-        Url::fromRoute('<current>')->toString() . '/translate'
-      ),
-      '#access' => $is_enabled && $is_translatable,
     ];
 
     $form['layout'] = [

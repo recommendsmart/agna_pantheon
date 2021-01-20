@@ -130,14 +130,14 @@ class ImageFormatter extends ImageFormatterBase implements ContainerFactoryPlugi
       '#options' => $link_types,
     ];
 
-    return parent::settingsForm($form, $form_state) + $element;
+    return $element;
   }
 
   /**
    * {@inheritdoc}
    */
   public function settingsSummary() {
-    $summary = parent::settingsSummary();
+    $summary = [];
 
     $image_styles = image_style_options(FALSE);
     // Unset possible 'No defined styles' option.

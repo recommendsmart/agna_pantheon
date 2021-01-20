@@ -7,7 +7,7 @@
 
 use Drupal\Core\Routing\RouteMatchInterface;
 use Drupal\field\Entity\FieldStorageConfig;
-use Drupal\Core\Entity\EntityTypeInterface;
+use Drupal\core\Entity\EntityTypeInterface;
 use Drupal\Core\Field\BaseFieldDefinition;
 use Drupal\Core\Form\FormStateInterface;
 use Drupal\field\Entity\FieldConfig;
@@ -36,7 +36,7 @@ function votingapi_widgets_entity_base_field_info(EntityTypeInterface $entity_ty
   if ($entity_type->id() != 'vote') {
     return;
   }
-  $fields = [];
+  $fields = array();
 
   $fields['field_name'] = BaseFieldDefinition::create('string')
     ->setLabel(t('Field name'))
@@ -44,7 +44,7 @@ function votingapi_widgets_entity_base_field_info(EntityTypeInterface $entity_ty
     ->setRevisionable(FALSE)
     ->setRequired(FALSE)
     ->setDescription(t('Holds the field name.'))
-    ->setPropertyConstraints('value', ['Length' => ['max' => FieldStorageConfig::NAME_MAX_LENGTH]]);
+    ->setPropertyConstraints('value', array('Length' => array('max' => FieldStorageConfig::NAME_MAX_LENGTH)));
 
   return $fields;
 }

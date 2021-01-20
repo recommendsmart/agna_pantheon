@@ -11,7 +11,6 @@ use Drupal\Core\Session\UserSession;
 use Drupal\Core\Theme\ThemeInitializationInterface;
 use Drupal\Core\Theme\ThemeManagerInterface;
 use Drupal\Core\Url;
-use Drupal\language\ConfigurableLanguageManagerInterface;
 use Drupal\search_api\Datasource\DatasourceInterface;
 use Drupal\search_api\Item\ItemInterface;
 use Drupal\search_api\LoggerTrait;
@@ -268,27 +267,6 @@ class RenderedItem extends ProcessorPluginBase {
       }
       $view_mode = (string) $configuration['view_mode'][$datasource_id][$bundle];
 
-      // Switch out the language negotiator (if present) for our own
-      // implementation to make sure nested entities will also be rendered with
-      // the correct language.
-      $languageManager = \Drupal::languageManager();
-      if (\Drupal::moduleHandler()->moduleExists('language')
-          && $languageManager instanceof ConfigurableLanguageManagerInterface) {
-        // When the language_negotiator service is built, it will initialize
-        // the language manager, and it would replace the static negotiator we
-        // are setting up. Therefore, we need to make sure the language_negotiator
-        // service is built already. It might not have been built yet in certain
-        // cases, for example when indexing from the command line.
-        \Drupal::service('language_negotiator');
-
-        $old_negotiator = $languageManager->getNegotiator();
-        $negotiator = \Drupal::service('search_api.static_language_negotiator');
-        $languageManager->setNegotiator($negotiator);
-        $langcode = $item->getLanguage();
-        $languageManager->reset();
-        $negotiator->setLanguageCode($langcode);
-      }
-
       try {
         $build = $datasource->viewItem($item->getOriginalObject(), $view_mode);
         if ($build) {
@@ -311,11 +289,6 @@ class RenderedItem extends ProcessorPluginBase {
           '%index' => $this->index->label(),
         ];
         $this->logException($e, '%type while trying to render item %item_id with view mode %view_mode for search index %index: @message in %function (line %line of %file).', $variables);
-      }
-
-      if (isset($old_negotiator)) {
-        $languageManager->setNegotiator($old_negotiator);
-        $languageManager->reset();
       }
     }
 

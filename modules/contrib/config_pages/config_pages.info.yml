@@ -8,7 +8,7 @@ configure: entity.config_pages.collection
 core: 8.x
 core_version_requirement: ^8 || ^9
 
-# Information added by Drupal.org packaging script on 2020-07-10
-version: '8.x-2.8'
+# Information added by Drupal.org packaging script on 2021-01-12
+version: '8.x-2.9'
 project: 'config_pages'
-datestamp: 1594390052
+datestamp: 1610434195

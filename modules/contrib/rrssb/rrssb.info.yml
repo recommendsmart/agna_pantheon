@@ -3,9 +3,9 @@ description: 'Adds the ability to use the Ridiculously Responsive Social Share B
 package: RRSSB
 type: module
 core_version_requirement: ^8 || ^9
-configure: rrssb.admin_settings
+configure: entity.rrssb_button_set.collection
 
-# Information added by Drupal.org packaging script on 2020-04-15
-version: '8.x-2.2'
+# Information added by Drupal.org packaging script on 2020-12-22
+version: '8.x-2.3'
 project: 'rrssb'
-datestamp: 1586963403
+datestamp: 1608651874

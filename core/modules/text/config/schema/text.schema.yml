@@ -80,11 +80,11 @@ field.value.text_with_summary:
       label: 'Text format'
 
 field.formatter.settings.text_default:
-  type: base_field_formatter_settings
+  type: mapping
   label: 'Formatted text default display format settings'
 
 field.formatter.settings.text_summary_or_trimmed:
-  type: base_field_formatter_settings
+  type: mapping
   label: 'Summary or trimmed formatted text display format settings'
   mapping:
     trim_length:
@@ -92,7 +92,7 @@ field.formatter.settings.text_summary_or_trimmed:
       label: 'Trim length'
 
 field.formatter.settings.text_trimmed:
-  type: base_field_formatter_settings
+  type: mapping
   label: 'Trimmed text display format settings'
   mapping:
     trim_length:

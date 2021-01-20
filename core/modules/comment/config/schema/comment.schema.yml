@@ -8,7 +8,7 @@ comment.settings:
       label: 'Whether to log IP addresses with comments or not.'
 
 field.formatter.settings.comment_default:
-  type: base_field_formatter_settings
+  type: mapping
   label: 'Comment display format settings'
   mapping:
     view_mode:

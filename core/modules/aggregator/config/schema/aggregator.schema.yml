@@ -49,7 +49,7 @@ block.settings.aggregator_feed_block:
       label: 'Feed'
 
 field.formatter.settings.aggregator_title:
-  type: base_field_formatter_settings
+  type: mapping
   label: 'Formatter settings'
   mapping:
     display_as_link:

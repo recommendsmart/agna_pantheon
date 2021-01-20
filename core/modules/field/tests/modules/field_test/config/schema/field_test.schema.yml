@@ -1,5 +1,5 @@
 field.formatter.settings.field_test_default:
-  type: base_field_formatter_settings
+  type: mapping
   label: 'Field test default display format settings'
   mapping:
     test_formatter_setting:
@@ -7,7 +7,7 @@ field.formatter.settings.field_test_default:
       label: 'Test setting'
 
 field.formatter.settings.field_test_multiple:
-  type: base_field_formatter_settings
+  type: mapping
   label: 'Multiple field test display format settings'
   mapping:
     test_formatter_setting_multiple:
@@ -18,7 +18,7 @@ field.formatter.settings.field_test_multiple:
       label: 'Test altering'
 
 field.formatter.settings.field_empty_setting:
-  type: base_field_formatter_settings
+  type: mapping
   label: 'Empty setting field display format settings'
   mapping:
     field_empty_setting:
@@ -26,7 +26,7 @@ field.formatter.settings.field_empty_setting:
       label: 'Test setting'
 
 field.formatter.settings.field_test_with_prepare_view:
-  type: base_field_formatter_settings
+  type: mapping
   label: 'Field prepare step display format settings'
   mapping:
     test_formatter_setting_additional:

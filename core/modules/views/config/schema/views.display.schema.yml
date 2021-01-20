@@ -68,9 +68,6 @@ views.display.page:
         menu_name:
           type: string
           label: 'Menu name'
-    always_use_admin_theme:
-      type: boolean
-      label: 'Always use admin theme'
 
 views.display.block:
   type: views_display

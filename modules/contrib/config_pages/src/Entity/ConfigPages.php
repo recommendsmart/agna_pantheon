@@ -211,8 +211,8 @@ class ConfigPages extends ContentEntityBase implements ConfigPagesInterface {
     $path = isset($menu['path']) ? $menu['path'] : '';
 
     return $path
-      ? Url::fromRoute('config_pages.' . $this->bundle(), ['config_pages' => $this->id()])
-      : Url::fromRoute('entity.config_pages.canonical', ['config_pages' => $this->id()]);
+      ? Url::fromRoute('config_pages.' . $this->bundle(), ['config_pages' => $this->id()], $options)
+      : Url::fromRoute('entity.config_pages.canonical', ['config_pages' => $this->id()], $options);
   }
 
 }

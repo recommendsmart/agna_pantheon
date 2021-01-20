@@ -56,3 +56,14 @@ block.settings.config_pages_block:
     config_page_view_mode:
       type: string
       label: 'view mode for ConfigPage to show'
+
+condition.plugin.config_pages_values_access:
+  type: condition.plugin
+  label: 'ConfigPage field value'
+  mapping:
+    config_page_field:
+      type: string
+    operator:
+      type: string
+    condition_value:
+      type: string

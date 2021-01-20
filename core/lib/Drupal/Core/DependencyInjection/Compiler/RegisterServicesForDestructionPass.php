@@ -23,14 +23,6 @@ class RegisterServicesForDestructionPass implements CompilerPassInterface {
 
     $definition = $container->getDefinition('kernel_destruct_subscriber');
     $services = $container->findTaggedServiceIds('needs_destruction');
-
-    // Sort by priority. Higher priorities go first.
-    uasort($services, function ($a, $b) {
-      $a_priority = isset($a[0]['priority']) ? $a[0]['priority'] : 0;
-      $b_priority = isset($b[0]['priority']) ? $b[0]['priority'] : 0;
-      return $a_priority < $b_priority;
-    });
-
     foreach ($services as $id => $attributes) {
       $definition->addMethodCall('registerService', [$id]);
     }

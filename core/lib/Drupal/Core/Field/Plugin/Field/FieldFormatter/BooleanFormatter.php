@@ -113,7 +113,7 @@ class BooleanFormatter extends FormatterBase {
    * {@inheritdoc}
    */
   public function settingsSummary() {
-    $summary = parent::settingsSummary();
+    $summary = [];
     $setting = $this->getSetting('format');
 
     if ($setting == 'custom') {

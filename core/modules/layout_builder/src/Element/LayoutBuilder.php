@@ -2,9 +2,7 @@
 
 namespace Drupal\layout_builder\Element;
 
-use Drupal\Component\Plugin\DerivativeInspectionInterface;
 use Drupal\Core\Ajax\AjaxHelperTrait;
-use Drupal\Core\Entity\EntityTypeManagerInterface;
 use Drupal\Core\Messenger\MessengerInterface;
 use Drupal\Core\Plugin\ContainerFactoryPluginInterface;
 use Drupal\Core\Plugin\PluginFormInterface;
@@ -13,7 +11,6 @@ use Drupal\Core\Render\Element\RenderElement;
 use Drupal\Core\Url;
 use Drupal\layout_builder\Context\LayoutBuilderContextTrait;
 use Drupal\layout_builder\LayoutBuilderHighlightTrait;
-use Drupal\layout_builder\LayoutEntityHelperTrait;
 use Drupal\layout_builder\LayoutTempstoreRepositoryInterface;
 use Drupal\layout_builder\OverridesSectionStorageInterface;
 use Drupal\layout_builder\SectionStorageInterface;
@@ -32,7 +29,6 @@ class LayoutBuilder extends RenderElement implements ContainerFactoryPluginInter
   use AjaxHelperTrait;
   use LayoutBuilderContextTrait;
   use LayoutBuilderHighlightTrait;
-  use LayoutEntityHelperTrait;
 
   /**
    * The layout tempstore repository.
@@ -49,13 +45,6 @@ class LayoutBuilder extends RenderElement implements ContainerFactoryPluginInter
   protected $messenger;
 
   /**
-   * The entity type manager.
-   *
-   * @var \Drupal\Core\Entity\EntityTypeManagerInterface
-   */
-  protected $entityTypeManager;
-
-  /**
    * Constructs a new LayoutBuilder.
    *
    * @param array $configuration
@@ -68,22 +57,11 @@ class LayoutBuilder extends RenderElement implements ContainerFactoryPluginInter
    *   The layout tempstore repository.
    * @param \Drupal\Core\Messenger\MessengerInterface $messenger
    *   The messenger service.
-   * @param \Drupal\Core\Entity\EntityTypeManagerInterface $entity_type_manager
-   *   (optional) The entity type manager.
-   *
-   * @todo The current constructor signature is deprecated:
-   *   - The $entity_type_manager parameter is optional but should become
-   *   required. Deprecate in https://www.drupal.org/node/3058490.
    */
-  public function __construct(array $configuration, $plugin_id, $plugin_definition, LayoutTempstoreRepositoryInterface $layout_tempstore_repository, MessengerInterface $messenger, EntityTypeManagerInterface $entity_type_manager = NULL) {
+  public function __construct(array $configuration, $plugin_id, $plugin_definition, LayoutTempstoreRepositoryInterface $layout_tempstore_repository, MessengerInterface $messenger) {
     parent::__construct($configuration, $plugin_id, $plugin_definition);
     $this->layoutTempstoreRepository = $layout_tempstore_repository;
     $this->messenger = $messenger;
-    if ($entity_type_manager === NULL) {
-      @trigger_error('The entity_type.manager service must be passed to \Drupal\layout_builder\Element\LayoutBuilder::__construct(). It was added in Drupal 8.8.0 and will be required before Drupal 9.0.0.', E_USER_DEPRECATED);
-      $entity_type_manager = \Drupal::service('entity_type.manager');
-    }
-    $this->entityTypeManager = $entity_type_manager;
   }
 
   /**
@@ -95,8 +73,7 @@ class LayoutBuilder extends RenderElement implements ContainerFactoryPluginInter
       $plugin_id,
       $plugin_definition,
       $container->get('layout_builder.tempstore_repository'),
-      $container->get('messenger'),
-      $container->get('entity_type.manager')
+      $container->get('messenger')
     );
   }
 
@@ -133,7 +110,6 @@ class LayoutBuilder extends RenderElement implements ContainerFactoryPluginInter
    */
   protected function layout(SectionStorageInterface $section_storage) {
     $this->prepareLayout($section_storage);
-    $is_translation = static::isTranslation($section_storage);
 
     $output = [];
     if ($this->isAjax()) {
@@ -143,17 +119,11 @@ class LayoutBuilder extends RenderElement implements ContainerFactoryPluginInter
     }
     $count = 0;
     for ($i = 0; $i < $section_storage->count(); $i++) {
-      if (!$is_translation) {
-        $output[] = $this->buildAddSectionLink($section_storage, $count);
-      }
-
+      $output[] = $this->buildAddSectionLink($section_storage, $count);
       $output[] = $this->buildAdministrativeSection($section_storage, $count);
       $count++;
     }
-    if (!$is_translation) {
-      $output[] = $this->buildAddSectionLink($section_storage, $count);
-    }
-
+    $output[] = $this->buildAddSectionLink($section_storage, $count);
     $output['#attached']['library'][] = 'layout_builder/drupal.layout_builder';
     // As the Layout Builder UI is typically displayed using the frontend theme,
     // it is not marked as an administrative page at the route level even though
@@ -165,7 +135,6 @@ class LayoutBuilder extends RenderElement implements ContainerFactoryPluginInter
     $output['#attributes']['class'][] = 'layout-builder';
     // Mark this UI as uncacheable.
     $output['#cache']['max-age'] = 0;
-
     return $output;
   }
 
@@ -273,7 +242,7 @@ class LayoutBuilder extends RenderElement implements ContainerFactoryPluginInter
     $storage_type = $section_storage->getStorageType();
     $storage_id = $section_storage->getStorageId();
     $section = $section_storage->getSection($delta);
-    $sections_editable = !static::isTranslation($section_storage);
+
     $layout = $section->getLayout();
     $layout_settings = $section->getLayoutSettings();
     $section_label = !empty($layout_settings['label']) ? $layout_settings['label'] : $this->t('Section @section', ['@section' => $delta + 1]);
@@ -285,19 +254,33 @@ class LayoutBuilder extends RenderElement implements ContainerFactoryPluginInter
     foreach ($layout_definition->getRegions() as $region => $info) {
       if (!empty($build[$region])) {
         foreach (Element::children($build[$region]) as $uuid) {
-          if ($sections_editable) {
-            $build[$region][$uuid]['#attributes']['class'][] = 'js-layout-builder-block';
-          }
+          $build[$region][$uuid]['#attributes']['class'][] = 'js-layout-builder-block';
           $build[$region][$uuid]['#attributes']['class'][] = 'layout-builder-block';
           $build[$region][$uuid]['#attributes']['data-layout-block-uuid'] = $uuid;
           $build[$region][$uuid]['#attributes']['data-layout-builder-highlight-id'] = $this->blockUpdateHighlightId($uuid);
-          $build[$region][$uuid]['#contextual_links'] = $this->createContextualLinkElement($section_storage, $delta, $region, $uuid);
+          $build[$region][$uuid]['#contextual_links'] = [
+            'layout_builder_block' => [
+              'route_parameters' => [
+                'section_storage_type' => $storage_type,
+                'section_storage' => $storage_id,
+                'delta' => $delta,
+                'region' => $region,
+                'uuid' => $uuid,
+              ],
+              // Add metadata about the current operations available in
+              // contextual links. This will invalidate the client-side cache of
+              // links that were cached before the 'move' link was added.
+              // @see layout_builder.links.contextual.yml
+              'metadata' => [
+                'operations' => 'move:update:remove',
+              ],
+            ],
+          ];
         }
       }
 
       $build[$region]['layout_builder_add_block']['link'] = [
         '#type' => 'link',
-        '#access' => $sections_editable,
         // Add one to the current delta since it is zero-indexed.
         '#title' => $this->t('Add block <span class="visually-hidden">in @section, @region region</span>', ['@section' => $section_label, '@region' => $region_labels[$region]]),
         '#url' => Url::fromRoute('layout_builder.choose_block',
@@ -374,7 +357,6 @@ class LayoutBuilder extends RenderElement implements ContainerFactoryPluginInter
       'remove' => [
         '#type' => 'link',
         '#title' => $this->t('Remove @section', ['@section' => $section_label]),
-        '#access' => $sections_editable,
         '#url' => Url::fromRoute('layout_builder.remove_section', [
           'section_storage_type' => $storage_type,
           'section_storage' => $storage_id,
@@ -399,7 +381,7 @@ class LayoutBuilder extends RenderElement implements ContainerFactoryPluginInter
       'configure' => [
         '#type' => 'link',
         '#title' => $this->t('Configure @section', ['@section' => $section_label]),
-        '#access' => $layout instanceof PluginFormInterface && $sections_editable,
+        '#access' => $layout instanceof PluginFormInterface,
         '#url' => Url::fromRoute('layout_builder.configure_section', [
           'section_storage_type' => $storage_type,
           'section_storage' => $storage_id,
@@ -416,69 +398,6 @@ class LayoutBuilder extends RenderElement implements ContainerFactoryPluginInter
         ],
       ],
       'layout-builder__section' => $build,
-    ];
-  }
-
-  /**
-   * Creates contextual link element for a component.
-   *
-   * @param \Drupal\layout_builder\SectionStorageInterface $section_storage
-   *   The section storage.
-   * @param $delta
-   *   The section delta.
-   * @param $region
-   *   The region.
-   * @param $uuid
-   *   The UUID of the component.
-   * @param $is_translation
-   *   Whether the section storage is handling a translation.
-   *
-   * @return array|null
-   *   The contextual link render array or NULL if none.
-   */
-  protected function createContextualLinkElement(SectionStorageInterface $section_storage, $delta, $region, $uuid) {
-    $section = $section_storage->getSection($delta);
-    $contextual_link_settings = [
-      'route_parameters' => [
-        'section_storage_type' => $section_storage->getStorageType(),
-        'section_storage' => $section_storage->getStorageId(),
-        'delta' => $delta,
-        'region' => $region,
-        'uuid' => $uuid,
-      ],
-    ];
-    if (static::isTranslation($section_storage)) {
-      $contextual_group = 'layout_builder_block_translation';
-      $component = $section->getComponent($uuid);
-      /** @var \Drupal\Core\Language\LanguageInterface $language */
-      if ($language = $section_storage->getTranslationLanguage()) {
-        $contextual_link_settings['route_parameters']['langcode'] = $language->getId();
-      }
-
-      /** @var \Drupal\layout_builder\Plugin\Block\InlineBlock $plugin */
-      $plugin = $component->getPlugin();
-      if ($plugin instanceof DerivativeInspectionInterface && $plugin->getBaseId() === 'inline_block') {
-        $configuration = $plugin->getConfiguration();
-        /** @var \Drupal\block_content\Entity\BlockContent $block */
-        $block = $this->entityTypeManager->getStorage('block_content')
-          ->loadRevision($configuration['block_revision_id']);
-        if ($block->isTranslatable()) {
-          $contextual_group = 'layout_builder_inline_block_translation';
-        }
-      }
-    }
-    else {
-      $contextual_group = 'layout_builder_block';
-      // Add metadata about the current operations available in
-      // contextual links. This will invalidate the client-side cache of
-      // links that were cached before the 'move' link was added.
-      // @see layout_builder.links.contextual.yml
-      $contextual_link_settings['metadata'] = [
-        'operations' => 'move:update:remove',
-      ];
-    }
-    return [
-      $contextual_group => $contextual_link_settings,
     ];
   }
 

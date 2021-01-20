@@ -7,7 +7,6 @@
 
 use Drupal\Core\Cache\CacheableMetadata;
 use Drupal\Core\Render\Element;
-use Drupal\Core\Render\RenderContext;
 use Drupal\Core\Routing\RouteMatchInterface;
 use Drupal\Core\Template\Attribute;
 use Drupal\Component\Utility\Crypt;
@@ -297,10 +296,7 @@ function toolbar_get_rendered_subtrees() {
     ],
     '#cache_properties' => ['#subtrees'],
   ];
-  $renderer = \Drupal::service('renderer');
-  $renderer->executeInRenderContext(new RenderContext(), function() use ($renderer, &$data) {
-    $renderer->render($data);
-  });
+  \Drupal::service('renderer')->renderPlain($data);
   return [$data['#subtrees'], CacheableMetadata::createFromRenderArray($data)];
 }
 

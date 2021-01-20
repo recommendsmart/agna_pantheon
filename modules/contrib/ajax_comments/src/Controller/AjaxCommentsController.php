@@ -284,11 +284,6 @@ class AjaxCommentsController extends ControllerBase {
         $command
       );
     }
-    else {
-      // Render messages to avoid display them when reloading the page.
-      $status_messages = ['#type' => 'status_messages'];
-      $this->renderer->renderRoot($status_messages);
-    }
 
     return $response;
   }

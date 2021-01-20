@@ -50,7 +50,6 @@ abstract class YamlTestBase extends TestCase {
       ['', NULL],
       ["\n", NULL],
       ["---\n...\n", NULL],
-      ['#Only comment', NULL],
 
       // Node anchors.
       [

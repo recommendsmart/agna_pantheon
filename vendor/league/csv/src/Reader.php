@@ -1,431 +1,362 @@
 <?php
-
 /**
- * League.Csv (https://csv.thephpleague.com)
- *
- * (c) Ignace Nyamagana Butera <nyamsprod@gmail.com>
- *
- * For the full copyright and license information, please view the LICENSE
- * file that was distributed with this source code.
- */
-
-declare(strict_types=1);
-
+* This file is part of the League.csv library
+*
+* @license http://opensource.org/licenses/MIT
+* @link https://github.com/thephpleague/csv/
+* @version 8.2.3
+* @package League.csv
+*
+* For the full copyright and license information, please view the LICENSE
+* file that was distributed with this source code.
+*/
 namespace League\Csv;
 
-use CallbackFilterIterator;
+use Generator;
+use InvalidArgumentException;
 use Iterator;
-use JsonSerializable;
-use League\Csv\Polyfill\EmptyEscapeParser;
-use SplFileObject;
-use function array_combine;
-use function array_filter;
-use function array_pad;
-use function array_slice;
-use function array_unique;
-use function count;
-use function is_array;
-use function iterator_count;
-use function iterator_to_array;
-use function mb_strlen;
-use function mb_substr;
-use function sprintf;
-use function strlen;
-use function substr;
-use const PHP_VERSION_ID;
-use const STREAM_FILTER_READ;
+use League\Csv\Modifier\MapIterator;
+use LimitIterator;
 
 /**
- * A class to parse and read records from a CSV document.
+ *  A class to manage extracting and filtering a CSV
+ *
+ * @package League.csv
+ * @since  3.0.0
+ *
  */
-class Reader extends AbstractCsv implements TabularDataReader, JsonSerializable
+class Reader extends AbstractCsv
 {
     /**
-     * header offset.
-     *
-     * @var int|null
-     */
-    protected $header_offset;
-
-    /**
-     * header record.
-     *
-     * @var string[]
-     */
-    protected $header = [];
-
-    /**
-     * records count.
-     *
-     * @var int
-     */
-    protected $nb_records = -1;
-
-    /**
-     * {@inheritdoc}
+     * @inheritdoc
      */
     protected $stream_filter_mode = STREAM_FILTER_READ;
 
     /**
-     * @var bool
-     */
-    protected $is_empty_records_included = false;
-
-    /**
-     * {@inheritdoc}
-     */
-    public static function createFromPath(string $path, string $open_mode = 'r', $context = null)
-    {
-        return parent::createFromPath($path, $open_mode, $context);
-    }
-
-    /**
-     * {@inheritdoc}
-     */
-    protected function resetProperties(): void
-    {
-        parent::resetProperties();
-        $this->nb_records = -1;
-        $this->header = [];
-    }
-
-    /**
-     * Returns the header offset.
+     * Returns a sequential array of all CSV lines
      *
-     * If no CSV header offset is set this method MUST return null
+     * The callable function will be applied to each Iterator item
      *
-     */
-    public function getHeaderOffset(): ?int
-    {
-        return $this->header_offset;
-    }
-
-    /**
-     * {@inheritDoc}
-     */
-    public function getHeader(): array
-    {
-        if (null === $this->header_offset) {
-            return $this->header;
-        }
-
-        if ([] !== $this->header) {
-            return $this->header;
-        }
-
-        $this->header = $this->setHeader($this->header_offset);
-
-        return $this->header;
-    }
-
-    /**
-     * Determine the CSV record header.
+     * @param callable|null $callable a callable function
      *
-     * @throws Exception If the header offset is set and no record is found or is the empty array
+     * @return array
+     */
+    public function fetchAll(callable $callable = null)
+    {
+        return iterator_to_array($this->applyCallable($this->getQueryIterator(), $callable), false);
+    }
+
+    /**
+     * Fetch the next row from a result set
      *
-     * @return string[]
-     */
-    protected function setHeader(int $offset): array
-    {
-        $header = $this->seekRow($offset);
-        if (in_array($header, [[], [null]], true)) {
-            throw new SyntaxError(sprintf('The header record does not exist or is empty at offset: `%s`', $offset));
-        }
-
-        if (0 !== $offset) {
-            return $header;
-        }
-
-        $header = $this->removeBOM($header, mb_strlen($this->getInputBOM()), $this->enclosure);
-        if ([''] === $header) {
-            throw new SyntaxError(sprintf('The header record does not exist or is empty at offset: `%s`', $offset));
-        }
-
-        return $header;
-    }
-
-    /**
-     * Returns the row at a given offset.
-     */
-    protected function seekRow(int $offset): array
-    {
-        foreach ($this->getDocument() as $index => $record) {
-            if ($offset === $index) {
-                return $record;
-            }
-        }
-
-        return [];
-    }
-
-    /**
-     * Returns the document as an Iterator.
-     */
-    protected function getDocument(): Iterator
-    {
-        if (70400 > PHP_VERSION_ID && '' === $this->escape) {
-            $this->document->setCsvControl($this->delimiter, $this->enclosure);
-
-            return EmptyEscapeParser::parse($this->document);
-        }
-
-        $this->document->setFlags(SplFileObject::READ_CSV | SplFileObject::READ_AHEAD);
-        $this->document->setCsvControl($this->delimiter, $this->enclosure, $this->escape);
-        $this->document->rewind();
-
-        return $this->document;
-    }
-
-    /**
-     * Strip the BOM sequence from a record.
+     * @param callable|null $callable a callable function to be applied to each Iterator item
      *
-     * @param string[] $record
+     * @return Iterator
+     */
+    public function fetch(callable $callable = null)
+    {
+        return $this->applyCallable($this->getQueryIterator(), $callable);
+    }
+
+    /**
+     * Apply The callable function
      *
-     * @return string[]
+     * @param Iterator      $iterator
+     * @param callable|null $callable
+     *
+     * @return Iterator
      */
-    protected function removeBOM(array $record, int $bom_length, string $enclosure): array
+    protected function applyCallable(Iterator $iterator, callable $callable = null)
     {
-        if (0 === $bom_length) {
-            return $record;
+        if (null !== $callable) {
+            return new MapIterator($iterator, $callable);
         }
 
-        $record[0] = mb_substr($record[0], $bom_length);
-        if ($enclosure.$enclosure != substr($record[0].$record[0], strlen($record[0]) - 1, 2)) {
-            return $record;
+        return $iterator;
+    }
+
+    /**
+     * Applies a callback function on the CSV
+     *
+     * The callback function must return TRUE in order to continue
+     * iterating over the iterator.
+     *
+     * @param callable $callable a callable function to apply to each selected CSV rows
+     *
+     * @return int the iteration count
+     */
+    public function each(callable $callable)
+    {
+        $index = 0;
+        $iterator = $this->getQueryIterator();
+        $iterator->rewind();
+        while ($iterator->valid() && true === call_user_func(
+            $callable,
+            $iterator->current(),
+            $iterator->key(),
+            $iterator
+        )) {
+            ++$index;
+            $iterator->next();
         }
 
-        $record[0] = substr($record[0], 1, -1);
-
-        return $record;
+        return $index;
     }
 
     /**
-     * {@inheritdoc}
+     * Returns a single row from the CSV
+     *
+     * By default if no offset is provided the first row of the CSV is selected
+     *
+     * @param int $offset the CSV row offset
+     *
+     * @return array
      */
-    public function fetchColumn($index = 0): Iterator
+    public function fetchOne($offset = 0)
     {
-        return ResultSet::createFromTabularDataReader($this)->fetchColumn($index);
+        $this->setOffset($offset);
+        $this->setLimit(1);
+        $iterator = $this->getQueryIterator();
+        $iterator->rewind();
+
+        return (array) $iterator->current();
     }
 
     /**
-     * {@inheritdoc}
+     * Returns the next value from a single CSV column
+     *
+     * The callable function will be applied to each value to be return
+     *
+     * By default if no column index is provided the first column of the CSV is selected
+     *
+     * @param int           $column_index CSV column index
+     * @param callable|null $callable     A callable to be applied to each of the value to be returned.
+     *
+     * @return Iterator
      */
-    public function fetchOne(int $nth_record = 0): array
+    public function fetchColumn($column_index = 0, callable $callable = null)
     {
-        return ResultSet::createFromTabularDataReader($this)->fetchOne($nth_record);
-    }
+        $column_index = $this->validateInteger($column_index, 0, 'the column index must be a positive integer or 0');
 
-    /**
-     * {@inheritdoc}
-     */
-    public function fetchPairs($offset_index = 0, $value_index = 1): Iterator
-    {
-        return ResultSet::createFromTabularDataReader($this)->fetchPairs($offset_index, $value_index);
-    }
-
-    /**
-     * {@inheritdoc}
-     */
-    public function count(): int
-    {
-        if (-1 === $this->nb_records) {
-            $this->nb_records = iterator_count($this->getRecords());
-        }
-
-        return $this->nb_records;
-    }
-
-    /**
-     * {@inheritdoc}
-     */
-    public function getIterator(): Iterator
-    {
-        return $this->getRecords();
-    }
-
-    /**
-     * {@inheritdoc}
-     */
-    public function jsonSerialize(): array
-    {
-        return iterator_to_array($this->getRecords(), false);
-    }
-
-    /**
-     * {@inheritDoc}
-     */
-    public function getRecords(array $header = []): Iterator
-    {
-        $header = $this->computeHeader($header);
-        $normalized = function ($record): bool {
-            return is_array($record) && ($this->is_empty_records_included || $record != [null]);
+        $filter_column = function ($row) use ($column_index) {
+            return isset($row[$column_index]);
         };
 
-        $bom = '';
-        if (!$this->is_input_bom_included) {
-            $bom = $this->getInputBOM();
-        }
-
-        $document = $this->getDocument();
-        $records = $this->stripBOM(new CallbackFilterIterator($document, $normalized), $bom);
-        if (null !== $this->header_offset) {
-            $records = new CallbackFilterIterator($records, function (array $record, int $offset): bool {
-                return $offset !== $this->header_offset;
-            });
-        }
-
-        if ($this->is_empty_records_included) {
-            $normalized_empty_records = static function (array $record): array {
-                if ([null] === $record) {
-                    return [];
-                }
-
-                return $record;
-            };
-
-            return $this->combineHeader(new MapIterator($records, $normalized_empty_records), $header);
-        }
-
-        return $this->combineHeader($records, $header);
-    }
-
-    /**
-     * Returns the header to be used for iteration.
-     *
-     * @param string[] $header
-     *
-     * @throws Exception If the header contains non unique column name
-     *
-     * @return string[]
-     */
-    protected function computeHeader(array $header)
-    {
-        if ([] === $header) {
-            $header = $this->getHeader();
-        }
-
-        if ($header === array_unique(array_filter($header, 'is_string'))) {
-            return $header;
-        }
-
-        throw new SyntaxError('The header record must be an empty or a flat array with unique string values.');
-    }
-
-    /**
-     * Combine the CSV header to each record if present.
-     *
-     * @param string[] $header
-     */
-    protected function combineHeader(Iterator $iterator, array $header): Iterator
-    {
-        if ([] === $header) {
-            return $iterator;
-        }
-
-        $field_count = count($header);
-        $mapper = static function (array $record) use ($header, $field_count): array {
-            if (count($record) != $field_count) {
-                $record = array_slice(array_pad($record, $field_count, null), 0, $field_count);
-            }
-
-            /** @var array<string|null> $assocRecord */
-            $assocRecord = array_combine($header, $record);
-
-            return $assocRecord;
+        $select_column = function ($row) use ($column_index) {
+            return $row[$column_index];
         };
 
-        return new MapIterator($iterator, $mapper);
+        $this->addFilter($filter_column);
+
+        return $this->applyCallable(new MapIterator($this->getQueryIterator(), $select_column), $callable);
     }
 
     /**
-     * Strip the BOM sequence from the returned records if necessary.
+     * Retrieve CSV data as pairs
+     *
+     * DEPRECATION WARNING! This method will be removed in the next major point release
+     *
+     * @deprecated deprecated since version 8.2
+     * @see Reader::fetchPairs
+     *
+     * Fetches an associative array of all rows as key-value pairs (first
+     * column is the key, second column is the value).
+     *
+     * By default if no column index is provided:
+     * - the first CSV column is used to provide the keys
+     * - the second CSV column is used to provide the value
+     *
+     * If the value from the column key index is duplicated its corresponding value will
+     * be overwritten
+     *
+     * @param int           $offset_index The column index to serve as offset
+     * @param int           $value_index  The column index to serve as value
+     * @param callable|null $callable     A callable to be applied to each of the rows to be returned.
+     *
+     * @return array
      */
-    protected function stripBOM(Iterator $iterator, string $bom): Iterator
+    public function fetchPairsWithoutDuplicates($offset_index = 0, $value_index = 1, callable $callable = null)
     {
-        if ('' === $bom) {
-            return $iterator;
-        }
+        return iterator_to_array($this->fetchPairs($offset_index, $value_index, $callable), true);
+    }
 
-        $bom_length = mb_strlen($bom);
-        $mapper = function (array $record, int $index) use ($bom_length): array {
-            if (0 !== $index) {
-                return $record;
-            }
-
-            $record = $this->removeBOM($record, $bom_length, $this->enclosure);
-            if ([''] === $record) {
-                return [null];
-            }
-
-            return $record;
+    /**
+     * Fetches the next key-value pairs from a result set (first
+     * column is the key, second column is the value).
+     *
+     * By default if no column index is provided:
+     * - the first CSV column is used to provide the keys
+     * - the second CSV column is used to provide the value
+     *
+     * @param int           $offset_index The column index to serve as offset
+     * @param int           $value_index  The column index to serve as value
+     * @param callable|null $callable     A callable to be applied to each of the rows to be returned.
+     *
+     * @return Generator
+     */
+    public function fetchPairs($offset_index = 0, $value_index = 1, callable $callable = null)
+    {
+        $offset_index = $this->validateInteger($offset_index, 0, 'the offset column index must be a positive integer or 0');
+        $value_index = $this->validateInteger($value_index, 0, 'the value column index must be a positive integer or 0');
+        $filter_pairs = function ($row) use ($offset_index) {
+            return isset($row[$offset_index]);
+        };
+        $select_pairs = function ($row) use ($offset_index, $value_index) {
+            return [
+                $row[$offset_index],
+                isset($row[$value_index]) ? $row[$value_index] : null,
+            ];
         };
 
-        $filter = function (array $record): bool {
-            return $this->is_empty_records_included || $record != [null];
+        $this->addFilter($filter_pairs);
+        $iterator = $this->applyCallable(new MapIterator($this->getQueryIterator(), $select_pairs), $callable);
+        foreach ($iterator as $row) {
+            yield $row[0] => $row[1];
+        }
+    }
+
+    /**
+     * Fetch the next row from a result set
+     *
+     * The rows are presented as associated arrays
+     * The callable function will be applied to each row
+     *
+     * @param int|array $offset_or_keys the name for each key member OR the row Index to be
+     *                                  used as the associated named keys
+     *
+     * @param callable $callable A callable to be applied to each of the rows to be returned.
+     *
+     * @throws InvalidArgumentException If the submitted keys are invalid
+     *
+     * @return Iterator
+     */
+    public function fetchAssoc($offset_or_keys = 0, callable $callable = null)
+    {
+        $keys = $this->getAssocKeys($offset_or_keys);
+        $keys_count = count($keys);
+        $combine_array = function (array $row) use ($keys, $keys_count) {
+            if ($keys_count != count($row)) {
+                $row = array_slice(array_pad($row, $keys_count, null), 0, $keys_count);
+            }
+
+            return array_combine($keys, $row);
         };
 
-        return new CallbackFilterIterator(new MapIterator($iterator, $mapper), $filter);
+        return $this->applyCallable(new MapIterator($this->getQueryIterator(), $combine_array), $callable);
     }
 
     /**
-     * Selects the record to be used as the CSV header.
+     * Selects the array to be used as key for the fetchAssoc method
      *
-     * Because the header is represented as an array, to be valid
-     * a header MUST contain only unique string value.
+     * @param int|array $offset_or_keys the assoc key OR the row Index to be used
+     *                                  as the key index
      *
-     * @param int|null $offset the header record offset
+     * @throws InvalidArgumentException If the row index and/or the resulting array is invalid
      *
-     * @throws Exception if the offset is a negative integer
-     *
-     * @return static
+     * @return array
      */
-    public function setHeaderOffset(?int $offset): self
+    protected function getAssocKeys($offset_or_keys)
     {
-        if ($offset === $this->header_offset) {
-            return $this;
+        if (is_array($offset_or_keys)) {
+            return $this->validateKeys($offset_or_keys);
         }
 
-        if (null !== $offset && 0 > $offset) {
-            throw new InvalidArgument(__METHOD__.'() expects 1 Argument to be greater or equal to 0');
-        }
+        $offset_or_keys = $this->validateInteger(
+            $offset_or_keys,
+            0,
+            'the row index must be a positive integer, 0 or a non empty array'
+        );
+        $keys = $this->validateKeys($this->getRow($offset_or_keys));
+        $filterOutRow = function ($row, $rowIndex) use ($offset_or_keys) {
+            return $rowIndex != $offset_or_keys;
+        };
+        $this->addFilter($filterOutRow);
 
-        $this->header_offset = $offset;
-        $this->resetProperties();
-
-        return $this;
+        return $keys;
     }
 
     /**
-     * Enable skipping empty records.
+     * Validates the array to be used by the fetchAssoc method
+     *
+     * @param array $keys
+     *
+     * @throws InvalidArgumentException If the submitted array fails the assertion
+     *
+     * @return array
      */
-    public function skipEmptyRecords(): self
+    protected function validateKeys(array $keys)
     {
-        if ($this->is_empty_records_included) {
-            $this->is_empty_records_included = false;
-            $this->nb_records = -1;
+        if (empty($keys) || $keys !== array_unique(array_filter($keys, [$this, 'isValidKey']))) {
+            throw new InvalidArgumentException('Use a flat array with unique string values');
         }
 
-        return $this;
+        return $keys;
     }
 
     /**
-     * Disable skipping empty records.
+     * Returns whether the submitted value can be used as string
+     *
+     * @param mixed $value
+     *
+     * @return bool
      */
-    public function includeEmptyRecords(): self
+    protected function isValidKey($value)
     {
-        if (!$this->is_empty_records_included) {
-            $this->is_empty_records_included = true;
-            $this->nb_records = -1;
-        }
-
-        return $this;
+        return is_scalar($value) || (is_object($value) && method_exists($value, '__toString'));
     }
 
     /**
-     * Tells whether empty records are skipped by the instance.
+     * Returns a single row from the CSV without filtering
+     *
+     * @param int $offset
+     *
+     * @throws InvalidArgumentException If the $offset is not valid or the row does not exist
+     *
+     * @return array
      */
-    public function isEmptyRecordsIncluded(): bool
+    protected function getRow($offset)
     {
-        return $this->is_empty_records_included;
+        $row = $this->seekRow($offset);
+        if (empty($row)) {
+            throw new InvalidArgumentException('the specified row does not exist or is empty');
+        }
+
+        if (0 !== $offset || !$this->isBomStrippable()) {
+            return $row;
+        }
+
+        $bom_length = mb_strlen($this->getInputBOM());
+        $row[0] = mb_substr($row[0], $bom_length);
+        if ($this->enclosure == mb_substr($row[0], 0, 1) && $this->enclosure == mb_substr($row[0], -1, 1)) {
+            $row[0] = mb_substr($row[0], 1, -1);
+        }
+
+        return $row;
+    }
+
+    /**
+     * Returns the row at a given offset
+     *
+     * @param int $offset
+     *
+     * @return mixed
+     */
+    protected function seekRow($offset)
+    {
+        $stream = $this->getIterator();
+        $stream->rewind();
+        //Workaround for SplFileObject::seek bug in PHP7.2+ see https://bugs.php.net/bug.php?id=75917
+        if (PHP_VERSION_ID > 70200 && !$stream instanceof StreamIterator) {
+            while ($offset !== $stream->key() && $stream->valid()) {
+                $stream->next();
+            }
+
+            return $stream->current();
+        }
+
+        $iterator = new LimitIterator($stream, $offset, 1);
+        $iterator->rewind();
+
+        return $iterator->current();
     }
 }

@@ -38,12 +38,12 @@ class VotingApiField extends FieldItemBase {
    * {@inheritdoc}
    */
   public static function defaultFieldSettings() {
-    return [
+    return array(
       'result_function' => 'vote_average',
       'widget_format' => 'fivestar',
       'anonymous_window' => -1,
       'user_window' => -1,
-    ] + parent::defaultFieldSettings();
+    ) + parent::defaultFieldSettings();
   }
 
   /**
@@ -73,17 +73,17 @@ class VotingApiField extends FieldItemBase {
    * {@inheritdoc}
    */
   public static function schema(FieldStorageDefinitionInterface $field_definition) {
-    return [
-      'columns' => [
-        'status' => [
+    return array(
+      'columns' => array(
+        'status' => array(
           'description' => 'Whether votes are allowed on this entity: 0 = no, 1 = closed (read only), 2 = open (read/write).',
           'type' => 'int',
           'default' => 0,
-        ],
-      ],
-      'indexes' => [],
-      'foreign keys' => [],
-    ];
+        ),
+      ),
+      'indexes' => array(),
+      'foreign keys' => array(),
+    );
   }
 
   /**
@@ -99,7 +99,7 @@ class VotingApiField extends FieldItemBase {
    * {@inheritdoc}
    */
   public function storageSettingsForm(array &$form, FormStateInterface $form_state, $has_data) {
-    $element = [];
+    $element = array();
 
     // @todo Inject entity storage once typed-data supports container injection.
     //   See https://www.drupal.org/node/2053415 for more details.
@@ -111,27 +111,27 @@ class VotingApiField extends FieldItemBase {
     }
 
     $vote_types = VoteType::loadMultiple();
-    $options = [];
+    $options = array();
     foreach ($vote_types as $vote_type) {
       $options[$vote_type->id()] = $vote_type->label();
     }
-    $element['vote_type'] = [
+    $element['vote_type'] = array(
       '#type' => 'select',
       '#title' => $this->t('Vote type'),
       '#options' => $options,
       '#required' => TRUE,
       '#default_value' => $this->getSetting('vote_type'),
       '#disabled' => $has_data,
-    ];
+    );
 
-    $element['vote_plugin'] = [
+    $element['vote_plugin'] = array(
       '#type' => 'select',
       '#title' => $this->t('Vote plugin'),
       '#options' => $vote_options,
       '#required' => TRUE,
       '#default_value' => $this->getSetting('vote_plugin'),
       '#disabled' => $has_data,
-    ];
+    );
 
     return $element;
   }
@@ -166,21 +166,21 @@ class VotingApiField extends FieldItemBase {
     $unit_options_form[0] = $this->t('never');
     $unit_options_form[-1] = $this->t('votingapi default');
 
-    $form['anonymous_window'] = [
+    $form['anonymous_window'] = array(
       '#type' => 'select',
       '#title' => $this->t('Anonymous vote rollover'),
       '#description' => $this->t("The amount of time that must pass before two anonymous votes from the same computer are considered unique. Setting this to never will eliminate most double-voting, but will make it impossible for multiple anonymous on the same computer (like internet cafe customers) from casting votes."),
       '#options' => $unit_options_form,
       '#default_value' => $this->getSetting('anonymous_window'),
-    ];
+    );
 
-    $form['user_window'] = [
+    $form['user_window'] = array(
       '#type' => 'select',
       '#title' => $this->t('Registered user vote rollover'),
       '#description' => $this->t("The amount of time that must pass before two registered user votes from the same user ID are considered unique. Setting this to never will eliminate most double-voting for registered users."),
       '#options' => $unit_options_form,
       '#default_value' => $this->getSetting('user_window'),
-    ];
+    );
     return $form;
   }
 
@@ -199,7 +199,9 @@ class VotingApiField extends FieldItemBase {
     $field_name = $this->getFieldDefinition()->getName();
     $vote_type = $this->getFieldDefinition()->getSetting('vote_type');
     $plugin = $this->getFieldDefinition()->getSetting('vote_plugin');
-    /** @var \Drupal\votingapi_widgets\Plugin\VotingApiWidgetBase $plugin */
+    /**
+     * @var VotingApiWidgetBase $plugin
+     */
     $plugin = \Drupal::service('plugin.manager.voting_api_widget.processor')
       ->createInstance($plugin);
 
