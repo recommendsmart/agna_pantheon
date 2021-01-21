@@ -1,5 +1,5 @@
-drupal.ckeditor.plugins.mentions:
+ckeditor_mentions:
   version: VERSION
   css:
-    component:
+    layout:
       css/plugins/mentions/ckeditor_mentions.css: {}

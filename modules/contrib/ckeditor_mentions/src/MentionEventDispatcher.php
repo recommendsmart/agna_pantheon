@@ -67,6 +67,10 @@ class MentionEventDispatcher {
     $dispatcher = $this->eventDispatcher;
     // Creating our event class object.
     $mentioned_users = $this->getMentionsFromEntity($entity);
+    // Nothing to do here, if mentioned users not present.
+    if (empty($mentioned_users)) {
+      return;
+    }
     $event = new CKEditorMentionEvent($entity, $mentioned_users);
     // Dispatching the event through the ‘dispatch’  method, passing event name
     // and event object ‘$event’ as parameters.
@@ -164,6 +168,10 @@ class MentionEventDispatcher {
     foreach ($anchors as $anchor) {
       $mentioned_user_id = $anchor->getAttribute('data-mention');
       $link_text = $anchor->textContent;
+
+      // Strip the @ from the beginins of the name.
+      $link_text = ltrim($link_text, '@');
+
       if (empty($mentioned_user_id)) {
         continue;
       }

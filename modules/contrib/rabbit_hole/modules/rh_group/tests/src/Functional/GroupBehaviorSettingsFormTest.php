@@ -70,7 +70,6 @@ class GroupBehaviorSettingsFormTest extends RabbitHoleBehaviorSettingsFormTestBa
       'rh_override' => $override,
     ];
     $this->submitForm($edit, $submit_button);
-    $this->bundle = $this->loadBundle($edit['id']);
     return $edit['id'];
   }
 

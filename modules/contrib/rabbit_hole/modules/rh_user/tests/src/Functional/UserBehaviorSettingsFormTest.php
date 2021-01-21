@@ -61,15 +61,7 @@ class UserBehaviorSettingsFormTest extends RabbitHoleBehaviorSettingsFormTestBas
    * {@inheritdoc}
    */
   protected function createEntityBundleFormSubmit($action, $override) {
-    $this->drupalLogin($this->adminUser);
-    $edit = [
-      'rh_action' => $action,
-      'rh_override' => $override,
-    ];
-    $this->drupalGet('/admin/config/people/accounts');
-    $this->assertRabbitHoleSettings();
-    $this->submitForm($edit, 'Save configuration');
-    return 'user';
+    return $this->createEntityBundle();
   }
 
   /**

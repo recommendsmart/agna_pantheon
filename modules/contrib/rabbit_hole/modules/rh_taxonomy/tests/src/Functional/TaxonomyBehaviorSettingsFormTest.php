@@ -59,7 +59,6 @@ class TaxonomyBehaviorSettingsFormTest extends RabbitHoleBehaviorSettingsFormTes
     $this->drupalGet('/admin/structure/taxonomy/add');
     $this->assertRabbitHoleSettings();
     $this->submitForm($edit, 'Save');
-    $this->bundle = $this->loadBundle($edit['vid']);
     return $edit['vid'];
   }
 

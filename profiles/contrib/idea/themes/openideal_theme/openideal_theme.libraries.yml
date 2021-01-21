@@ -3,14 +3,14 @@ global-styling:
   css:
     component:
       '//fonts.googleapis.com/css2?family=Assistant:wght@300;400;600;700&family=Roboto&display=swap': { type: external, minified: true }
-      css/style.min.css: { minified: true }
+      css/style.css: {}
 
 global-styling-rtl:
   version: VERSION
   css:
     component:
       '//fonts.googleapis.com/css2?family=Assistant:wght@300;400;600;700&family=Roboto&display=swap': { type: external, minified: true }
-      css/style-rtl.min.css: { minified: true }
+      css/style-rtl.css: {}
 
 global-scripts:
   version: VERSION
@@ -18,6 +18,15 @@ global-scripts:
     js/popper.min.js: { minified: true }
     js/bootstrap.min.js: { minified: true }
     js/global.js: {}
+  dependencies:
+    - core/jquery
+    - core/drupal
+    - core/jquery.once
+
+underliner:
+  version: VERSION
+  js:
+    js/underliner.js: {}
   dependencies:
     - core/jquery
     - core/drupal

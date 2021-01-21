@@ -8,11 +8,10 @@ You need Drupal Version >= 8.2.3. (Multiple form instances on a page)
 ## Installation
 
 1. Download this module via composer.
-2. Download the required [jQuery Bar Rating Plugin](https://github.com/antennaio/jquery-bar-rating) and place it inside of the libraries folder (/libraries).
-   For composer based projects please install the library as described on the [Drupal 8 Documentation](https://www.drupal.org/docs/develop/using-composer/using-composer-to-manage-drupal-site-dependencies#managing-contributed).
-   Example:
-   Insert the following repository into the "repositories" section of the
-   Drupal composer.json file (/composer.json):
+2. Download the required [jQuery Bar Rating Plugin](https://github.com/antennaio/jquery-bar-rating) and place it inside of the libraries folder (/libraries).  
+   For composer based projects please install the library as described on the [Drupal 8 Documentation](https://www.drupal.org/docs/develop/using-composer/using-composer-to-manage-drupal-site-dependencies#managing-contributed).  
+   Example:  
+   Insert the following repository inside of the Drupal composer.json (/composer.json):
    ```
     {
       "type": "package",
@@ -27,14 +26,13 @@ You need Drupal Version >= 8.2.3. (Multiple form instances on a page)
       }
     }
    ```
-   then execute "composer require antennaio/jquery-bar-rating".
+   and execute "composer require antennaio/jquery-bar-rating".
 3. Install VotingAPI Widget the [usual way](https://www.drupal.org/documentation/install/modules-themes/modules-8).
 ### Known issues
 
-Upon installation it is important to save the VotingAPI config at least once,
-due to a bug in the default shipped config of VotingAPI alpha3. That way all
-global configs are available.
-
+Upon installation it is important to save the VotingAPI config at least once, due to a bug in the default shipped config
+ of VotingAPI alpha3. That way all global configs are available.
+ 
 # Sponsoring
 
 [Module on drupal.org](https://www.drupal.org/project/votingapi_widgets)
