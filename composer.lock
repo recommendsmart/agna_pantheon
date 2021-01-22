@@ -9263,10 +9263,10 @@
         },
         {
             "name": "npm-asset/swiper",
-            "version": "6.4.5",
+            "version": "6.4.7",
             "dist": {
                 "type": "tar",
-                "url": "https://registry.npmjs.org/swiper/-/swiper-6.4.5.tgz"
+                "url": "https://registry.npmjs.org/swiper/-/swiper-6.4.7.tgz"
             },
             "require": {
                 "npm-asset/dom7": ">=3.0.0,<4.0.0",
@@ -9280,10 +9280,10 @@
         },
         {
             "name": "npm-asset/tslib",
-            "version": "2.0.1",
+            "version": "2.1.0",
             "dist": {
                 "type": "tar",
-                "url": "https://registry.npmjs.org/tslib/-/tslib-2.0.1.tgz"
+                "url": "https://registry.npmjs.org/tslib/-/tslib-2.1.0.tgz"
             },
             "type": "npm-asset",
             "license": [
