@@ -8,3 +8,8 @@ dependencies:
   - paragraphs:paragraphs
   - faqfield:faqfield
   - allowed_formats:allowed_formats
+
+# Information added by Drupal.org packaging script on 2021-03-29
+version: '3.0.8'
+project: 'idea'
+datestamp: 1617030358
